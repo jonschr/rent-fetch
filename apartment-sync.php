@@ -30,6 +30,31 @@ define( 'APARTMENT_SYNC', dirname( __FILE__ ) );
 // Define the version of the plugin
 define ( 'APARTMENT_SYNC_VERSION', '0.1' );
 
+///////////////////
+// FUNCTIONALITY //
+///////////////////
+
+add_action( 'after_setup_theme', 'apartment_sync_start_the_engine' );
+function apartment_sync_start_the_engine() {
+    
+    //* settings pages
+    require_once( 'lib/custom-fields/main-settings.php' );
+    
+    //* get options
+    $apartment_site_type = get_field( 'apartment_site_type', 'option' );
+        
+    //* post types
+    
+    if ( $apartment_site_type == 'multiple' ) {
+        // if we aren't running a site for multiple properties, we don't need the neighborhood or property content types
+        require_once( 'lib/post-type/neighborhoods.php' );
+        require_once( 'lib/post-type/properties.php' );
+    } 
+    
+    require_once( 'lib/post-type/floorplans.php' );
+}
+
+
 /////////////
 // UPDATER //
 /////////////
