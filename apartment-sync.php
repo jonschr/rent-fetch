@@ -29,3 +29,41 @@ define( 'APARTMENT_SYNC', dirname( __FILE__ ) );
 
 // Define the version of the plugin
 define ( 'APARTMENT_SYNC_VERSION', '0.1' );
+
+/////////////
+// UPDATER //
+/////////////
+
+require 'vendor/plugin-update-checker/plugin-update-checker.php';
+$myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
+	'https://github.com/jonschr/apartment-sync',
+	__FILE__,
+	'apartment-sync'
+);
+
+// Optional: Set the branch that contains the stable release.
+$myUpdateChecker->setBranch('master');
+
+/////////////////
+// INCLUDE ACF //
+/////////////////
+
+// Define path and URL to the ACF plugin.
+define( 'APARTMENT_SYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
+define( 'APARTMENT_SYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
+
+// Include the ACF plugin.
+include_once( APARTMENT_SYNC_ACF_PATH . 'acf.php' );
+
+// Customize the url setting to fix incorrect asset URLs.
+add_filter('acf/settings/url', 'apartment_sync_acf_settings_url');
+function apartment_sync_acf_settings_url( $url ) {
+    return APARTMENT_SYNC_ACF_URL;
+}
+
+// (Optional) Hide the ACF admin menu item.
+// add_filter('acf/settings/show_admin', 'apartment_sync_acf_settings_show_admin');
+function apartment_sync_acf_settings_show_admin( $show_admin ) {
+    return false;
+}
+
