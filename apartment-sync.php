@@ -38,7 +38,8 @@ add_action( 'after_setup_theme', 'apartment_sync_start_the_engine' );
 function apartment_sync_start_the_engine() {
     
     //* settings pages
-    require_once( 'lib/custom-fields/main-settings.php' );
+    require_once( 'lib/options-pages/main-settings.php' );
+    require_once( 'lib/options-pages/sync-actions.php' );
     
     //* get options
     $apartment_site_type = get_field( 'apartment_site_type', 'option' );
@@ -92,3 +93,27 @@ function apartment_sync_acf_settings_show_admin( $show_admin ) {
     return false;
 }
 
+
+
+function programmatically_create_post() {
+
+	// Setup the author, slug, and title for the post
+	$slug = 'example-post';
+	$title = 'My Example Post';
+
+    // Set the post ID so that we know the post was created successfully
+    wp_insert_post(
+        array(
+            'comment_status'	=>	'closed',
+            'ping_status'		=>	'closed',
+            'post_author'		=>	1,
+            'post_name'	    	=>	$slug,
+            'post_title'		=>	$title,
+            'post_status'		=>	'publish',
+            'post_type'	    	=>	'floorplans'
+        )
+    );
+
+
+} // end programmatically_create_post
+// add_filter( 'after_setup_theme', 'programmatically_create_post' );
