@@ -2,6 +2,8 @@
 
 add_action( 'apartmentsync_do_save_yardi_floorplans_to_cpt', 'apartmentsync_save_yardi_floorplans_to_cpt' );
 function apartmentsync_save_yardi_floorplans_to_cpt() {
+    
+    
         
     // get the list of properties
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
@@ -10,13 +12,17 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
     $properties = explode( ',', $properties );
     foreach( $properties as $property ) {
         
+        apartmentsync_log( "Starting to save floorplans for Yardi property $property into the 'floorplans' CPT." );
+        
         $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
         
         // bail if we do not have a transient with this data in it
-        if ( $floorplans == false )
+        if ( $floorplans == false ) {
+            apartmentsync_log( "No transient currently set for property $property (transient should be named yardi_floorplans_property_id_$property), so we're ending the process." );
             return;
+        }
             
-        // console_log( $floorplans );
+        apartmentsync_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
         
         foreach( $floorplans as $floorplan ) {
             
@@ -67,15 +73,21 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
                 )
             );
             $query = new WP_Query($args);
-
+                        
             // insert the post if there isn't one already (this prevents duplicates)
-            if ( !$query->have_posts() )
+            if ( !$query->have_posts() ) {
                 $post_id = wp_insert_post( $floorplan_meta );
+                
+                apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
+            } else {
+                apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Skipping." );
+            }
         }
             
     }
     
     // //* Delete all floorplans (for testing)
+    // apartmentsync_log( "Deleting all floorplans." );
     // $allposts = get_posts( array('post_type'=>'floorplans','numberposts'=>-1) );
     // foreach ($allposts as $eachpost) {
     //     wp_delete_post( $eachpost->ID, true );

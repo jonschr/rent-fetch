@@ -106,8 +106,24 @@ $myUpdateChecker->setBranch('master');
 //     return false;
 // }
 
+/////////////
+// LOGGING //
+/////////////
+
+//* Allows for console_logging data (into the javascript logs)
 function console_log( $data ){
     echo '<script>';
     echo 'console.log('. json_encode( $data ) .')';
     echo '</script>';
+}
+
+function apartmentsync_log($message) { 
+    
+    if( is_array( $message ) )
+        $message = json_encode($message); 
+        
+    $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug.log", "a" );
+    fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
+    fclose($file); 
+    
 }

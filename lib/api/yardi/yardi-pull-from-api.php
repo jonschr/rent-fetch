@@ -15,15 +15,17 @@ function apartmentsync_get_floorplans_yardi() {
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $properties = $yardi_integration_creds['yardi_property_code'];    
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
-    
+        
     $properties = explode( ',', $properties );
     foreach( $properties as $property ) {
-        
+                
         $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
         
         // bail if we already have a transient with this data in it
         if ( $floorplans != false )
             return $floorplans;
+            
+        apartmentsync_log( "Transient not found for Yardi property $property (yardi_floorplans_property_id_$property). Pulling new data from https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan." );
         
         // Do the API request
         $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan&apiToken=%s&VoyagerPropertyCode=%s', $yardi_api_key, $property ); // path to your JSON file
@@ -35,8 +37,12 @@ function apartmentsync_get_floorplans_yardi() {
         // error has happened
         $errorcode = $floorplans[0]['Error'];
             
-        if ( !$errorcode )
+        if ( !$errorcode ) {
             set_transient( 'yardi_floorplans_property_id_' . $property, $floorplans, HOUR_IN_SECONDS );
+            apartmentsync_log( "Yardi returned a list of floorplans for property $property successfully. New transient set: yardi_floorplans_property_id_$property" );
+        } else {
+            apartmentsync_log( "Yardi returned error code $errorcode." );
+        }
     }
     
 }
