@@ -25,36 +25,49 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Plugin directory
-define( 'APARTMENT_SYNC', dirname( __FILE__ ) );
+define( 'APARTMENTSYNC', dirname( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENT_SYNC_VERSION', '0.1' );
+define ( 'APARTMENTSYNC_VERSION', '0.1' );
+
+//* Requires
+require_once( 'lib/api/start-sync.php' ); // kick off the sync process
+require_once( 'lib/api/yardi/yardi-check-credentials.php' );
+require_once( 'lib/api/yardi/yardi-pull-from-api.php' );
+require_once( 'lib/api/yardi/yardi-save-floorplans-to-cpt.php' );
+require_once( 'lib/api/entrata/entrata-sync.php' );
+require_once( 'lib/api/entrata/entrata-check-credentials.php' );
 
 ///////////////////
 // FUNCTIONALITY //
 ///////////////////
 
-add_action( 'after_setup_theme', 'apartment_sync_start_the_engine' );
-function apartment_sync_start_the_engine() {
+add_action( 'after_setup_theme', 'apartmentsync_start_the_engine' );
+function apartmentsync_start_the_engine() {
     
     //* settings pages
     require_once( 'lib/options-pages/main-settings.php' );
     require_once( 'lib/options-pages/sync-actions.php' );
     
-    //* get options
+    //* figure out whether this is a single 
     $apartment_site_type = get_field( 'apartment_site_type', 'option' );
         
-    //* post types
+    //* floorplans post type
+    require_once( 'lib/post-type/floorplans.php' );
     
+    //* only register the properties and neighborhoods post types if this is a 'multiple' site
     if ( $apartment_site_type == 'multiple' ) {
         // if we aren't running a site for multiple properties, we don't need the neighborhood or property content types
-        require_once( 'lib/post-type/neighborhoods.php' );
         require_once( 'lib/post-type/properties.php' );
-    } 
+        require_once( 'lib/post-type/neighborhoods.php' );
+    }
+        
+    //* kick off the logic for getting data from apis
+    do_action( 'apartmentsync_do_sync_logic' );
+    do_action( 'apartmentsync_do_save_yardi_floorplans_to_cpt' );
     
-    require_once( 'lib/post-type/floorplans.php' );
+    
 }
-
 
 /////////////
 // UPDATER //
@@ -74,46 +87,27 @@ $myUpdateChecker->setBranch('master');
 // INCLUDE ACF //
 /////////////////
 
-// Define path and URL to the ACF plugin.
-define( 'APARTMENT_SYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
-define( 'APARTMENT_SYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
+// // Define path and URL to the ACF plugin.
+// define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
+// define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
 
-// Include the ACF plugin.
-include_once( APARTMENT_SYNC_ACF_PATH . 'acf.php' );
+// // Include the ACF plugin.
+// include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
 
-// Customize the url setting to fix incorrect asset URLs.
-add_filter('acf/settings/url', 'apartment_sync_acf_settings_url');
-function apartment_sync_acf_settings_url( $url ) {
-    return APARTMENT_SYNC_ACF_URL;
+// // Customize the url setting to fix incorrect asset URLs.
+// add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
+// function apartmentsync_acf_settings_url( $url ) {
+//     return APARTMENTSYNC_ACF_URL;
+// }
+
+// // (Optional) Hide the ACF admin menu item.
+// // add_filter('acf/settings/show_admin', 'apartmentsync_acf_settings_show_admin');
+// function apartmentsync_acf_settings_show_admin( $show_admin ) {
+//     return false;
+// }
+
+function console_log( $data ){
+    echo '<script>';
+    echo 'console.log('. json_encode( $data ) .')';
+    echo '</script>';
 }
-
-// (Optional) Hide the ACF admin menu item.
-// add_filter('acf/settings/show_admin', 'apartment_sync_acf_settings_show_admin');
-function apartment_sync_acf_settings_show_admin( $show_admin ) {
-    return false;
-}
-
-
-
-function programmatically_create_post() {
-
-	// Setup the author, slug, and title for the post
-	$slug = 'example-post';
-	$title = 'My Example Post';
-
-    // Set the post ID so that we know the post was created successfully
-    wp_insert_post(
-        array(
-            'comment_status'	=>	'closed',
-            'ping_status'		=>	'closed',
-            'post_author'		=>	1,
-            'post_name'	    	=>	$slug,
-            'post_title'		=>	$title,
-            'post_status'		=>	'publish',
-            'post_type'	    	=>	'floorplans'
-        )
-    );
-
-
-} // end programmatically_create_post
-// add_filter( 'after_setup_theme', 'programmatically_create_post' );
