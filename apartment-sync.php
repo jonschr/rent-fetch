@@ -74,7 +74,7 @@ function apartmentsync_start_the_engine() {
 add_action( 'after_setup_theme', 'apartmentsync_chron_activation' );
 function apartmentsync_chron_activation() {
     
-    apartmentsync_log( 'Checking whether a chron job needs to be scheduled' );
+    // apartmentsync_log( 'Checking whether a chron job needs to be scheduled' );
     
     // get the sync term from the settings
     $sync_term = get_field( 'sync_term', 'option' );
@@ -95,7 +95,7 @@ function apartmentsync_chron_activation() {
             wp_schedule_event( time(), $sync_term, 'apartmentsync_do_run_chron' );
             apartmentsync_log( "Scheduling apartmentsync_do_run_chron chron job: setting for $sync_term" );
         } else {
-            apartmentsync_log( "Chron job apartmentsync_do_run_chron is already scheduled $sync_term" );        
+            // apartmentsync_log( "Chron job apartmentsync_do_run_chron is already scheduled $sync_term" );        
         }
         
     }
@@ -143,24 +143,24 @@ $myUpdateChecker->setBranch('master');
 // INCLUDE ACF //
 /////////////////
 
-// // Define path and URL to the ACF plugin.
-// define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
-// define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
+// Define path and URL to the ACF plugin.
+define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
+define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
 
-// // Include the ACF plugin.
-// include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
+// Include the ACF plugin.
+include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
 
-// // Customize the url setting to fix incorrect asset URLs.
-// add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
-// function apartmentsync_acf_settings_url( $url ) {
-//     return APARTMENTSYNC_ACF_URL;
-// }
+// Customize the url setting to fix incorrect asset URLs.
+add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
+function apartmentsync_acf_settings_url( $url ) {
+    return APARTMENTSYNC_ACF_URL;
+}
 
-// // (Optional) Hide the ACF admin menu item.
-// // add_filter('acf/settings/show_admin', 'apartmentsync_acf_settings_show_admin');
-// function apartmentsync_acf_settings_show_admin( $show_admin ) {
-//     return false;
-// }
+// (Optional) Hide the ACF admin menu item.
+// add_filter('acf/settings/show_admin', 'apartmentsync_acf_settings_show_admin');
+function apartmentsync_acf_settings_show_admin( $show_admin ) {
+    return false;
+}
 
 /////////////
 // LOGGING //
