@@ -2,9 +2,7 @@
 
 add_action( 'apartmentsync_do_save_yardi_floorplans_to_cpt', 'apartmentsync_save_yardi_floorplans_to_cpt' );
 function apartmentsync_save_yardi_floorplans_to_cpt() {
-    
-    
-        
+            
     // get the list of properties
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $properties = $yardi_integration_creds['yardi_property_code'];
@@ -26,6 +24,7 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
         
         foreach( $floorplans as $floorplan ) {
             
+            // all of the available variables
             $AvailabilityURL = $floorplan['AvailabilityURL'];
             $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
             $Baths = $floorplan['Baths'];
@@ -77,7 +76,6 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
             // insert the post if there isn't one already (this prevents duplicates)
             if ( !$query->have_posts() ) {
                 $post_id = wp_insert_post( $floorplan_meta );
-                
                 apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
             } else {
                 apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Skipping." );
