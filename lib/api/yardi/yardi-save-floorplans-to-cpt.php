@@ -29,8 +29,8 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
             // all of the available variables
             $AvailabilityURL = $floorplan['AvailabilityURL'];
             $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
-            $Baths = $floorplan['Baths'];
-            $Beds = $floorplan['Beds'];
+            $Baths = intval( $floorplan['Baths'] );
+            $Beds = intval( $floorplan['Beds'] );
             $FloorplanHasSpecials = $floorplan['FloorplanHasSpecials'];
             $FloorplanId = $floorplan['FloorplanId'];
             $FloorplanImageAltText = $floorplan['FloorplanImageAltText'];
@@ -94,12 +94,4 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
         }
             
     }
-    
-    // //* Delete all floorplans (for testing)
-    apartmentsync_log( "Deleting all floorplans." );
-    $allposts = get_posts( array('post_type'=>'floorplans','numberposts'=>-1) );
-    foreach ($allposts as $eachpost) {
-        wp_delete_post( $eachpost->ID, true );
-    }
-    
 }
