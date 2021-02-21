@@ -30,7 +30,7 @@ define( 'APARTMENTSYNC', dirname( __FILE__ ) );
 // Define the version of the plugin
 define ( 'APARTMENTSYNC_VERSION', '0.1' );
 
-// //* Delete all floorplans (for testing)
+// // Delete all floorplans (for testing)
 // apartmentsync_log( "Deleting all floorplans." );
 // $allposts = get_posts( array('post_type'=>'floorplans','numberposts'=>-1) );
 // foreach ($allposts as $eachpost) {
@@ -68,8 +68,8 @@ function apartmentsync_acf_settings_url( $url ) {
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
 
 //* Process requires
-require_once( 'lib/api/start-sync.php' ); // kick off the sync process
-require_once( 'lib/api/chron-tasks.php' ); // kick off chron processes for converting transients into posts
+require_once( 'lib/api/pull-from-apis.php' ); // kick off the sync process
+require_once( 'lib/api/save-to-cpt.php' ); // kick off chron processes for converting transients into posts
 require_once( 'lib/api/yardi/yardi-check-credentials.php' );
 require_once( 'lib/api/yardi/yardi-pull-from-api.php' );
 require_once( 'lib/api/yardi/yardi-save-floorplans-to-cpt.php' );
