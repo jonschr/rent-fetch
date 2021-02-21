@@ -16,7 +16,7 @@ function apartmentsync_get_sync_term_in_seconds() {
         $sync_term = 3600;
         
     if ( $sync_term == 'continuous' )
-        $sync_term = 5;
+        $sync_term = 60;
     
     apartmentsync_log( $sync_term );
     return $sync_term;

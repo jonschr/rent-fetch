@@ -30,6 +30,12 @@ define( 'APARTMENTSYNC', dirname( __FILE__ ) );
 // Define the version of the plugin
 define ( 'APARTMENTSYNC_VERSION', '0.1' );
 
+//////////////////////////////
+// INCLUDE ACTION SCHEDULER //
+//////////////////////////////
+
+require_once( plugin_dir_path( __FILE__ ) . 'vendor/action-scheduler/action-scheduler.php' );
+
 /////////////////
 // INCLUDE ACF //
 /////////////////
@@ -72,7 +78,7 @@ require_once( 'lib/api/entrata/entrata-check-credentials.php' );
 // FUNCTIONALITY //
 ///////////////////
 
-add_action( 'after_setup_theme', 'apartmentsync_start_the_engine' );
+add_action( 'init', 'apartmentsync_start_the_engine' );
 function apartmentsync_start_the_engine() {
     
     // Exit function if doing an AJAX request
@@ -105,7 +111,7 @@ function apartmentsync_start_the_engine() {
 // SCHEDULE TASKS FOR ADDING TO DATABASE //
 ///////////////////////////////////////////
 
-add_action( 'after_setup_theme', 'apartmentsync_chron_activation' );
+add_action( 'init', 'apartmentsync_chron_activation' );
 function apartmentsync_chron_activation() {
     
     // Exit function if doing an AJAX request
@@ -140,7 +146,6 @@ function apartmentsync_chron_activation() {
 add_action( 'apartmentsync_do_run_chron', 'apartmentsync_run_chron' );
 function apartmentsync_run_chron() {
     
-    // do this every hour
     $enabled_integrations = get_field( 'enabled_integrations', 'option' );
     
     // bail if there aren't any integrations enabled
