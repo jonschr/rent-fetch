@@ -31,15 +31,21 @@ function apartmentsync_get_floorplans_yardi() {
         $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan&apiToken=%s&VoyagerPropertyCode=%s', $yardi_api_key, $property ); // path to your JSON file
         $data = file_get_contents( $url ); // put the contents of the file into a variable        
         $floorplans = json_decode( $data, true ); // decode the JSON feed
+        $errorcode = null;
         
-        do_action( 'apartmentsync_yardi_floorplan_show_error', $floorplans[0]['Error'], $property );
-        
-        // error has happened
-        $errorcode = $floorplans[0]['Error'];
+        if ( isset( $floorplans[0]['Error'] ) ) {
             
-        if ( !$errorcode ) {
-            set_transient( 'yardi_floorplans_property_id_' . $property, $floorplans, HOUR_IN_SECONDS );
-            apartmentsync_log( "Yardi returned a list of floorplans for property $property successfully. New transient set: yardi_floorplans_property_id_$property" );
+            do_action( 'apartmentsync_yardi_floorplan_show_error', $floorplans[0]['Error'], $property );
+
+            // error has happened
+            $errorcode = $floorplans[0]['Error'];
+        }
+            
+        if ( !$errorcode && !empty( $floorplans ) ) {
+            set_transient( 'yardi_floorplans_property_id_' . $property, $floorplans, apartmentsync_get_sync_term_in_seconds() );
+            apartmentsync_log( "Yardi returned a list of floorplans for property $property successfully. New transient set: yardi_floorplans_property_id_$property" );                
+        } elseif( !$errorcode && empty( $floorplans ) ) {
+            apartmentsync_log( "No data received from Yardi for property $property." );
         } else {
             apartmentsync_log( "Yardi returned error code $errorcode." );
         }

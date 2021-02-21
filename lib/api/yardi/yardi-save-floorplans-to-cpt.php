@@ -14,6 +14,8 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
         
         $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
         
+        console_log( $floorplans );
+        
         // bail if we do not have a transient with this data in it
         if ( $floorplans == false ) {
             apartmentsync_log( "No transient currently set for property $property (transient should be named yardi_floorplans_property_id_$property), so we're ending the process." );
@@ -23,7 +25,7 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
         apartmentsync_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
         
         foreach( $floorplans as $floorplan ) {
-            
+                        
             // all of the available variables
             $AvailabilityURL = $floorplan['AvailabilityURL'];
             $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
@@ -94,10 +96,10 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
     }
     
     // //* Delete all floorplans (for testing)
-    // apartmentsync_log( "Deleting all floorplans." );
-    // $allposts = get_posts( array('post_type'=>'floorplans','numberposts'=>-1) );
-    // foreach ($allposts as $eachpost) {
-    //     wp_delete_post( $eachpost->ID, true );
-    // }
+    apartmentsync_log( "Deleting all floorplans." );
+    $allposts = get_posts( array('post_type'=>'floorplans','numberposts'=>-1) );
+    foreach ($allposts as $eachpost) {
+        wp_delete_post( $eachpost->ID, true );
+    }
     
 }

@@ -30,7 +30,37 @@ define( 'APARTMENTSYNC', dirname( __FILE__ ) );
 // Define the version of the plugin
 define ( 'APARTMENTSYNC_VERSION', '0.1' );
 
-//* Requires
+/////////////////
+// INCLUDE ACF //
+/////////////////
+
+// Define path and URL to the ACF plugin.
+define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
+define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
+
+// Include the ACF plugin.
+include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
+
+// Customize the url setting to fix incorrect asset URLs.
+add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
+function apartmentsync_acf_settings_url( $url ) {
+    return APARTMENTSYNC_ACF_URL;
+}
+
+// (Optional) Hide the ACF admin menu item.
+// add_filter('acf/settings/show_admin', 'apartmentsync_acf_settings_show_admin');
+function apartmentsync_acf_settings_show_admin( $show_admin ) {
+    return false;
+}
+
+///////////////////
+// FILE INCLUDES //
+///////////////////
+
+//* Common functions
+require_once( 'lib/common/apartmentsync_get_sync_term.php' );
+
+//* Process requires
 require_once( 'lib/api/start-sync.php' ); // kick off the sync process
 require_once( 'lib/api/yardi/yardi-check-credentials.php' );
 require_once( 'lib/api/yardi/yardi-pull-from-api.php' );
@@ -44,6 +74,10 @@ require_once( 'lib/api/entrata/entrata-check-credentials.php' );
 
 add_action( 'after_setup_theme', 'apartmentsync_start_the_engine' );
 function apartmentsync_start_the_engine() {
+    
+    // Exit function if doing an AJAX request
+    if ( wp_doing_ajax() == true )
+        return;
     
     //* settings pages
     require_once( 'lib/options-pages/main-settings.php' );
@@ -74,12 +108,14 @@ function apartmentsync_start_the_engine() {
 add_action( 'after_setup_theme', 'apartmentsync_chron_activation' );
 function apartmentsync_chron_activation() {
     
+    // Exit function if doing an AJAX request
+    if ( wp_doing_ajax() == true )
+        return;
+    
     // apartmentsync_log( 'Checking whether a chron job needs to be scheduled' );
     
     // get the sync term from the settings
-    $sync_term = get_field( 'sync_term', 'option' );
-    if ( !$sync_term )
-        $sync_term = 'hourly';
+    $sync_term = apartmentsync_get_sync_term_in_seconds();
 
     // if the chron should be paused, then remove upcoming jobs
     if ( $sync_term == 'paused' ) {
@@ -93,7 +129,7 @@ function apartmentsync_chron_activation() {
         if ( !wp_next_scheduled( 'apartmentsync_do_run_chron' )) {
             // set the chron if we aren't paused
             wp_schedule_event( time(), $sync_term, 'apartmentsync_do_run_chron' );
-            apartmentsync_log( "Scheduling apartmentsync_do_run_chron chron job: setting for $sync_term" );
+            apartmentsync_log( "Scheduling apartmentsync_do_run_chron chron job: setting for $sync_term seconds" );
         } else {
             // apartmentsync_log( "Chron job apartmentsync_do_run_chron is already scheduled $sync_term" );        
         }
@@ -138,29 +174,6 @@ $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 
 // Optional: Set the branch that contains the stable release.
 $myUpdateChecker->setBranch('master');
-
-/////////////////
-// INCLUDE ACF //
-/////////////////
-
-// Define path and URL to the ACF plugin.
-define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
-define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
-
-// Include the ACF plugin.
-include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
-
-// Customize the url setting to fix incorrect asset URLs.
-add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
-function apartmentsync_acf_settings_url( $url ) {
-    return APARTMENTSYNC_ACF_URL;
-}
-
-// (Optional) Hide the ACF admin menu item.
-// add_filter('acf/settings/show_admin', 'apartmentsync_acf_settings_show_admin');
-function apartmentsync_acf_settings_show_admin( $show_admin ) {
-    return false;
-}
 
 /////////////
 // LOGGING //
