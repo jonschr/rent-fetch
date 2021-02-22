@@ -25,7 +25,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Plugin directory
-define( 'APARTMENTSYNC', dirname( __FILE__ ) );
+define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
 define ( 'APARTMENTSYNC_VERSION', '0.1' );
@@ -60,9 +60,15 @@ function apartmentsync_acf_settings_url( $url ) {
     return APARTMENTSYNC_ACF_URL;
 }
 
+
+
 ///////////////////
 // FILE INCLUDES //
 ///////////////////
+
+//* ACF fields
+require_once( 'lib/acf-fields/floorplan-details.php' );
+require_once( 'lib/acf-fields/settings.php' );
 
 //* Common functions
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
