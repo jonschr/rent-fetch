@@ -75,16 +75,27 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
         )
     );
     $query = new WP_Query($args);
+    $count = $query->found_posts;
     
     // insert the post if there isn't one already (this prevents duplicates)
     if ( !$query->have_posts() ) {
         apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
         apartmentsync_insert_yardi_floorplan( $floorplan );
-    } else {
+        
+    // if there's exactly one post found, then update the meta for that
+    } elseif ( $count == 1 ) {
+        apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
         apartmentsync_update_yardi_floorplan( $floorplan );
-        apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Skipping." );
+        
+    // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
+    } elseif( $count > 1 ) {
+        apartmentsync_log( "$count posts for floorplan $FloorplanId found. Removing duplicates and reinserting fresh." );
+        $matchingposts = $query->posts;
+        foreach ($matchingposts as $matchingpost) {
+            wp_delete_post( $matchingpost->ID, true );
+        }
+        apartmentsync_insert_yardi_floorplan( $floorplan );
     }
-    
 }
 
 function apartmentsync_insert_yardi_floorplan( $floorplan ) {
@@ -109,6 +120,7 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
     $PropertyId = $floorplan['PropertyId'];
     $PropertyShowsSpecials = $floorplan['PropertyShowsSpecials'];
     $UnitTypeMapping = $floorplan['UnitTypeMapping'];
+    $FloorplanSource = 'yardi';
     
     // Create post object
     $floorplan_meta = array(
@@ -131,6 +143,7 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
             'property_id'               => $PropertyId,
             'property_show_specials'    => $PropertyShowsSpecials,
             'unit_type_mapping'         => $UnitTypeMapping,
+            'floorplan_source'          => $FloorplanSource,
         ),
     );
     
