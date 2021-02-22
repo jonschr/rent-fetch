@@ -64,6 +64,9 @@ require_once( 'lib/acf-fields/settings.php' );
 //* Common functions
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
 
+//* Documentation
+require_once( 'lib/options-pages/documentation-sidebar-link.php' );
+
 //* Process requires
 require_once( 'lib/api/pull-from-apis.php' ); // kick off the sync process
 require_once( 'lib/api/save-to-cpt.php' ); // kick off chron processes for converting transients into posts
