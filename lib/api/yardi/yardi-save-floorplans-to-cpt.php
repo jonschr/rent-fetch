@@ -251,11 +251,7 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
             $success_has_specials = update_post_meta( $post_id, 'has_specials', $FloorplanHasSpecials );
             if ( $success_has_specials == true )
                 apartmentsync_log( "Floorplan $FloorplanId meta updated: has_specials is now $FloorplanHasSpecials." );
-                
-            $success_floorplan_id = update_post_meta( $post_id, 'floorplan_id', $FloorplanId );
-            if ( $success_floorplan_id == true )
-                apartmentsync_log( "Floorplan $FloorplanId meta updated: floorplan_id is now $FloorplanId." );
-                
+                                
             $success_maximum_deposit = update_post_meta( $post_id, 'maximum_deposit', $MaximumDeposit );
             if ( $success_maximum_deposit == true )
                 apartmentsync_log( "Floorplan $FloorplanId meta updated: maximum_deposit is now $MaximumDeposit." );
