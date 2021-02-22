@@ -10,11 +10,11 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $properties = $yardi_integration_creds['yardi_property_code'];
     $sync_term = apartmentsync_get_sync_term_string();
-        
+    
     $properties = explode( ',', $properties );
     foreach( $properties as $property ) {
         
-        // if syncing is paused, then stop everything
+        // if syncing is paused or data dync is off, then stop everything
         if ( $sync_term == 'paused' ) {
             as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
             return;
@@ -85,7 +85,7 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
     // if there's exactly one post found, then update the meta for that
     } elseif ( $count == 1 ) {
         apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
-        apartmentsync_update_yardi_floorplan( $floorplan );
+        apartmentsync_update_yardi_floorplan( $floorplan, $query );
         
     // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
     } elseif( $count > 1 ) {
@@ -120,7 +120,7 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
     $PropertyId = $floorplan['PropertyId'];
     $PropertyShowsSpecials = $floorplan['PropertyShowsSpecials'];
     $UnitTypeMapping = $floorplan['UnitTypeMapping'];
-    $FloorplanSource = 'yardi';
+    $FloorplanSource = 'yardi'; // this one doesn't come from the API. This is our identifier that says "this caame from the API."
     
     // Create post object
     $floorplan_meta = array(
@@ -151,6 +151,48 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
     
 }
 
-function apartmentsync_update_yardi_floorplan( $floorplan ) {
+function apartmentsync_update_yardi_floorplan( $floorplan, $query ) {
+    
+    // all of the available variables
+    $AvailabilityURL = $floorplan['AvailabilityURL'];
+    $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
+    $Baths = intval( $floorplan['Baths'] );
+    $Beds = intval( $floorplan['Beds'] );
+    $FloorplanHasSpecials = $floorplan['FloorplanHasSpecials'];
+    $FloorplanId = $floorplan['FloorplanId'];
+    $FloorplanImageAltText = $floorplan['FloorplanImageAltText'];
+    $FloorplanImageName = $floorplan['FloorplanImageName'];
+    $FloorplanImageURL = $floorplan['FloorplanImageURL'];
+    $FloorplanName = wp_strip_all_tags( $floorplan['FloorplanName'] );
+    $MaximumDeposit = $floorplan['MaximumDeposit'];
+    $MaximumRent = $floorplan['MaximumRent'];
+    $MaximumSQFT = $floorplan['MaximumSQFT'];
+    $MinimumDeposit = $floorplan['MinimumDeposit'];
+    $MinimumRent = $floorplan['MinimumRent'];
+    $MinimumSQFT = $floorplan['MinimumSQFT'];
+    $PropertyId = $floorplan['PropertyId'];
+    $PropertyShowsSpecials = $floorplan['PropertyShowsSpecials'];
+    $UnitTypeMapping = $floorplan['UnitTypeMapping'];
+    $FloorplanSource = 'yardi'; // this one doesn't come from the API. This is our identifier that says "this caame from the API."
+    
+    // The Loop
+    while ( $query->have_posts() ) {
+        $query->the_post();
+        $post_id = get_the_ID();
+        
+        // // update post title if needed
+        // if ( $FloorplanName =! get_the_title() ) {
+        //     apartmentsync_log( "Floorplan $FloorplanId title updated: Floorplan name is now $FloorplanName." );
+        //     wp_update_post( $postarr = array( 'post_title' => $FloorplanName ) );
+        // }
+        
+        // update post meta (NOTE: update_post_meta returns false if it doesn't update, true if it does)
+        $success_availability_url = update_post_meta( $post_id, 'availability_url', $AvailabilityURL );
+        if ( $success_availability_url == true )
+            apartmentsync_log( "Floorplan $FloorplanId meta updated: availability_url is now $AvailabilityURL." );
+        
+        
+    }
+    
     
 }

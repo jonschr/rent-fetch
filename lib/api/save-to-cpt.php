@@ -1,35 +1,8 @@
 <?php
 
-
 ///////////////////////////////////////////
 // SCHEDULE TASKS FOR ADDING TO DATABASE //
 ///////////////////////////////////////////
-
-// add_action( 'apartmentsync_do_chron_activation', 'apartmentsync_chron_activation' );
-// function apartmentsync_chron_activation() {
-        
-//     // get the sync term from the settings
-//     $sync_term = apartmentsync_get_sync_term_in_seconds();
-
-//     // if the chron should be paused, then remove upcoming jobs
-//     if ( $sync_term == 'paused' ) {
-//         // clear the chron if we're paused
-//         wp_clear_scheduled_hook( 'apartmentsync_do_run_chron' );
-//         apartmentsync_log( "Removing chron job: apartmentsync_do_run_chron" );
-        
-//     // if we should have a chron running, then get that set if needed
-//     } else {
-        
-//         if ( !wp_next_scheduled( 'apartmentsync_do_run_chron' )) {
-//             // set the chron if we aren't paused
-//             wp_schedule_event( time(), $sync_term, 'apartmentsync_do_run_chron' );
-//             apartmentsync_log( "Scheduling apartmentsync_do_run_chron chron job: setting for $sync_term seconds" );
-//         } else {
-//             apartmentsync_log( "Chron job apartmentsync_do_run_chron is already scheduled $sync_term" );        
-//         }
-        
-//     }
-// }
 
 /**
  * Loop through the enabled integrations and start the process for each one
@@ -38,6 +11,12 @@ add_action( 'apartmentsync_do_chron_activation', 'apartmentsync_run_chron' );
 function apartmentsync_run_chron() {
     
     $enabled_integrations = get_field( 'enabled_integrations', 'option' );
+    $data_sync = get_field( 'data_sync', 'option' );
+    
+    if ( $data_sync == 'delete' ) {
+        do_action( 'apartment_do_delete' );
+        return; 
+    }
     
     // bail if there aren't any integrations enabled
     if ( !$enabled_integrations )
@@ -50,9 +29,3 @@ function apartmentsync_run_chron() {
         
     }
 }
-
-// // on plugin deactivation, remove the chron events
-// register_deactivation_hook( __FILE__, 'apartmentsync_deactivate_chron' );
-// function apartmentsync_deactivate_chron() {
-//     wp_clear_scheduled_hook( 'apartmentsync_do_run_chron' );
-// }

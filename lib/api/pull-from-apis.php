@@ -6,7 +6,7 @@ function apartmentsync_start_the_sync() {
     $data_sync = get_field( 'data_sync', 'option' );
     
     //* bail if they've said "don't sync" or if they've not set that option
-    if ( $data_sync == 'nosync' || $data_sync == null )
+    if ( $data_sync == 'nosync' || $data_sync == null || $data_sync == 'delete' )
         return;
         
     //* if it's a full sync, then do that action
