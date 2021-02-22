@@ -22,11 +22,11 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
         
         if ( apartmentsync_check_if_sync_term_has_changed() === true ) {
             as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
-            apartmentsync_log( "Sync term has changed. Rescheduling upcoming actions $sync_term to save Yardi floorplans for property $property as posts." );
+            // apartmentsync_log( "Sync term has changed. Rescheduling upcoming actions $sync_term to save Yardi floorplans for property $property as posts." );
         }
                 
         if ( as_next_scheduled_action( 'apartmentsync_do_fetch_yardi_floorplans' ) === false ) {
-            apartmentsync_log( "Upcoming actions not found. Scheduling tasks $sync_term to save Yardi floorplans for property $property as posts." );    
+            // apartmentsync_log( "Upcoming actions not found. Scheduling tasks $sync_term to save Yardi floorplans for property $property as posts." );    
             as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
         }
     }
@@ -42,11 +42,11 @@ function apartmentsync_fetch_yardi_floorplans( $property ) {
             
     // bail if we do not have a transient with this data in it
     if ( $floorplans == false ) {
-        apartmentsync_log( "No transient currently set for property $property (transient should be named yardi_floorplans_property_id_$property), so we're ending the process." );
+        // apartmentsync_log( "No transient currently set for property $property (transient should be named yardi_floorplans_property_id_$property), so we're ending the process." );
         return;
     }
         
-    apartmentsync_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
+    // apartmentsync_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
     
     foreach( $floorplans as $floorplan ) {
                    
@@ -74,23 +74,22 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
             )
         )
     );
-    $query = new WP_Query($args);
-    $count = $query->found_posts;
+    $matchingposts = get_posts( $args );
+    $count = count( $matchingposts );
     
     // insert the post if there isn't one already (this prevents duplicates)
-    if ( !$query->have_posts() ) {
-        apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
+    if ( !$matchingposts ) {
+        // apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
         apartmentsync_insert_yardi_floorplan( $floorplan );
         
     // if there's exactly one post found, then update the meta for that
     } elseif ( $count == 1 ) {
-        apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
-        apartmentsync_update_yardi_floorplan( $floorplan, $query );
+        // apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
+        apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts );
         
     // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
     } elseif( $count > 1 ) {
-        apartmentsync_log( "$count posts for floorplan $FloorplanId found. Removing duplicates and reinserting fresh." );
-        $matchingposts = $query->posts;
+        // apartmentsync_log( "$count posts for floorplan $FloorplanId found. Removing duplicates and reinserting fresh." );
         foreach ($matchingposts as $matchingpost) {
             wp_delete_post( $matchingpost->ID, true );
         }
@@ -98,6 +97,13 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
     }
 }
 
+/**
+ * Insert a new floorplan into the database
+ *
+ * @param   array  $floorplan  provided from the Yardi transient
+ *
+ * @return  none              
+ */
 function apartmentsync_insert_yardi_floorplan( $floorplan ) {
     
     // all of the available variables
@@ -151,7 +157,15 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
     
 }
 
-function apartmentsync_update_yardi_floorplan( $floorplan, $query ) {
+/**
+ * Update an individual Yardi floorplan in place
+ *
+ * @param   array  $floorplan      the floorplan data from the transient
+ * @param   object  $matchingposts  an object comprised of posts from get_posts expected to contain only one post
+ *
+ * @return  none  
+ */
+function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
     
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
@@ -175,24 +189,117 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $query ) {
     $UnitTypeMapping = $floorplan['UnitTypeMapping'];
     $FloorplanSource = 'yardi'; // this one doesn't come from the API. This is our identifier that says "this caame from the API."
     
-    // The Loop
-    while ( $query->have_posts() ) {
-        $query->the_post();
-        $post_id = get_the_ID();
-        
-        // // update post title if needed
-        // if ( $FloorplanName =! get_the_title() ) {
-        //     apartmentsync_log( "Floorplan $FloorplanId title updated: Floorplan name is now $FloorplanName." );
-        //     wp_update_post( $postarr = array( 'post_title' => $FloorplanName ) );
-        // }
-        
-        // update post meta (NOTE: update_post_meta returns false if it doesn't update, true if it does)
-        $success_availability_url = update_post_meta( $post_id, 'availability_url', $AvailabilityURL );
-        if ( $success_availability_url == true )
-            apartmentsync_log( "Floorplan $FloorplanId meta updated: availability_url is now $AvailabilityURL." );
-        
-        
-    }
+    // SAMPLE ARRAY
+    $floorplan_meta = array(
+        'post_title'    => wp_strip_all_tags( $FloorplanName ),
+        'post_status'   => 'publish',
+        'post_type'     => 'floorplans',
+        'meta_input'    => array(
+            'availability_url'          => $AvailabilityURL,
+            'available_units'           => $AvailableUnitsCount,
+            'baths'                     => $Baths,
+            'beds'                      => $Beds,
+            'has_specials'              => $FloorplanHasSpecials,
+            'floorplan_id'              => $FloorplanId,
+            'maximum_deposit'           => $MaximumDeposit,
+            'maximum_rent'              => $MaximumRent,
+            'maximum_sqft'              => $MaximumSQFT,
+            'minimum_deposit'           => $MinimumDeposit,
+            'minimum_rent'              => $MinimumRent,
+            'minimum_sqft'              => $MinimumSQFT,
+            'property_id'               => $PropertyId,
+            'property_show_specials'    => $PropertyShowsSpecials,
+            'unit_type_mapping'         => $UnitTypeMapping,
+            'floorplan_source'          => $FloorplanSource,
+        ),
+    );
     
+    // The Loop
+    if ( $matchingposts ) {
+        
+        foreach ( $matchingposts as $matchingpost ) {
+            
+            $post_id = $matchingpost->ID;
+            
+            if ( $FloorplanName != $matchingpost->post_title ) {
+                // update post title
+                $arr = array( 
+                    'post_title' => $FloorplanName,
+                    'ID' => $post_id,
+                );
+                wp_update_post( $arr );
+                apartmentsync_log( "Floorplan $FloorplanId title updated: post_title is now $FloorplanName." );
+            }
+            
+            // update post meta (NOTE: update_post_meta returns false if it doesn't update, true if it does)
+            $success_availability_url = update_post_meta( $post_id, 'availability_url', $AvailabilityURL );
+            if ( $success_availability_url == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: availability_url is now $AvailabilityURL." );
+            
+            $success_available_units = update_post_meta( $post_id, 'available_units', $AvailableUnitsCount );
+            if ( $success_available_units == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: available_units is now $AvailableUnitsCount." );
+            
+            $success_baths = update_post_meta( $post_id, 'baths', $Baths );
+            if ( $success_baths == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: baths is now $Baths." );
+            
+            $success_beds = update_post_meta( $post_id, 'beds', $Beds );
+            if ( $success_beds == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: beds is now $Beds." );
+                
+            $success_has_specials = update_post_meta( $post_id, 'has_specials', $FloorplanHasSpecials );
+            if ( $success_has_specials == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: has_specials is now $FloorplanHasSpecials." );
+                
+            $success_floorplan_id = update_post_meta( $post_id, 'floorplan_id', $FloorplanId );
+            if ( $success_floorplan_id == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: floorplan_id is now $FloorplanId." );
+                
+            $success_maximum_deposit = update_post_meta( $post_id, 'maximum_deposit', $MaximumDeposit );
+            if ( $success_maximum_deposit == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: maximum_deposit is now $MaximumDeposit." );
+                
+            $success_maximum_rent = update_post_meta( $post_id, 'maximum_rent', $MaximumRent );
+            if ( $success_maximum_rent == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: maximum_rent is now $MaximumRent." );
+                
+            $success_maximum_sqft = update_post_meta( $post_id, 'maximum_sqft', $MaximumSQFT );
+            if ( $success_maximum_sqft == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: maximum_sqft is now $MaximumSQFT." );
+                
+            $success_minimum_deposit = update_post_meta( $post_id, 'minimum_deposit', $MinimumDeposit );
+            if ( $success_minimum_deposit == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: minimum_deposit is now $MinimumDeposit." );
+                
+            $success_minimum_rent = update_post_meta( $post_id, 'minimum_rent', $MinimumRent );
+            if ( $success_minimum_rent == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: minimum_rent is now $MinimumRent." );
+                
+            $success_minimum_sqft = update_post_meta( $post_id, 'minimum_sqft', $MinimumSQFT );
+            if ( $success_minimum_sqft == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: minimum_sqft is now $MinimumSQFT." );
+                
+            $success_property_id = update_post_meta( $post_id, 'property_id', $PropertyId );
+            if ( $success_property_id == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: property_id is now $PropertyId." );
+                
+            $success_property_show_specials = update_post_meta( $post_id, 'property_show_specials', $PropertyShowsSpecials );
+            if ( $success_property_show_specials == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: property_show_specials is now $PropertyShowsSpecials." );
+                
+            $success_unit_type_mapping = update_post_meta( $post_id, 'unit_type_mapping', $UnitTypeMapping );
+            if ( $success_unit_type_mapping == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: unit_type_mapping is now $UnitTypeMapping." );
+                
+            $success_floorplan_source = update_post_meta( $post_id, 'floorplan_source', $FloorplanSource );
+            if ( $success_floorplan_source == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: floorplan_source is now $FloorplanSource." );
+            
+            
+        }   
+        
+        wp_reset_postdata();
+    }
     
 }
