@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.2
+	Version: 0.2.1
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ if ( !defined( 'ABSPATH' ) ) {
 define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.2' );
+define ( 'APARTMENTSYNC_VERSION', '0.2.1' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -64,6 +64,10 @@ require_once( 'lib/acf-fields/settings.php' );
 //* Common functions
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
 
+//* settings pages
+require_once( 'lib/options-pages/main-settings.php' );
+// require_once( 'lib/options-pages/sync-actions.php' ); // currently unused
+
 //* Documentation
 require_once( 'lib/options-pages/documentation-sidebar-link.php' );
 
@@ -98,11 +102,7 @@ function apartmentsync_start_sync() {
 
 add_action( 'after_setup_theme', 'apartmentsync_register_content_types' );
 function apartmentsync_register_content_types() {
-        
-    //* settings pages
-    require_once( 'lib/options-pages/main-settings.php' );
-    require_once( 'lib/options-pages/sync-actions.php' );
-    
+            
     //* figure out whether this is a single 
     $apartment_site_type = get_field( 'apartment_site_type', 'option' );
         

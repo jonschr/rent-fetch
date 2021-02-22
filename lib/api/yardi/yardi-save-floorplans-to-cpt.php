@@ -84,7 +84,7 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
         
     // if there's exactly one post found, then update the meta for that
     } elseif ( $count == 1 ) {
-        apartmentsync_verbose_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
+        apartmentsync_verbose_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Checking post meta." );
         apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts );
         
     // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
