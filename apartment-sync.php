@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.1
+	Version: 0.2
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,14 +28,7 @@ if ( !defined( 'ABSPATH' ) ) {
 define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.1' );
-
-// // Delete all floorplans (for testing)
-// apartmentsync_log( "Deleting all floorplans." );
-// $allposts = get_posts( array('post_type'=>'floorplans','numberposts'=>-1) );
-// foreach ($allposts as $eachpost) {
-//     wp_delete_post( $eachpost->ID, true );
-// }
+define ( 'APARTMENTSYNC_VERSION', '0.2' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -59,8 +52,6 @@ add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
 function apartmentsync_acf_settings_url( $url ) {
     return APARTMENTSYNC_ACF_URL;
 }
-
-
 
 ///////////////////
 // FILE INCLUDES //
@@ -151,12 +142,29 @@ function console_log( $data ){
     echo '</script>';
 }
 
+//* Add debug logging
 function apartmentsync_log($message) { 
     
     if( is_array( $message ) )
         $message = json_encode($message); 
         
     $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug.log", "a" );
+    fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
+    fclose($file); 
+    
+    $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug-verbose.log", "a" );
+    fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
+    fclose($file); 
+    
+}
+
+//* Add debug verbose logging
+function apartmentsync_verbose_log($message) { 
+    
+    if( is_array( $message ) )
+        $message = json_encode($message); 
+                
+    $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug-verbose.log", "a" );
     fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
     fclose($file); 
     

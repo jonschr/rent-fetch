@@ -22,11 +22,11 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
         
         if ( apartmentsync_check_if_sync_term_has_changed() === true ) {
             as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
-            // apartmentsync_log( "Sync term has changed. Rescheduling upcoming actions $sync_term to save Yardi floorplans for property $property as posts." );
+            apartmentsync_verbose_log( "Sync term has changed. Rescheduling upcoming actions $sync_term to save Yardi floorplans for property $property as posts." );
         }
                 
         if ( as_next_scheduled_action( 'apartmentsync_do_fetch_yardi_floorplans' ) === false ) {
-            // apartmentsync_log( "Upcoming actions not found. Scheduling tasks $sync_term to save Yardi floorplans for property $property as posts." );    
+            apartmentsync_verbose_log( "Upcoming actions not found. Scheduling tasks $sync_term to save Yardi floorplans for property $property as posts." );    
             as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
         }
     }
@@ -42,11 +42,11 @@ function apartmentsync_fetch_yardi_floorplans( $property ) {
             
     // bail if we do not have a transient with this data in it
     if ( $floorplans == false ) {
-        // apartmentsync_log( "No transient currently set for property $property (transient should be named yardi_floorplans_property_id_$property), so we're ending the process." );
+        apartmentsync_verbose_log( "No transient currently set for property $property (transient should be named yardi_floorplans_property_id_$property), so we're ending the process." );
         return;
     }
         
-    // apartmentsync_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
+    apartmentsync_verbose_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
     
     foreach( $floorplans as $floorplan ) {
                    
@@ -79,17 +79,17 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
     
     // insert the post if there isn't one already (this prevents duplicates)
     if ( !$matchingposts ) {
-        // apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
+        apartmentsync_verbose_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
         apartmentsync_insert_yardi_floorplan( $floorplan );
         
     // if there's exactly one post found, then update the meta for that
     } elseif ( $count == 1 ) {
-        // apartmentsync_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
+        apartmentsync_verbose_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Updating post meta." );
         apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts );
         
     // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
     } elseif( $count > 1 ) {
-        // apartmentsync_log( "$count posts for floorplan $FloorplanId found. Removing duplicates and reinserting fresh." );
+        apartmentsync_verbose_log( "$count posts for floorplan $FloorplanId found. Removing duplicates and reinserting fresh." );
         foreach ($matchingposts as $matchingpost) {
             wp_delete_post( $matchingpost->ID, true );
         }
