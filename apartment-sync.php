@@ -122,7 +122,6 @@ require_once( 'lib/api/entrata/entrata-check-credentials.php' );
 // GUTENBERG BLOCKS //
 //////////////////////
 
-require_once( 'block/floorplangrid/fields/floorplangrid-fields.php' );
 require_once( 'block/floorplangrid/floorplangrid.php' );
 
 //////////////////////

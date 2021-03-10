@@ -140,6 +140,9 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
             'beds'                      => $Beds,
             'has_specials'              => $FloorplanHasSpecials,
             'floorplan_id'              => $FloorplanId,
+            'floorplan_image_alt_text'  => $FloorplanImageAltText,
+            'floorplan_image_name'      => $FloorplanImageName,
+            'floorplan_image_url'       => $FloorplanImageURL,
             'maximum_deposit'           => $MaximumDeposit,
             'maximum_rent'              => $MaximumRent,
             'maximum_sqft'              => $MaximumSQFT,
@@ -189,7 +192,7 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
     $UnitTypeMapping = $floorplan['UnitTypeMapping'];
     $FloorplanSource = 'yardi'; // this one doesn't come from the API. This is our identifier that says "this caame from the API."
     
-    // SAMPLE ARRAY
+    // Create post object
     $floorplan_meta = array(
         'post_title'    => wp_strip_all_tags( $FloorplanName ),
         'post_status'   => 'publish',
@@ -201,6 +204,9 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
             'beds'                      => $Beds,
             'has_specials'              => $FloorplanHasSpecials,
             'floorplan_id'              => $FloorplanId,
+            'floorplan_image_alt_text'  => $FloorplanImageAltText,
+            'floorplan_image_name'      => $FloorplanImageName,
+            'floorplan_image_url'       => $FloorplanImageURL,
             'maximum_deposit'           => $MaximumDeposit,
             'maximum_rent'              => $MaximumRent,
             'maximum_sqft'              => $MaximumSQFT,
@@ -252,6 +258,18 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
             if ( $success_has_specials == true )
                 apartmentsync_log( "Floorplan $FloorplanId meta updated: has_specials is now $FloorplanHasSpecials." );
                                 
+            $success_floorplan_image_alt_text = update_post_meta( $post_id, 'floorplan_image_alt_text', $FloorplanImageAltText );
+            if ( $success_floorplan_image_alt_text == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: floorplan_image_alt_text is now $FloorplanImageAltText." );
+                
+            $success_floorplan_image_name = update_post_meta( $post_id, 'floorplan_image_name', $FloorplanImageName );
+            if ( $success_floorplan_image_name == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: floorplan_image_name is now $FloorplanImageName." );
+                
+            $success_floorplan_image_url = update_post_meta( $post_id, 'floorplan_image_url', $FloorplanImageURL );
+            if ( $success_floorplan_image_url == true )
+                apartmentsync_log( "Floorplan $FloorplanId meta updated: floorplan_image_url is now $FloorplanImageURL." );
+                
             $success_maximum_deposit = update_post_meta( $post_id, 'maximum_deposit', $MaximumDeposit );
             if ( $success_maximum_deposit == true )
                 apartmentsync_log( "Floorplan $FloorplanId meta updated: maximum_deposit is now $MaximumDeposit." );
