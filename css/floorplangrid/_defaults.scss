@@ -1,0 +1,17 @@
+.floorplan {
+    background-color: #F5F5F5;
+    box-shadow: 0 0 10px 0 rgba(black, 0.07);
+
+    .floorplangrid__art-wrap {
+        padding: 15px;
+        background-color: white;
+    }
+
+    .floorplangrid__content {
+        padding: 15px;
+
+        > :last-child {
+            margin-bottom: 0;
+        }
+    }
+}

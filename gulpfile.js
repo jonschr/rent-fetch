@@ -6,7 +6,7 @@ var sassGlob = require('gulp-sass-glob');
 
 //* Tasks
 gulp.task('style', function () {
-    return gulp.src('css/section.scss')
+    return gulp.src('css/floorplangrid.scss')
         .pipe(sassGlob())
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))

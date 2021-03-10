@@ -1,3 +1,6 @@
+## 0.5.0
+* Adding gulp, initial styles for the floorplans layout
+
 ## 0.4.1
 * Changing the stable branch to 'main' for PUC
 

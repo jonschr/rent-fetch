@@ -96,7 +96,7 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
 }
 
 function apartmentsync_floorplangrid_block_enqueue() {
-    wp_enqueue_style( 'floorplangrid-style', plugin_dir_url( __FILE__ ) . 'css/floorplangrid.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_enqueue_style( 'floorplangrid-style', APARTMENTSYNC_PATH . 'css/floorplangrid.css', array(), APARTMENTSYNC_VERSION, 'screen' );
 }
 
 add_action( 'apartment_floorplangrid_do_inner', 'apartment_floorplangrid_inner_default', 10, 1 );
@@ -136,7 +136,7 @@ function apartment_floorplangrid_inner_default( $floorplanID ) {
         echo '<div class="floorplangrid__art-wrap">';
         
             if ( $floorplan_image_url ) 
-                printf( '<a href="#" class="floorplangrid__image-link"><img class="floorplangrid__image" src="%s" title="%s" alt="%s" /></a>', $floorplan_image_url, $floorplan_image_name, $floorplan_image_alt_text );
+                printf( '<div class="floorplangrid__image-wrap"><a href="#" class="floorplangrid__image-link"><img class="floorplangrid__image" src="%s" title="%s" alt="%s" /></a></div>', $floorplan_image_url, $floorplan_image_name, $floorplan_image_alt_text );
                 
         echo '</div>';
             
