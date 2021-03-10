@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.3.0
+	Version: 0.4.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ if ( !defined( 'ABSPATH' ) ) {
 define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.3.0' );
+define ( 'APARTMENTSYNC_VERSION', '0.4.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -53,13 +53,39 @@ function apartmentsync_acf_settings_url( $url ) {
     return APARTMENTSYNC_ACF_URL;
 }
 
+//* UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
+add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
+function apartmentsync_acf_json_save_point( $path ) {
+    
+    // update path
+    $path = APARTMENTSYNC_DIR . '/acf-json';
+    
+    // return
+    return $path;
+    
+}
+
+add_filter( 'acf/settings/load_json', 'apartmentsync_acf_json_load_point' );
+function apartmentsync_acf_json_load_point( $paths ) {
+    
+    // remove original path (optional)
+    unset($paths[0]);
+    
+    // append path
+    $paths[] = APARTMENTSYNC_DIR . '/acf-json';
+    
+    // return
+    return $paths;
+    
+}
+
 ///////////////////
 // FILE INCLUDES //
 ///////////////////
 
 //* ACF fields
-require_once( 'lib/acf-fields/floorplan-details.php' );
-require_once( 'lib/acf-fields/settings.php' );
+// require_once( 'lib/acf-fields/floorplan-details.php' );
+// require_once( 'lib/acf-fields/settings.php' );
 
 //* Common functions
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
