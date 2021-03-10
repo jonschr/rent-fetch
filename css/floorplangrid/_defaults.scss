@@ -50,4 +50,40 @@
     .floorplangrid__rentrange {
         font-weight: bold;
     }
+
+    .buttons {
+        padding-top: 8px;
+        width: calc(100% + 8px);
+        margin-left: -4px;
+        margin-right: -4px;
+
+        @include mobile {
+            margin-left: 0;
+            margin-right: 0;
+            width: 100%;
+        }
+    }
+
+    .floorplangrid__button {
+        padding: 8px 15px;
+        // font-size: 14px;
+        background-color: #111;
+        color: white;
+        text-decoration: none;
+        transition: .3s all ease;
+        border-radius: 3px;
+        margin: 4px;
+
+        @include mobile {
+            display: block;
+            width: 100%;
+            text-align: center;
+            margin: 4px 0;
+        }
+
+        &:hover {
+            background-color: lighten(#111, 5%);
+            text-decoration: none;
+        }
+    }
 }

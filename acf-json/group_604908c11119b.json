@@ -151,21 +151,34 @@
             "placeholder": ""
         },
         {
-            "key": "field_604922f327da6",
-            "label": "Customization",
-            "name": "",
-            "type": "accordion",
+            "key": "field_604943fdfe1e1",
+            "label": "Availability button link target",
+            "name": "availability_button_target",
+            "type": "button_group",
             "instructions": "",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6049092622fa3",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
                 "id": ""
             },
-            "open": 0,
-            "multi_expand": 0,
-            "endpoint": 0
+            "choices": {
+                "_same": "Same tab",
+                "_blank": "New tab"
+            },
+            "allow_null": 0,
+            "default_value": "_blank",
+            "layout": "horizontal",
+            "return_format": "value"
         }
     ],
     "location": [
@@ -185,5 +198,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1615406229
+    "modified": 1615414654
 }
