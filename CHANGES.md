@@ -1,3 +1,6 @@
+## 0.4.1
+* Changing the stable branch to 'main' for PUC
+
 ## 0.4.0
 * Adding syncing for the acf fields
 
