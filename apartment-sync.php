@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.2.1
+	Version: 0.3.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ if ( !defined( 'ABSPATH' ) ) {
 define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.2.1' );
+define ( 'APARTMENTSYNC_VERSION', '0.3.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -80,6 +80,13 @@ require_once( 'lib/api/yardi/yardi-pull-from-api.php' );
 require_once( 'lib/api/yardi/yardi-save-floorplans-to-cpt.php' );
 require_once( 'lib/api/entrata/entrata-sync.php' );
 require_once( 'lib/api/entrata/entrata-check-credentials.php' );
+
+//////////////////////
+// GUTENBERG BLOCKS //
+//////////////////////
+
+require_once( 'block/floorplangrid/fields/floorplangrid-fields.php' );
+require_once( 'block/floorplangrid/floorplangrid.php' );
 
 //////////////////////
 // START THE ENGINE //
@@ -171,4 +178,12 @@ function apartmentsync_verbose_log($message) {
     fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
     fclose($file); 
     
+}
+
+//* Admin columns pro
+add_filter( 'acp/storage/file/directory/writable', '__return_false' ); // change to __return_true to make changes
+add_filter( 'acp/storage/file/directory', 'apartmentsync_acp_storage_file_directory' );
+function apartmentsync_acp_storage_file_directory( $path ) {
+	// Use a writable path, directory will be created for you
+    return APARTMENTSYNC_DIR . '/acp-settings';
 }
