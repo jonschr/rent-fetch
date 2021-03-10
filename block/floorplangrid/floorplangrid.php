@@ -38,6 +38,7 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
     
     //* Get settings
     $floorplan_filter = get_field( 'floorplan_filter' );
+    $columns = get_field( 'columns' );
 
     // Create id attribute allowing for custom "anchor" value.
     if( !empty($block['anchor']) ) 
@@ -62,12 +63,8 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
         // The Query
         $floorplans = get_posts( $args );
         
-        echo '<div class="floorplangrid-wrap">';
+        printf( '<div class="floorplangrid-wrap columns-%s">', $columns );
             foreach ( $floorplans as $floorplan ) {
-                
-                // echo '<pre>';
-                //     print_r( $floorplan );
-                // echo '</pre>';
                                 
                 do_action( 'apartment_floorplangrid_do_inner', $floorplan->ID );
                 
@@ -125,9 +122,56 @@ function apartment_floorplangrid_inner_default( $floorplanID ) {
     $property_show_specials = get_field( 'property_show_specials', $post_id );
     $unit_type_mapping = get_field( 'unit_type_mapping', $post_id );
     $floorplan_source = get_post_meta( $post_id, 'floorplan_source', true );
+        
+    //* Figure things out
+    
+    // beds
+    if ( $beds == 0 ) $beds = 'Studio';
+    if ( $beds == 1 ) $beds = '1 Bedroom';
+    if ( $beds == 2 ) $beds = '2 Bedroom';
+    if ( $beds == 3 ) $beds = '3 Bedroom';
+    if ( $beds == 4 ) $beds = '4 Bedroom';
+    if ( $beds == 5 ) $beds = '5 Bedroom';
+    
+    // baths
+    if ( $baths == 0 ) $baths = '0 Bath';
+    if ( $baths == 1 ) $baths = '1 Bath';
+    if ( $baths == 2 ) $baths = '2 Bath';
+    if ( $baths == 3 ) $baths = '3 Bath';
+    if ( $baths == 4 ) $baths = '4 Bath';
+    if ( $baths == 5 ) $baths = '5 Bath';
+    
+    // rent
+    $rent_range = null;
+    if ( $minimum_rent && $maximum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span> - <span class="amount">%s</span> ', $minimum_rent, $maximum_rent );
+    if ( $minimum_rent && !$maximum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $minimum_rent );
+    if ( $maximum_rent && !$minimum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $maximum_rent );
+    
+    // sqrft
+    $sqrft_range = null;
+    $sqrft_label = 'sq. ft.';
+    if ( $minimum_sqft && $maximum_sqft ) {
+        
+        if ( $minimum_sqrft != $maximum_sqrft )
+            $sqrft_range = sprintf( '%s-%s %s', $minimum_sqft, $maximum_sqft, $sqrft_label );
+            
+        if ( $minimum_sqrft == $maximum_sqrft )
+            $sqrft_range = sprintf( '%s %s', $minimum_sqft, $sqrft_label );
+        
+    }
+    
+    if ( $minimum_sqft && !$maximum_sqft ) $sqrft_range = sprintf( '%s %s', $minimum_sqft, $sqrft_label );
+    if ( !$minimum_sqft && $maximum_sqft ) $sqrft_range = sprintf( '%s %s', $maximum_sqft, $sqrft_label );
     
     //* Set up the classes
     $floorplanclass = array( 'floorplan' );
+    
+    if ( $available_units > 0 ) {
+        $floorplanclass[] = 'units-available';
+    } else {
+        $floorplanclass[] = 'no-units-available';  
+    } 
+        
     $floorplanclass = implode( $floorplanclass, ' ' );
 
     //* Do the markup
@@ -144,12 +188,27 @@ function apartment_floorplangrid_inner_default( $floorplanID ) {
         
             if ( $title )
                 printf( '<h3 class="floorplangrid__title">%s</h3>', $title );
+                
+            echo '<p class="floorplangrid__info">';
+            
+                if ( $beds )
+                    printf( '<span class="floorplangrid__beds">%s</span>', $beds );
+                    
+                if ( $baths )
+                    printf( '<span class="floorplangrid__baths">%s</span>', $baths );
+                    
+                if ( $sqrft_range )
+                    printf( '<span class="floorplangrid__sqrft_range">%s</span>', $sqrft_range );
+                                    
+            echo '</p>';
+            
+            if ( $rent_range )
+                printf( '<p class="floorplangrid__rent_range">%s</p>', $rent_range );
+            
+            edit_post_link( 'Edit', '', '', $post_id );
                             
         echo '</div>';  
         
     echo '</div>';
-    
-    
-    
     
 }

@@ -4,6 +4,7 @@
     width: calc(100% + 30px);
     margin-left: -15px;
     margin-right: -15px;
+    margin-bottom: -30px;
 
     .floorplan {
         width: calc(100% / 3 - 30px);
@@ -14,6 +15,48 @@
         }
 
         @include mobile {
+            width: calc(100% / 1 - 30px);
+        }
+    }
+
+    &.columns-5 .floorplan {
+        @include desktop {
+            width: calc(100% / 5 - 30px);
+        }
+
+        @include tablet {
+            width: calc(100% / 3 - 30px);
+        }
+    }
+
+    &.columns-4 .floorplan {
+        @include desktop {
+            width: calc(100% / 4 - 30px);
+        }
+    }
+
+    &.columns-3 .floorplan {
+        @include desktop {
+            width: calc(100% / 3 - 30px);
+        }
+    }
+
+    &.columns-2 .floorplan {
+        @include desktop {
+            width: calc(100% / 2 - 30px);
+        }
+
+        @include tablet {
+            width: calc(100% / 1 - 30px);
+        }
+    }
+
+    &.columns-1 .floorplan {
+        @include desktop {
+            width: calc(100% / 1 - 30px);
+        }
+
+        @include tablet {
             width: calc(100% / 1 - 30px);
         }
     }
