@@ -65,7 +65,183 @@
         },
         {
             "key": "field_604922e427da5",
-            "label": "Buttons",
+            "label": "Contact button (available)",
+            "name": "",
+            "type": "accordion",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "open": 0,
+            "multi_expand": 0,
+            "endpoint": 0
+        },
+        {
+            "key": "field_604a5a42bd9b4",
+            "label": "Enable contact button (shown when a floorplan is available)",
+            "name": "contactavailable_button_enabled",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_604a5bef1a7bf",
+            "label": "Customize button text",
+            "name": "contactavailable_customize_button_text",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_604a5a42bd9b4",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_604a5a6cbd9b5",
+            "label": "Button type",
+            "name": "contactavailable_button_type",
+            "type": "button_group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_604a5a42bd9b4",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "link": "Simple link",
+                "gform": "Gravity form lightbox"
+            },
+            "allow_null": 0,
+            "default_value": "",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
+            "key": "field_604a5ac9bd9b6",
+            "label": "Link",
+            "name": "contactavailable_link",
+            "type": "url",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_604a5a6cbd9b5",
+                        "operator": "==",
+                        "value": "link"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_604a5aeabd9b7",
+            "label": "Link target",
+            "name": "contactavailable_link_target",
+            "type": "button_group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_604a5a6cbd9b5",
+                        "operator": "==",
+                        "value": "link"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "_self": "Same tab",
+                "_blank": "New tab"
+            },
+            "allow_null": 0,
+            "default_value": "_self",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
+            "key": "field_604a5b90b1674",
+            "label": "Gravity form ID number",
+            "name": "contactavailable_gravity_form_id",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_604a5a6cbd9b5",
+                        "operator": "==",
+                        "value": "gform"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_604a62f75bc7b",
+            "label": "Availability button",
             "name": "",
             "type": "accordion",
             "instructions": "",
@@ -82,7 +258,7 @@
         },
         {
             "key": "field_6049092622fa3",
-            "label": "Enable availability URL button",
+            "label": "Enable availability button",
             "name": "availability_button_enabled",
             "type": "true_false",
             "instructions": "This is a link that generally goes to somewhere like <a href=\"https:\/\/availability-buffalocanyon.securecafe.com\/onlineleasing\/buffalo-canyon\/oleapplication.aspx?stepname=Apartments&myOlePropertyId=234439&floorPlans=3559225\" target=\"_blank\">this<\/a>. It's in the \"Availability URL\" field in your floorplans.",
@@ -94,7 +270,7 @@
                 "id": ""
             },
             "message": "",
-            "default_value": 1,
+            "default_value": 0,
             "ui": 1,
             "ui_on_text": "",
             "ui_off_text": ""
@@ -172,7 +348,7 @@
                 "id": ""
             },
             "choices": {
-                "_same": "Same tab",
+                "_self": "Same tab",
                 "_blank": "New tab"
             },
             "allow_null": 0,
@@ -198,5 +374,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1615414654
+    "modified": 1615487806
 }

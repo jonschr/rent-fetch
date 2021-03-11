@@ -11,7 +11,7 @@ function apartment_sync_register_floorplans_cpt() {
 	$post_type = 'floorplans';
 	$slug = 'floorplans';
 	$icon = 'table-col-before'; //* https://developer.wordpress.org/resource/dashicons/
-	$supports = array( 'title' );
+	$supports = array( 'title', 'thumbnail' );
 
 	$labels = array(
 		'name' => $name_plural,
@@ -51,3 +51,4 @@ function apartment_sync_register_floorplans_cpt() {
 }
 
 add_action( 'init', 'apartment_sync_register_floorplans_cpt' );
+

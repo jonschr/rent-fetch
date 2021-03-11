@@ -5,14 +5,14 @@ return array (
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1615405185,
+  'updated' => 1615488647,
   'columns' => 
   array (
     'title' => 
     array (
       'type' => 'title',
       'label' => 'Title',
-      'width' => '300',
+      'width' => '350',
       'width_unit' => 'px',
       'export' => 'off',
       'sort' => 'on',

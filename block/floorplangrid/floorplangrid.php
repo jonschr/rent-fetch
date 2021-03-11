@@ -37,8 +37,8 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
     $id = 'floorplangrid-' . $block['id'];
     
     //* Get settings
-    $floorplan_filter = get_field( 'floorplan_filter' );
     $columns = get_field( 'columns' );
+    $floorplan_filter = get_field( 'floorplan_filter' );
     
     // Create id attribute allowing for custom "anchor" value.
     if( !empty($block['anchor']) ) 
@@ -50,7 +50,26 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
 
     if( !empty($block['align']) )
         $className .= ' align' . $block['align'];
-                    
+        
+    //* Non-floorplan-specific vars
+    $contactavailable_button_enabled = get_field( 'contactavailable_button_enabled' );
+    $contactavailable_customize_button_text = get_field( 'contactavailable_customize_button_text' ) ?: 'Contact us';
+    $contactavailable_button_type = get_field( 'contactavailable_button_type' );
+    $contactavailable_link = get_field( 'contactavailable_link' );
+    $contactavailable_link_target = get_field( 'contactavailable_link_target' );
+    $contactavailable_gravity_form_id = get_field( 'contactavailable_gravity_form_id' );
+    
+    // if ( $contactavailable_button_enabled == 1 && $contactavailable_button_type == 'gform') {
+        
+    //     printf( '<div class="apartmentsync-fancybox-container" id="contact-available-button-gform-%s">', $contactavailable_gravity_form_id );
+        
+    //         $gformshortcode = sprintf( 'gravityform id=%s title=false description=false ajax=true tabindex=49', $contactavailable_gravity_form_id );
+    //         echo do_shortcode( $gformshortcode );
+            
+    //     echo '</div>';
+      
+    // }
+                            
     //* Render
     printf( '<div id="%s" class="%s">', $id, $className );
     
@@ -71,8 +90,8 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                 $title = get_the_title( $post_id );
                 $availability_url = get_field( 'availability_url', $post_id );
                 $available_units = get_field( 'available_units', $post_id );
-                $baths = get_field( 'baths', $post_id );
-                $beds = get_field( 'beds', $post_id );
+                $numberofbaths = get_field( 'baths', $post_id );
+                $numberofbeds = get_field( 'beds', $post_id );
                 $has_specials = get_field( 'has_specials', $post_id );
                 $floorplan_id = get_field( 'floorplan_id', $post_id );
                 $floorplan_image_url = get_field( 'floorplan_image_url', $post_id );
@@ -92,20 +111,24 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                 //* Figure things out
                 
                 // beds
-                if ( $beds === '0' ) $beds = 'Studio';
-                if ( $beds === '1' ) $beds = '1 Bedroom';
-                if ( $beds === '2' ) $beds = '2 Bedroom';
-                if ( $beds === '3' ) $beds = '3 Bedroom';
-                if ( $beds === '4' ) $beds = '4 Bedroom';
-                if ( $beds === '5' ) $beds = '5 Bedroom';
+                if ( $numberofbeds === '0' ) $beds = 'Studio';
+                if ( $numberofbeds === '1' ) $beds = '1 Bedroom';
+                if ( $numberofbeds === '2' ) $beds = '2 Bedroom';
+                if ( $numberofbeds === '3' ) $beds = '3 Bedroom';
+                if ( $numberofbeds === '4' ) $beds = '4 Bedroom';
+                if ( $numberofbeds === '5' ) $beds = '5 Bedroom';
                 
                 // baths
-                if ( $baths === '0' ) $baths = '0 Bath';
-                if ( $baths === '1' ) $baths = '1 Bath';
-                if ( $baths === '2' ) $baths = '2 Bath';
-                if ( $baths === '3' ) $baths = '3 Bath';
-                if ( $baths === '4' ) $baths = '4 Bath';
-                if ( $baths === '5' ) $baths = '5 Bath';
+                if ( $numberofbaths === '0' ) $baths = '0 Bath';
+                if ( $numberofbaths === '1' ) $baths = '1 Bath';
+                if ( $numberofbaths === '2' ) $baths = '2 Bath';
+                if ( $numberofbaths === '3' ) $baths = '3 Bath';
+                if ( $numberofbaths === '4' ) $baths = '4 Bath';
+                if ( $numberofbaths === '5' ) $baths = '5 Bath';
+                
+                // thumb
+                if ( !$floorplan_image_url )
+                    $floorplan_image_url = get_the_post_thumbnail_url( $post_id, 'large' );
                 
                 // rent
                 $rent_range = null;
@@ -153,12 +176,12 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                 // echo '</pre>';
 
                 //* Do the markup
-                printf( '<div class="%s">', $floorplanclass );
+                printf( '<div class="%s beds-%s baths-%s">', $floorplanclass, $numberofbeds, $numberofbaths );
                         
                     echo '<div class="floorplangrid__art-wrap">';
                     
                         if ( $floorplan_image_url ) 
-                            printf( '<div class="floorplangrid__image-wrap"><a href="#" class="floorplangrid__image-link"><img class="floorplangrid__image" src="%s" title="%s" alt="%s" /></a></div>', $floorplan_image_url, $floorplan_image_name, $floorplan_image_alt_text );
+                            printf( '<div class="floorplangrid__image-wrap"><a href="%s" data-fancybox="%s" class="floorplangrid__image-link"><img class="floorplangrid__image" src="%s" title="%s" alt="%s" /></a></div>', $floorplan_image_url, $post_id, $floorplan_image_url, $floorplan_image_name, $floorplan_image_alt_text );
                             
                     echo '</div>';
                         
@@ -185,6 +208,20 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                         
                         echo '<div class="buttons">';
                         
+                            //* CONTACT BUTTON (FLOORPLAN AVAILABLE)
+                            // we get the vars above, since these aren't layouts-specific
+                            
+                            if ( $contactavailable_button_enabled == 1 ) {
+                                
+                                if ( $contactavailable_button_type == 'link' )
+                                    printf( '<a href="%s" class="floorplangrid__button floorplangrid__contact-available-button" target="%s">%s</a>', $contactavailable_link, $contactavailable_link_target, $contactavailable_customize_button_text );
+                                
+                                if ( $contactavailable_button_type == 'gform' )
+                                    printf( '<a href="#" data-fancybox="contact-available-button-gform-%s" data-src="#contact-available-button-gform-%s" class="floorplangrid__button floorplangrid__contact-available-button">%s</a>', $contactavailable_gravity_form_id, $contactavailable_gravity_form_id, $contactavailable_customize_button_text );
+                            }
+                            
+                            //* AVAILABILITY BUTTON
+                         
                             // if there's an override, use that (or default to the setting)
                             $availability_url = get_field( 'availability_button_url_override' ) ?: $availability_url;
                         
@@ -195,7 +232,7 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                                 $availability_button_text = get_field( 'availability_button_text' ) ?: 'Vew availability';
                                 $availability_button_target = get_field( 'availability_button_target' );
                                                     
-                                printf( '<a href="%s" class="floorplangrid__button" target="%s">%s</a>', $availability_url, $availability_button_target, $availability_button_text );
+                                printf( '<a href="%s" class="floorplangrid__button floorplangrid__availability-button" target="%s">%s</a>', $availability_url, $availability_button_target, $availability_button_text );
                             }
                             
                         echo '</div>'; // .buttons
@@ -232,4 +269,9 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
 
 function apartmentsync_floorplangrid_block_enqueue() {
     wp_enqueue_style( 'floorplangrid-style', APARTMENTSYNC_PATH . 'css/floorplangrid.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    
+    // Fancybox
+    wp_enqueue_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_enqueue_script( 'apartmentsync-fancybox-script', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
 }

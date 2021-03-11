@@ -5,14 +5,33 @@ return array (
   'title' => 'Manual entry',
   'type' => 'floorplans',
   'id' => '60490ab529970',
-  'updated' => 1615399650,
+  'updated' => 1615488627,
   'columns' => 
   array (
+    '604a6657e7ae14' => 
+    array (
+      'type' => 'column-featured_image',
+      'label' => 'Image',
+      'width' => '130',
+      'width_unit' => 'px',
+      'featured_image_display' => 'image',
+      'image_size' => 'cpac-custom',
+      'image_size_w' => '120',
+      'image_size_h' => '60',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '604a6657e7ae14',
+    ),
     'title' => 
     array (
       'type' => 'title',
       'label' => 'Title',
-      'width' => '300',
+      'width' => '350',
       'width_unit' => 'px',
       'export' => 'off',
       'sort' => 'on',
