@@ -36,6 +36,8 @@ function apartmentsync_floorplangrid_block_enqueue() {
     wp_enqueue_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_enqueue_script( 'apartmentsync-fancybox-script', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
+    wp_register_script( 'apartmentsync-filters', APARTMENTSYNC_PATH . 'block/floorplangrid/js/filters.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
 }
 
 function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_preview = false, $post_id = 0 ) {
@@ -81,6 +83,11 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
         // The Query
         $floorplans = apartmentsync_floorplangrid_block_get_posts( $settings );
         
+        if ( !$floorplans )
+            echo 'No floorplans found using available criteria.';
+        
+        apartmentsync_floorplangrid_block_show_filter( $settings );
+        
         printf( '<div class="floorplangrid-wrap columns-%s">', $settings['columns'] );
             foreach ( $floorplans as $floorplan ) {
                                                     
@@ -101,6 +108,45 @@ function apartmentsync_floorplangrid_output_gform( $settings ) {
             echo do_shortcode( '[gravityform id=' . $settings['contactavailable_gravity_form_id'] . ' title=true description=true ajax=true tabindex=49]' );
         echo '</div>';        
     }
+}
+
+//* Add the filters
+function apartmentsync_floorplangrid_block_show_filter( $settings ) {
+    
+    // bail if we aren't filtering
+    if ( !$settings['floorplan_filter' ] )
+        return;
+        
+    wp_enqueue_script( 'apartmentsync-filters' );
+        
+    if ( $settings['floorplan_filter'] == 'bedrooms' )
+        apartmentsync_floorplangrid_block_show_filter_bedrooms( $settings );
+    
+}
+
+// if we're filtering by bedroom...
+function apartmentsync_floorplangrid_block_show_filter_bedrooms( $settings ) {
+    
+    $posts = apartmentsync_floorplangrid_block_get_posts( $settings );
+    $meta_values = array();
+    foreach( $posts as $post ) {
+        $meta_values[] = get_post_meta( $post->ID, 'beds', true );
+    }
+    
+    $bedrooms = array_count_values( $meta_values );
+    
+    echo '<pre>';
+    ksort( $bedrooms );
+    $bedroomnumbers = array_keys( $bedrooms );
+    echo '</pre>';
+    
+    echo '<ul class="filters">';
+        printf( '<li><a data-filter="%s" class="active filter-select" href="#">%s</a></li>', 'floorplan', 'All' );
+        
+        foreach ( $bedroomnumbers as $bedroomnumber ) {
+            printf( '<li><a data-filter="beds-%s" class="filter-select" href="#">%s bedroom</a></li>', $bedroomnumber, $bedroomnumber );
+        }
+    echo '</ul>';
 }
 
 //* Output each floorplan

@@ -1,3 +1,6 @@
+## 0.10.0
+* Adding bedroom filters
+
 ## 0.9.1 
 * Separating the block into functions (everything has access to a new settings object now), so that we can actually organize a bit better. Needed in order to do the filters the right way, as that will have to be its own function.
 
