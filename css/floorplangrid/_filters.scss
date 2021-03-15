@@ -28,5 +28,9 @@
             width: 100%;
             display: block;
         }
+
+        &.active {
+            background-color: rgba(#111, 0.7);
+        }
     }
 }

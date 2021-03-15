@@ -61,6 +61,12 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
         'contactavailable_link' => get_field( 'contactavailable_link' ),
         'contactavailable_link_target' => get_field( 'contactavailable_link_target' ),
         'contactavailable_gravity_form_id' => get_field( 'contactavailable_gravity_form_id' ),
+        '0_bedrooms_label' => get_field( '0_bedrooms_label' ),
+        '1_bedrooms_label' => get_field( '1_bedrooms_label' ),
+        '2_bedrooms_label' => get_field( '2_bedrooms_label' ),
+        '3_bedrooms_label' => get_field( '3_bedrooms_label' ),
+        '4_bedrooms_label' => get_field( '4_bedrooms_label' ),
+        '5_bedrooms_label' => get_field( '5_bedrooms_label' ),
     );
 
     // Create id attribute allowing for custom "anchor" value.
@@ -135,16 +141,16 @@ function apartmentsync_floorplangrid_block_show_filter_bedrooms( $settings ) {
     
     $bedrooms = array_count_values( $meta_values );
     
-    echo '<pre>';
     ksort( $bedrooms );
     $bedroomnumbers = array_keys( $bedrooms );
-    echo '</pre>';
     
     echo '<ul class="filters">';
         printf( '<li><a data-filter="%s" class="active filter-select" href="#">%s</a></li>', 'floorplan', 'All' );
         
         foreach ( $bedroomnumbers as $bedroomnumber ) {
-            printf( '<li><a data-filter="beds-%s" class="filter-select" href="#">%s bedroom</a></li>', $bedroomnumber, $bedroomnumber );
+            
+            $label = apartmentsync_floorplangrid_number_of_bedrooms_label( $bedroomnumber, $settings );
+            printf( '<li><a data-filter="beds-%s" class="filter-select" href="#">%s</a></li>', $bedroomnumber, $label );
         }
     echo '</ul>';
 }
@@ -175,14 +181,7 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     $floorplan_source = get_post_meta( $post_id, 'floorplan_source', true );
         
     //* Figure things out
-    
-    // beds
-    if ( $numberofbeds === '0' ) $beds = 'Studio';
-    if ( $numberofbeds === '1' ) $beds = '1 Bedroom';
-    if ( $numberofbeds === '2' ) $beds = '2 Bedroom';
-    if ( $numberofbeds === '3' ) $beds = '3 Bedroom';
-    if ( $numberofbeds === '4' ) $beds = '4 Bedroom';
-    if ( $numberofbeds === '5' ) $beds = '5 Bedroom';
+    $beds = apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings );
     
     // baths
     if ( $numberofbaths === '0' ) $baths = '0 Bath';
@@ -312,9 +311,7 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
 
 //* We do the query to get the posts then return the results of get_posts
 function apartmentsync_floorplangrid_block_get_posts( $settings ) {
-    
-    // filters
-    
+        
     // limits
     $limit_number_of_bedrooms = $settings['limit_number_of_bedrooms'];
     $limit_floorplan_type = $settings['limit_floorplan_type'];
@@ -387,3 +384,15 @@ function apartmentsync_floorplangrid_block_get_posts( $settings ) {
     return $floorplans;
     
 }
+
+
+function apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings ) {
+     
+    $string = sprintf( '%s_bedrooms_label', $numberofbeds );
+    $bedslabel = $settings[$string];
+    
+    if ( !$bedslabel )
+        $bedslabel = sprintf( '%s bedroom', $numberofbeds );
+        
+    return $bedslabel;
+} 

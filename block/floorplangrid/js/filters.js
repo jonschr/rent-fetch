@@ -2,7 +2,7 @@ jQuery(document).ready(function ($) {
 
     //* Get the floorplans parameter in case we need it
     var urlParams = new URLSearchParams(window.location.search);
-    var currentOnLoad = urlParams.get('floorplans');
+    var currentOnLoad = urlParams.get('filter');
     console.log(currentOnLoad);
 
     if (currentOnLoad) {
@@ -24,8 +24,8 @@ jQuery(document).ready(function ($) {
 
         if ('URLSearchParams' in window) {
             var searchParams = new URLSearchParams(window.location.search);
-            searchParams.set("floorplans", current);
-            window.history.pushState("", "", "?floorplans=" + current);
+            searchParams.set("filter", current);
+            window.history.pushState("", "", "?filter=" + current);
         }
 
     }
