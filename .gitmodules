@@ -1,3 +1,0 @@
-[submodule "vendor/action-scheduler"]
-	path = vendor/action-scheduler
-	url = https://redblueconcepts@github.com/woocommerce/action-scheduler.git
