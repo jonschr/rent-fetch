@@ -1,3 +1,6 @@
+## 0.8.1
+* Adding the gravity forms lightbox
+
 ## 0.8.0
 * Adding action scheduler directly, as submodules don't update properly
 

@@ -28,8 +28,12 @@ function apartmentsync_floorplangrid_block_register_block() {
     }
 }
 
-function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_preview = false, $post_id = 0 ) {
+function apartmentsync_floorplangrid_block_filter_get_posts() {
     
+}
+
+function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_preview = false, $post_id = 0 ) {
+        
     //* Default class
     $className = 'floorplangrid';
     
@@ -58,21 +62,17 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
     $contactavailable_link = get_field( 'contactavailable_link' );
     $contactavailable_link_target = get_field( 'contactavailable_link_target' );
     $contactavailable_gravity_form_id = get_field( 'contactavailable_gravity_form_id' );
-    
-    // if ( $contactavailable_button_enabled == 1 && $contactavailable_button_type == 'gform') {
-        
-    //     printf( '<div class="apartmentsync-fancybox-container" id="contact-available-button-gform-%s">', $contactavailable_gravity_form_id );
-        
-    //         $gformshortcode = sprintf( 'gravityform id=%s title=false description=false ajax=true tabindex=49', $contactavailable_gravity_form_id );
-    //         echo do_shortcode( $gformshortcode );
-            
-    //     echo '</div>';
-      
-    // }
                             
     //* Render
     printf( '<div id="%s" class="%s">', $id, $className );
-    
+
+        // Gform lightbox markup (has to just be done once outside the individual markup so that we aren't loading the same gform 50 times)
+        if ( $contactavailable_button_enabled == 1 && $contactavailable_button_type == 'gform') {
+            printf( '<div class="apartmentsync-fancybox-container" id="contact-available-button-gform-%s">', $contactavailable_gravity_form_id );
+                echo do_shortcode( '[gravityform id=' . $contactavailable_gravity_form_id . ' title=true description=true ajax=true tabindex=49]' );
+            echo '</div>';        
+        }
+        
         $args = array(
             'post_type' => 'floorplans',
             'posts_per_page' => '-1'
@@ -217,7 +217,7 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                                     printf( '<a href="%s" class="floorplangrid__button floorplangrid__contact-available-button" target="%s">%s</a>', $contactavailable_link, $contactavailable_link_target, $contactavailable_customize_button_text );
                                 
                                 if ( $contactavailable_button_type == 'gform' )
-                                    printf( '<a href="#" data-fancybox="contact-available-button-gform-%s" data-src="#contact-available-button-gform-%s" class="floorplangrid__button floorplangrid__contact-available-button">%s</a>', $contactavailable_gravity_form_id, $contactavailable_gravity_form_id, $contactavailable_customize_button_text );
+                                    printf( '<a href="#" data-fancybox data-src="#contact-available-button-gform-%s" class="floorplangrid__button floorplangrid__contact-available-button">%s</a>', $contactavailable_gravity_form_id, $contactavailable_customize_button_text );
                             }
                             
                             //* AVAILABILITY BUTTON
@@ -263,7 +263,7 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
             <?php
         }
                 
-    echo '</div>';
+    echo '</div>';    
    
 }
 

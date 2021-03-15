@@ -54,7 +54,8 @@
             },
             "choices": {
                 "none": "No filter",
-                "bedrooms": "Number of bedrooms"
+                "bedrooms": "Number of bedrooms",
+                "floorplantype": "Floorplan type"
             },
             "allow_null": 0,
             "other_choice": 0,
@@ -374,5 +375,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1615487806
+    "modified": 1615829044
 }
