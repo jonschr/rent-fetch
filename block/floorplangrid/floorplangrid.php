@@ -28,10 +28,6 @@ function apartmentsync_floorplangrid_block_register_block() {
     }
 }
 
-function apartmentsync_floorplangrid_block_filter_get_posts() {
-    
-}
-
 function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_preview = false, $post_id = 0 ) {
         
     //* Default class
@@ -40,9 +36,30 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
     //* Default ID
     $id = 'floorplangrid-' . $block['id'];
     
-    //* Get settings
-    $columns = get_field( 'columns' );
-    $floorplan_filter = get_field( 'floorplan_filter' );
+    //* Get settings and put them in an object so that we can use them elsewhere
+    $settings = array(
+        'columns' => get_field( 'columns' ),
+        'floorplan_filter' => get_field( 'floorplan_filter' ),
+        'floorplan_limit' => get_field( 'floorplan_limit' ),
+        'limit_number_of_bedrooms' => get_field( 'limit_number_of_bedrooms' ),
+        'limit_floorplan_type' => get_field( 'limit_floorplan_type' ),
+        'contactavailable_button_enabled' => get_field( 'contactavailable_button_enabled' ),
+        'contactavailable_customize_button_text' => get_field( 'contactavailable_customize_button_text' ),
+        'contactavailable_button_type' => get_field( 'contactavailable_button_type' ),
+        'contactavailable_link' => get_field( 'contactavailable_link' ),
+        'contactavailable_link_target' => get_field( 'contactavailable_link_target' ),
+        'contactavailable_gravity_form_id' => get_field( 'contactavailable_gravity_form_id' ),
+    );
+    
+    $columns = $settings['columns'];
+    $floorplan_filter = $settings['floorplan_filter'];
+    $floorplan_limit = $settings['floorplan_limit'];
+    $contactavailable_button_enabled = $settings['contactavailable_button_enabled'];
+    $contactavailable_customize_button_text = $settings['contactavailable_customize_button_text'];
+    $contactavailable_button_type = $settings['contactavailable_button_type'];
+    $contactavailable_link = $settings['contactavailable_link'];
+    $contactavailable_link_target = $settings['contactavailable_link_target'];
+    $contactavailable_gravity_form_id = $settings['contactavailable_gravity_form_id'];
     
     // Create id attribute allowing for custom "anchor" value.
     if( !empty($block['anchor']) ) 
@@ -55,13 +72,6 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
     if( !empty($block['align']) )
         $className .= ' align' . $block['align'];
         
-    //* Non-floorplan-specific vars
-    $contactavailable_button_enabled = get_field( 'contactavailable_button_enabled' );
-    $contactavailable_customize_button_text = get_field( 'contactavailable_customize_button_text' ) ?: 'Contact us';
-    $contactavailable_button_type = get_field( 'contactavailable_button_type' );
-    $contactavailable_link = get_field( 'contactavailable_link' );
-    $contactavailable_link_target = get_field( 'contactavailable_link_target' );
-    $contactavailable_gravity_form_id = get_field( 'contactavailable_gravity_form_id' );
                             
     //* Render
     printf( '<div id="%s" class="%s">', $id, $className );
@@ -73,13 +83,8 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
             echo '</div>';        
         }
         
-        $args = array(
-            'post_type' => 'floorplans',
-            'posts_per_page' => '-1'
-        );
-
         // The Query
-        $floorplans = get_posts( $args );
+        $floorplans = apartmentsync_floorplangrid_block_get_posts( $settings );
         
         printf( '<div class="floorplangrid-wrap columns-%s">', $columns );
             foreach ( $floorplans as $floorplan ) {
@@ -245,27 +250,90 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
                 
             }
         echo '</div>';
-    
-        
-        if ( !empty($padding_top) || !empty($padding_bottom) || !empty($padding_left) || !empty($padding_right) ) {
-            ?>
-            <style>
-                /* Padding */
-                @media( min-width: 960px ) { 
-                    #section-<?php echo $block['id']; ?> {
-                        padding-top: <?php echo $padding_top; ?>% !important;
-                        padding-bottom: <?php echo $padding_bottom; ?>% !important;
-                        padding-left: <?php echo $padding_left; ?>% !important;
-                        padding-right: <?php echo $padding_right; ?>% !important;
-                    }
-                }
-            </style>
-            <?php
-        }
                 
     echo '</div>';    
    
 }
+
+function apartmentsync_floorplangrid_block_get_posts( $settings ) {
+    
+    // filters
+    $floorplan_filter = $settings['floorplan_filter'];
+    
+    // limits
+    $floorplan_limit = $settings['floorplan_limit'];
+    $limit_number_of_bedrooms = $settings['limit_number_of_bedrooms'];
+    $limit_floorplan_type = $settings['limit_floorplan_type'];
+        
+    $args = array(
+        'post_type' => 'floorplans',
+        'posts_per_page' => '-1'
+    ); 
+    
+    //* Limit by bedroom
+    if ( $floorplan_limit == 'bedrooms' ) {
+        if ( $limit_number_of_bedrooms ) {    
+            
+            $arr = array( 
+                'meta_query' => array(
+                    'relation' => 'OR',
+                )
+            );
+                
+            foreach ( $limit_number_of_bedrooms as $limit_number_of_bedroom ) {
+                $arr_limit = array(
+                    'key'     => 'beds',
+                    'value'   => $limit_number_of_bedroom,
+                    'compare' => '=',
+                );
+                
+                $arr['meta_query'][] = $arr_limit;
+                
+            }
+            
+            // echo '<pre>';
+            // print_r( $arr );
+            // echo '</pre>';
+            
+            $args = array_merge( $args, $arr );
+            
+        }
+    }
+    
+    //* Limit by tax
+    if ( $floorplan_limit == 'floorplantype' ) {
+        if ( $limit_floorplan_type ) { 
+                        
+            $arr = array(
+                'tax_query' => array(
+                    'relation' => 'OR',
+                    array(
+                        'taxonomy' => 'floorplantype',
+                        'field'    => 'term_id',
+                        'terms'    => array()
+                    ),
+                )
+            );
+                
+            foreach ( $limit_floorplan_type as $limit_tax ) {
+                $arr['tax_query']['0']['terms'][] = $limit_tax;
+            }
+            
+            $args = array_merge( $args, $arr );
+            
+        }
+    }
+        
+    // echo '<pre>';
+    // print_r( $args );
+    // echo '</pre>';
+    
+    $floorplans = get_posts( $args );
+        
+    return $floorplans;
+    
+}
+
 
 function apartmentsync_floorplangrid_block_enqueue() {
     wp_enqueue_style( 'floorplangrid-style', APARTMENTSYNC_PATH . 'css/floorplangrid.css', array(), APARTMENTSYNC_VERSION, 'screen' );

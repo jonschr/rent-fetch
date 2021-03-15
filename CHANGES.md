@@ -1,3 +1,6 @@
+## 0.9.0
+* Adding floorplan limits capabilities to the Floorplans block
+
 ## 0.8.1
 * Adding the gravity forms lightbox
 

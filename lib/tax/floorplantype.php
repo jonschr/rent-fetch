@@ -6,7 +6,7 @@ function apartmentsync_register_taxonomy_floorplantype() {
 		'floorplantype',
 		'floorplans',
 		array(
-			'label' 			=> __( 'Floorplan type' ),
+			'label' 			=> __( 'Floorplan types' ),
 			'rewrite' 		=> array( 'slug' => 'floorplantype' ),
 			'hierarchical' 	=> true,
 			'show_in_rest' 	=> true,
