@@ -1,3 +1,13 @@
+## 0.8.0
+* Adding action scheduler directly, as submodules don't update properly
+
+## 0.7.0
+* Fancybox functionality
+* Local featured images working in the Gutenberg block
+
+## 0.6.0
+* Gutenberg block added
+
 ## 0.5.0
 * Adding gulp, initial styles for the floorplans layout
 
