@@ -192,6 +192,11 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     if ( $numberofbaths === '5' ) $baths = '5 Bath';
     
     // thumb
+    if ( $floorplan_image_url ) {
+        $floorplan_image_url = explode( ',', $floorplan_image_url );
+        $floorplan_image_url = $floorplan_image_url[0];
+    }
+    
     if ( !$floorplan_image_url )
         $floorplan_image_url = get_the_post_thumbnail_url( $post_id, 'large' );
     
@@ -246,7 +251,7 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
         echo '<div class="floorplangrid__art-wrap">';
         
             if ( $floorplan_image_url ) 
-                printf( '<div class="floorplangrid__image-wrap"><a href="%s" data-fancybox="%s" class="floorplangrid__image-link"><img class="floorplangrid__image" src="%s" title="%s" alt="%s" /></a></div>', $floorplan_image_url, $post_id, $floorplan_image_url, $floorplan_image_name, $floorplan_image_alt_text );
+                printf( '<div class="floorplangrid__image-wrap"><a href="%s" data-fancybox="%s" class="floorplangrid__image-link"><img height="200px" width="300px" class="floorplangrid__image" src="%s" title="%s" alt="%s" /></a></div>', $floorplan_image_url, $post_id, $floorplan_image_url, $floorplan_image_name, $floorplan_image_alt_text );
                 
         echo '</div>';
             

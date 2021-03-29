@@ -35,7 +35,7 @@ function apartment_delete() {
         'meta_query' => array(
             array(
                 'key' => 'property_source',
-                'compare' => EXISTS
+                'compare' => 'EXISTS',
             )
         )
     );

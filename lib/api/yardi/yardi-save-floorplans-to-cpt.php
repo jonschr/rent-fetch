@@ -12,21 +12,26 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
     $sync_term = apartmentsync_get_sync_term_string();
     
     $properties = explode( ',', $properties );
+    
+    // as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans' );
     foreach( $properties as $property ) {
-        
+                
         // if syncing is paused or data dync is off, then stop everything
         if ( $sync_term == 'paused' ) {
+            as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
             as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
-            return;
+            continue;
         }
         
         if ( apartmentsync_check_if_sync_term_has_changed() === true ) {
+            as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
             as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
             apartmentsync_verbose_log( "Sync term has changed. Rescheduling upcoming actions $sync_term to save Yardi floorplans for property $property as posts." );
         }
                 
-        if ( as_next_scheduled_action( 'apartmentsync_do_fetch_yardi_floorplans' ) === false ) {
+        if ( $sync_term != 'paused' && as_next_scheduled_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' ) === false ) {
             apartmentsync_verbose_log( "Upcoming actions not found. Scheduling tasks $sync_term to save Yardi floorplans for property $property as posts." );    
+            as_enqueue_async_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
             as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
         }
     }
