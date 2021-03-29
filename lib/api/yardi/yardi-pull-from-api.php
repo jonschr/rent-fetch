@@ -30,8 +30,8 @@ function apartmentsync_get_floorplans_yardi() {
         $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
         
         // bail if we already have a transient with this data in it
-        // if ( $floorplans != false )
-        //     return $floorplans;
+        if ( $floorplans != false )
+            continue;
             
         // if syncing is paused or data dync is off, then stop everything
         if ( $sync_term == 'paused' ) {
