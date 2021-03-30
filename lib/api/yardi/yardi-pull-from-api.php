@@ -17,11 +17,7 @@ function apartmentsync_get_floorplans_yardi() {
         
     foreach( $properties as $property ) {
             
-        $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
         
-        // bail if we already have a transient with this data in it
-        if ( $floorplans != false )
-            continue;
                         
         // if syncing is paused or data dync is off, then stop everything
         if ( $sync_term == 'paused' ) {
@@ -46,6 +42,14 @@ function apartmentsync_get_floorplans_yardi() {
 
 add_action( 'do_get_yardi_floorplans_from_api_for_property', 'get_yardi_floorplans_from_api_for_property', 10, 3 );
 function get_yardi_floorplans_from_api_for_property( $property, $yardi_api_key ) {
+    
+    $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
+        
+    // bail if we already have a transient with this data in it
+    if ( $floorplans != false ) {
+        apartmentsync_verbose_log( "Transient found for Yardi property $property (yardi_floorplans_property_id_$property). No need to query the API." );
+        return;
+    }
     
     apartmentsync_verbose_log( "Transient not found for Yardi property $property (yardi_floorplans_property_id_$property). Pulling new data from https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan." );
         
