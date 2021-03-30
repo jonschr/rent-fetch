@@ -394,10 +394,12 @@ function apartmentsync_floorplangrid_block_get_posts( $settings ) {
 function apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings ) {
      
     $string = sprintf( '%s_bedrooms_label', $numberofbeds );
-    $bedslabel = $settings[$string];
     
-    if ( !$bedslabel )
+    if ( $settings[$string] ) {
+        $bedslabel = $settings[$string];
+    } else {
         $bedslabel = sprintf( '%s bedroom', $numberofbeds );
-        
+    }
+            
     return $bedslabel;
 } 
