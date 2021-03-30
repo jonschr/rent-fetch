@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.11.1
+	Version: 0.12.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.11.1' );
+define ( 'APARTMENTSYNC_VERSION', '0.12.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -131,12 +131,18 @@ require_once( 'block/floorplangrid/floorplangrid.php' );
 
 add_action( 'init', 'apartmentsync_start_sync' );
 function apartmentsync_start_sync() {
-        
-    //* get data from apis
-    do_action( 'apartmentsync_do_sync_logic' ); // lib/api/save-to-cpt.php
     
-    //* set up chrons for reading the transients into posts
-    do_action( 'apartmentsync_do_chron_activation' ); // lib/api/pull-from-apis.php
+    //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
+    
+    if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
+        as_enqueue_async_action( 'apartmentsync_do_sync_logic' );
+        
+    if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
+        as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
+    
+    // // Look and see whether there's another scheduled action waiting
+    // var_dump( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) ); 
+    // var_dump( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) );
     
 }
 

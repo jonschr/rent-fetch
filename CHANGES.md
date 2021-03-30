@@ -1,3 +1,6 @@
+## 0.12.0
+* Performance improvements when there are many properties to query (we were running into the async triggers themselves causing performance problems).
+
 ## 0.10.0
 * Adding bedroom filters
 
