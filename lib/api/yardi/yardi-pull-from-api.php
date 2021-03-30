@@ -8,15 +8,13 @@ function apartmentsync_get_floorplans_yardi() {
         add_action( 'admin_notices', 'apartmentsync_yardi_missing_user_pass_notice');
         return;
     }
-        
+    
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
-    $properties = $yardi_integration_creds['yardi_property_code'];    
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
-    $sync_term = apartmentsync_get_sync_term_string();
-    
-    // as_schedule_recurring_action( $timestamp, $interval_in_seconds, $hook, $args, $group );
-    
+    $properties = $yardi_integration_creds['yardi_property_code'];      
     $properties = explode( ',', $properties );
+    $sync_term = apartmentsync_get_sync_term_string();    
+        
     foreach( $properties as $property ) {
             
         $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
@@ -24,30 +22,30 @@ function apartmentsync_get_floorplans_yardi() {
         // bail if we already have a transient with this data in it
         if ( $floorplans != false )
             continue;
-            
+                        
         // if syncing is paused or data dync is off, then stop everything
         if ( $sync_term == 'paused' ) {
-            as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' );
-            as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' );
+            as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
+            as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
             continue;
         }
         
         if ( apartmentsync_check_if_sync_term_has_changed() === true ) {
-            as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' );
-            as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' );
+            as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
+            as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
             apartmentsync_verbose_log( "Sync term has changed. Rescheduling upcoming actions $sync_term to get Yardi property $property floorplans from API." );
         }
                 
-        if ( $sync_term != 'paused' &&  as_next_scheduled_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' ) === false ) {
+        if ( $sync_term != 'paused' &&  as_next_scheduled_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' ) === false ) {
             apartmentsync_verbose_log( "Upcoming actions not found. Scheduling tasks $sync_term to get Yardi property $property floorplans from API." );    
-            as_enqueue_async_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' );
-            as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_integration_creds, $yardi_api_key ), 'yardi' );
+            as_enqueue_async_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
+            as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
         }            
     }
 }
 
 add_action( 'do_get_yardi_floorplans_from_api_for_property', 'get_yardi_floorplans_from_api_for_property', 10, 3 );
-function get_yardi_floorplans_from_api_for_property( $property, $yardi_integration_creds, $yardi_api_key ) {
+function get_yardi_floorplans_from_api_for_property( $property, $yardi_api_key ) {
     
     apartmentsync_verbose_log( "Transient not found for Yardi property $property (yardi_floorplans_property_id_$property). Pulling new data from https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan." );
         

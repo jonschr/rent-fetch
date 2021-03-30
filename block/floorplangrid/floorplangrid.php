@@ -160,8 +160,6 @@ function apartmentsync_floorplangrid_block_show_filter_bedrooms( $settings ) {
 //* Output each floorplan
 function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     
-    
-    
     //* Grab the data
     $title = get_the_title( $post_id );
     
@@ -169,8 +167,8 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     // $meta = get_post_meta( $post_id );
     // $availability_url = $meta['availability_url'];
     // $available_units = $meta['available_units'];
-    // $numberofbaths = $meta['numberofbaths'];
-    // $numberofbeds = $meta['numberofbeds'];
+    // $numberofbaths = $meta['baths'];
+    // $numberofbeds = $meta['beds'];
     // $has_specials = $meta['has_specials'];
     // $floorplan_id = $meta['floorplan_id'];
     // $floorplan_image_url = $meta['floorplan_image_url'];
@@ -187,7 +185,7 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     // $unit_type_mapping = $meta['unit_type_mapping'];
     // $floorplan_source = $meta['floorplan_source'];
 
-    // // Another way of getting it
+    // Another way of getting it
     $availability_url = get_field( 'availability_url', $post_id );
     $available_units = get_field( 'available_units', $post_id );
     $numberofbaths = get_field( 'baths', $post_id );

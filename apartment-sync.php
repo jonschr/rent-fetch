@@ -134,12 +134,15 @@ function apartmentsync_start_sync() {
     
     //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
     
-    if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
-        as_enqueue_async_action( 'apartmentsync_do_sync_logic' );
+    // if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
+    //     as_enqueue_async_action( 'apartmentsync_do_sync_logic' );
         
-    if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
-        as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
+    // if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
+    //     as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
     
+    do_action( 'apartmentsync_do_sync_logic' );
+    do_action( 'apartmentsync_do_chron_activation' );
+        
     // // Look and see whether there's another scheduled action waiting
     // var_dump( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) ); 
     // var_dump( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) );
