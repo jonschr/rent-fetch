@@ -1,3 +1,6 @@
+## 0.12.1
+* Fixing minor bugs in the floorplans block
+
 ## 0.12.0
 * Performance improvements when there are many properties to query (we were running into the async triggers themselves causing performance problems).
 
