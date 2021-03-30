@@ -96,6 +96,8 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
         
         printf( '<div class="floorplangrid-wrap columns-%s">', $settings['columns'] );
             foreach ( $floorplans as $floorplan ) {
+                
+                // print_r( $floorplan );
                                                     
                 apartmentsync_floorplangrid_each( $floorplan->ID, $settings );
                 
@@ -158,8 +160,34 @@ function apartmentsync_floorplangrid_block_show_filter_bedrooms( $settings ) {
 //* Output each floorplan
 function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     
+    
+    
     //* Grab the data
     $title = get_the_title( $post_id );
+    
+    // // One way of getting the data
+    // $meta = get_post_meta( $post_id );
+    // $availability_url = $meta['availability_url'];
+    // $available_units = $meta['available_units'];
+    // $numberofbaths = $meta['numberofbaths'];
+    // $numberofbeds = $meta['numberofbeds'];
+    // $has_specials = $meta['has_specials'];
+    // $floorplan_id = $meta['floorplan_id'];
+    // $floorplan_image_url = $meta['floorplan_image_url'];
+    // $floorplan_image_name = $meta['floorplan_image_name'];
+    // $floorplan_image_alt_text = $meta['floorplan_image_alt_text'];
+    // $maximum_deposit = $meta['maximum_deposit'];
+    // $maximum_rent = $meta['maximum_rent'];
+    // $maximum_sqft = $meta['maximum_sqft'];
+    // $minimum_deposit = $meta['minimum_deposit'];
+    // $minimum_rent = $meta['minimum_rent'];
+    // $minimum_sqft = $meta['minimum_sqft'];
+    // $property_id = $meta['property_id'];
+    // $property_show_specials = $meta['property_show_specials'];
+    // $unit_type_mapping = $meta['unit_type_mapping'];
+    // $floorplan_source = $meta['floorplan_source'];
+
+    // // Another way of getting it
     $availability_url = get_field( 'availability_url', $post_id );
     $available_units = get_field( 'available_units', $post_id );
     $numberofbaths = get_field( 'baths', $post_id );
@@ -214,21 +242,22 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     if ( $minimum_rent && !$maximum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $minimum_rent );
     if ( $maximum_rent && !$minimum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $maximum_rent );
     
-    // sqrft
-    $sqrft_range = null;
-    $sqrft_label = 'sq. ft.';
+    // sqft
+    $sqft_range = null;
+    $sqft_label = 'sq. ft.';
+    
     if ( $minimum_sqft && $maximum_sqft ) {
         
-        if ( $minimum_sqrft != $maximum_sqrft )
-            $sqrft_range = sprintf( '%s-%s %s', $minimum_sqft, $maximum_sqft, $sqrft_label );
+        if ( $minimum_sqft != $maximum_sqft )
+            $sqft_range = sprintf( '%s-%s %s', $minimum_sqft, $maximum_sqft, $sqft_label );
             
-        if ( $minimum_sqrft == $maximum_sqrft )
-            $sqrft_range = sprintf( '%s %s', $minimum_sqft, $sqrft_label );
+        if ( $minimum_sqft == $maximum_sqft )
+            $sqft_range = sprintf( '%s %s', $minimum_sqft, $sqft_label );
         
     }
     
-    if ( $minimum_sqft && !$maximum_sqft ) $sqrft_range = sprintf( '%s %s', $minimum_sqft, $sqrft_label );
-    if ( !$minimum_sqft && $maximum_sqft ) $sqrft_range = sprintf( '%s %s', $maximum_sqft, $sqrft_label );
+    if ( $minimum_sqft && !$maximum_sqft ) $sqft_range = sprintf( '%s %s', $minimum_sqft, $sqft_label );
+    if ( !$minimum_sqft && $maximum_sqft ) $sqft_range = sprintf( '%s %s', $maximum_sqft, $sqft_label );
     
     //* Set up the classes
     $floorplanclass = array( 'floorplan' );
@@ -268,8 +297,8 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
                 if ( $baths )
                     printf( '<span class="floorplangrid__baths">%s</span>', $baths );
                     
-                if ( $sqrft_range )
-                    printf( '<span class="floorplangrid__sqrft_range">%s</span>', $sqrft_range );
+                if ( $sqft_range )
+                    printf( '<span class="floorplangrid__sqft_range">%s</span>', $sqft_range );
                                     
             echo '</p>';
             
@@ -395,7 +424,7 @@ function apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $s
      
     $string = sprintf( '%s_bedrooms_label', $numberofbeds );
     
-    if ( $settings[$string] ) {
+    if ( !empty( $settings[$string] ) ) {
         $bedslabel = $settings[$string];
     } else {
         $bedslabel = sprintf( '%s bedroom', $numberofbeds );
