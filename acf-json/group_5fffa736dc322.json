@@ -90,9 +90,7 @@
             },
             "choices": {
                 "paused": "Paused",
-                "daily": "Daily",
-                "hourly": "Hourly",
-                "continuous": "Every minute (only for testing, do not leave this setting enabled)."
+                "hourly": "Hourly"
             },
             "allow_null": 0,
             "other_choice": 0,
@@ -364,5 +362,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1615397244
+    "modified": 1617221445
 }

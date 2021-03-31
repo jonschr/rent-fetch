@@ -1,3 +1,6 @@
+## 0.13.0
+* Fixes to logic forcing deletes of processes
+
 ## 0.12.1
 * Fixing minor bugs in the floorplans block
 

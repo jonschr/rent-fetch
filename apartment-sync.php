@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.12.1
+	Version: 0.13.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.12.1' );
+define ( 'APARTMENTSYNC_VERSION', '0.13.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -55,11 +55,11 @@ function apartmentsync_acf_settings_url( $url ) {
 }
 
 //* UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
-// add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
+add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
 function apartmentsync_acf_json_save_point( $path ) {
     
     // update path
-    $path = APARTMENTSYNC_DIR . '/acf-json';
+    $path = APARTMENTSYNC_DIR . 'acf-json';
     
     // return
     return $path;
@@ -73,7 +73,7 @@ function apartmentsync_acf_json_load_point( $paths ) {
     unset($paths[0]);
     
     // append path
-    $paths[] = APARTMENTSYNC_DIR . '/acf-json';
+    $paths[] = APARTMENTSYNC_DIR . 'acf-json';
     
     // return
     return $paths;
@@ -84,7 +84,7 @@ function apartmentsync_acf_json_load_point( $paths ) {
 // ADMIN COLUMNS PRO //
 ///////////////////////
 
-add_filter( 'acp/storage/file/directory/writable', '__return_false' ); //* CHANGE TO __return_true TO MAKE CHANGES
+add_filter( 'acp/storage/file/directory/writable', '__return_true' ); //* CHANGE TO __return_true TO MAKE CHANGES
 add_filter( 'acp/storage/file/directory', 'apartmentsync_acp_storage_file_directory' );
 function apartmentsync_acp_storage_file_directory( $path ) {
 	// Use a writable path, directory will be created for you
@@ -134,14 +134,14 @@ function apartmentsync_start_sync() {
     
     //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
     
-    // if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
-    //     as_enqueue_async_action( 'apartmentsync_do_sync_logic' );
+    if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
+        as_enqueue_async_action( 'apartmentsync_do_sync_logic' );
         
-    // if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
-    //     as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
+    if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
+        as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
     
-    do_action( 'apartmentsync_do_sync_logic' );
-    do_action( 'apartmentsync_do_chron_activation' );
+    // do_action( 'apartmentsync_do_sync_logic' );
+    // do_action( 'apartmentsync_do_chron_activation' );
         
     // // Look and see whether there's another scheduled action waiting
     // var_dump( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) ); 

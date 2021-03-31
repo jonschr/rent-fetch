@@ -23,30 +23,44 @@ function apartmentsync_get_sync_term_in_seconds() {
 }
 
 /**
- * Get the sync terms and just return it directly
- */
-function apartmentsync_get_sync_term_string() {
-    $sync_term = get_field( 'sync_term', 'option' );
-    return $sync_term;
-}
-
-/**
  * Check whether the sync term has changed
  */
-function apartmentsync_check_if_sync_term_has_changed() {
+function apartmentsync_check_if_sync_settings_have_changed() {
+    
+    $haschanged = false;
+    
+    /**
+     * There are two relevant settings, and if either has changed this should return true
+     */
+    
+    // sync term: this is continuous, hourly, daily, paused
     $current_sync_term = get_field( 'sync_term', 'option' );
     $old_sync_term = get_transient( 'apartmentsync_sync_term' );
     
     if ( empty( $old_sync_term ) )
         set_transient( 'apartmentsync_sync_term', $current_sync_term, YEAR_IN_SECONDS );
         
-    // if the old one and the new one don't match (it's changed), then reset the transient and return true
+    // if the old one and the new one don't match (it's changed), then reset the transient
     if ( $current_sync_term != $old_sync_term ) {        
         delete_transient( 'apartmentsync_sync_term' );
         set_transient( 'apartmentsync_sync_term', $current_sync_term, YEAR_IN_SECONDS );
-        return true;
+        $haschanged = true;
+    }
+    
+    // data sync: this is nosync, updatesync, delete
+    $current_data_sync = get_field( 'data_sync', 'option' );
+    $old_data_sync = get_transient( 'apartmentsync_data_sync' );
+        
+    if ( empty( $old_data_sync ) )
+        set_transient( 'apartmentsync_data_sync', $current_data_sync, YEAR_IN_SECONDS );
+    
+    // if the old one and the new one don't match (it's changed), then reset the transient
+    if ( $current_data_sync != $old_data_sync ) {        
+        delete_transient( 'apartmentsync_data_sync' );
+        set_transient( 'apartmentsync_data_sync', $current_data_sync, YEAR_IN_SECONDS );
+        $haschanged = true;
     }
     
     // return false if it hasn't changed
-    return false;
+    return $haschanged;
 }
