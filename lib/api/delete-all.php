@@ -12,6 +12,7 @@ function apartment_delete() {
     // do a query to check and see if a post already exists with this ID 
     $args = array(
         'post_type' => 'floorplans',
+        'posts_per_page' => -1,
         'meta_query' => array(
             array(
                 'key' => 'floorplan_source',
@@ -32,6 +33,7 @@ function apartment_delete() {
     // do a query to check and see if a post already exists with this ID 
     $args = array(
         'post_type' => 'properties',
+        'posts_per_page' => -1,
         'meta_query' => array(
             array(
                 'key' => 'property_source',

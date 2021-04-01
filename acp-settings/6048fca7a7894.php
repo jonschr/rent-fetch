@@ -5,7 +5,7 @@ return array (
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1615488647,
+  'updated' => 1617238443,
   'columns' => 
   array (
     'title' => 
@@ -20,6 +20,40 @@ return array (
       'bulk_edit' => 'on',
       'search' => 'on',
       'name' => 'title',
+    ),
+    '6065196829374c' => 
+    array (
+      'type' => 'column-meta',
+      'label' => 'Voyager Property ID',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'voyager_property_code',
+      'field_type' => '',
+      'before' => '',
+      'after' => '',
+      'export' => 'off',
+      'sort' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6065196829374c',
+    ),
+    '600b41d6cb7a6' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Property ID',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_600ab10550e47',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'off',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '600b41d6cb7a6',
     ),
     '600b41d6cb794' => 
     array (
@@ -223,23 +257,6 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb7a5',
-    ),
-    '600b41d6cb7a6' => 
-    array (
-      'type' => 'column-acf_field',
-      'label' => 'Property ID',
-      'width' => '',
-      'width_unit' => '%',
-      'field' => 'field_600ab10550e47',
-      'character_limit' => '20',
-      'export' => 'off',
-      'sort' => 'on',
-      'edit' => 'on',
-      'bulk_edit' => 'on',
-      'search' => 'off',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '600b41d6cb7a6',
     ),
     '600b41d6cb7a8' => 
     array (

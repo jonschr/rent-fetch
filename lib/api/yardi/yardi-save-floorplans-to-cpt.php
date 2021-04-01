@@ -46,7 +46,7 @@ function apartmentsync_fetch_yardi_floorplans( $property ) {
     
     foreach( $floorplans as $floorplan ) {
                    
-        apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan );
+        apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $property );
         
     }
 }
@@ -54,7 +54,7 @@ function apartmentsync_fetch_yardi_floorplans( $property ) {
 /**
  * For a particular floorplan, perform a sync
  */
-function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
+function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $voyagercode ) {
     
     $FloorplanId = $floorplan['FloorplanId'];
     $FloorplanName = $floorplan['FloorplanName'];
@@ -76,12 +76,12 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
     // insert the post if there isn't one already (this prevents duplicates)
     if ( !$matchingposts ) {
         apartmentsync_verbose_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
-        apartmentsync_insert_yardi_floorplan( $floorplan );
+        apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode );
         
     // if there's exactly one post found, then update the meta for that
     } elseif ( $count == 1 ) {
         apartmentsync_verbose_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Checking post meta." );
-        apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts );
+        apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voyagercode );
         
     // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
     } elseif( $count > 1 ) {
@@ -89,7 +89,7 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
         foreach ($matchingposts as $matchingpost) {
             wp_delete_post( $matchingpost->ID, true );
         }
-        apartmentsync_insert_yardi_floorplan( $floorplan );
+        apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode );
     }
 }
 
@@ -100,7 +100,7 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan ) {
  *
  * @return  none              
  */
-function apartmentsync_insert_yardi_floorplan( $floorplan ) {
+function apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode ) {
     
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
@@ -146,6 +146,7 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
             'minimum_rent'              => $MinimumRent,
             'minimum_sqft'              => $MinimumSQFT,
             'property_id'               => $PropertyId,
+            'voyager_property_code'     => $voyagercode,
             'property_show_specials'    => $PropertyShowsSpecials,
             'unit_type_mapping'         => $UnitTypeMapping,
             'floorplan_source'          => $FloorplanSource,
@@ -164,7 +165,7 @@ function apartmentsync_insert_yardi_floorplan( $floorplan ) {
  *
  * @return  none  
  */
-function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
+function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voyagercode ) {
     
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
@@ -210,6 +211,7 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts ) {
             'minimum_rent'              => $MinimumRent,
             'minimum_sqft'              => $MinimumSQFT,
             'property_id'               => $PropertyId,
+            'voyager_property_code'     => $voyagercode,
             'property_show_specials'    => $PropertyShowsSpecials,
             'unit_type_mapping'         => $UnitTypeMapping,
             'floorplan_source'          => $FloorplanSource,
