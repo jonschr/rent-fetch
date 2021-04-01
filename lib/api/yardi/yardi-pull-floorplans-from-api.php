@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'apartmentsync_get_floorplans_yardi', 'apartmentsync_get_floorplans_yardi' );
+add_action( 'apartmentsync_do_get_floorplans_yardi', 'apartmentsync_get_floorplans_yardi' );
 function apartmentsync_get_floorplans_yardi() {
     
     // notify the user, then bail if we're missing credential data
@@ -41,11 +41,11 @@ function get_yardi_floorplans_from_api_for_property( $property, $yardi_api_key )
         
     // bail if we already have a transient with this data in it
     if ( $floorplans != false ) {
-        apartmentsync_verbose_log( "Transient found for Yardi property $property (yardi_floorplans_property_id_$property). No need to query the API." );
+        apartmentsync_verbose_log( "Transient found for Yardi property $property floorplans (yardi_floorplans_property_id_$property). No need to query the API." );
         return;
     }
     
-    apartmentsync_verbose_log( "Transient not found for Yardi property $property (yardi_floorplans_property_id_$property). Pulling new data from https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan." );
+    apartmentsync_verbose_log( "Transient not found for Yardi property $property floorplans (yardi_floorplans_property_id_$property). Pulling new data from https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan." );
         
     // Do the API request
     $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=floorplan&apiToken=%s&VoyagerPropertyCode=%s', $yardi_api_key, $property ); // path to your JSON file
@@ -65,9 +65,9 @@ function get_yardi_floorplans_from_api_for_property( $property, $yardi_api_key )
         set_transient( 'yardi_floorplans_property_id_' . $property, $floorplans, apartmentsync_get_sync_term_in_seconds() );
         apartmentsync_verbose_log( "Yardi returned a list of floorplans for property $property successfully. New transient set: yardi_floorplans_property_id_$property" );                
     } elseif( !$errorcode && empty( $floorplans ) ) {
-        apartmentsync_log( "No data received from Yardi for property $property." );
+        apartmentsync_log( "No floorplan data received from Yardi for property $property." );
     } else {
-        apartmentsync_log( "Yardi returned error code $errorcode for property $property." );
+        apartmentsync_log( "Floorplans API query: Yardi returned error code $errorcode for property $property." );
     }
     
 }

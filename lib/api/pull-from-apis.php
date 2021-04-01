@@ -23,7 +23,7 @@ function apartmentsync_determine_platform() {
     foreach ( $enabled_integrations as $enabled_integration ) {
         
         // action to get the floorplans and put them in a transient
-        do_action( 'apartmentsync_get_floorplans_' . $enabled_integration );
+        do_action( 'apartmentsync_do_get_floorplans_' . $enabled_integration );
     }
     
 }
