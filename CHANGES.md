@@ -1,3 +1,6 @@
+## 0.17.0
+* Starting on the basic version of the single-properties template
+
 ## 0.16.0
 * Add single template detection and hotswapping
 
