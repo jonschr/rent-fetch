@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.14.0
+	Version: 0.15.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.14.0' );
+define ( 'APARTMENTSYNC_VERSION', '0.15.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -114,6 +114,7 @@ require_once( 'lib/api/pull-from-apis.php' ); // kick off the sync process
 require_once( 'lib/api/save-to-cpt.php' ); // kick off chron processes for converting transients into posts
 require_once( 'lib/api/delete-all.php' ); // adds functionality to delete all from the backend
 require_once( 'lib/api/yardi/yardi-check-credentials.php' );
+require_once( 'lib/api/yardi/yardi-get-properties.php' );
 require_once( 'lib/api/yardi/yardi-pull-floorplans-from-api.php' );
 require_once( 'lib/api/yardi/yardi-save-floorplans-to-cpt.php' );
 require_once( 'lib/api/yardi/yardi-remove-old-floorplans.php' );

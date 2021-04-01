@@ -5,7 +5,7 @@ return array (
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1617226892,
+  'updated' => 1617252685,
   'columns' => 
   array (
     'title' => 
@@ -21,10 +21,27 @@ return array (
       'search' => 'on',
       'name' => 'title',
     ),
-    '6064ebff6ccccc' => 
+    '606546393f7cec' => 
+    array (
+      'type' => 'column-meta',
+      'label' => 'Voyager Property Code',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'voyager_property_code',
+      'field_type' => '',
+      'before' => '',
+      'after' => '',
+      'export' => 'off',
+      'sort' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '606546393f7cec',
+    ),
+    '606546534353f8' => 
     array (
       'type' => 'column-acf_field',
-      'label' => 'Property Code',
+      'label' => 'Property ID',
       'width' => '',
       'width_unit' => '%',
       'field' => 'field_6064eb41cac1a',
@@ -36,7 +53,24 @@ return array (
       'search' => 'on',
       'filter' => 'off',
       'filter_label' => '',
-      'name' => '6064ebff6ccccc',
+      'name' => '606546534353f8',
+    ),
+    '606551421d70a4' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Property Code',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_6065511852901',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'off',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '606551421d70a4',
     ),
     '6064ec16e2d0e4' => 
     array (

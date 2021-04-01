@@ -5,7 +5,7 @@ return array (
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1617238443,
+  'updated' => 1617251093,
   'columns' => 
   array (
     'title' => 
@@ -24,7 +24,7 @@ return array (
     '6065196829374c' => 
     array (
       'type' => 'column-meta',
-      'label' => 'Voyager Property ID',
+      'label' => 'Voyager Property Code',
       'width' => '',
       'width_unit' => '%',
       'field' => 'voyager_property_code',

@@ -1,3 +1,6 @@
+## 0.15.0
+* Initial functionality to pull properties
+
 ## 0.14.0
 * Addition of functionality to detect and delete floorplans attached to properties which are no longer syncing
 * Addition of functionality to cancel upcoming sync actions for floorplans attached to properties which are no longer syncing
