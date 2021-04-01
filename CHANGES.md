@@ -1,3 +1,6 @@
+## 0.16.0
+* Add single template detection and hotswapping
+
 ## 0.15.0
 * Initial functionality to pull properties
 
