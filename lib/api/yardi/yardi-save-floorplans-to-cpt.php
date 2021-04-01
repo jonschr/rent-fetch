@@ -24,7 +24,8 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
             as_enqueue_async_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
             as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
         }
-    }
+        
+    }    
 }
 
 /**

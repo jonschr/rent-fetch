@@ -114,8 +114,9 @@ require_once( 'lib/api/pull-from-apis.php' ); // kick off the sync process
 require_once( 'lib/api/save-to-cpt.php' ); // kick off chron processes for converting transients into posts
 require_once( 'lib/api/delete-all.php' ); // adds functionality to delete all from the backend
 require_once( 'lib/api/yardi/yardi-check-credentials.php' );
-require_once( 'lib/api/yardi/yardi-pull-from-api.php' );
+require_once( 'lib/api/yardi/yardi-pull-floorplans-from-api.php' );
 require_once( 'lib/api/yardi/yardi-save-floorplans-to-cpt.php' );
+require_once( 'lib/api/yardi/yardi-remove-old-floorplans.php' );
 require_once( 'lib/api/entrata/entrata-sync.php' );
 require_once( 'lib/api/entrata/entrata-check-credentials.php' );
 
@@ -139,7 +140,10 @@ function apartmentsync_start_sync() {
         
     if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
         as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
-    
+        
+    if ( as_next_scheduled_action( 'apartmentsync_remove_old_data' ) === false  ) 
+        as_enqueue_async_action( 'apartmentsync_remove_old_data' );
+            
     // do_action( 'apartmentsync_do_sync_logic' );
     // do_action( 'apartmentsync_do_chron_activation' );
         
