@@ -1,6 +1,20 @@
 <?php
 
+//* Add a body class
+add_filter( 'body_class', 'apartmentsync_add_properties_body_class' );
+function apartmentsync_add_properties_body_class( $classes ) {
+    global $post;
+    
+    if ( isset( $post ) )
+        $classes[] = 'single-properties-template';
+    
+    return $classes;
+    
+}
+
 get_header();
+
+wp_enqueue_style( 'apartmentsync-single-properties' );
 
 //* General vars
 $id = get_the_ID();
@@ -39,70 +53,114 @@ if ( !$city && $state )
 
     
 //* Markup
-    
-if ( $title )
-    printf( '<h1>%s %s</h1>', $title, $location );
-    
-//TODO add images
+echo '<div class="single-properties-wrap">';
 
-echo '<div class="basic-info">';
-    echo '<div class="location">';
-        
-        if ( $address )
-            printf( '<span class="address">%s</span>', $address );
-            
-        if ( $city )
-            printf( '<span class="city">%s</span>', $city );
-            
-        if ( $state )
-            printf( '<span class="state">%s</span>', $state );
-            
-        if ( $zipcode )
-            printf( '<span class="zipcode">%s</span>', $zipcode );
-            
-    echo '</div>';
-    echo '<div class="call">';
-    
-        printf( '<span class="calltoday">Call today</span>' );
-        printf( '<span class="phone">%s</span>', $phone );
-    
-    echo '</div>';
-    echo '<div class="property-website">';
-    
-        printf( '<a class="button property-link" target="_blank" href="%s">Visit property website</a>', $url );
-    
-    echo '</div>';
-echo '</div>';
+    ////////////////////
+    // PROPERTY TITLE //
+    ////////////////////
 
-if ( $description ) {
-    
-    echo '<div class="description-wrap">';
-    
-        if ( $city )
-            printf( '<h4 class="city">%s</h4>', $city );
-            
+    echo '<div class="single-properties-entry-header">';
+
         if ( $title )
-            printf( '<h2>Welcome home to %s</h2>', $title );
-            
-        printf( '<div class="description">%s</div>', $description );
-    
+            printf( '<h1>%s %s</h1>', $title, $location );
+
     echo '</div>';
     
-}
+    /////////////////////
+    // PROPERTY IMAGES //
+    /////////////////////
 
-$args = array(
-    'post_type' => 'floorplans',
-    'posts_per_page' => -1,
-    'meta_query' => array(
-        'key'   => 'voyager_property_code',
-        'value' => $voyager_property_code,
-    ),
-);
+    echo '<div class="images">';
+    //TODO add images
+    echo '</div>';
+    
+    /////////////////////////
+    // PROPERTY BASIC INFO //
+    /////////////////////////
 
-$query = new WP_Query($args);
-$floorplans = $query->posts;
-foreach ($floorplans as $floorplan) {
-    do_action( 'apartmentsync_do_floorplan_in_archive', $floorplan );
-}
+    echo '<div class="basic-info">';
+        echo '<div class="location">';
+            echo '<p class="the-location">';
+            
+                if ( $address )
+                    printf( '<span class="address">%s</span>', $address );
+                    
+                if ( $city )
+                    printf( '<span class="city">%s</span>', $city );
+                    
+                if ( $state )
+                    printf( '<span class="state">%s</span>', $state );
+                    
+                if ( $zipcode )
+                    printf( '<span class="zipcode">%s</span>', $zipcode );
+                
+            echo '</p>';
+        echo '</div>';
+        echo '<div class="call">';
+            echo '<p class="the-call">';
+        
+                printf( '<span class="calltoday">Call today</span>' );
+                printf( '<span class="phone">%s</span>', $phone );
+                
+            echo '</p>';
+        echo '</div>';
+        echo '<div class="property-website">';
+        
+            printf( '<a class="button property-link" target="_blank" href="%s">Visit property website</a>', $url );
+        
+        echo '</div>';
+    echo '</div>';
+    
+    //////////////////////////
+    // PROPERTY DESCRIPTION //
+    //////////////////////////
+
+    if ( $description ) {
+        
+        echo '<div class="description-wrap">';
+        
+            if ( $city )
+                printf( '<h4 class="city">%s</h4>', $city );
+                
+            if ( $title )
+                printf( '<h2>Welcome home to %s</h2>', $title );
+                
+            printf( '<div class="description">%s</div>', $description );
+        
+        echo '</div>';
+        
+    }
+    
+    ////////////////
+    // FLOORPLANS //
+    ////////////////
+
+    $args = array(
+        'post_type' => 'floorplans',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            'key'   => 'voyager_property_code',
+            'value' => $voyager_property_code,
+        ),
+    );
+
+    $query = new WP_Query($args);
+    $floorplans = $query->posts;
+    
+    if ( $floorplans ) {
+        echo '<div class="floorplans-wrap">';
+            echo '<h2>Availability</h2>';
+            echo '<div class="floorplans">';
+                foreach ($floorplans as $floorplan) {
+                    do_action( 'apartmentsync_do_floorplan_in_archive', $floorplan );
+                }
+            echo '</div>'; // .floorplans
+        echo '</div>'; // .floorplans-wrap
+    }
+    
+    
+echo '</div>'; // .single-properties-wrap
 
 get_footer();
+
+

@@ -108,7 +108,7 @@ require_once( 'lib/options-pages/main-settings.php' );
 
 //* Templates
 require_once( 'template/template-detection.php' );
-require_once( 'template/in-archive-floorplans.php' );
+require_once( 'template/floorplan-in-archive.php' );
 
 //* Documentation
 require_once( 'lib/options-pages/documentation-sidebar-link.php' );
@@ -180,6 +180,19 @@ function apartmentsync_register_content_types() {
         
     }
     
+}
+
+//////////////
+// ENQUEUES //
+//////////////
+
+add_action( 'wp_enqueue_scripts', 'apartmentsync_enqueue_scripts_stylesheets' );
+function apartmentsync_enqueue_scripts_stylesheets() {
+	
+	// Plugin styles
+    wp_register_style( 'apartmentsync-single-properties', APARTMENTSYNC_PATH . 'css/single-properties.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_register_style( 'apartmentsync-floorplan-in-archive', APARTMENTSYNC_PATH . 'css/floorplan-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    	
 }
 
 ////////////////////

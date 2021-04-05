@@ -162,30 +162,6 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     
     //* Grab the data
     $title = get_the_title( $post_id );
-    
-    // // One way of getting the data
-    // $meta = get_post_meta( $post_id );
-    // $availability_url = $meta['availability_url'];
-    // $available_units = $meta['available_units'];
-    // $numberofbaths = $meta['baths'];
-    // $numberofbeds = $meta['beds'];
-    // $has_specials = $meta['has_specials'];
-    // $floorplan_id = $meta['floorplan_id'];
-    // $floorplan_image_url = $meta['floorplan_image_url'];
-    // $floorplan_image_name = $meta['floorplan_image_name'];
-    // $floorplan_image_alt_text = $meta['floorplan_image_alt_text'];
-    // $maximum_deposit = $meta['maximum_deposit'];
-    // $maximum_rent = $meta['maximum_rent'];
-    // $maximum_sqft = $meta['maximum_sqft'];
-    // $minimum_deposit = $meta['minimum_deposit'];
-    // $minimum_rent = $meta['minimum_rent'];
-    // $minimum_sqft = $meta['minimum_sqft'];
-    // $property_id = $meta['property_id'];
-    // $property_show_specials = $meta['property_show_specials'];
-    // $unit_type_mapping = $meta['unit_type_mapping'];
-    // $floorplan_source = $meta['floorplan_source'];
-
-    // Another way of getting it
     $availability_url = get_field( 'availability_url', $post_id );
     $available_units = get_field( 'available_units', $post_id );
     $numberofbaths = get_field( 'baths', $post_id );

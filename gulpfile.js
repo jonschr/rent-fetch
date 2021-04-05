@@ -5,8 +5,26 @@ var sourcemaps = require('gulp-sourcemaps');
 var sassGlob = require('gulp-sass-glob');
 
 //* Tasks
-gulp.task('style', function () {
+gulp.task('floorplangrid', function () {
     return gulp.src('css/floorplangrid.scss')
+        .pipe(sassGlob())
+        .pipe(sourcemaps.init())
+        .pipe(sass().on('error', sass.logError))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('css/'))
+});
+
+gulp.task('single-properties', function () {
+    return gulp.src('css/single-properties.scss')
+        .pipe(sassGlob())
+        .pipe(sourcemaps.init())
+        .pipe(sass().on('error', sass.logError))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('css/'))
+});
+
+gulp.task('floorplan-in-archive', function () {
+    return gulp.src('css/floorplan-in-archive.scss')
         .pipe(sassGlob())
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
@@ -16,7 +34,7 @@ gulp.task('style', function () {
 
 //* Watchers here
 gulp.task('watch', function () {
-    gulp.watch('css/**/*.scss', gulp.series(['style']));
+    gulp.watch('css/**/*.scss', gulp.series(['floorplangrid', 'single-properties', 'floorplan-in-archive']));
 })
 
 gulp.task('default', gulp.series(['watch']));
