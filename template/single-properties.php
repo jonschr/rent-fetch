@@ -144,20 +144,20 @@ echo '<div class="single-properties-wrap">';
         ),
     );
 
-    $query = new WP_Query($args);
-    $floorplans = $query->posts;
+    $floorplans_query = new WP_Query( $args );
     
-    if ( $floorplans ) {
+    if ( $floorplans_query->have_posts() ) {
         echo '<div class="floorplans-wrap">';
             echo '<h2>Availability</h2>';
-            echo '<div class="floorplans">';
-                foreach ($floorplans as $floorplan) {
-                    do_action( 'apartmentsync_do_floorplan_in_archive', $floorplan );
-                }
+            echo '<div class="floorplan-in-archive">';
+                while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
+                    do_action( 'apartmentsync_do_floorplan_in_archive', $post );
+                endwhile;
             echo '</div>'; // .floorplans
         echo '</div>'; // .floorplans-wrap
     }
     
+    wp_reset_postdata();
     
 echo '</div>'; // .single-properties-wrap
 
