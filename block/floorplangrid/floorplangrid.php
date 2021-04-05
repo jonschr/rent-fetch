@@ -234,7 +234,7 @@ function apartmentsync_floorplangrid_each( $post_id, $settings ) {
     if ( !$minimum_sqft && $maximum_sqft ) $sqft_range = sprintf( '%s %s', $maximum_sqft, $sqft_label );
     
     //* Set up the classes
-    $floorplanclass = array( 'floorplan' );
+    $floorplanclass = array( 'floorplan', 'floorplan-' . $post_id );
     
     if ( $available_units > 0 ) {
         $floorplanclass[] = 'units-available';
