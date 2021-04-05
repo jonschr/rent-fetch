@@ -1,3 +1,9 @@
+## 0.18.1
+* Adding ability to target a specific floorplan with javascript more easily.
+
+## 0.18.0
+* Continuing work on the single-properties template
+
 ## 0.17.0
 * Starting on the basic version of the single-properties template
 
