@@ -19,12 +19,10 @@ function apartmentsync_propertymap( $atts ) {
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
                 echo '<div class="dropdown-menu">';
-                    echo '<select name="bedsfilter">';
-                        echo '<option value="">Bedrooms</option>';
                         foreach( $beds as $bed ) {
-                            printf( '<option value="%s">%s Bedroom</option>', $bed, $bed );
+                            printf( '<label><input type="checkbox" name="beds-%s" checked>%s Bedroom</input></label>', $bed, $bed );
+                            // printf( '<option value="%s">%s Bedroom</option>', $bed, $bed );
                         }
-                    echo '</select>'; // .bedsfilter
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
@@ -96,17 +94,27 @@ function apartmentsync_filter_properties(){
 		'order'	=> 'ASC' // ASC or DESC
 	);
     
-    // bedrooms
-	if( isset( $_POST['bedsfilter'] ) && $_POST['bedsfilter'] != null ) {
-		$args['meta_query'][] = array(
-			array(
-				'key' => 'beds',
-				'value' => $_POST['bedsfilter']
-			)
-		);
+    
+    //* bedrooms
+    $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+    $beds = array_unique( $beds );
+    asort( $beds );
+    
+    // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
+    foreach ( $beds as $bed ) {
+        if ( isset( $_POST['beds-' . $bed ] ) && $_POST['beds-' . $bed ] == 'on' )
+            $bedsarray[] = $bed;
     }
     
-    // bathrooms
+    // add the meta query array to our $args
+    $args['meta_query'][] = array(
+        array(
+            'key' => 'beds',
+            'value' => $bedsarray,
+        )
+    );
+    
+    //* bathrooms
 	if( isset( $_POST['bathsfilter'] ) && $_POST['bathsfilter'] != null ) {
 		$args['meta_query'][] = array(
 			array(
@@ -167,6 +175,10 @@ function apartmentsync_filter_properties(){
 	// 	);
 	// // if you want to use multiple checkboxed, just duplicate the above 5 lines for each checkbox
  
+    // echo '<pre style="font-size: 14px;">';
+    // print_r( $args );
+    // echo '</pre>';
+    
 	$query = new WP_Query( $args );
  
 	if( $query->have_posts() ) :
