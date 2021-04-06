@@ -32,9 +32,18 @@ gulp.task('floorplan-in-archive', function () {
         .pipe(gulp.dest('css/'))
 });
 
+gulp.task('search-properties-map', function () {
+    return gulp.src('css/search-properties-map.scss')
+        .pipe(sassGlob())
+        .pipe(sourcemaps.init())
+        .pipe(sass().on('error', sass.logError))
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest('css/'))
+});
+
 //* Watchers here
 gulp.task('watch', function () {
-    gulp.watch('css/**/*.scss', gulp.series(['floorplangrid', 'single-properties', 'floorplan-in-archive']));
+    gulp.watch('css/**/*.scss', gulp.series(['floorplangrid', 'single-properties', 'floorplan-in-archive', 'search-properties-map']));
 })
 
 gulp.task('default', gulp.series(['watch']));
