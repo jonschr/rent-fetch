@@ -4,7 +4,8 @@ add_shortcode( 'propertymap', 'apartmentsync_propertymap' );
 function apartmentsync_propertymap( $atts ) {
     
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
-    
+    wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
+    wp_enqueue_script( 'apartmentsync-search-properties-script' );
     
     ob_start();
     
@@ -20,9 +21,12 @@ function apartmentsync_propertymap( $atts ) {
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
                 echo '<div class="dropdown-menu">';
                         foreach( $beds as $bed ) {
-                            printf( '<label><input type="checkbox" name="beds-%s" checked>%s Bedroom</input></label>', $bed, $bed );
-                            // printf( '<option value="%s">%s Bedroom</option>', $bed, $bed );
+                            printf( '<label><input type="checkbox" name="beds-%s">%s Bedroom</input></label>', $bed, $bed );
                         }
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply" href="#">Apply</a>';
+                        echo '</div>';
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
@@ -33,62 +37,28 @@ function apartmentsync_propertymap( $atts ) {
         asort( $baths );
         
         echo '<div class="input-wrap input-wrap-baths">';
-            echo '<select name="bathsfilter">';
-                echo '<option value="">Bathrooms</option>';
-                foreach( $baths as $bath ) {
-                    printf( '<option value="%s">%s Bathrooms</option>', $bath, $bath );
-                }
-            echo '</select>';
-        echo '</div>';
-    
+            echo '<div class="dropdown">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Bathrooms">Bathrooms</button>';
+                echo '<div class="dropdown-menu">';
+                        foreach( $baths as $bath ) {
+                            printf( '<label><input type="checkbox" name="baths-%s">%s bathroom</input></label>', $bath, $bath );
+                        }
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply" href="#">Apply</a>';
+                        echo '</div>';
+                echo '</div>';
+            echo '</div>'; // .dropdown
+        echo '</div>'; // .input-wrap
+            
         echo '<button type="reset">Reset</button>';
-        echo '<button type="submit">Apply filter</button>';
+        // echo '<button type="submit">Apply filter</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
     echo '</form>';
-    echo '<div id="response"></div>';
-    
-    ?>
-    
-    
-    <script>
-    
-    jQuery(function($){
-        
-        $( '.dropdown-menu' ).toggle();
-        
-        $('.dropdown button').click( function(){
-            console.log( 'clicked' );
-            $( this ).siblings( '.dropdown-menu' ).toggle();
-        });
-        
-        $( '#filter input' ).change( function() {
-            $( '#filter').submit();
-        });
-        
-        $('#filter').submit(function(){
-            var filter = $('#filter');
-            $.ajax({
-                url:filter.attr('action'),
-                data:filter.serialize(), // form data
-                type:filter.attr('method'), // POST
-                beforeSend:function(xhr){
-                    filter.find('button[type="submit"]').text('Processing...'); // changing the button label
-                },
-                success:function(data){
-                    filter.find('button[type="submit"]').text('Apply filter'); // changing the button label back
-                    $('#response').html(data); // insert data
-                }
-            });
-            return false;
-        });
-        
-        window.onload = function(){
-            $('#filter').submit();
-        }
-    });
-    
-    </script>
-    <?php
+    echo '<div class="map-response-wrap">';
+        echo '<div id="response"></div>';
+        echo '<div id="map"></div>';
+    echo '</div>';
 
     return ob_get_clean();
 }
@@ -105,7 +75,6 @@ function apartmentsync_filter_properties(){
 		'order'	=> 'ASC' // ASC or DESC
 	);
     
-    
     //* bedrooms
     $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
     $beds = array_unique( $beds );
@@ -118,21 +87,34 @@ function apartmentsync_filter_properties(){
     }
     
     // add the meta query array to our $args
-    $args['meta_query'][] = array(
-        array(
-            'key' => 'beds',
-            'value' => $bedsarray,
-        )
-    );
+    if ( isset( $bedsarray ) ) {
+        $args['meta_query'][] = array(
+            array(
+                'key' => 'beds',
+                'value' => $bedsarray,
+            )
+        );
+    }
     
     //* bathrooms
-	if( isset( $_POST['bathsfilter'] ) && $_POST['bathsfilter'] != null ) {
-		$args['meta_query'][] = array(
-			array(
-				'key' => 'baths',
-				'value' => $_POST['bathsfilter']
-			)
-		);
+    $baths = apartentsync_get_meta_values( 'baths', 'floorplans' );
+    $baths = array_unique( $baths );
+    asort( $baths );
+    
+    // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
+    foreach ( $baths as $bath ) {
+        if ( isset( $_POST['baths-' . $bath ] ) && $_POST['baths-' . $bath ] == 'on' )
+            $bathsarray[] = $bath;
+    }
+    
+    // add the meta query array to our $args
+    if ( isset( $bathsarray ) ) {
+        $args['meta_query'][] = array(
+            array(
+                'key' => 'baths',
+                'value' => $bathsarray,
+            )
+        );
     }
  
 	// // for taxonomies / categories
@@ -191,16 +173,47 @@ function apartmentsync_filter_properties(){
     // echo '</pre>';
     
 	$query = new WP_Query( $args );
- 
+     
 	if( $query->have_posts() ) :
         
-		while( $query->have_posts() ): $query->the_post();
-			echo '<h3>' . $query->post->post_title . '</h3>';
-		endwhile;
+        $numberofposts = $query->post_count;
+        printf( '<h2 class="post-count"><span class="number">%s</span> results</h2>', $numberofposts );
+        
+        echo '<div class="properties">';
+            while( $query->have_posts() ): $query->the_post();
+            do_action( 'apartmentsync_do_each_property', $query->post );
+                // echo '<h3>' . $query->post->post_title . '</h3>';
+            endwhile;
+        echo '</div>';
+        
 		wp_reset_postdata();
+        
 	else :
+        
 		echo 'No properties found matching the current search parameters.';
+        
 	endif;
  
 	die();
+}
+
+add_action( 'apartmentsync_do_each_property', 'apartmentsync_each_property', 10, 1 );
+function apartmentsync_each_property( $post ) {
+    
+    $id = $post->ID;
+    $title = $post->post_title;
+    $permalink = get_the_permalink();
+    
+    $class = get_post_class();
+    $class = implode( ' ', $class );
+    
+    printf( '<div class="%s">', $class );
+    
+        if ( $title )
+            printf( '<h3>%s</h3>', $title );
+    
+    echo '</div>';
+    
+    
+    
 }

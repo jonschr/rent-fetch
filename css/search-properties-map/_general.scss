@@ -1,0 +1,23 @@
+.map-response-wrap {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    display: flex;
+    border-top: 1px solid $light;
+
+    #response {
+        height: 800px;
+        width: 60%;
+        padding: 50px;
+        overflow-y: auto;
+    }
+
+    #map {
+        height: 800px;
+        width: 40%;
+        background-color: $light;
+    }
+}

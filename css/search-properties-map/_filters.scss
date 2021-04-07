@@ -1,3 +1,58 @@
 form.property-search-filters {
-    .wrap-filter {}
+    display: flex;
+    padding: 20px 0;
+
+    .input-wrap {
+        flex-flow: 0 1 auto;
+    }
+
+    button {
+        border: 1px solid $default;
+        padding: 12px 25px;
+        background-color: white;
+        border-radius: 3px;
+        line-height: 1em;
+        margin-right: 4px;
+        color: $default;
+    }
+
+    button[type="reset"] {
+        border: 1px solid transparent;
+        background-color: transparent;
+        outline: none !important;
+    }
+
+    .dropdown {
+        position: relative;
+        z-index: 20;
+
+        .dropdown-menu {
+            position: absolute;
+            width: 200px;
+            background-color: white;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            margin-top: 4px;
+            opacity: 0;
+            transition: .3s all ease;
+            transform: translateY(30px);
+            pointer-events: none;
+
+
+            &.show {
+                opacity: 1;
+                transform: none;
+                pointer-events: auto;
+            }
+
+            label {
+                display: block;
+
+                input[type="checkbox"] {
+                    margin-right: 4px;
+                }
+            }
+        }
+    }
 }
