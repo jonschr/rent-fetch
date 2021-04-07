@@ -8,10 +8,10 @@ jQuery(function ($) {
             data: filter.serialize(), // form data
             type: filter.attr('method'), // POST
             beforeSend: function (xhr) {
-                filter.find('button[type="reset"]').text('Processing...'); // changing the button label
+                filter.find('a.reset').text('Processing...'); // changing the button label
             },
             success: function (data) {
-                filter.find('button[type="reset"]').text('Reset'); // changing the button label back
+                filter.find('a.reset').text('Reset'); // changing the button label back
                 $('#response').html(data); // insert data
             }
         });

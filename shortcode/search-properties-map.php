@@ -82,7 +82,8 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
             
         //* Buttons
-        echo '<button type="reset">Reset</button>';
+        // echo '<button type="reset">Reset</button>';
+        printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
         // echo '<button type="submit">Apply filter</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
     echo '</form>';

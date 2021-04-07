@@ -6,7 +6,8 @@ form.property-search-filters {
         flex-flow: 0 1 auto;
     }
 
-    button {
+    button,
+    a.link-as-button {
         border: 2px solid rgba($default, 0.5);
         padding: 12px 25px;
         background-color: white;
@@ -15,6 +16,7 @@ form.property-search-filters {
         margin-right: 6px;
         color: $default;
         outline: none;
+        text-decoration: none;
 
         &.active {
             color: $dark;
@@ -22,10 +24,13 @@ form.property-search-filters {
         }
     }
 
-    button[type="reset"] {
+    button[type="reset"],
+    a.reset {
         border: 1px solid transparent;
         background-color: transparent;
         outline: none !important;
+        padding-left: 12px;
+        padding-right: 12px;
     }
 
     .dropdown {

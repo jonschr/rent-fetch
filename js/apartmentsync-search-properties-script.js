@@ -20,7 +20,6 @@ jQuery(document).ready(function ($) {
     });
 
     //* Submission events
-
     $('a.apply').click(function (e) {
         e.preventDefault();
         $('#filter').submit();
@@ -120,6 +119,5 @@ jQuery(document).ready(function ($) {
     $('.input-wrap-beds input').on('change', importBedsToButton);
     $('.clear').on('click', clearDropdown);
     $('button[type="reset"]').on('click', clearAllDropdowns);
-
 
 });
