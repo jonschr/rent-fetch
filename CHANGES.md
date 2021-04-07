@@ -1,3 +1,6 @@
+## 0.22.1
+* Adding Relevanssi functionality to search the custom fields
+
 ## 0.22.0
 * Adding text-based search (simple version, only finds titles)
 

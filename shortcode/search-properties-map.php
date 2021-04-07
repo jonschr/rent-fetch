@@ -11,10 +11,20 @@ function apartmentsync_propertymap( $atts ) {
     
     //* Get parameters
     
+    // search parameter
+    if (isset($_GET['searchtext'])) {
+        $searchtext = $_GET['searchtext'];
+        $searchtext = esc_attr( $searchtext );
+        
+    } else {
+        $searchtext = null;
+    }
+    
     // beds parameter
     if (isset($_GET['beds'])) {
         $bedsparam = $_GET['beds'];
         $bedsparam = explode( ',', $bedsparam );
+        $bedsparam = array_map( 'esc_attr', $bedsparam );
     } else {
         $bedsparam = array();
     }
@@ -23,6 +33,7 @@ function apartmentsync_propertymap( $atts ) {
     if (isset($_GET['baths'])) {
         $bathsparam = $_GET['baths'];
         $bathsparam = explode( ',', $bathsparam );
+        $bathsparam = array_map( 'esc_attr', $bathsparam );
     } else {
         $bathsparam = array();
     }
@@ -36,7 +47,11 @@ function apartmentsync_propertymap( $atts ) {
         
         
         echo '<div class="input-wrap input-wrap-beds">';
-            echo '<input type="text" name="textsearch" placeholder="Search..." />';
+            if ( $searchtext ) {
+                printf( '<input type="text" name="textsearch" placeholder="Search..." class="active" value="%s" />', $searchtext );
+            } else {
+                echo '<input type="text" name="textsearch" placeholder="Search..." />';
+            }
         echo '</div>';
         
         echo '<div class="input-wrap input-wrap-beds">';
