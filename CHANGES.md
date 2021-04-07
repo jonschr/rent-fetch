@@ -1,3 +1,6 @@
+## 0.19.0
+* Adding a shortcode to do an ajax search of the floorplans
+
 ## 0.18.1
 * Adding ability to target a specific floorplan with javascript more easily.
 
