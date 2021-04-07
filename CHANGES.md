@@ -1,3 +1,6 @@
+## 0.20.1
+* Better way of doing reset (just reload the page without parameters)
+
 ## 0.20.0
 * Adding GET parameter detection to beds and baths on the property search
 
