@@ -178,11 +178,13 @@ function apartmentsync_register_content_types() {
     //* only register the properties and neighborhoods post types if this is a 'multiple' site
     if ( $apartment_site_type == 'multiple' ) {
         
-        // if we aren't running a site for multiple properties, we don't need the neighborhood or property content types
+        // only include the properties and neighborhoods if we have multiple properties needed
         require_once( 'lib/post-type/properties.php' );
         require_once( 'lib/post-type/neighborhoods.php' );
         require_once( 'lib/tax/areas.php' );
         
+        // connect properties and neighborhoods
+        require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
         
     }
     

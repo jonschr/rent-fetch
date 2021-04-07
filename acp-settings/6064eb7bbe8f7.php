@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'version' => '5.4.3',
+  'version' => '5.4.4',
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1617252685,
+  'updated' => 1617820585,
   'columns' => 
   array (
     'title' => 
@@ -241,6 +241,15 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '6064ebf38d9168',
+    ),
+    'properties_to_neighborhoods_from' => 
+    array (
+      'type' => 'properties_to_neighborhoods_from',
+      'label' => 'Connected neighborhoods',
+      'width' => '',
+      'width_unit' => '%',
+      'export' => 'off',
+      'name' => 'properties_to_neighborhoods_from',
     ),
   ),
   'settings' => 

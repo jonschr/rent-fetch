@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'version' => '5.4.3',
+  'version' => '5.4.4',
   'title' => 'Neighborhoods',
   'type' => 'neighborhoods',
   'id' => '606df318a6abd',
-  'updated' => 1617818472,
+  'updated' => 1617820658,
   'columns' => 
   array (
     '606df3201c28f4' => 
@@ -52,11 +52,21 @@ return array (
       'export' => 'off',
       'sort' => 'on',
       'edit' => 'on',
+      'enable_term_creation' => 'off',
       'bulk_edit' => 'on',
       'search' => 'on',
       'filter' => 'off',
       'filter_label' => '',
       'name' => '606df33ce9fbe8',
+    ),
+    '606dfbeb72f1a8' => 
+    array (
+      'type' => 'properties_to_neighborhoods_to',
+      'label' => 'Connected properties',
+      'width' => '',
+      'width_unit' => '%',
+      'export' => 'off',
+      'name' => '606dfbeb72f1a8',
     ),
   ),
   'settings' => 
