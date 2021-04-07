@@ -1,3 +1,6 @@
+## 0.21.2
+* Adding the columns for relationships
+
 ## 0.21.1
 * Adding ACP for neighborhoods
 
