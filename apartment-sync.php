@@ -180,8 +180,8 @@ function apartmentsync_register_content_types() {
         
         // if we aren't running a site for multiple properties, we don't need the neighborhood or property content types
         require_once( 'lib/post-type/properties.php' );
-        require_once( 'list/post-type/neighborhoods.php' );
-        require_once( 'list/tax/areas.php' );
+        require_once( 'lib/post-type/neighborhoods.php' );
+        require_once( 'lib/tax/areas.php' );
         
         
     }

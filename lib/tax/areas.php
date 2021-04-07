@@ -6,7 +6,7 @@ function four_star_register_taxonomies() {
 		'area',
 		'neighborhoods',
 		array(
-			'label' 			=> __( 'Area' ),
+			'label' 			=> __( 'Areas' ),
 			'rewrite' 		=> array( 'slug' => 'area' ),
 			'hierarchical' 	=> true,
 			'show_in_rest' 	=> true,
