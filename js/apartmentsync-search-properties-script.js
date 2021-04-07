@@ -19,12 +19,6 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    //* Dropdown clearing
-    // $('a.clear').click(function (e) {
-    //     e.preventDefault();
-    //     $(this).closest('.dropdown-menu').find('input[type="checkbox"]').prop("checked", false);
-    // });
-
     //* Submission events
 
     $('a.apply').click(function (e) {
@@ -33,21 +27,12 @@ jQuery(document).ready(function ($) {
         $(this).parents('.dropdown-menu').removeClass('show');
     });
 
-    // when something changes, submit
-    // $('#filter input').change(function () {
-    //     $('#filter').submit();
-    // });
-
     // when the form is reset, trigger a submit
     $('#filter').on('reset', function () {
         $('#filter').submit();
     });
 
-    // // submit the form when we load the page
-    // window.onload = function () {
-    //     $('#filter').submit();
-    // }
-
+    //* submit the form
     function submitTheForm() {
         $('#filter').submit();
     }

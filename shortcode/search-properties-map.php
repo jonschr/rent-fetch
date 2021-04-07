@@ -86,8 +86,10 @@ function apartmentsync_filter_properties(){
     
     // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
     foreach ( $beds as $bed ) {
-        if ( isset( $_POST['beds-' . $bed ] ) && $_POST['beds-' . $bed ] == 'on' )
+        if ( isset( $_POST['beds-' . $bed ] ) && $_POST['beds-' . $bed ] == 'on' ) {
+            $bed = sanitize_text_field( $bed );
             $bedsarray[] = $bed;
+        }
     }
     
     // add the meta query array to our $args
@@ -107,8 +109,10 @@ function apartmentsync_filter_properties(){
     
     // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
     foreach ( $baths as $bath ) {
-        if ( isset( $_POST['baths-' . $bath ] ) && $_POST['baths-' . $bath ] == 'on' )
+        if ( isset( $_POST['baths-' . $bath ] ) && $_POST['baths-' . $bath ] == 'on' ) {
+            $bath = sanitize_text_field( $bath );
             $bathsarray[] = $bath;
+        }
     }
     
     // add the meta query array to our $args
