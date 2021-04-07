@@ -54,6 +54,17 @@ function apartmentsync_propertymap( $atts ) {
     
     jQuery(function($){
         
+        $( '.dropdown-menu' ).toggle();
+        
+        $('.dropdown button').click( function(){
+            console.log( 'clicked' );
+            $( this ).siblings( '.dropdown-menu' ).toggle();
+        });
+        
+        $( '#filter input' ).change( function() {
+            $( '#filter').submit();
+        });
+        
         $('#filter').submit(function(){
             var filter = $('#filter');
             $.ajax({
