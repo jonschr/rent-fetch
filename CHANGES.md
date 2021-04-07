@@ -1,3 +1,6 @@
+## 0.22.0
+* Adding text-based search (simple version, only finds titles)
+
 ## 0.21.2
 * Adding the columns for relationships
 

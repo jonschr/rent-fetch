@@ -4,16 +4,16 @@ form.property-search-filters {
 
     .input-wrap {
         flex-flow: 0 1 auto;
+        margin-right: 6px;
     }
 
     button,
     a.link-as-button {
         border: 2px solid rgba($default, 0.5);
-        padding: 12px 25px;
+        padding: 14px 25px;
         background-color: white;
         border-radius: 3px;
         line-height: 1em;
-        margin-right: 6px;
         color: $default;
         outline: none;
         text-decoration: none;
@@ -21,6 +21,26 @@ form.property-search-filters {
         &.active {
             color: $dark;
             border-color: $dark;
+        }
+    }
+
+    input[type="text"] {
+        border-radius: 3px;
+        border: 2px solid rgba($default, 0.5);
+        color: $default;
+
+        &::placeholder {
+            color: $default;
+        }
+
+        &::-webkit-input-placeholder {
+            color: $default;
+        }
+
+        &.active,
+        &:focus {
+            border-color: $dark;
+            color: $dark;
         }
     }
 

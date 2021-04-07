@@ -34,6 +34,11 @@ function apartmentsync_propertymap( $atts ) {
         $beds = array_unique( $beds );
         asort( $beds );
         
+        
+        echo '<div class="input-wrap input-wrap-beds">';
+            echo '<input type="text" name="textsearch" placeholder="Search..." />';
+        echo '</div>';
+        
         echo '<div class="input-wrap input-wrap-beds">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
@@ -101,14 +106,27 @@ add_action( 'wp_ajax_propertysearch', 'apartmentsync_filter_properties' ); // wp
 add_action( 'wp_ajax_nopriv_propertysearch', 'apartmentsync_filter_properties' );
 function apartmentsync_filter_properties(){
     
+    //* text-based search
+    // TODO needs moved to the properties query, shouldn't be in the floorplans query
+    $search = null;
+    
+    if ( isset( $_POST['textsearch'] ) ) {
+        $search = $_POST['textsearch'];
+        $search = sanitize_text_field( $search );
+    }
+    
+    // $search = 'hello';
+    
     //* start with floorplans
 	$args = array(
         'post_type' => 'floorplans',
+        's' => $search, // TODO move to properties query
+        'relevanssi' => true, // TODO move to properties query
         'posts_per_page' => -1,
 		'orderby' => 'date', // we will sort posts by date
 		'order'	=> 'ASC' // ASC or DESC
 	);
-    
+        
     //* bedrooms
     $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
     $beds = array_unique( $beds );
@@ -206,9 +224,9 @@ function apartmentsync_filter_properties(){
 	// 	);
 	// // if you want to use multiple checkboxed, just duplicate the above 5 lines for each checkbox
  
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $args );
-    // echo '</pre>';
+    echo '<pre style="font-size: 14px;">';
+    print_r( $args );
+    echo '</pre>';
     
 	$query = new WP_Query( $args );
      
@@ -240,6 +258,7 @@ function apartmentsync_each_property( $post ) {
     $id = $post->ID;
     $title = $post->post_title;
     $permalink = get_the_permalink();
+    $property_id = get_post_meta( $id, 'property_id', true );
     
     $class = get_post_class();
     $class = implode( ' ', $class );
@@ -248,6 +267,14 @@ function apartmentsync_each_property( $post ) {
     
         if ( $title )
             printf( '<h3>%s</h3>', $title );
+            
+        echo 'Property ID: ' . $post->property_id;
+        echo '<br/>';
+        echo 'Beds: ' . $post->beds;
+        echo '<br/>';
+        echo 'Baths: ' . $post->baths;
+            
+        edit_post_link();
     
     echo '</div>';
     

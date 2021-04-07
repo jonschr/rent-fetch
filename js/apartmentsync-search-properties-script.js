@@ -109,6 +109,17 @@ jQuery(document).ready(function ($) {
 
     }
 
+    function textInputActive() {
+        var textsearchval = $(this).val();
+        if (textsearchval.length > 0) {
+            $(this).addClass('active');
+        } else {
+            $(this).removeClass('active');
+        }
+
+        submitTheForm();
+    }
+
     // on load, do these functions
     importBedsToButton();
     importBathsToButton();
@@ -119,5 +130,6 @@ jQuery(document).ready(function ($) {
     $('.input-wrap-beds input').on('change', importBedsToButton);
     $('.clear').on('click', clearDropdown);
     $('button[type="reset"]').on('click', clearAllDropdowns);
+    $('input[type="text"]').on('change', textInputActive);
 
 });

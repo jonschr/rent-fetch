@@ -138,12 +138,15 @@ echo '<div class="single-properties-wrap">';
     $args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
+        'orderby' => 'meta_value_num',
+        'meta_key' => 'beds',
+        'order' => 'ASC',
         'meta_query' => array(
-            'key'   => 'voyager_property_code',
-            'value' => $voyager_property_code,
+            'key'   => 'property_id',
+            'value' => $property_id,
         ),
     );
-
+    
     $floorplans_query = new WP_Query( $args );
     
     if ( $floorplans_query->have_posts() ) {
