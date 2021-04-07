@@ -7,13 +7,19 @@ form.property-search-filters {
     }
 
     button {
-        border: 1px solid $default;
+        border: 2px solid rgba($default, 0.5);
         padding: 12px 25px;
         background-color: white;
         border-radius: 3px;
         line-height: 1em;
-        margin-right: 4px;
+        margin-right: 6px;
         color: $default;
+        outline: none;
+
+        &.active {
+            color: $dark;
+            border-color: $dark;
+        }
     }
 
     button[type="reset"] {
@@ -30,14 +36,18 @@ form.property-search-filters {
             position: absolute;
             width: 200px;
             background-color: white;
-            padding: 15px;
+            padding: 0;
             border: 1px solid #ccc;
             border-radius: 3px;
-            margin-top: 4px;
+            margin-top: 6px;
             opacity: 0;
             transition: .3s all ease;
             transform: translateY(30px);
             pointer-events: none;
+
+            .dropdown-menu-items {
+                padding: 15px;
+            }
 
 
             &.show {
@@ -51,6 +61,22 @@ form.property-search-filters {
 
                 input[type="checkbox"] {
                     margin-right: 4px;
+                }
+            }
+
+            .filter-application {
+                padding: 5px 15px;
+                border-top: 1px solid $light;
+                display: flex;
+                justify-content: space-between;
+                font-size: 14px;
+
+                a {
+                    text-decoration: none;
+
+                    &.clear {
+                        color: $default;
+                    }
                 }
             }
         }

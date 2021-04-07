@@ -20,13 +20,15 @@ function apartmentsync_propertymap( $atts ) {
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
                 echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
                         foreach( $beds as $bed ) {
-                            printf( '<label><input type="checkbox" name="beds-%s">%s Bedroom</input></label>', $bed, $bed );
+                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s">%s Bedroom</input></label>', $bed, $bed, $bed );
                         }
-                        echo '<div class="filter-application">';
-                            echo '<a class="clear" href="#">Clear</a>';
-                            echo '<a class="apply" href="#">Apply</a>';
-                        echo '</div>';
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
@@ -40,13 +42,15 @@ function apartmentsync_propertymap( $atts ) {
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Bathrooms">Bathrooms</button>';
                 echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
                         foreach( $baths as $bath ) {
-                            printf( '<label><input type="checkbox" name="baths-%s">%s bathroom</input></label>', $bath, $bath );
+                            printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
                         }
-                        echo '<div class="filter-application">';
-                            echo '<a class="clear" href="#">Clear</a>';
-                            echo '<a class="apply" href="#">Apply</a>';
-                        echo '</div>';
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
@@ -177,12 +181,11 @@ function apartmentsync_filter_properties(){
 	if( $query->have_posts() ) :
         
         $numberofposts = $query->post_count;
-        printf( '<h2 class="post-count"><span class="number">%s</span> results</h2>', $numberofposts );
+        printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> results</h2><p>Note: Right now this is searching floorplans. Long-term, it will need to search the floorplans first, then do a secondary search of the associated properties.</p></div>', $numberofposts );
         
         echo '<div class="properties">';
             while( $query->have_posts() ): $query->the_post();
-            do_action( 'apartmentsync_do_each_property', $query->post );
-                // echo '<h3>' . $query->post->post_title . '</h3>';
+                do_action( 'apartmentsync_do_each_property', $query->post );
             endwhile;
         echo '</div>';
         
