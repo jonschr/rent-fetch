@@ -3,16 +3,16 @@
 /**
  * Register the content stypes
  */
-add_action( 'init', 'apartmentsync_register_floorplans_cpt' );
-function apartmentsync_register_floorplans_cpt() {
+add_action( 'init', 'apartmentsync_register_neighborhoods_cpt' );
+function apartmentsync_register_neighborhoods_cpt() {
 
-	//* Floorplans
-	$name_plural = 'Floorplans';
-	$name_singular = 'Floorplan';
-	$post_type = 'floorplans';
-	$slug = 'floorplans';
-	$icon = 'table-col-before'; //* https://developer.wordpress.org/resource/dashicons/
-	$supports = array( 'title', 'thumbnail' );
+	//* Neighborhoods
+	$name_plural = 'Neighborhoods';
+	$name_singular = 'Neighborhood';
+	$post_type = 'neighborhoods';
+	$slug = 'neighborhoods';
+	$icon = 'admin-multisite'; //* https://developer.wordpress.org/resource/dashicons/
+	$supports = array( 'title', 'editor', 'thumbnail' );
 
 	$labels = array(
 		'name' => $name_plural,
@@ -41,7 +41,7 @@ function apartmentsync_register_floorplans_cpt() {
 		'rewrite' => array( 'slug' => $slug ),
 		'has_archive' => false,
 		'hierarchical' => false,
-		'menu_position' => null,
+		'menu_position' => 30,
 		'menu_icon' => 'dashicons-' . $icon,
 		'show_in_rest' => true,
 		'supports' => $supports,
@@ -50,4 +50,3 @@ function apartmentsync_register_floorplans_cpt() {
 	register_post_type( $post_type, $args );
 
 }
-

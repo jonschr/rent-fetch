@@ -1,3 +1,6 @@
+## 0.21.0
+* Adding neighborhoods registration back into the plugin
+
 ## 0.20.1
 * Better way of doing reset (just reload the page without parameters)
 

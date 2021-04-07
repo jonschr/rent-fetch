@@ -3,7 +3,8 @@
 /**
  * Register the content stypes
  */
-function apartment_sync_register_properties_cpt() {
+add_action( 'init', 'apartmentsync_register_properties_cpt' );
+function apartmentsync_register_properties_cpt() {
 
 	//* Properties
 	$name_plural = 'Properties';
@@ -50,4 +51,3 @@ function apartment_sync_register_properties_cpt() {
 
 }
 
-add_action( 'init', 'apartment_sync_register_properties_cpt' );
