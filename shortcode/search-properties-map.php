@@ -9,9 +9,27 @@ function apartmentsync_propertymap( $atts ) {
     
     ob_start();
     
+    //* Get parameters
+    
+    // beds parameter
+    if (isset($_GET['beds'])) {
+        $bedsparam = $_GET['beds'];
+        $bedsparam = explode( ',', $bedsparam );
+    } else {
+        $bedsparam = array();
+    }
+    
+    // baths parameter
+    if (isset($_GET['baths'])) {
+        $bathsparam = $_GET['baths'];
+        $bathsparam = explode( ',', $bathsparam );
+    } else {
+        $bathsparam = array();
+    }
+    
     printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter">', site_url() );
         
-        //* Bedrooms
+        //* Build the beds filter
         $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
         $beds = array_unique( $beds );
         asort( $beds );
@@ -22,7 +40,11 @@ function apartmentsync_propertymap( $atts ) {
                 echo '<div class="dropdown-menu">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $beds as $bed ) {
-                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s">%s Bedroom</input></label>', $bed, $bed, $bed );
+                            if ( in_array( $bed, $bedsparam ) ) {
+                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked>%s Bedroom</input></label>', $bed, $bed, $bed );
+                            } else {
+                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s">%s Bedroom</input></label>', $bed, $bed, $bed );
+                            }
                         }
                     echo '</div>';
                     echo '<div class="filter-application">';
@@ -33,7 +55,7 @@ function apartmentsync_propertymap( $atts ) {
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
         
-        //* Bathrooms
+        //* Build the baths filter
         $baths = apartentsync_get_meta_values( 'baths', 'floorplans' );
         $baths = array_unique( $baths );
         asort( $baths );
@@ -44,7 +66,11 @@ function apartmentsync_propertymap( $atts ) {
                 echo '<div class="dropdown-menu">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $baths as $bath ) {
-                            printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                            if ( in_array( $bath, $bathsparam ) ) {
+                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                            } else {
+                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                            }
                         }
                     echo '</div>';
                     echo '<div class="filter-application">';
@@ -55,10 +81,13 @@ function apartmentsync_propertymap( $atts ) {
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
             
+        //* Buttons
         echo '<button type="reset">Reset</button>';
         // echo '<button type="submit">Apply filter</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
     echo '</form>';
+    
+    //* Our container markup for the results
     echo '<div class="map-response-wrap">';
         echo '<div id="response"></div>';
         echo '<div id="map"></div>';

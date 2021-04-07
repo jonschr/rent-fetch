@@ -1,3 +1,6 @@
+## 0.20.0
+* Adding GET parameter detection to beds and baths on the property search
+
 ## 0.19.0
 * Adding a shortcode to do an ajax search of the floorplans
 

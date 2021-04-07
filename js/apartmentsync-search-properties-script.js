@@ -110,8 +110,12 @@ jQuery(document).ready(function ($) {
 
     }
 
-
+    // on load, do these functions
+    importBedsToButton();
+    importBathsToButton();
     submitTheForm();
+
+    // do some of these functions when something happens
     $('.input-wrap-baths input').on('change', importBathsToButton);
     $('.input-wrap-beds input').on('change', importBedsToButton);
     $('.clear').on('click', clearDropdown);
