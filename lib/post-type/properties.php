@@ -12,7 +12,7 @@ function apartmentsync_register_properties_cpt() {
 	$post_type = 'properties';
 	$slug = 'properties';
 	$icon = 'admin-home'; //* https://developer.wordpress.org/resource/dashicons/
-	$supports = array( 'title' );
+	$supports = array( 'title', 'page-attributes' );
 
 	$labels = array(
 		'name' => $name_plural,

@@ -1,33 +1,99 @@
 form.property-search-filters {
     display: flex;
+    flex-flow: row wrap;
     padding: 20px 0;
+    justify-content: space-around;
 
     .input-wrap {
-        flex-flow: 0 1 auto;
+        flex: 1 1 auto;
         margin-right: 6px;
+        margin-bottom: 6px;
+
+        &.input-wrap-text-search {
+            width: calc(100% - 160px);
+
+            @include mobile {
+                width: calc(100% - 110px);
+            }
+        }
+
+    }
+
+    button {
+        width: 100%;
+
+        &:after {
+            content: "\f347";
+            font-family: 'dashicons';
+            opacity: 0.5;
+            top: 2px;
+            font-size: 13px;
+            display: inline-block;
+            margin-left: 4px;
+            position: relative;
+            transition: .3s all ease;
+        }
+
+        &.active,
+        &:focus {
+            color: $dark;
+            border-color: $dark;
+            transition: .3s all ease;
+        }
+
+        &:focus {
+            &:after {
+                transform: rotate(180deg);
+                color: $dark;
+                opacity: 1;
+                top: 0;
+            }
+        }
     }
 
     button,
-    a.link-as-button {
-        border: 2px solid rgba($default, 0.5);
-        padding: 14px 25px;
+    a.reset {
+        border: 2px solid rgba($default, 0.2);
+        padding: 14px 14px;
         background-color: white;
         border-radius: 3px;
         line-height: 1em;
         color: $default;
         outline: none;
         text-decoration: none;
+        background-color: $light;
+        font-size: 16px;
+    }
 
-        &.active {
-            color: $dark;
-            border-color: $dark;
+    button[type="reset"],
+    a.reset {
+        border: 1px solid transparent;
+        background-color: transparent;
+        outline: none !important;
+        padding-left: 12px;
+        padding-right: 12px;
+        z-index: 20;
+        position: relative;
+
+
+    }
+
+    a.reset {
+        background-color: transparent;
+        border-radius: 0;
+        width: 120px;
+
+        @include mobile {
+            width: 100px;
         }
     }
 
     input[type="text"] {
         border-radius: 3px;
-        border: 2px solid rgba($default, 0.5);
+        border: 2px solid rgba($default, 0.2);
         color: $default;
+        width: 100%;
+        font-size: 16px;
 
         &::placeholder {
             color: $default;
@@ -44,25 +110,17 @@ form.property-search-filters {
         }
     }
 
-    button[type="reset"],
-    a.reset {
-        border: 1px solid transparent;
-        background-color: transparent;
-        outline: none !important;
-        padding-left: 12px;
-        padding-right: 12px;
-    }
-
     .dropdown {
         position: relative;
-        z-index: 20;
 
         .dropdown-menu {
+            z-index: 40;
             position: absolute;
             width: 200px;
+            background-color: $light;
             background-color: white;
             padding: 0;
-            border: 1px solid #ccc;
+            border: 2px solid rgba($default, 0.2);
             border-radius: 3px;
             margin-top: 6px;
             opacity: 0;
@@ -83,6 +141,7 @@ form.property-search-filters {
 
             label {
                 display: block;
+                font-size: 16px;
 
                 input[type="checkbox"] {
                     margin-right: 4px;

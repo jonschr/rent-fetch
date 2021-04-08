@@ -84,7 +84,7 @@ function apartmentsync_acf_json_load_point( $paths ) {
 // ADMIN COLUMNS PRO //
 ///////////////////////
 
-add_filter( 'acp/storage/file/directory/writable', '__return_false' ); //* CHANGE TO __return_true TO MAKE CHANGES
+add_filter( 'acp/storage/file/directory/writable', '__return_true' ); //* CHANGE TO __return_true TO MAKE CHANGES
 add_filter( 'acp/storage/file/directory', 'apartmentsync_acp_storage_file_directory' );
 function apartmentsync_acp_storage_file_directory( $path ) {
 	// Use a writable path, directory will be created for you

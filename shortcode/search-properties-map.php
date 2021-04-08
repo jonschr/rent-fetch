@@ -39,14 +39,9 @@ function apartmentsync_propertymap( $atts ) {
     }
     
     printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter">', site_url() );
-        
-        //* Build the beds filter
-        $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
-        $beds = array_unique( $beds );
-        asort( $beds );
-        
-        
-        echo '<div class="input-wrap input-wrap-beds">';
+    
+        //* Build the text search
+        echo '<div class="input-wrap input-wrap-text-search">';
             if ( $searchtext ) {
                 printf( '<input type="text" name="textsearch" placeholder="Search..." class="active" value="%s" />', $searchtext );
             } else {
@@ -54,6 +49,15 @@ function apartmentsync_propertymap( $atts ) {
             }
         echo '</div>';
         
+        //* Reset
+        printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
+        
+        //* Build the beds filter
+        $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+        $beds = array_unique( $beds );
+        asort( $beds );
+                
+        // beds
         echo '<div class="input-wrap input-wrap-beds">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
@@ -82,7 +86,7 @@ function apartmentsync_propertymap( $atts ) {
         
         echo '<div class="input-wrap input-wrap-baths">';
             echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Bathrooms">Bathrooms</button>';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Baths">Baths</button>';
                 echo '<div class="dropdown-menu">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $baths as $bath ) {
@@ -100,10 +104,120 @@ function apartmentsync_propertymap( $atts ) {
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
+        
+        //* Building type
+        echo '<div class="input-wrap input-wrap-building-type">';
+            echo '<div class="dropdown">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
+                echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
+                        // foreach( $baths as $bath ) {
+                        //     if ( in_array( $bath, $bathsparam ) ) {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     } else {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     }
+                        // }
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>'; // .dropdown
+        echo '</div>'; // .input-wrap
+        
+        //* Move-in date
+        echo '<div class="input-wrap input-wrap-move-in-date">';
+            echo '<div class="dropdown">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Move-in">Move-in</button>';
+                echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
+                        // foreach( $baths as $bath ) {
+                        //     if ( in_array( $bath, $bathsparam ) ) {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     } else {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     }
+                        // }
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>'; // .dropdown
+        echo '</div>'; // .input-wrap
+        
+        //* Price range
+        echo '<div class="input-wrap input-wrap-price-range">';
+            echo '<div class="dropdown">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Price">Price</button>';
+                echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
+                        // foreach( $baths as $bath ) {
+                        //     if ( in_array( $bath, $bathsparam ) ) {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     } else {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     }
+                        // }
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>'; // .dropdown
+        echo '</div>'; // .input-wrap
+        
+        //* Pets
+        echo '<div class="input-wrap input-wrap-pets">';
+            echo '<div class="dropdown">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Pets">Pets</button>';
+                echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
+                        // foreach( $baths as $bath ) {
+                        //     if ( in_array( $bath, $bathsparam ) ) {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     } else {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     }
+                        // }
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>'; // .dropdown
+        echo '</div>'; // .input-wrap
+        
+        //* Amenities
+        echo '<div class="input-wrap input-wrap-amenities">';
+            echo '<div class="dropdown">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
+                echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu-items">';
+                        // foreach( $baths as $bath ) {
+                        //     if ( in_array( $bath, $bathsparam ) ) {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     } else {
+                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //     }
+                        // }
+                    echo '</div>';
+                    echo '<div class="filter-application">';
+                        echo '<a class="clear" href="#">Clear</a>';
+                        echo '<a class="apply" href="#">Apply</a>';
+                    echo '</div>';
+                echo '</div>';
+            echo '</div>'; // .dropdown
+        echo '</div>'; // .input-wrap
             
         //* Buttons
         // echo '<button type="reset">Reset</button>';
-        printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
+        
         // echo '<button type="submit">Apply filter</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
     echo '</form>';
@@ -239,9 +353,9 @@ function apartmentsync_filter_properties(){
 	// 	);
 	// // if you want to use multiple checkboxed, just duplicate the above 5 lines for each checkbox
  
-    echo '<pre style="font-size: 14px;">';
-    print_r( $args );
-    echo '</pre>';
+    // echo '<pre style="font-size: 14px;">';
+    // print_r( $args );
+    // echo '</pre>';
     
 	$query = new WP_Query( $args );
      
