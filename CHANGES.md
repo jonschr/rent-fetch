@@ -1,3 +1,6 @@
+## 0.24.0
+* Converting the search over to find properties
+
 ## 0.23.0
 * Adding new filters, but not the new functionality
 
