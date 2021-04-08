@@ -76,8 +76,6 @@ jQuery(document).ready(function ($) {
             }
         });
 
-        console.log(bedsArray);
-
         if (jQuery.isEmptyObject(bedsArray) == false) {
             var text = bedsArray.join(', ');
             text = text + ' Bedroom';

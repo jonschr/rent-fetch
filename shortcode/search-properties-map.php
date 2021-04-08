@@ -240,7 +240,11 @@ function apartmentsync_filter_properties(){
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
 		'orderby' => 'date', // we will sort posts by date
-		'order'	=> 'ASC' // ASC or DESC
+		'order'	=> 'ASC', // ASC or DESC
+        // 'cache_results' => false,
+        // 'update_post_meta_cache' => false,
+        // 'update_post_term_cache' => false,
+        'no_found_rows' => true,
 	);
         
     //* bedrooms
@@ -350,6 +354,45 @@ function apartmentsync_filter_properties(){
     // print_r( $floorplans );
     // echo '</pre>';
     
+    foreach ( $floorplans as $key => $floorplan ) {
+        $max = max( $floorplan['beds'] );
+        $min = min( $floorplan['beds'] );
+        
+        if ( $max == $min ) {
+            $floorplans[$key]['bedsrange'] = $max;
+        } else {
+            $floorplans[$key]['bedsrange'] = $min . '-' . $max;
+        }
+        
+        $max = max( $floorplan['baths'] );
+        $min = min( $floorplan['baths'] );
+        
+        if ( $max == $min ) {
+            $floorplans[$key]['bathsrange'] = $max;
+        } else {
+            $floorplans[$key]['bathsrange'] = $min . '-' . $max;
+        }
+        
+        $max = max( $floorplan['maximum_rent'] );
+        $min = min( $floorplan['minimum_rent'] );
+        
+        if ( $max == $min ) {
+            $floorplans[$key]['rentrange'] = $max;
+        } else {
+            $floorplans[$key]['rentrange'] = $min . '-' . $max;
+        }
+        
+        $max = max( $floorplan['maximum_sqft'] );
+        $min = min( $floorplan['minimum_sqft'] );
+        
+        if ( $max == $min ) {
+            $floorplans[$key]['sqftrange'] = $max;
+        } else {
+            $floorplans[$key]['sqftrange'] = $min . '-' . $max;
+        }
+        
+    }
+    
     $property_ids = array_keys( $floorplans );
     
     // echo '<pre style="font-size: 14px;">';
@@ -372,7 +415,11 @@ function apartmentsync_filter_properties(){
         'relevanssi' => true,
         'posts_per_page' => -1,
 		'orderby' => 'menu_order',
-		'order'	=> 'ASC' // ASC or DESC
+		'order'	=> 'ASC', // ASC or DESC
+        // 'cache_results' => false,
+        // 'update_post_meta_cache' => false,
+        // 'update_post_term_cache' => false,
+        'no_found_rows' => true,
 	);
     
     $propertyargs['meta_query'] = array(
@@ -429,10 +476,18 @@ function apartmentsync_each_property( $post, $floorplan ) {
             printf( '<h3>%s</h3>', $title );
             
         echo 'Property ID: ' . $post->property_id;
+        echo '<br/>';
+        echo 'Beds: ' . $floorplan['bedsrange'];
+        echo '<br/>';
+        echo 'Baths: ' . $floorplan['bathsrange'];
+        echo '<br/>';
+        echo 'Rent: ' . $floorplan['rentrange'];
+        echo '<br/>';
+        echo 'Sqft: ' . $floorplan['sqftrange'];
         
-        echo '<pre style="font-size: 14px;">';
-        print_r( $floorplan );
-        echo '</pre>';
+         // echo '<pre style="font-size: 14px;">';
+        // print_r( $floorplan );
+        // echo '</pre>';
             
         edit_post_link();
     
