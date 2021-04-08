@@ -1,3 +1,6 @@
+## 0.23.0
+* Adding new filters, but not the new functionality
+
 ## 0.22.1
 * Adding Relevanssi functionality to search the custom fields
 
