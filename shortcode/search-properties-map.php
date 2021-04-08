@@ -43,9 +43,9 @@ function apartmentsync_propertymap( $atts ) {
         //* Build the text search
         echo '<div class="input-wrap input-wrap-text-search">';
             if ( $searchtext ) {
-                printf( '<input type="text" name="textsearch" placeholder="Search..." class="active" value="%s" />', $searchtext );
+                printf( '<input type="text" name="textsearch" placeholder="Search city or property name..." class="active" value="%s" />', $searchtext );
             } else {
-                echo '<input type="text" name="textsearch" placeholder="Search..." />';
+                echo '<input type="text" name="textsearch" placeholder="Search city or property name..." />';
             }
         echo '</div>';
         
