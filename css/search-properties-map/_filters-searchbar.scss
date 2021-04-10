@@ -9,6 +9,9 @@ body form.property-search-starter {
     }
 
     .input-wrap {
+        min-width: 0;
+        max-width: 200px;
+
         @include desktop {
             width: 0%;
         }
@@ -16,7 +19,7 @@ body form.property-search-starter {
 
     .input-wrap.input-wrap-text-search {
         @include desktop {
-            width: 40%;
+            max-width: 25%;
         }
 
         @include mobile {
