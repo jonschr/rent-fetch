@@ -106,7 +106,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Building type
-        echo '<div class="input-wrap input-wrap-building-type">';
+        echo '<div class="input-wrap input-wrap-building-type incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
                 echo '<div class="dropdown-menu">';
@@ -128,7 +128,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Move-in date
-        echo '<div class="input-wrap input-wrap-move-in-date">';
+        echo '<div class="input-wrap input-wrap-move-in-date incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Move-in">Move-in</button>';
                 echo '<div class="dropdown-menu">';
@@ -150,7 +150,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Price range
-        echo '<div class="input-wrap input-wrap-price-range">';
+        echo '<div class="input-wrap input-wrap-price-range incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Price">Price</button>';
                 echo '<div class="dropdown-menu">';
@@ -172,7 +172,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Pets
-        echo '<div class="input-wrap input-wrap-pets">';
+        echo '<div class="input-wrap input-wrap-pets incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Pets">Pets</button>';
                 echo '<div class="dropdown-menu">';
@@ -194,7 +194,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Amenities
-        echo '<div class="input-wrap input-wrap-amenities">';
+        echo '<div class="input-wrap input-wrap-amenities incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
                 echo '<div class="dropdown-menu">';

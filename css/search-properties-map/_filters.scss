@@ -17,6 +17,13 @@ form.property-search-filters {
             }
         }
 
+        &.incomplete {
+            button[type="button"] {
+                background-color: rgba(red, 0.05);
+                border-color: rgba(red, 0.1);
+            }
+        }
+
     }
 
     button {
