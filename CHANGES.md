@@ -1,3 +1,6 @@
+## 0.27.0
+* Add the home page search form basics
+
 ## 0.26.0
 * Remove unrealistically low results from the big search
 
