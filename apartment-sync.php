@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.26.0
+	Version: 0.27.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.26.0' );
+define ( 'APARTMENTSYNC_VERSION', '0.27.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -112,6 +112,7 @@ require_once( 'template/floorplan-in-archive.php' );
 
 //* Shortcodes
 require_once( 'shortcode/search-properties-map.php' );
+require_once( 'shortcode/search-properties-starter.php' );
 
 //* Documentation
 require_once( 'lib/options-pages/documentation-sidebar-link.php' );
@@ -205,6 +206,10 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-search-properties-ajax', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-ajax.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     wp_register_script( 'apartmentsync-search-properties-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-script.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
+    // Properties searchbar
+    wp_register_script( 'apartmentsync-search-filters-general', APARTMENTSYNC_PATH . 'js/apartmentsync-search-filters-general.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'apartmentsync-searchbar', APARTMENTSYNC_PATH . 'js/apartmentsync-searchbar.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Fancybox
     wp_register_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );

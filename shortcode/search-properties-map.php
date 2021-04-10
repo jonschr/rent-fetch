@@ -4,6 +4,7 @@ add_shortcode( 'propertymap', 'apartmentsync_propertymap' );
 function apartmentsync_propertymap( $atts ) {
     
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
+    wp_enqueue_script( 'apartmentsync-search-filters-general' );
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     
@@ -12,8 +13,8 @@ function apartmentsync_propertymap( $atts ) {
     //* Get parameters
     
     // search parameter
-    if (isset($_GET['searchtext'])) {
-        $searchtext = $_GET['searchtext'];
+    if (isset($_GET['textsearch'])) {
+        $searchtext = $_GET['textsearch'];
         $searchtext = esc_attr( $searchtext );
         
     } else {
