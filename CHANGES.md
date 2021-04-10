@@ -1,3 +1,6 @@
+## 0.25.3
+* Attempt to fix empty properties being added to the database
+
 ## 0.25.1
 * Only use Relevanssi if it's installed
 * Only add the search term if there is a search term

@@ -127,6 +127,10 @@ function apartmentsync_insert_property( $property_data ) {
     $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
     $property_source = 'yardi';
     
+    //* bail if we don't have a title
+    if ( !$title )
+        return;
+    
     // Create post object
     $property_meta = array(
         'post_title'  => wp_strip_all_tags( $title ),
