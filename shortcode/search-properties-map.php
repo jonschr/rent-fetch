@@ -399,29 +399,32 @@ function apartmentsync_filter_properties(){
     // print_r( $property_ids );
     // echo '</pre>';
     
-    //* The property query
+    //* The base property query
+    $propertyargs = array(
+        'post_type' => 'properties',
+        'posts_per_page' => -1,
+		'orderby' => 'menu_order',
+		'order'	=> 'ASC', // ASC or DESC
+        'no_found_rows' => true,
+	);
     
-    //* text-based search
+    //* Add text-based search into the 
     $search = null;
     
     if ( isset( $_POST['textsearch'] ) ) {
         $search = $_POST['textsearch'];
         $search = sanitize_text_field( $search );
     }
+        
+    if ( $search != null ) {
+        $propertyargs['s'] = $search;
+        
+        // force the site to use relevanssi if it's installed
+        if ( function_exists( 'relevanssi_truncate_index_ajax_wrapper' ) )
+            $propertyargs['relevanssi'] = true;
+    }
     
-    $propertyargs = array(
-        'post_type' => 'properties',
-        's' => $search,
-        'relevanssi' => true,
-        'posts_per_page' => -1,
-		'orderby' => 'menu_order',
-		'order'	=> 'ASC', // ASC or DESC
-        // 'cache_results' => false,
-        // 'update_post_meta_cache' => false,
-        // 'update_post_term_cache' => false,
-        'no_found_rows' => true,
-	);
-    
+    //* Add all of our property IDs into the property search
     $propertyargs['meta_query'] = array(
 		array(
 			'key' => 'property_id',

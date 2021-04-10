@@ -1,3 +1,7 @@
+## 0.25.1
+* Only use Relevanssi if it's installed
+* Only add the search term if there is a search term
+
 ## 0.24.1
 * Updating the columns for neighborhoods
 
