@@ -1,3 +1,6 @@
+## 0.26.0
+* Remove unrealistically low results from the big search
+
 ## 0.25.3
 * Attempt to fix empty properties being added to the database
 

@@ -292,6 +292,23 @@ function apartmentsync_filter_properties(){
             )
         );
     }
+    
+    //* Remove anything with an unrealistically low value for rent
+    $args['meta_query'][] = array(
+        array(
+            'key' => 'minimum_rent',
+            'value' => 100,
+            'compare' => '>',
+        )
+    );
+    
+    $args['meta_query'][] = array(
+        array(
+            'key' => 'maximum_rent',
+            'value' => 100,
+            'compare' => '>',
+        )
+    );
  
     // echo '<pre style="font-size: 14px;">';
     // print_r( $args );
