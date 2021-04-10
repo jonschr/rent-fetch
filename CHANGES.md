@@ -1,3 +1,6 @@
+## 0.24.1
+* Updating the columns for neighborhoods
+
 ## 0.24.0
 * Converting the search over to find properties
 

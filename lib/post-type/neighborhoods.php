@@ -12,7 +12,7 @@ function apartmentsync_register_neighborhoods_cpt() {
 	$post_type = 'neighborhoods';
 	$slug = 'neighborhoods';
 	$icon = 'admin-multisite'; //* https://developer.wordpress.org/resource/dashicons/
-	$supports = array( 'title', 'editor', 'thumbnail' );
+	$supports = array( 'title', 'editor', 'thumbnail', 'excerpt' );
 
 	$labels = array(
 		'name' => $name_plural,

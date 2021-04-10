@@ -5,7 +5,7 @@ return array (
   'title' => 'Neighborhoods',
   'type' => 'neighborhoods',
   'id' => '606df318a6abd',
-  'updated' => 1617820658,
+  'updated' => 1618015430,
   'columns' => 
   array (
     '606df3201c28f4' => 
@@ -37,8 +37,44 @@ return array (
       'sort' => 'on',
       'edit' => 'on',
       'bulk_edit' => 'on',
-      'search' => 'on',
+      'search' => 'off',
       'name' => 'title',
+    ),
+    '6070f37c1f7cec' => 
+    array (
+      'type' => 'column-excerpt',
+      'label' => 'Excerpt',
+      'width' => '',
+      'width_unit' => '%',
+      'excerpt_length' => '5',
+      'before' => '',
+      'after' => '',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'off',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6070f37c1f7cec',
+    ),
+    '6070f4391a1cac' => 
+    array (
+      'type' => 'column-content',
+      'label' => 'Content',
+      'width' => '',
+      'width_unit' => '%',
+      'string_limit' => 'word_limit',
+      'excerpt_length' => '5',
+      'before' => '',
+      'after' => '',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6070f4391a1cac',
     ),
     '606df33ce9fbe8' => 
     array (
@@ -59,14 +95,14 @@ return array (
       'filter_label' => '',
       'name' => '606df33ce9fbe8',
     ),
-    '606dfbeb72f1a8' => 
+    'properties_to_neighborhoods_to' => 
     array (
       'type' => 'properties_to_neighborhoods_to',
       'label' => 'Connected properties',
       'width' => '',
       'width_unit' => '%',
       'export' => 'off',
-      'name' => '606dfbeb72f1a8',
+      'name' => 'properties_to_neighborhoods_to',
     ),
   ),
   'settings' => 
