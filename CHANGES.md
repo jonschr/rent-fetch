@@ -1,3 +1,6 @@
+## 0.29.1
+* Button style fixes
+
 ## 0.29.0
 * Adding the property type taxonomy and enabling it in the search if there are any types
 
