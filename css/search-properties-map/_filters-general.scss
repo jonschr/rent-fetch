@@ -31,6 +31,12 @@ form.property-search-starter {
         width: 100%;
 
         &.dropdown-toggle {
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding-right: 28px;
+            text-align: left;
+
             &:after {
                 content: "\f347";
                 font-family: 'dashicons';
@@ -38,8 +44,10 @@ form.property-search-starter {
                 top: 2px;
                 font-size: 13px;
                 display: inline-block;
-                margin-left: 4px;
-                position: relative;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 14px;
+                position: absolute;
                 transition: .3s all ease;
             }
 
@@ -52,10 +60,9 @@ form.property-search-starter {
 
             &:focus {
                 &:after {
-                    transform: rotate(180deg);
+                    transform: translateY(-50%) rotate(180deg);
                     color: $dark;
                     opacity: 1;
-                    top: 0;
                 }
             }
         }
