@@ -5,14 +5,14 @@ return array (
   'title' => 'Neighborhoods',
   'type' => 'neighborhoods',
   'id' => '606df318a6abd',
-  'updated' => 1618015430,
+  'updated' => 1618261996,
   'columns' => 
   array (
     '606df3201c28f4' => 
     array (
       'type' => 'column-featured_image',
       'label' => 'Image',
-      'width' => '120',
+      'width' => '140',
       'width_unit' => 'px',
       'featured_image_display' => 'image',
       'image_size' => 'cpac-custom',
@@ -71,6 +71,7 @@ return array (
       'export' => 'off',
       'sort' => 'on',
       'edit' => 'on',
+      'editable_type' => 'textarea',
       'search' => 'on',
       'filter' => 'off',
       'filter_label' => '',

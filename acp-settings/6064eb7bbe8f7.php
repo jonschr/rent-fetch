@@ -5,7 +5,7 @@ return array (
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1617848279,
+  'updated' => 1618262075,
   'columns' => 
   array (
     '606e669ec9fbe8' => 
@@ -33,6 +33,43 @@ return array (
       'bulk_edit' => 'on',
       'search' => 'off',
       'name' => 'title',
+    ),
+    '6074b7fc5645a0' => 
+    array (
+      'type' => 'column-taxonomy',
+      'label' => 'Amenities',
+      'width' => '',
+      'width_unit' => '%',
+      'taxonomy' => 'amenities',
+      'term_link_to' => 'filter',
+      'number_of_items' => '10',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6074b7fc5645a0',
+    ),
+    '6074b80cfeb850' => 
+    array (
+      'type' => 'column-taxonomy',
+      'label' => 'Property types',
+      'width' => '',
+      'width_unit' => '%',
+      'taxonomy' => 'propertytypes',
+      'term_link_to' => 'filter',
+      'number_of_items' => '10',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'enable_term_creation' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6074b80cfeb850',
     ),
     '606546393f7cec' => 
     array (
