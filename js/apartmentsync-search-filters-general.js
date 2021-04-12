@@ -75,6 +75,31 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    //* text for propertytypes button
+    function importPropertyTypes() {
+
+        var inputs = $('.input-wrap-propertytypes input');
+        var button = $('.input-wrap-propertytypes button');
+        var propertyTypeNames = [];
+
+        inputs.each(function () {
+            if (this.checked) {
+                propertyTypeName = $(this).attr('data-propertytypesname');
+                propertyTypeNames.push(propertyTypeName);
+            }
+        });
+
+        if (jQuery.isEmptyObject(propertyTypeNames) == false) {
+            var text = propertyTypeNames.join(', ');
+            button.text(text);
+            button.addClass('active');
+        } else {
+            text = button.attr('data-reset');
+            button.text(text);
+            button.removeClass('active');
+        }
+    }
+
     function textInputActive() {
         var textsearchval = $(this).val();
         if (textsearchval.length > 0) {
@@ -96,10 +121,12 @@ jQuery(document).ready(function ($) {
     // on load, do these functions
     importBedsToButton();
     importBathsToButton();
+    importPropertyTypes();
 
     // do some of these functions when something happens
     $('.input-wrap-baths input').on('change', importBathsToButton);
     $('.input-wrap-beds input').on('change', importBedsToButton);
+    $('.input-wrap-propertytypes input').on('change', importPropertyTypes);
     $('.clear').on('click', clearDropdown);
     // $('button[type="reset"]').on('click', clearAllDropdowns);
     $('input[type="text"]').on('change', textInputActive);

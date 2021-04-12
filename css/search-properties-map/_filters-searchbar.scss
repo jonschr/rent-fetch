@@ -10,7 +10,7 @@ body form.property-search-starter {
 
     .input-wrap {
         min-width: 0;
-        max-width: 200px;
+        max-width: 100%;
 
         @include desktop {
             width: 0%;
@@ -25,6 +25,10 @@ body form.property-search-starter {
         @include mobile {
             width: 100%;
         }
+    }
+
+    .input-wrap-submit {
+        max-width: 150px;
     }
 
     button[type="submit"] {

@@ -43,8 +43,18 @@ function apartmentsync_propertysearch( $atts ) {
                     }
                 });
                 baths = baths.join(',');
+                
+                var propertytypes = [];
+                $( '.input-wrap-propertytypes input[type="checkbox"]:checked ').each( function() {
+                    propertytype = $( this ).attr( 'data-propertytypes' );
+                    
+                    if ( propertytype != null ) {
+                        propertytypes.push( propertytype );
+                    }
+                });
+                propertytypes = propertytypes.join(',');
                                
-                $(location).attr('href', '<?php echo $url; ?>?textsearch=' + textsearch + '&beds=' + beds + '&baths=' + baths );
+                $(location).attr('href', '<?php echo $url; ?>?textsearch=' + textsearch + '&beds=' + beds + '&baths=' + baths + '&propertytypes=' + propertytypes );
                 
             });
         }
@@ -103,28 +113,35 @@ function apartmentsync_propertysearch( $atts ) {
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
         
-        //* Building type
-        echo '<div class="input-wrap input-wrap-building-type incomplete">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                echo '<div class="dropdown-menu">';
-                    echo '<div class="dropdown-menu-items">';
-                        // foreach( $baths as $bath ) {
-                        //     if ( in_array( $bath, $bathsparam ) ) {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     } else {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     }
-                        // }
-                    echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
+        //* Property types
+        $propertytypes = get_terms( 
+            array(
+                'taxonomy' => 'propertytypes',
+                'hide_empty' => true,
+            ),
+        );
         
+        if ( !empty( $propertytypes ) ) {
+            echo '<div class="input-wrap input-wrap-propertytypes">';
+                echo '<div class="dropdown">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
+                    echo '<div class="dropdown-menu">';
+                        echo '<div class="dropdown-menu-items">';
+                            foreach( $propertytypes as $propertytype ) {
+                                $name = $propertytype->name;
+                                $propertytype_term_id = $propertytype->term_id;
+                                printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s">%s</input></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                            }
+                        echo '</div>';
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply-local" href="#">Apply</a>';
+                        echo '</div>';
+                    echo '</div>';
+                echo '</div>'; // .dropdown
+            echo '</div>'; // .input-wrap
+        }
+            
         echo '<div class="input-wrap input-wrap-submit">';
             echo '<button onclick="sendMessage()" type="submit">Submit</button>';
         echo '</div>';

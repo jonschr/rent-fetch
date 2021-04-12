@@ -39,6 +39,15 @@ function apartmentsync_propertymap( $atts ) {
         $bathsparam = array();
     }
     
+    // propertytypes parameter
+    if ( isset( $_GET['propertytypes'])) {
+        $propertytypesparam = $_GET['propertytypes'];
+        $propertytypesparam = explode( ',', $propertytypesparam );
+        $propertytypesparam = array_map( 'esc_attr', $propertytypesparam );
+    } else {
+        $propertytypesparam = array();
+    }    
+    
     printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter">', site_url() );
     
         //* Build the text search
@@ -106,27 +115,38 @@ function apartmentsync_propertymap( $atts ) {
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
         
-        //* Building type
-        echo '<div class="input-wrap input-wrap-building-type incomplete">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                echo '<div class="dropdown-menu">';
-                    echo '<div class="dropdown-menu-items">';
-                        // foreach( $baths as $bath ) {
-                        //     if ( in_array( $bath, $bathsparam ) ) {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     } else {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     }
-                        // }
+        //* Property types
+        $propertytypes = get_terms( 
+            array(
+                'taxonomy' => 'propertytypes',
+                'hide_empty' => true,
+            ),
+        );
+        
+        if ( !empty( $propertytypes ) ) {
+            echo '<div class="input-wrap input-wrap-propertytypes">';
+                echo '<div class="dropdown">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
+                    echo '<div class="dropdown-menu">';
+                        echo '<div class="dropdown-menu-items">';
+                            foreach( $propertytypes as $propertytype ) {
+                                $name = $propertytype->name;
+                                $propertytype_term_id = $propertytype->term_id;
+                                if ( in_array( $propertytype_term_id, $propertytypesparam ) ) {
+                                        printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" checked>%s</input></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                } else {
+                                    printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s">%s</input></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                }
+                            }
+                        echo '</div>';
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply" href="#">Apply</a>';
+                        echo '</div>';
                     echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
+                echo '</div>'; // .dropdown
+            echo '</div>'; // .input-wrap
+        }
         
         //* Move-in date
         echo '<div class="input-wrap input-wrap-move-in-date incomplete">';
@@ -440,7 +460,7 @@ function apartmentsync_filter_properties(){
         // force the site to use relevanssi if it's installed
         if ( function_exists( 'relevanssi_truncate_index_ajax_wrapper' ) )
             $propertyargs['relevanssi'] = true;
-    }
+    }    
     
     //* Add all of our property IDs into the property search
     $propertyargs['meta_query'] = array(
@@ -450,9 +470,37 @@ function apartmentsync_filter_properties(){
         ),
     );
     
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $propertyargs );
-    // echo '</pre>';
+    //* Add the tax queries
+    $propertyargs['tax_query'] = array();
+    
+    //* propertytype taxonomy
+    $propertytypes = get_terms( 
+        array(
+            'taxonomy' => 'propertytypes',
+            'hide_empty' => true,
+        ),
+    );
+    
+    // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
+    foreach ( $propertytypes as $propertytype ) {
+        $name = $propertytype->name;
+        $propertytype_term_id = $propertytype->term_id;
+        
+        if ( isset( $_POST['propertytypes-' . $propertytype_term_id ] ) && $_POST['propertytypes-' . $propertytype_term_id ] == 'on' ) {
+            $propertytype_term_id = sanitize_text_field( $propertytype_term_id );
+            $propertytypeids[] = $propertytype_term_id;
+        }
+    }
+        
+    // add the meta query array to our $args
+    if ( isset( $propertytypeids ) ) {
+        $propertyargs['tax_query'][] = array(
+            array(
+                'taxonomy' => 'propertytypes',
+                'terms' => $propertytypeids,
+            )
+        );
+    }
     
     $propertyquery = new WP_Query( $propertyargs );
     

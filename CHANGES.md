@@ -1,3 +1,6 @@
+## 0.29.0
+* Adding the property type taxonomy and enabling it in the search if there are any types
+
 ## 0.27.0
 * Add the home page search form basics
 
