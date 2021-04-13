@@ -1,3 +1,5 @@
+## 0.32.0
+* Adding capability to grab amenities from Yardi
 
 ## 0.31.0
 * Single-properties: adding dropdowns by number of floorplans

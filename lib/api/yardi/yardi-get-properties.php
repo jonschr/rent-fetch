@@ -70,6 +70,7 @@ function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
 
 add_action( 'apartmentsync_do_save_property_data_to_cpt', 'apartmentsync_save_property_data_to_cpt', 10, 1 );
 function apartmentsync_save_property_data_to_cpt( $property_data ) {
+
     
     $property_data = $property_data[0];
     $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
@@ -102,15 +103,23 @@ function apartmentsync_save_property_data_to_cpt( $property_data ) {
     
     // if there's no post, then add one
     if ( $count === 0 )
-        do_action( 'apartmentsync_do_insert_property', $property_data );
+        do_action( 'apartmentsync_do_insert_yardi_property', $property_data );
     
-    //* TODO if there's a post already, then do an update for it
+    // if there's a post, update it
+    if ( $count === 1 )
+        do_action( 'apartmentsync_do_update_yardi_property', $property_data );
     
+    // if we somehow got multiple posts, delete them
+    if ( $count > 1 ) {
+        foreach( $properties as $property ) {
+            wp_delete_post( $property->ID, true );
+        }
+    }
 }
 
-add_action( 'apartmentsync_do_insert_property', 'apartmentsync_insert_property', 10, 1 );
-function apartmentsync_insert_property( $property_data ) {
-        
+add_action( 'apartmentsync_do_insert_yardi_property', 'apartmentsync_insert_yardi_property', 10, 1 );
+function apartmentsync_insert_yardi_property( $property_data ) {
+            
     $title = $property_data['PropertyData']['name'];
     $address = $property_data['PropertyData']['address'];
     $city = $property_data['PropertyData']['city'];
@@ -126,7 +135,7 @@ function apartmentsync_insert_property( $property_data ) {
     $property_id = $property_data['PropertyData']['PropertyId'];
     $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
     $property_source = 'yardi';
-    
+        
     //* bail if we don't have a title
     if ( !$title )
         return;
@@ -154,6 +163,56 @@ function apartmentsync_insert_property( $property_data ) {
         ),
     );
     
+    // insert the post
     $post_id = wp_insert_post( $property_meta );
+
+}
+
+add_action( 'apartmentsync_do_update_yardi_property', 'apartmentsync_update_yardi_property', 10, 1 );
+function apartmentsync_update_yardi_property( $property_data ) {
     
+    $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
+        
+    // this function doesn't have access to the post ID it's updating, so let's get that by querying the DB
+    $args = array(
+        'post_type' => 'properties',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'meta_query' => array(
+            array(
+                'relation' => 'AND',
+                array(
+                    array(
+                        'key' => 'property_source',
+                        'value' => 'yardi',
+                    ),
+                    array(
+                        'key'   => 'voyager_property_code',
+                        'value' => $voyager_property_code,
+                    ),
+                ),
+            ),
+        ),
+    );
+    
+    $property_query = new WP_Query( $args );
+    $properties = $property_query->posts;
+    $post_id = $properties[0]->ID;
+    
+    // now that we have the post ID, remove existing amenities
+    wp_delete_object_term_relationships( $post_id, array( 'amenities' ) );
+
+    // get the array of amenities
+    $amenities = $property_data['Amenities'];
+        
+    // for each of those amenities, grab the name, then add it
+    foreach ( $amenities as $amenity ) {
+        
+        // get the name
+        $name = $amenity['AmenityName'];
+                
+        // this function checks if the amenity exists, creates it if not, then adds it to the post
+        apartmentsync_set_post_term( $post_id, $name, 'amenities' );
+    }    
+        
 }

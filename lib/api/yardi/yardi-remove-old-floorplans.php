@@ -95,6 +95,7 @@ function apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific()
         $floorplanstodelete = $floorplan_query->posts;
         
         foreach ($floorplanstodelete as $floorplantodelete) {
+            apartmentsync_verbose_log( "Deleting floorplan $floorplantodelete->ID." );
             wp_delete_post( $floorplantodelete->ID, true );
         }
                 

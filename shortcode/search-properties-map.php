@@ -122,7 +122,7 @@ function apartmentsync_propertymap( $atts ) {
                 'hide_empty' => true,
             ),
         );
-        
+                
         if ( !empty( $propertytypes ) ) {
             echo '<div class="input-wrap input-wrap-propertytypes">';
                 echo '<div class="dropdown">';

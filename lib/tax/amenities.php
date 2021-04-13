@@ -8,7 +8,7 @@ function four_star_register_amenities_taxonomy() {
 		array(
 			'label' 			=> __( 'Amenities' ),
 			'rewrite' 		=> array( 'slug' => 'amenities' ),
-			'hierarchical' 	=> false,
+			'hierarchical' 	=> true,
 			'show_in_rest' 	=> true,
 		)
 	);

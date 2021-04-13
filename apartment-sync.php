@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.31.0
+	Version: 0.32.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.31.0' );
+define ( 'APARTMENTSYNC_VERSION', '0.32.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -95,12 +95,23 @@ function apartmentsync_acp_storage_file_directory( $path ) {
 // FILE INCLUDES //
 ///////////////////
 
-//* ACF fields
-// require_once( 'lib/acf-fields/floorplan-details.php' );
-// require_once( 'lib/acf-fields/settings.php' );
+//* CPTs
+require_once( 'lib/post-type/floorplans.php' );
+require_once( 'lib/post-type/properties.php' );
+require_once( 'lib/post-type/neighborhoods.php' );
+
+//* Taxonomies
+require_once( 'lib/tax/floorplantype.php' );
+require_once( 'lib/tax/amenities.php' );
+require_once( 'lib/tax/propertytype.php' );
+require_once( 'lib/tax/areas.php' );
+
+//* CPT connections
+require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
 
 //* Common functions
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
+require_once( 'lib/common/set_post_terms.php' );
 
 //* Settings pages
 require_once( 'lib/options-pages/main-settings.php' );
@@ -129,10 +140,7 @@ require_once( 'lib/api/yardi/yardi-remove-old-floorplans.php' );
 require_once( 'lib/api/entrata/entrata-sync.php' );
 require_once( 'lib/api/entrata/entrata-check-credentials.php' );
 
-//////////////////////
-// GUTENBERG BLOCKS //
-//////////////////////
-
+//* Gutenberg blocks
 require_once( 'block/floorplangrid/floorplangrid.php' );
 
 //////////////////////
@@ -166,32 +174,33 @@ function apartmentsync_start_sync() {
 // CPT REGISTRATION //
 //////////////////////
 
-add_action( 'after_setup_theme', 'apartmentsync_register_content_types' );
-function apartmentsync_register_content_types() {
+
+// add_action( 'init', 'apartmentsync_register_content_types' );
+// function apartmentsync_register_content_types() {
             
-    //* figure out whether this is a single 
-    $apartment_site_type = get_field( 'apartment_site_type', 'option' );
+//     //* figure out whether this is a single 
+//     $apartment_site_type = get_field( 'apartment_site_type', 'option' );
         
-    //* floorplans post type
-    require_once( 'lib/post-type/floorplans.php' );
-    require_once( 'lib/tax/floorplantype.php' );
+//     //* floorplans post type
+//     require_once( 'lib/post-type/floorplans.php' );
+//     require_once( 'lib/tax/floorplantype.php' );
     
-    //* only register the properties and neighborhoods post types if this is a 'multiple' site
-    if ( $apartment_site_type == 'multiple' ) {
+//     //* only register the properties and neighborhoods post types if this is a 'multiple' site
+//     if ( $apartment_site_type == 'multiple' ) {
         
-        // only include the properties and neighborhoods if we have multiple properties needed
-        require_once( 'lib/post-type/properties.php' );
-        require_once( 'lib/tax/amenities.php' );
-        require_once( 'lib/tax/propertytype.php' );
-        require_once( 'lib/post-type/neighborhoods.php' );
-        require_once( 'lib/tax/areas.php' );
+//         // only include the properties and neighborhoods if we have multiple properties needed
+//         require_once( 'lib/post-type/properties.php' );
+//         require_once( 'lib/tax/amenities.php' );
+//         require_once( 'lib/tax/propertytype.php' );
+//         require_once( 'lib/post-type/neighborhoods.php' );
+//         require_once( 'lib/tax/areas.php' );
         
-        // connect properties and neighborhoods
-        require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
+//         // connect properties and neighborhoods
+//         require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
         
-    }
+//     }
     
-}
+// }
 
 //////////////
 // ENQUEUES //

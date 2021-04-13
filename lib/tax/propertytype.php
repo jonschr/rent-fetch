@@ -8,7 +8,7 @@ function four_star_register_propertytype_taxonomy() {
 		array(
 			'label' 			=> __( 'Property types' ),
 			'rewrite' 		=> array( 'slug' => 'propertytypes' ),
-			'hierarchical' 	=> false,
+			'hierarchical' 	=> true,
 			'show_in_rest' 	=> true,
 		)
 	);
