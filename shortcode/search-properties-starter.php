@@ -80,7 +80,7 @@ function apartmentsync_propertysearch( $atts ) {
                 echo '<div class="dropdown-menu">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $beds as $bed ) {
-                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s">%s Bedroom</input></label>', $bed, $bed, $bed );
+                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                         }
                     echo '</div>';
                     echo '<div class="filter-application">';
@@ -102,7 +102,7 @@ function apartmentsync_propertysearch( $atts ) {
                 echo '<div class="dropdown-menu">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $baths as $bath ) {
-                            printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                            printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
                         }
                     echo '</div>';
                     echo '<div class="filter-application">';
@@ -130,7 +130,7 @@ function apartmentsync_propertysearch( $atts ) {
                             foreach( $propertytypes as $propertytype ) {
                                 $name = $propertytype->name;
                                 $propertytype_term_id = $propertytype->term_id;
-                                printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s">%s</input></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
                             }
                         echo '</div>';
                         echo '<div class="filter-application">';

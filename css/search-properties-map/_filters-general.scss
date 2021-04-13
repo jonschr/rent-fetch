@@ -157,6 +157,24 @@ form.property-search-starter {
 
             .dropdown-menu-items {
                 padding: 15px;
+
+                label {
+                    cursor: pointer;
+                }
+
+                // input {
+                //     display: none;
+                // }
+
+                // input~span {
+                //     opacity: 0.7;
+                // }
+
+                // input:checked~span {
+                //     font-weight: bold;
+                //     opacity: 1;
+                // }
+
             }
 
 

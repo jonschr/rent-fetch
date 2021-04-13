@@ -75,9 +75,9 @@ function apartmentsync_propertymap( $atts ) {
                     echo '<div class="dropdown-menu-items">';
                         foreach( $beds as $bed ) {
                             if ( in_array( $bed, $bedsparam ) ) {
-                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked>%s Bedroom</input></label>', $bed, $bed, $bed );
+                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                             } else {
-                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s">%s Bedroom</input></label>', $bed, $bed, $bed );
+                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                             }
                         }
                     echo '</div>';
@@ -101,9 +101,9 @@ function apartmentsync_propertymap( $atts ) {
                     echo '<div class="dropdown-menu-items">';
                         foreach( $baths as $bath ) {
                             if ( in_array( $bath, $bathsparam ) ) {
-                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
                             } else {
-                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
                             }
                         }
                     echo '</div>';
@@ -133,9 +133,9 @@ function apartmentsync_propertymap( $atts ) {
                                 $name = $propertytype->name;
                                 $propertytype_term_id = $propertytype->term_id;
                                 if ( in_array( $propertytype_term_id, $propertytypesparam ) ) {
-                                        printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" checked>%s</input></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                        printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" checked /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
                                 } else {
-                                    printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s">%s</input></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                    printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
                                 }
                             }
                         echo '</div>';
