@@ -1,3 +1,7 @@
+
+## 0.31.0
+* Single-properties: adding dropdowns by number of floorplans
+
 ## 0.30.0
 * Adding initial styles for the properties
 

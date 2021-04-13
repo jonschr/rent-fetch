@@ -167,13 +167,13 @@ echo '<div class="single-properties-wrap">';
             
         if ( $floorplans_query->have_posts() ) {
             echo '<details open>';
-                echo '<summary>';
+                echo '<summary><h3>';
                     if ( $bed == '0' ) {
                         echo 'Studio';
                     } else {
                         echo $bed . ' bedroom';
                     }
-                echo '</summary>';
+                echo '</h3></summary>';
                 echo '<div class="floorplan-in-archive">';
                     while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
                         do_action( 'apartmentsync_do_floorplan_in_archive', $post );                    
