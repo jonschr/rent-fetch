@@ -563,7 +563,7 @@ function apartmentsync_each_property( $post, $floorplan ) {
     
                 if ( $title )
                     printf( '<h3>%s</h3>', $title );
-                                    
+                                                        
                 echo '<p class="the-address">';
                 
                     if ( $address )
@@ -579,7 +579,7 @@ function apartmentsync_each_property( $post, $floorplan ) {
                         printf( '<span class="zipcode">%s</span>', $zipcode );
                     
                 echo '</p>';
-                
+                                
                 if ( $rentrange )
                     printf( '<span class="rentrange">%s</span>', $rentrange );
                 
@@ -597,23 +597,7 @@ function apartmentsync_each_property( $post, $floorplan ) {
             
             echo '</div>';
         echo '</div>';
-        
-        // edit_post_link();
-                        
-        // echo 'Property ID: ' . $post->property_id;
-        // echo '<br/>';
-        // echo 'Beds: ' . $floorplan['bedsrange'];
-        // echo '<br/>';
-        // echo 'Baths: ' . $floorplan['bathsrange'];
-        // echo '<br/>';
-        // echo 'Rent: ' . $floorplan['rentrange'];
-        // echo '<br/>';
-        // echo 'Sqft: ' . $floorplan['sqftrange'];
-        
-         // echo '<pre style="font-size: 14px;">';
-        // print_r( $floorplan );
-        // echo '</pre>';
-                
+                                        
     echo '</div>';
     
     
