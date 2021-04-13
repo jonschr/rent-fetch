@@ -134,33 +134,59 @@ echo '<div class="single-properties-wrap">';
     ////////////////
     // FLOORPLANS //
     ////////////////
-
-    $args = array(
-        'post_type' => 'floorplans',
-        'posts_per_page' => -1,
-        'orderby' => 'meta_value_num',
-        'meta_key' => 'beds',
-        'order' => 'ASC',
-        'meta_query' => array(
-            'key'   => 'property_id',
-            'value' => $property_id,
-        ),
-    );
     
-    $floorplans_query = new WP_Query( $args );
+    // get the possible values for the beds
+    $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+    $beds = array_unique( $beds );
+    asort( $beds );
     
-    if ( $floorplans_query->have_posts() ) {
-        echo '<div class="floorplans-wrap">';
-            echo '<h2>Availability</h2>';
-            echo '<div class="floorplan-in-archive">';
-                while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
-                    do_action( 'apartmentsync_do_floorplan_in_archive', $post );
-                endwhile;
-            echo '</div>'; // .floorplans
-        echo '</div>'; // .floorplans-wrap
+    echo '<div class="floorplans-wrap">';
+    
+    // loop through each of the possible values, so that we can do markup around that
+    foreach( $beds as $bed ) {
+        
+        $args = array(
+            'post_type' => 'floorplans',
+            'posts_per_page' => -1,
+            'orderby' => 'meta_value_num',
+            'meta_key' => 'beds',
+            'order' => 'ASC',
+            'meta_query' => array(
+                array(
+                    'key'   => 'property_id',
+                    'value' => $property_id,
+                ),
+                array(
+                    'key' => 'beds',
+                    'value' => $bed,
+                ),
+            ),
+        );
+        
+        $floorplans_query = new WP_Query( $args );
+            
+        if ( $floorplans_query->have_posts() ) {
+            echo '<details open>';
+                echo '<summary>';
+                    if ( $bed == '0' ) {
+                        echo 'Studio';
+                    } else {
+                        echo $bed . ' bedroom';
+                    }
+                echo '</summary>';
+                echo '<div class="floorplan-in-archive">';
+                    while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
+                        do_action( 'apartmentsync_do_floorplan_in_archive', $post );                    
+                    endwhile;
+                echo '</div>'; // .floorplans
+            echo '</details>';
+            
+        }
+        
+        wp_reset_postdata();
     }
     
-    wp_reset_postdata();
+    echo '</div>'; // .floorplans-wrap
     
 echo '</div>'; // .single-properties-wrap
 

@@ -586,13 +586,13 @@ function apartmentsync_each_property( $post, $floorplan ) {
             echo '</div>';
             echo '<div class="floorplan-info">';
             
-                if ( $bedsrange )
+                if ( $bedsrange !== null )
                     printf( '<span class="bedsrange">%s</span>', $bedsrange );
                     
-                if ( $bathsrange )
+                if ( $bathsrange !== null )
                     printf( '<span class="bathsrange">%s</span>', $bathsrange );
                     
-                if ( $sqftrange )
+                if ( $sqftrange !== null )
                     printf( '<span class="sqftrange">%s</span>', $sqftrange );
             
             echo '</div>';
