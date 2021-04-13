@@ -1,3 +1,6 @@
+## 0.30.0
+* Adding initial styles for the properties
+
 ## 0.29.1
 * Button style fixes
 

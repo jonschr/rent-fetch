@@ -531,35 +531,89 @@ function apartmentsync_filter_properties(){
 add_action( 'apartmentsync_do_each_property', 'apartmentsync_each_property', 10, 2 );
 function apartmentsync_each_property( $post, $floorplan ) {
     
+    // vars
     $id = $post->ID;
     $title = $post->post_title;
     $permalink = get_the_permalink();
     $property_id = get_post_meta( $id, 'property_id', true );
+    $address = get_post_meta( $id, 'address', true );
+    $city = get_post_meta( $id, 'city', true );
+    $state = get_post_meta( $id, 'state', true );
+    $zipcode = get_post_meta( $id, 'zipcode', true );
+    $latitude = get_post_meta( $id, 'latitude', true );
+    $longitude = get_post_meta( $id, 'longitude', true );
+    $bedsrange = $floorplan['bedsrange'];
+    $bathsrange = $floorplan['bathsrange'];    
+    $rentrange = $floorplan['rentrange'];
+    $sqftrange = $floorplan['sqftrange'];
+    $permalink = get_the_permalink( $id );
     
+    // class
     $class = get_post_class();
     $class = implode( ' ', $class );
     
-    printf( '<div class="%s">', $class );
+    // markup
+    printf( '<div class="%s" data-latitude="%s" data-longitude="%s">', $class, $latitude, $longitude );
     
-        if ( $title )
-            printf( '<h3>%s</h3>', $title );
+        if ( $permalink )
+            printf( '<a class="overlay" href="%s"></a>', $permalink );
+    
+        echo '<div class="property-content">';
+            echo '<div class="property-info">';
+    
+                if ( $title )
+                    printf( '<h3>%s</h3>', $title );
+                                    
+                echo '<p class="the-address">';
+                
+                    if ( $address )
+                        printf( '<span class="address">%s</span>', $address );
+                    
+                    if ( $city )
+                        printf( '<span class="city">%s</span>', $city );
+                        
+                    if ( $state )
+                        printf( '<span class="state">%s</span>', $state );
+                        
+                    if ( $zipcode )
+                        printf( '<span class="zipcode">%s</span>', $zipcode );
+                    
+                echo '</p>';
+                
+                if ( $rentrange )
+                    printf( '<span class="rentrange">%s</span>', $rentrange );
+                
+            echo '</div>';
+            echo '<div class="floorplan-info">';
             
-        echo 'Property ID: ' . $post->property_id;
-        echo '<br/>';
-        echo 'Beds: ' . $floorplan['bedsrange'];
-        echo '<br/>';
-        echo 'Baths: ' . $floorplan['bathsrange'];
-        echo '<br/>';
-        echo 'Rent: ' . $floorplan['rentrange'];
-        echo '<br/>';
-        echo 'Sqft: ' . $floorplan['sqftrange'];
+                if ( $bedsrange )
+                    printf( '<span class="bedsrange">%s</span>', $bedsrange );
+                    
+                if ( $bathsrange )
+                    printf( '<span class="bathsrange">%s</span>', $bathsrange );
+                    
+                if ( $sqftrange )
+                    printf( '<span class="sqftrange">%s</span>', $sqftrange );
+            
+            echo '</div>';
+        echo '</div>';
+        
+        // edit_post_link();
+                        
+        // echo 'Property ID: ' . $post->property_id;
+        // echo '<br/>';
+        // echo 'Beds: ' . $floorplan['bedsrange'];
+        // echo '<br/>';
+        // echo 'Baths: ' . $floorplan['bathsrange'];
+        // echo '<br/>';
+        // echo 'Rent: ' . $floorplan['rentrange'];
+        // echo '<br/>';
+        // echo 'Sqft: ' . $floorplan['sqftrange'];
         
          // echo '<pre style="font-size: 14px;">';
         // print_r( $floorplan );
         // echo '</pre>';
-            
-        edit_post_link();
-    
+                
     echo '</div>';
     
     

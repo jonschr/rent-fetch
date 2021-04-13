@@ -1,3 +1,7 @@
+/* ==========================================================================
+   Styles for columns in the #response div
+   ========================================================================== */
+
 #response {
     .properties {
         display: flex;
@@ -7,13 +11,10 @@
         margin-right: -10px;
 
         .entry {
-            flex: 0 1 auto;
             padding: 15px;
             margin: 0 10px 20px;
             width: calc(100% / 4 - 20px);
-            border: 3px solid $light;
-            background-color: $light;
-            min-height: 300px;
+            flex: 0 1 auto;
 
             @media(max-width: 1950px) {
                 width: calc(100% / 3 - 20px);
@@ -27,9 +28,128 @@
                 width: calc(100% / 1 - 20px);
             }
         }
+    }
+}
 
-        h3 {
-            margin-bottom: 0;
+/* ==========================================================================
+   Generic properties styles for use in other layouts
+   ========================================================================== */
+
+.properties {
+    .entry {
+        background-color: white;
+        position: relative;
+    }
+
+    .entry:hover {
+        .overlay {
+            box-shadow: 0 0 0 3px $dark;
         }
+    }
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        box-shadow: 0 0 0 3px $light;
+        transition: .3s all ease;
+    }
+
+    h3 {
+        margin-bottom: 10px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .the-address {
+        margin-bottom: 10px;
+        font-size: 85%;
+        line-height: 1.2em;
+
+        span {
+            margin-right: 0.2em;
+            display: inline;
+        }
+
+        span.city {
+            &:after {
+                content: ",";
+            }
+        }
+    }
+
+    span.rentrange {
+        display: block;
+        font-size: 150%;
+        line-height: 1em;
+
+        &:before {
+            content: "$";
+        }
+    }
+
+    .property-content {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+
+    .property-info {
+        margin-bottom: 10px;
+    }
+
+    .floorplan-info {
+        border-top: 2px solid rgba($default, 0.15);
+        padding-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        color: $default;
+
+        span {
+            line-height: 28px;
+            display: block;
+            padding-left: 35px;
+            position: relative;
+            font-size: 16px;
+
+            &:before {
+                content: "";
+                width: 28px;
+                height: 28px;
+                display: block;
+                position: absolute;
+                left: 0;
+                top: 0;
+                background-position: center center;
+                background-size: contain;
+                background-repeat: no-repeat;
+            }
+        }
+
+        span.bedsrange {
+            &:before {
+                background-image: url('../images/beds-icon-gray.svg');
+
+            }
+        }
+
+        span.bathsrange {
+            &:before {
+                background-image: url('../images/baths-icon-gray.svg');
+
+            }
+        }
+
+        span.sqftrange {
+            &:before {
+                background-image: url('../images/sqft-icon-gray.svg');
+
+            }
+        }
+
     }
 }
