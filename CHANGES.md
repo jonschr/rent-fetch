@@ -1,3 +1,6 @@
+## 0.33.0
+* Amenities search now working
+
 ## 0.32.0
 * Adding capability to grab amenities from Yardi
 

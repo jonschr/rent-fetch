@@ -10,6 +10,10 @@ form.property-search-starter {
         margin-right: 6px;
         margin-bottom: 6px;
 
+        &:not(.input-wrap-text-search) {
+            max-width: 300px;
+        }
+
         &.input-wrap-text-search {
             width: calc(100% - 160px);
 
@@ -143,7 +147,7 @@ form.property-search-starter {
         .dropdown-menu {
             z-index: 40;
             position: absolute;
-            width: 200px;
+            width: 400px;
             background-color: white;
             padding: 0;
             border: 2px solid rgba($default, 0.2);
@@ -156,9 +160,12 @@ form.property-search-starter {
 
             .dropdown-menu-items {
                 padding: 15px;
+                display: flex;
+                flex-flow: row wrap;
 
                 label {
                     cursor: pointer;
+                    width: 50%;
                 }
 
                 // input {

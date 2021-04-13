@@ -215,26 +215,33 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Amenities
-        echo '<div class="input-wrap input-wrap-amenities incomplete">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
-                echo '<div class="dropdown-menu">';
-                    echo '<div class="dropdown-menu-items">';
-                        // foreach( $baths as $bath ) {
-                        //     if ( in_array( $bath, $bathsparam ) ) {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     } else {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     }
-                        // }
+        $amenities = get_terms( 
+            array(
+                'taxonomy' => 'amenities',
+                'hide_empty' => true,
+            ),
+        );
+                
+        if ( !empty( $amenities ) ) {
+            echo '<div class="input-wrap input-wrap-amenities">';
+                echo '<div class="dropdown">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
+                    echo '<div class="dropdown-menu">';
+                        echo '<div class="dropdown-menu-items">';
+                            foreach( $amenities as $amenity ) {
+                                $name = $amenity->name;
+                                $amenity_term_id = $amenity->term_id;
+                                printf( '<label><input type="checkbox" data-amenities="%s" data-amenities-name="%s" name="amenities-%s" /><span>%s</span></label>', $amenity_term_id, $name, $amenity_term_id, $name );
+                            }
+                        echo '</div>';
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply" href="#">Apply</a>';
+                        echo '</div>';
                     echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
+                echo '</div>'; // .dropdown
+            echo '</div>'; // .input-wrap
+        }
             
         //* Buttons
         // echo '<button type="reset">Reset</button>';
@@ -501,6 +508,37 @@ function apartmentsync_filter_properties(){
             )
         );
     }
+    
+    //* amenities taxonomy
+    $amenities = get_terms( 
+        array(
+            'taxonomy' => 'amenities',
+            'hide_empty' => true,
+        ),
+    );
+    
+    // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
+    foreach ( $amenities as $amenity ) {
+        $name = $amenity->name;
+        $amenity_term_id = $amenity->term_id;
+        
+        if ( isset( $_POST['amenities-' . $amenity_term_id ] ) && $_POST['amenities-' . $amenity_term_id ] == 'on' ) {
+            $amenity_term_id = sanitize_text_field( $amenity_term_id );
+
+            // this is an "AND" query, unlike property types, because here we only want things showing up where ALL of the conditions are met
+            $propertyargs['tax_query'][] = array(
+                'relation' => 'AND',
+                array(
+                    'taxonomy' => 'amenities',
+                    'terms' => $amenity_term_id,
+                )
+            );
+        }
+    } 
+    
+    // echo '<pre>';
+    // print_r( $propertyargs );
+    // echo '</pre>';
     
     $propertyquery = new WP_Query( $propertyargs );
     
