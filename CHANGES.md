@@ -1,3 +1,6 @@
+## 0.37.2
+* Style changes to the search
+
 ## 0.37.1
 * Fix empty value in pets
 

@@ -153,6 +153,13 @@ jQuery(document).ready(function ($) {
         button.removeClass('active');
     }
 
+    function closeActiveButtonOnClick() {
+        console.log('hello world');
+        $(this).removeClass('active');
+
+        $(this).siblings('.dropdown-menu').removeClass('show');
+    }
+
     // on load, do these functions
     importBedsToButton();
     importBathsToButton();
@@ -164,6 +171,7 @@ jQuery(document).ready(function ($) {
     $('.input-wrap-pets input').on('change', importPetsToButton);
     $('.input-wrap-propertytypes input').on('change', importPropertyTypes);
     $('.input-wrap-amenities input').on('change', importAmenities);
+    // $('.dropdown button.active').on('click', closeActiveButtonOnClick);
     $('.clear').on('click', clearDropdown);
     // $('button[type="reset"]').on('click', clearAllDropdowns);
     $('input[type="text"]').on('change', textInputActive);

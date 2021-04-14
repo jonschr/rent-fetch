@@ -33,6 +33,7 @@ form.property-search-starter {
 
     button {
         width: 100%;
+        position: relative;
 
         &.dropdown-toggle {
             text-overflow: ellipsis;
@@ -144,9 +145,15 @@ form.property-search-starter {
     .dropdown {
         position: relative;
 
+        @include mobile {
+            position: static;
+        }
+
         .dropdown-menu {
             z-index: 40;
             position: absolute;
+            max-width: 400px;
+            left: 0;
             width: 400px;
             background-color: white;
             padding: 0;
@@ -157,6 +164,11 @@ form.property-search-starter {
             transition: .3s all ease;
             transform: translateY(30px);
             pointer-events: none;
+
+            @include mobile {
+                width: 100%;
+                max-width: calc(100% - 6px);
+            }
 
             .dropdown-menu-items {
                 padding: 15px;
@@ -184,8 +196,9 @@ form.property-search-starter {
             }
 
             &.dropdown-menu-pets {
-                width: 100%;
+                width: 250px;
                 right: 0;
+                left: auto;
 
                 .dropdown-menu-items {
                     label {
