@@ -5,7 +5,7 @@ return array (
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1618377380,
+  'updated' => 1618380627,
   'columns' => 
   array (
     '606e669ec9fbe8' => 

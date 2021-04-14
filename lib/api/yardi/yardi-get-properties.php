@@ -34,15 +34,18 @@ function apartmentsync_get_properties_yardi() {
     }
 }
 
-// add_action( 'init', 'test_funct' );
+add_action( 'init', 'test_funct' );
 function test_funct() {
         
     $voyager_id = '1002univ';
     $yardi_api_key = '532b316d-fbcb-480c-b1bd-481fbe699360';
     
     do_action( 'test_act', $voyager_id, $yardi_api_key );
+
 }
 
+
+//* Get the property using the Properties API
 // add_action( 'test_act', 'get_yardi_property_from_api', 10, 2 );
 add_action( 'apartmentsync_do_get_yardi_property_from_api', 'get_yardi_property_from_api', 10, 2 );
 function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
@@ -51,6 +54,7 @@ function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
             
     // Do the API request
     $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=property&type=marketingData&apiToken=%s&VoyagerPropertyCode=%s', $yardi_api_key, $voyager_id ); // path to your JSON file
+    
     $data = file_get_contents( $url ); // put the contents of the file into a variable        
     $propertydata = json_decode( $data, true ); // decode the JSON feed
     $errorcode = null;
@@ -68,9 +72,59 @@ function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
     
 }
 
+//* Get the property from the Images API and update the property
+add_action( 'test_act', 'get_yardi_property_images_from_api', 10, 2 );
+// add_action( 'apartmentsync_do_get_yardi_property_from_api', 'get_yardi_property_images_from_api', 10, 2 );
+function get_yardi_property_images_from_api( $voyager_id, $yardi_api_key ) {
+                
+    // Do the API request
+    $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=images&type=propertyImages&apiToken=%s&VoyagerPropertyCode=%s', $yardi_api_key, $voyager_id ); // path to your JSON file
+    $propertydata = file_get_contents( $url ); // put the contents of the file into a variable        
+        
+    if ( empty( $propertydata ) )
+        return;    
+        
+    // var_dump( $propertydata );
+    
+    // query to find out if there's already a post for this property
+    $args = array(
+        'post_type' => 'properties',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'meta_query' => array(
+            array(
+                'relation' => 'AND',
+                array(
+                    array(
+                        'key' => 'property_source',
+                        'value' => 'yardi',
+                    ),
+                    array(
+                        'key'   => 'voyager_property_code',
+                        'value' => $voyager_id,
+                    ),
+                ),
+            ),
+        ),
+    );
+    
+    $property_query = new WP_Query( $args );
+    $properties = $property_query->posts;
+    
+    if ( $properties ) {
+        foreach( $properties as $property ) {
+            $success_update_photos = update_post_meta( $property->ID, 'property_images', $propertydata );
+        }
+    }
+    
+}
+
+
+
+
+
 add_action( 'apartmentsync_do_save_property_data_to_cpt', 'apartmentsync_save_property_data_to_cpt', 10, 1 );
 function apartmentsync_save_property_data_to_cpt( $property_data ) {
-    
     
     $property_data = $property_data[0];
     // var_dump( $property_data );

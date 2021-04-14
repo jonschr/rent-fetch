@@ -39,6 +39,10 @@ $property_code = get_post_meta( $id, 'property_code', true );
 $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
 $property_id = get_post_meta( $id, 'property_id', true );
 
+// these are images pulled from an API and stored as a JSON array
+$property_images = get_post_meta( $id, 'property_images', true );
+$property_images = json_decode( $property_images );
+
 //* Prepare data
 
 // prepare the city/state for the title
@@ -71,7 +75,7 @@ echo '<div class="single-properties-wrap">';
     /////////////////////
 
     echo '<div class="images">';
-    //TODO add images
+        var_dump( $property_images );
     echo '</div>';
     
     /////////////////////////
@@ -187,6 +191,24 @@ echo '<div class="single-properties-wrap">';
     }
     
     echo '</div>'; // .floorplans-wrap
+    
+    
+        
+    $terms = get_the_terms( get_the_ID(), 'amenities' );
+    if ( $terms ) {
+        echo '<div class="amenities-wrap">';
+            echo '<h2>Amenities</h2>';
+            echo '<ul class="amenities">';
+                foreach( $terms as $term ) {                
+                    printf( '<li>%s</li>', $term->name );
+                }
+            echo '</ul>';
+        echo '</div>';
+    }
+    
+    //TODO Add Lease Details
+    
+    //? TODO Add Neighborhood details 
     
 echo '</div>'; // .single-properties-wrap
 
