@@ -1,3 +1,6 @@
+## 0.38.0
+* ACP compat with other plugins and themes that use local storage
+
 ## 0.37.2
 * Style changes to the search
 

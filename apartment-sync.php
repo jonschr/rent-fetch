@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.37.2
+	Version: 0.38.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.37.2' );
+define ( 'APARTMENTSYNC_VERSION', '0.38.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -84,12 +84,38 @@ function apartmentsync_acf_json_load_point( $paths ) {
 // ADMIN COLUMNS PRO //
 ///////////////////////
 
-add_filter( 'acp/storage/file/directory/writable', '__return_false' ); //! CHANGE TO __return_true TO MAKE CHANGES
-add_filter( 'acp/storage/file/directory', 'apartmentsync_acp_storage_file_directory' );
-function apartmentsync_acp_storage_file_directory( $path ) {
-	// Use a writable path, directory will be created for you
-    return APARTMENTSYNC_DIR . '/acp-settings';
-}
+// add_filter( 'acp/storage/file/directory/writable', '__return_false' ); //! CHANGE TO __return_true TO MAKE CHANGES
+// add_filter( 'acp/storage/file/directory', 'apartmentsync_acp_storage_file_directory' );
+// function apartmentsync_acp_storage_file_directory( $path ) {
+// 	// Use a writable path, directory will be created for you
+//     return APARTMENTSYNC_DIR . '/acp-settings';
+// }
+
+use AC\ListScreenRepository\Storage\ListScreenRepositoryFactory;
+use AC\ListScreenRepository\Rules;
+use AC\ListScreenRepository\Rule;
+add_filter( 'acp/storage/repositories', function( array $repositories, ListScreenRepositoryFactory $factory ) {
+    
+    //! Change $writable to true to allow changes to columns for the content types below
+    $writable = false;
+    
+    // 2. Add rules to target individual list tables.
+    // Defaults to Rules::MATCH_ANY added here for clarity, other option is Rules::MATCH_ALL
+    $rules = new Rules( Rules::MATCH_ANY );
+    $rules->add_rule( new Rule\EqualType( 'floorplans' ) );
+    $rules->add_rule( new Rule\EqualType( 'properties' ) );
+    $rules->add_rule( new Rule\EqualType( 'neighborhoods' ) );
+    
+    // 3. Register your repository to the stack
+    $repositories['apartment-sync'] = $factory->create(
+        APARTMENTSYNC_DIR . '/acp-settings',
+        $writable,
+        $rules
+    );
+    
+    return $repositories;
+    
+}, 10, 2 );
 
 ///////////////////
 // FILE INCLUDES //

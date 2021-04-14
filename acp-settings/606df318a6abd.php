@@ -5,7 +5,7 @@ return array (
   'title' => 'Neighborhoods',
   'type' => 'neighborhoods',
   'id' => '606df318a6abd',
-  'updated' => 1618261996,
+  'updated' => 1618432593,
   'columns' => 
   array (
     '606df3201c28f4' => 
@@ -100,8 +100,8 @@ return array (
     array (
       'type' => 'properties_to_neighborhoods_to',
       'label' => 'Connected properties',
-      'width' => '',
-      'width_unit' => '%',
+      'width' => '500',
+      'width_unit' => 'px',
       'export' => 'off',
       'name' => 'properties_to_neighborhoods_to',
     ),
