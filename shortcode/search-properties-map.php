@@ -193,10 +193,17 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
                 
         //* Amenities
+        $number_of_amenities_to_show = get_field( 'number_of_amenities_to_show', 'option' );
+        if ( empty( $number_of_amenities_to_show ) )
+            $number_of_amenities_to_show = 10;
+        
         $amenities = get_terms( 
             array(
-                'taxonomy' => 'amenities',
-                'hide_empty' => true,
+                'taxonomy'      => 'amenities',
+                'hide_empty'    => true,
+                'number'        => $number_of_amenities_to_show,
+                'orderby'       => 'count',
+                'order'         => 'DESC',
             ),
         );
                 
@@ -526,10 +533,17 @@ function apartmentsync_filter_properties(){
     }
     
     //* amenities taxonomy
+    $number_of_amenities_to_show = get_field( 'number_of_amenities_to_show', 'option' );
+    if ( empty( $number_of_amenities_to_show ) )
+        $number_of_amenities_to_show = 10;
+    
     $amenities = get_terms( 
         array(
-            'taxonomy' => 'amenities',
-            'hide_empty' => true,
+            'taxonomy'      => 'amenities',
+            'hide_empty'    => true,
+            'number'        => $number_of_amenities_to_show,
+            'orderby'       => 'count',
+            'order'         => 'DESC',
         ),
     );
     

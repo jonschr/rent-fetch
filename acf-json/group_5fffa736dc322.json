@@ -343,6 +343,43 @@
             },
             "placement": "top",
             "endpoint": 0
+        },
+        {
+            "key": "field_6076784a3ea86",
+            "label": "Property search settings",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_6076785d3ea87",
+            "label": "Number of amenities to show",
+            "name": "number_of_amenities_to_show",
+            "type": "number",
+            "instructions": "If this site uses amenities, how many should be shown in the search? (Amenities will be shown in order of how commonly the properties have them.)",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
         }
     ],
     "location": [
@@ -362,5 +399,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1617221445
+    "modified": 1618376889
 }

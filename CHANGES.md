@@ -1,3 +1,7 @@
+## 0.36.0
+* Add option to limit the number of amenities shown
+* Adjustments to the backend of properties
+
 ## 0.35.0
 * Adding the pet policy search
 

@@ -5,7 +5,7 @@ return array (
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1618372109,
+  'updated' => 1618377380,
   'columns' => 
   array (
     '606e669ec9fbe8' => 
@@ -38,8 +38,8 @@ return array (
     array (
       'type' => 'column-taxonomy',
       'label' => 'Amenities',
-      'width' => '',
-      'width_unit' => '%',
+      'width' => '275',
+      'width_unit' => 'px',
       'taxonomy' => 'amenities',
       'term_link_to' => 'filter',
       'number_of_items' => '10',
@@ -144,8 +144,8 @@ return array (
     array (
       'type' => 'column-acf_field',
       'label' => 'Description',
-      'width' => '',
-      'width_unit' => '%',
+      'width' => '150',
+      'width_unit' => 'px',
       'field' => 'field_6064eb17cac15',
       'character_limit' => '20',
       'export' => 'off',
