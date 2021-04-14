@@ -1,3 +1,6 @@
+## 0.37.0
+* Get and save the property images
+
 ## 0.36.0
 * Add option to limit the number of amenities shown
 * Adjustments to the backend of properties

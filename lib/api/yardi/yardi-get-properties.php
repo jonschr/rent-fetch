@@ -73,8 +73,8 @@ function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
 }
 
 //* Get the property from the Images API and update the property
-add_action( 'test_act', 'get_yardi_property_images_from_api', 10, 2 );
-// add_action( 'apartmentsync_do_get_yardi_property_from_api', 'get_yardi_property_images_from_api', 10, 2 );
+// add_action( 'test_act', 'get_yardi_property_images_from_api', 10, 2 );
+add_action( 'apartmentsync_do_get_yardi_property_from_api', 'get_yardi_property_images_from_api', 10, 2 );
 function get_yardi_property_images_from_api( $voyager_id, $yardi_api_key ) {
                 
     // Do the API request
@@ -116,12 +116,7 @@ function get_yardi_property_images_from_api( $voyager_id, $yardi_api_key ) {
             $success_update_photos = update_post_meta( $property->ID, 'property_images', $propertydata );
         }
     }
-    
 }
-
-
-
-
 
 add_action( 'apartmentsync_do_save_property_data_to_cpt', 'apartmentsync_save_property_data_to_cpt', 10, 1 );
 function apartmentsync_save_property_data_to_cpt( $property_data ) {
