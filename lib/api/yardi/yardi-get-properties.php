@@ -70,11 +70,12 @@ function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
 
 add_action( 'apartmentsync_do_save_property_data_to_cpt', 'apartmentsync_save_property_data_to_cpt', 10, 1 );
 function apartmentsync_save_property_data_to_cpt( $property_data ) {
-
+    
     
     $property_data = $property_data[0];
+    // var_dump( $property_data );
     $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
-        
+            
     // query to find out if there's already a post for this property
     $args = array(
         'post_type' => 'properties',
@@ -199,6 +200,9 @@ function apartmentsync_update_yardi_property( $property_data ) {
     $properties = $property_query->posts;
     $post_id = $properties[0]->ID;
     
+    
+    //* Amenities
+    
     // now that we have the post ID, remove existing amenities
     wp_delete_object_term_relationships( $post_id, array( 'amenities' ) );
 
@@ -213,6 +217,14 @@ function apartmentsync_update_yardi_property( $property_data ) {
                 
         // this function checks if the amenity exists, creates it if not, then adds it to the post
         apartmentsync_set_post_term( $post_id, $name, 'amenities' );
-    }    
+    }
+    
+    //* Pets
+    
+    $pets = $property_data['PetPolicy'][0]['PetType'];
+        
+    $success_pets = update_post_meta( $post_id, 'pets', $pets );
+    if ( $success_pets == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: pets is now $pets." );
         
 }

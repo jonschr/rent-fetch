@@ -5,7 +5,7 @@ return array (
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1618262075,
+  'updated' => 1618372109,
   'columns' => 
   array (
     '606e669ec9fbe8' => 
@@ -46,6 +46,7 @@ return array (
       'export' => 'off',
       'sort' => 'on',
       'edit' => 'on',
+      'enable_term_creation' => 'off',
       'bulk_edit' => 'on',
       'search' => 'on',
       'filter' => 'off',
@@ -291,6 +292,22 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '6064ebf38d9168',
+    ),
+    '607665f849374c' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Pets',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_60766489d1c66',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'off',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '607665f849374c',
     ),
     'properties_to_neighborhoods_from' => 
     array (

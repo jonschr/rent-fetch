@@ -229,6 +229,33 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_60766489d1c66",
+            "label": "Pets",
+            "name": "pets",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "1": "Cats allowed",
+                "2": "Cats and Dogs allowed",
+                "3": "Pet-friendly",
+                "4": "Pets not allowed"
+            },
+            "default_value": false,
+            "allow_null": 1,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "array",
+            "ajax": 0,
+            "placeholder": ""
         }
     ],
     "location": [
@@ -248,5 +275,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1617252667
+    "modified": 1618372057
 }

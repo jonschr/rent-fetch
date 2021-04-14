@@ -1,3 +1,6 @@
+## 0.34.0
+* Adding capability to pull pet policy from Yardi
+
 ## 0.33.0
 * Amenities search now working
 
