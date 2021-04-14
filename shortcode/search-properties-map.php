@@ -232,11 +232,12 @@ function apartmentsync_propertymap( $atts ) {
         $pets = apartentsync_get_meta_values( 'pets', 'properties' );
         $pets = array_unique( $pets );
         asort( $pets );
+        $pets = array_filter( $pets );
         
         // Get the corresponding acf 'pets' field so that we can use its labels
         $field = get_field_object('field_60766489d1c66');
         $pets_choices = $field['choices'];
-        
+                
         if ( !empty( $pets ) ) {
             echo '<div class="input-wrap input-wrap-pets">';
                 echo '<div class="dropdown">';
