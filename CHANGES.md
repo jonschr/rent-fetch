@@ -1,3 +1,6 @@
+## 0.35.0
+* Adding the pet policy search
+
 ## 0.34.0
 * Adding capability to pull pet policy from Yardi
 

@@ -71,7 +71,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '<div class="input-wrap input-wrap-beds">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
-                echo '<div class="dropdown-menu">';
+                echo '<div class="dropdown-menu dropdown-menu-beds">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $beds as $bed ) {
                             if ( in_array( $bed, $bedsparam ) ) {
@@ -97,7 +97,7 @@ function apartmentsync_propertymap( $atts ) {
         echo '<div class="input-wrap input-wrap-baths">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Baths">Baths</button>';
-                echo '<div class="dropdown-menu">';
+                echo '<div class="dropdown-menu dropdown-menu-baths">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $baths as $bath ) {
                             if ( in_array( $bath, $bathsparam ) ) {
@@ -127,7 +127,7 @@ function apartmentsync_propertymap( $atts ) {
             echo '<div class="input-wrap input-wrap-propertytypes">';
                 echo '<div class="dropdown">';
                     echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                    echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
                         echo '<div class="dropdown-menu-items">';
                             foreach( $propertytypes as $propertytype ) {
                                 $name = $propertytype->name;
@@ -191,29 +191,7 @@ function apartmentsync_propertymap( $atts ) {
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
-        
-        //* Pets
-        echo '<div class="input-wrap input-wrap-pets incomplete">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Pets">Pets</button>';
-                echo '<div class="dropdown-menu">';
-                    echo '<div class="dropdown-menu-items">';
-                        // foreach( $baths as $bath ) {
-                        //     if ( in_array( $bath, $bathsparam ) ) {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     } else {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     }
-                        // }
-                    echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
-        
+                
         //* Amenities
         $amenities = get_terms( 
             array(
@@ -226,12 +204,40 @@ function apartmentsync_propertymap( $atts ) {
             echo '<div class="input-wrap input-wrap-amenities">';
                 echo '<div class="dropdown">';
                     echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
-                    echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu dropdown-menu-amenities">';
                         echo '<div class="dropdown-menu-items">';
                             foreach( $amenities as $amenity ) {
                                 $name = $amenity->name;
                                 $amenity_term_id = $amenity->term_id;
                                 printf( '<label><input type="checkbox" data-amenities="%s" data-amenities-name="%s" name="amenities-%s" /><span>%s</span></label>', $amenity_term_id, $name, $amenity_term_id, $name );
+                            }
+                        echo '</div>';
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply" href="#">Apply</a>';
+                        echo '</div>';
+                    echo '</div>';
+                echo '</div>'; // .dropdown
+            echo '</div>'; // .input-wrap
+        }
+        
+        //* Build the pets filter
+        $pets = apartentsync_get_meta_values( 'pets', 'properties' );
+        $pets = array_unique( $pets );
+        asort( $pets );
+        
+        // Get the corresponding acf 'pets' field so that we can use its labels
+        $field = get_field_object('field_60766489d1c66');
+        $pets_choices = $field['choices'];
+        
+        if ( !empty( $pets ) ) {
+            echo '<div class="input-wrap input-wrap-pets">';
+                echo '<div class="dropdown">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Pet policy">Pet policy</button>';
+                    echo '<div class="dropdown-menu dropdown-menu-pets">';
+                        echo '<div class="dropdown-menu-items">';
+                            foreach( $pets as $pet ) {
+                                printf( '<label><input type="radio" data-pets="%s" data-pets-name="%s" name="pets" value="%s" /><span>%s</span></label>', $pet, $pets_choices[$pet], $pet, $pets_choices[$pet] );
                             }
                         echo '</div>';
                         echo '<div class="filter-application">';
@@ -476,6 +482,16 @@ function apartmentsync_filter_properties(){
 			'value' => $property_ids,
         ),
     );
+    
+    //* Pets (this is a simple one)
+    if ( isset( $_POST['pets'] ) ) {
+        $propertyargs['meta_query'][] = array(
+            array(
+                'key' => 'pets',
+                'value' => $_POST['pets'],
+            )
+        );
+    }
     
     //* Add the tax queries
     $propertyargs['tax_query'] = array();

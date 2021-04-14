@@ -183,6 +183,17 @@ form.property-search-starter {
 
             }
 
+            &.dropdown-menu-pets {
+                width: 100%;
+                right: 0;
+
+                .dropdown-menu-items {
+                    label {
+                        width: 100%;
+                    }
+                }
+            }
+
 
             &.show {
                 opacity: 1;
@@ -195,7 +206,8 @@ form.property-search-starter {
                 font-size: 16px;
                 color: black;
 
-                input[type="checkbox"] {
+                input[type="checkbox"],
+                input[type="radio"] {
                     margin-right: 4px;
                 }
             }

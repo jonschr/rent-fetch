@@ -125,6 +125,15 @@ jQuery(document).ready(function ($) {
         }
     }
 
+    //* text for pets button
+    function importPetsToButton() {
+        var selectedPetPolicy = $('.input-wrap-pets input:checked').attr('data-pets-name');
+        console.log(selectedPetPolicy);
+
+        $('.input-wrap-pets button').addClass('active');
+        $('.input-wrap-pets button').text(selectedPetPolicy);
+    }
+
     function textInputActive() {
         var textsearchval = $(this).val();
         if (textsearchval.length > 0) {
@@ -137,6 +146,7 @@ jQuery(document).ready(function ($) {
     function clearDropdown() {
         event.preventDefault();
         $(this).closest('.dropdown-menu').find('input[type="checkbox"]').prop("checked", false);
+        $(this).closest('.dropdown-menu').find('input[type="radio"]').prop("checked", false);
         var button = $(this).closest('.input-wrap').find('button');
         var text = button.attr('data-reset');
         button.text(text);
@@ -151,6 +161,7 @@ jQuery(document).ready(function ($) {
     // do some of these functions when something happens
     $('.input-wrap-baths input').on('change', importBathsToButton);
     $('.input-wrap-beds input').on('change', importBedsToButton);
+    $('.input-wrap-pets input').on('change', importPetsToButton);
     $('.input-wrap-propertytypes input').on('change', importPropertyTypes);
     $('.input-wrap-amenities input').on('change', importAmenities);
     $('.clear').on('click', clearDropdown);
