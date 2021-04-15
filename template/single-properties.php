@@ -39,10 +39,6 @@ $property_code = get_post_meta( $id, 'property_code', true );
 $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
 $property_id = get_post_meta( $id, 'property_id', true );
 
-// these are images pulled from an API and stored as a JSON array
-$property_images = get_post_meta( $id, 'property_images', true );
-$property_images = json_decode( $property_images );
-
 //* Prepare data
 
 // prepare the city/state for the title
@@ -75,7 +71,15 @@ echo '<div class="single-properties-wrap">';
     /////////////////////
 
     echo '<div class="images">';
-        var_dump( $property_images );
+        
+        // these are images pulled from an API and stored as a JSON array
+        $property_images = get_post_meta( $id, 'property_images', true );
+        $property_images = json_decode( $property_images );
+                
+        if ( $property_images )
+            do_action( 'apartmentsync_do_single_property_images_yardi', $property_images );
+        
+        
     echo '</div>';
     
     /////////////////////////

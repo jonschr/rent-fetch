@@ -1,3 +1,6 @@
+## 0.39.0
+* Property images on the properties-single template
+
 ## 0.38.0
 * ACP compat with other plugins and themes that use local storage
 
