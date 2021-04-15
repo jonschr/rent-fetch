@@ -3,12 +3,47 @@
 add_shortcode( 'propertymap', 'apartmentsync_propertymap' );
 function apartmentsync_propertymap( $atts ) {
     
+    // core map scripts and styles
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
     wp_enqueue_script( 'apartmentsync-search-filters-general' );
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     
+    // glider
+    // wp_enqueue_script( 'apartmentsync-glider-script' );
+    // wp_enqueue_style( 'apartmentsync-fancybox-style' );
+    // wp_enqueue_script( 'apartmentsync-glider-init' );
+    
+    // slick
+    wp_enqueue_script( 'apartmentsync-slick-main-script' );
+    wp_enqueue_style( 'apartmentsync-slick-main-styles' );
+    wp_enqueue_style( 'apartmentsync-slick-main-theme' );
+    
+    // properties in archive styles
+    wp_enqueue_style( 'apartmentsync-properties-in-archive' );
+        
     ob_start();
+    
+    ?>
+    <script>
+        
+        jQuery(document).ready(function ($) {
+
+            console.log('hello world!');
+
+            $(document).ajaxComplete(function () {
+                
+                console.log( 'ajax complete' );
+
+                $('.property-slider').slick();
+                
+            });
+
+        });
+
+    </script>
+    
+    <?php
     
     //* Get parameters
     
@@ -632,8 +667,11 @@ function apartmentsync_each_property( $post, $floorplan ) {
     
         if ( $permalink )
             printf( '<a class="overlay" href="%s"></a>', $permalink );
+            
+        do_action( 'apartmentsync_do_each_property_images', $id );
     
         echo '<div class="property-content">';
+        
             echo '<div class="property-info">';
     
                 if ( $title )
@@ -676,5 +714,45 @@ function apartmentsync_each_property( $post, $floorplan ) {
     echo '</div>';
     
     
+    
+}
+
+add_action( 'apartmentsync_do_each_property_images', 'apartmentsync_each_property_images', 10, 1 );
+function apartmentsync_each_property_images( $post_id ) {
+        
+    // these are images pulled from an API and stored as a JSON array
+    $property_images = get_post_meta( $post_id, 'property_images', true );
+    $property_images = json_decode( $property_images );
+        
+    if ( !$property_images )
+        return;
+        
+    echo '<div class="property-images-wrap">';
+        echo '<div class="property-slider">';
+        
+            $count = 0;
+    
+            foreach( $property_images as $property_image ) {
+                
+                if ( $count > 3 )
+                    break;
+                        
+                $title = $property_image->Title;
+                $url = $property_image->ImageURL;
+                $alt = $property_image->AltText;
+                
+                echo '<div class="property-slide">';
+                    printf( '<img src="%s" alt="%s" title="%s" />', $url, $alt, $title );
+                echo '</div>';
+                
+            }
+        
+        echo '</div>';
+        
+        // echo '<button aria-label="Previous" class="glider-prev">«</button>';
+        // echo '<button aria-label="Next" class="glider-next">»</button>';
+        // echo '<div role="tablist" class="dots"></div>';
+        
+    echo '</div>';
     
 }

@@ -1,0 +1,17 @@
+/* ==========================================================================
+   Styles for columns in the #response div
+   ========================================================================== */
+
+#response {
+    .properties {
+        display: grid;
+        grid-gap: 30px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        padding: 0;
+
+        .entry {
+            padding: 10px;
+            background-color: white;
+        }
+    }
+}

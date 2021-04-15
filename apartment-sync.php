@@ -249,9 +249,17 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_script( 'apartmentsync-search-filters-general', APARTMENTSYNC_PATH . 'js/apartmentsync-search-filters-general.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     wp_register_script( 'apartmentsync-searchbar', APARTMENTSYNC_PATH . 'js/apartmentsync-searchbar.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
+    // Properties in archive
+    wp_register_style( 'apartmentsync-properties-in-archive', APARTMENTSYNC_PATH . 'css/properties-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    
     // Fancybox
     wp_register_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-fancybox-script', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+        
+    // Slick
+    wp_register_script( 'apartmentsync-slick-main-script', APARTMENTSYNC_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
+    wp_register_style( 'apartmentsync-slick-main-styles', APARTMENTSYNC_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
+    wp_register_style( 'apartmentsync-slick-main-theme', APARTMENTSYNC_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
     	
 }
 
