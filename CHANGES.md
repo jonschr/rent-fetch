@@ -1,3 +1,6 @@
+## 0.42.0
+* Improving hover effects on the sliders
+
 ## 0.41.0
 * Adding better versions of the sliders on the home page (all of the styles, better load times)
 
