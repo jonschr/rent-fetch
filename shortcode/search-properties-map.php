@@ -32,10 +32,16 @@ function apartmentsync_propertymap( $atts ) {
             console.log('hello world!');
 
             $(document).ajaxComplete(function () {
-                
-                console.log( 'ajax complete' );
-
-                $('.property-slider').slick();
+                                
+                $('.property-slider').slick({
+                    dots: true,
+                    infinite: false,
+                    arrows: true,
+                    speed: 500,
+                    fade: true,
+                    cssEase: 'linear',
+                    azyLoad: 'ondemand',
+                });
                 
             });
 
@@ -730,29 +736,39 @@ function apartmentsync_each_property_images( $post_id ) {
     echo '<div class="property-images-wrap">';
         echo '<div class="property-slider">';
         
-            $count = 0;
+            $count = 1;
     
             foreach( $property_images as $property_image ) {
                 
+                // max 3 slides
                 if ( $count > 3 )
                     break;
-                        
+                                            
                 $title = $property_image->Title;
                 $url = $property_image->ImageURL;
                 $alt = $property_image->AltText;
+                                
+                // detect if there are special characters
+                $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $url);
+                                    
+                // bail on this slide if there are special characters in the image url
+                if ( $regex )
+                    break;
+                    
+                // bail if there is no image src
+                if ( !$url )
+                    break;
                 
                 echo '<div class="property-slide">';
-                    printf( '<img src="%s" alt="%s" title="%s" />', $url, $alt, $title );
+                    printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
                 echo '</div>';
+                
+                $count++;
                 
             }
         
         echo '</div>';
-        
-        // echo '<button aria-label="Previous" class="glider-prev">«</button>';
-        // echo '<button aria-label="Next" class="glider-next">»</button>';
-        // echo '<div role="tablist" class="dots"></div>';
-        
+                
     echo '</div>';
     
 }

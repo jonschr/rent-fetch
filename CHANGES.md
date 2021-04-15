@@ -1,3 +1,6 @@
+## 0.41.0
+* Adding better versions of the sliders on the home page (all of the styles, better load times)
+
 ## 0.40.0
 * Adding the slider
 
