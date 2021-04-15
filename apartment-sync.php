@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.39.0' );
+define ( 'APARTMENTSYNC_VERSION', '0.39.1' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
