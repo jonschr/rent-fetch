@@ -1,3 +1,6 @@
+## 0.40.0
+* Adding the slider
+
 ## 0.39.1
 * BUGFIX: search was pulling results when the floorplan search was empty but the properties search has results
 
