@@ -22,9 +22,7 @@ function apartmentsync_single_property_images_yardi( $property_images ) {
                 $title = $property_image->Title;
                 $url = $property_image->ImageURL;
                 $alt = $property_image->AltText;
-                
-                var_dump( $url );
-                
+                                
                 // detect if there are special characters
                 $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $url);
                                     
