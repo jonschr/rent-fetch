@@ -1,3 +1,6 @@
+## 0.39.1
+* BUGFIX: search was pulling results when the floorplan search was empty but the properties search has results
+
 ## 0.39.0
 * Property images on the properties-single template
 

@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.39.0
+	Version: 0.39.1
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 

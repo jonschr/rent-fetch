@@ -453,6 +453,8 @@ function apartmentsync_filter_properties(){
     }
     
     $property_ids = array_keys( $floorplans );
+    if ( empty( $property_ids ) )
+    $property_ids = array( '1' ); // if there aren't any properties, we shouldn't find anything – empty array will let us find everything, so let's pass nonsense to make the search find nothing
     
     // echo '<pre style="font-size: 14px;">';
     // print_r( $property_ids );
@@ -485,9 +487,9 @@ function apartmentsync_filter_properties(){
     
     //* Add all of our property IDs into the property search
     $propertyargs['meta_query'] = array(
-		array(
-			'key' => 'property_id',
-			'value' => $property_ids,
+        array(
+            'key' => 'property_id',
+            'value' => $property_ids,
         ),
     );
     
@@ -572,6 +574,10 @@ function apartmentsync_filter_properties(){
     // echo '</pre>';
     
     $propertyquery = new WP_Query( $propertyargs );
+    
+    // echo '<pre>';
+    // print_r( $propertyquery );
+    // echo '</pre>';
     
     if( $propertyquery->have_posts() ) :
         
