@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 0.42.0
+	Version: 1.0.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '0.42.0' );
+define ( 'APARTMENTSYNC_VERSION', '1.0.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -55,7 +55,7 @@ function apartmentsync_acf_settings_url( $url ) {
 }
 
 //! UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
-add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
+// add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
 function apartmentsync_acf_json_save_point( $path ) {
     
     // update path
@@ -83,13 +83,6 @@ function apartmentsync_acf_json_load_point( $paths ) {
 ///////////////////////
 // ADMIN COLUMNS PRO //
 ///////////////////////
-
-// add_filter( 'acp/storage/file/directory/writable', '__return_false' ); //! CHANGE TO __return_true TO MAKE CHANGES
-// add_filter( 'acp/storage/file/directory', 'apartmentsync_acp_storage_file_directory' );
-// function apartmentsync_acp_storage_file_directory( $path ) {
-// 	// Use a writable path, directory will be created for you
-//     return APARTMENTSYNC_DIR . '/acp-settings';
-// }
 
 use AC\ListScreenRepository\Storage\ListScreenRepositoryFactory;
 use AC\ListScreenRepository\Rules;
