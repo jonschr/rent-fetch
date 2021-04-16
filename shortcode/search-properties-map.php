@@ -3,17 +3,16 @@
 add_shortcode( 'propertymap', 'apartmentsync_propertymap' );
 function apartmentsync_propertymap( $atts ) {
     
-    // core map scripts and styles
+    // search scripts and styles
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
     wp_enqueue_script( 'apartmentsync-search-filters-general' );
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     
-    // glider
-    // wp_enqueue_script( 'apartmentsync-glider-script' );
-    // wp_enqueue_style( 'apartmentsync-fancybox-style' );
-    // wp_enqueue_script( 'apartmentsync-glider-init' );
-    
+    // the map itself
+    wp_enqueue_script( 'apartmentsync-google-maps' );
+    wp_enqueue_script( 'apartmentsync-property-map');
+        
     // slick
     wp_enqueue_script( 'apartmentsync-slick-main-script' );
     wp_enqueue_style( 'apartmentsync-slick-main-styles' );
@@ -28,8 +27,6 @@ function apartmentsync_propertymap( $atts ) {
     <script>
         
         jQuery(document).ready(function ($) {
-
-            console.log('hello world!');
 
             $(document).ajaxComplete(function () {
                                 

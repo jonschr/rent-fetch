@@ -240,10 +240,14 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_style( 'apartmentsync-single-properties', APARTMENTSYNC_PATH . 'css/single-properties.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_style( 'apartmentsync-floorplan-in-archive', APARTMENTSYNC_PATH . 'css/floorplan-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     
-    // Properties map
+    // Properties map search
     wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-search-properties-ajax', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-ajax.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     wp_register_script( 'apartmentsync-search-properties-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-script.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
+    // Properties map (the map itself)
+    wp_register_script( 'apartmentsync-google-maps', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBlRKm-v6YtuQf3yNpWMZowrGhQ8qD073w', array(), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'apartmentsync-property-map', APARTMENTSYNC_PATH . 'js/apartmentsync-property-map.js', array( 'jquery', 'apartmentsync-google-maps' ), APARTMENTSYNC_VERSION, true );
     
     // Properties searchbar
     wp_register_script( 'apartmentsync-search-filters-general', APARTMENTSYNC_PATH . 'js/apartmentsync-search-filters-general.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
@@ -260,6 +264,7 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_script( 'apartmentsync-slick-main-script', APARTMENTSYNC_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
     wp_register_style( 'apartmentsync-slick-main-styles', APARTMENTSYNC_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
     wp_register_style( 'apartmentsync-slick-main-theme', APARTMENTSYNC_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
+    
     	
 }
 
