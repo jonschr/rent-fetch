@@ -56,12 +56,6 @@
             transition: .3s all ease;
         }
 
-        &.slick-disabled {
-            &:before {
-                // color: $default;
-            }
-        }
-
         &.slick-prev {
             left: 10px;
 
@@ -103,7 +97,6 @@
                     border: 2px solid white;
                     border-radius: 100%;
                     font-size: 13px;
-                    opacity: 0.6;
                     height: 14px;
                     width: 14px;
                     opacity: 1;
