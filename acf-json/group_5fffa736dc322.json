@@ -278,7 +278,7 @@
         },
         {
             "key": "field_5fffafe5dede1",
-            "label": "Other Integrations",
+            "label": "Google Maps",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -293,11 +293,11 @@
             "endpoint": 0
         },
         {
-            "key": "field_5fffb4459b1b1",
-            "label": "Google Maps",
-            "name": "google_maps",
-            "type": "group",
-            "instructions": "",
+            "key": "field_6079264fd1ffe",
+            "label": "Google Maps API key",
+            "name": "google_maps_api_key",
+            "type": "text",
+            "instructions": "Required for the map to function",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -305,28 +305,30 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_5fffb4609b1b2",
-                    "label": "Google Maps API Key",
-                    "name": "google_maps_api_key",
-                    "type": "text",
-                    "instructions": "You can find the API key in the <a href=\"https:\/\/developers.google.com\/maps\/documentation\/javascript\/\" target=\"_blank\">Google Developer Console<\/a>",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": "",
-                    "placeholder": "e.g. urt2vF9W9GBBvrNc-z9ULXMs46C4PRNwcKtebQKTX",
-                    "prepend": "",
-                    "append": "",
-                    "maxlength": ""
-                }
-            ]
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60792662d1fff",
+            "label": "Map styles",
+            "name": "google_maps_styles",
+            "type": "text",
+            "instructions": "Paste in a json array from <a target=\"_blank\" href=\"https:\/\/snazzymaps.com\/\">SnazzyMaps.com<\/a> or from <a href=\"https:\/\/mapstyle.withgoogle.com\/\" target=\"_blank\">Google's map styler<\/a>.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_5fffb22e3a541",
@@ -399,5 +401,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1618376889
+    "modified": 1618553379
 }

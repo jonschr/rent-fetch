@@ -9,10 +9,6 @@ function apartmentsync_propertymap( $atts ) {
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     
-    // the map itself
-    wp_enqueue_script( 'apartmentsync-google-maps' );
-    wp_enqueue_script( 'apartmentsync-property-map');
-        
     // slick
     wp_enqueue_script( 'apartmentsync-slick-main-script' );
     wp_enqueue_style( 'apartmentsync-slick-main-styles' );
@@ -20,9 +16,20 @@ function apartmentsync_propertymap( $atts ) {
     
     // properties in archive styles
     wp_enqueue_style( 'apartmentsync-properties-in-archive' );
+    
+    
+    
+    // Localize the google maps script
+    $maps_options = array(
+        'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
+    );
+    wp_localize_script( 'apartmentsync-property-map', 'options', $maps_options );
+        
+    // the map itself
+    wp_enqueue_script( 'apartmentsync-google-maps' );
+    wp_enqueue_script( 'apartmentsync-property-map');
         
     ob_start();
-    
     ?>
     <script>
         

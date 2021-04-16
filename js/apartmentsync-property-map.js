@@ -1,171 +1,18 @@
 jQuery(document).ready(function ($) {
 
-    var mapStyle = [
-        {
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#f5f5f5"
-                }
-            ]
-        },
-        {
-            "elementType": "labels.icon",
-            "stylers": [
-                {
-                    "visibility": "off"
-                }
-            ]
-        },
-        {
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#616161"
-                }
-            ]
-        },
-        {
-            "elementType": "labels.text.stroke",
-            "stylers": [
-                {
-                    "color": "#f5f5f5"
-                }
-            ]
-        },
-        {
-            "featureType": "administrative.land_parcel",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#bdbdbd"
-                }
-            ]
-        },
-        {
-            "featureType": "poi",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#eeeeee"
-                }
-            ]
-        },
-        {
-            "featureType": "poi",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#757575"
-                }
-            ]
-        },
-        {
-            "featureType": "poi.park",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#e5e5e5"
-                }
-            ]
-        },
-        {
-            "featureType": "poi.park",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#9e9e9e"
-                }
-            ]
-        },
-        {
-            "featureType": "road",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#ffffff"
-                }
-            ]
-        },
-        {
-            "featureType": "road.arterial",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#757575"
-                }
-            ]
-        },
-        {
-            "featureType": "road.highway",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#dadada"
-                }
-            ]
-        },
-        {
-            "featureType": "road.highway",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#616161"
-                }
-            ]
-        },
-        {
-            "featureType": "road.local",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#9e9e9e"
-                }
-            ]
-        },
-        {
-            "featureType": "transit.line",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#e5e5e5"
-                }
-            ]
-        },
-        {
-            "featureType": "transit.station",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#eeeeee"
-                }
-            ]
-        },
-        {
-            "featureType": "water",
-            "elementType": "geometry",
-            "stylers": [
-                {
-                    "color": "#c9c9c9"
-                }
-            ]
-        },
-        {
-            "featureType": "water",
-            "elementType": "labels.text.fill",
-            "stylers": [
-                {
-                    "color": "#9e9e9e"
-                }
-            ]
-        }
-    ]
 
-    function mapInitialLoad() {
+    var map;
+    var bounds = new google.maps.LatLngBounds();
 
-        var myLatlng = new google.maps.LatLng(31.59771179928881, -97.16698800284108);
+    function initMap() {
+
+        // grab the styles from localization and convert the php array to json
+        var mapStyle = options.json_style;
+        mapsStyle = JSON.stringify(mapStyle);
+
+        var myLatlng = new google.maps.LatLng(39.8484006327939, -104.99522076837074);
         var mapOptions = {
-            zoom: 5,
+            zoom: 10,
             center: myLatlng,
             styles: mapStyle,
             disableDefaultUI: true, // removes the satellite/map selection (might also remove other stuff)
@@ -176,16 +23,60 @@ jQuery(document).ready(function ($) {
             },
             fullscreenControl: false,
         }
-        var map = new google.maps.Map(document.getElementById("map"), mapOptions);
-        // for (var i = 0; i < global.length; i++) {
-        //     console.log(global[i]);
-        //     markerArray[i] = addMarker(global[i][2], global[i][0], global[i][1], map);
+        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+    }
+
+    function getLocations() {
+
+        // empty array for global
+        var global = [];
+
+        $('.type-properties').each(function () {
+            lat = $(this).attr('data-latitude');
+            long = $(this).attr('data-longitude');
+            global.push([lat, long]);
+        });
+
+        markerArray = [];
+
+        for (var i = 0; i < global.length; i++) {
+            console.log(global[i]);
+            markerArray[i] = addMarker(global[i][2], global[i][0], global[i][1], map);
+        }
+
+        // for (var i = 0; i < markerArray.length; i++) {
+        //     bounds.extend(markerArray[i]);
         // }
+
 
     }
 
-    $(window).on('load', mapInitialLoad);
+    function addMarker(title, x, y, map) {
 
+        position = new google.maps.LatLng(x, y);
+
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map,
+            title: title
+        });
+
+        infowindow = new google.maps.InfoWindow({
+            content: 'Hello world!',
+        });
+
+        marker.addListener("click", () => {
+            infowindow.open(map, marker);
+        });
+
+        bounds.extend(position);
+        map.fitBounds(bounds);
+
+        return marker;
+    }
+
+    $(window).on('load', initMap);
+    $(window).on('ajaxComplete', getLocations);
 
 
 });

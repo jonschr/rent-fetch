@@ -55,7 +55,7 @@ function apartmentsync_acf_settings_url( $url ) {
 }
 
 //! UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
-// add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
+add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
 function apartmentsync_acf_json_save_point( $path ) {
     
     // update path
