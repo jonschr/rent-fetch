@@ -1,3 +1,6 @@
+## 1.2.1
+* Bugfix on maps
+
 ## 1.2.0
 * Getting the API key pulled correctly for Google maps
 
