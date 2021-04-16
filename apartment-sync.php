@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 1.2.0
+	Version: 1.2.1
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '1.2.0' );
+define ( 'APARTMENTSYNC_VERSION', '1.2.1' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -241,8 +241,6 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_script( 'apartmentsync-search-properties-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-script.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Properties map (the map itself)
-    $key = get_option( 'google_maps_api_key' );
-    wp_register_script( 'apartmentsync-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), APARTMENTSYNC_VERSION, true );
     wp_register_script( 'apartmentsync-property-map', APARTMENTSYNC_PATH . 'js/apartmentsync-property-map.js', array( 'jquery', 'apartmentsync-google-maps' ), APARTMENTSYNC_VERSION, true );
     
     // Properties searchbar
