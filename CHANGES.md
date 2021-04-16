@@ -1,3 +1,12 @@
+## 1.2.0
+* Getting the API key pulled correctly for Google maps
+
+## 1.1.0
+* Registering some content types correctly only when option set
+
+## 1.0.0
+* Map in place and working
+
 ## 0.42.0
 * Improving hover effects on the sliders
 
