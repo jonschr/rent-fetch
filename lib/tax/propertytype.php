@@ -1,7 +1,6 @@
 <?php
 
-add_action( 'init', 'four_star_register_propertytype_taxonomy' );
-function four_star_register_propertytype_taxonomy() {
+function apartmentsync_register_propertytype_taxonomy() {
 	register_taxonomy(
 		'propertytypes',
 		'properties',

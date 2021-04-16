@@ -3,7 +3,7 @@
 /**
  * Register the content stypes
  */
-add_action( 'init', 'apartmentsync_register_properties_cpt' );
+
 function apartmentsync_register_properties_cpt() {
 
 	//* Properties

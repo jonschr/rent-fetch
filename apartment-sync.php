@@ -195,32 +195,34 @@ function apartmentsync_start_sync() {
 //////////////////////
 
 
-// add_action( 'init', 'apartmentsync_register_content_types' );
-// function apartmentsync_register_content_types() {
+add_action( 'init', 'apartmentsync_register_content_types' );
+function apartmentsync_register_content_types() {
             
-//     //* figure out whether this is a single 
-//     $apartment_site_type = get_field( 'apartment_site_type', 'option' );
+    //* figure out whether this is a single 
+    $apartment_site_type = get_field( 'apartment_site_type', 'option' );
         
-//     //* floorplans post type
-//     require_once( 'lib/post-type/floorplans.php' );
-//     require_once( 'lib/tax/floorplantype.php' );
+    //* only register the properties and neighborhoods post types if this is a 'multiple' site
+    if ( $apartment_site_type == 'multiple' ) {
+        
+        // properties cpt
+        add_action( 'init', 'apartmentsync_register_properties_cpt', 20 );
+        
+        // amenities property taxes
+        add_action( 'init', 'apartmentsync_register_amenities_taxonomy', 20 );
+        add_action( 'init', 'apartmentsync_register_propertytype_taxonomy', 20 );
+        
+        // neighborhoods cpt
+        add_action( 'init', 'apartmentsync_register_neighborhoods_cpt', 20 );
+        
+        // neighborhoods taxes
+        add_action( 'init', 'apartmentsync_register_areas_taxonomy', 20 );
+        
+        // connect properties and neighborhoods
+        require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
+        
+    }
     
-//     //* only register the properties and neighborhoods post types if this is a 'multiple' site
-//     if ( $apartment_site_type == 'multiple' ) {
-        
-//         // only include the properties and neighborhoods if we have multiple properties needed
-//         require_once( 'lib/post-type/properties.php' );
-//         require_once( 'lib/tax/amenities.php' );
-//         require_once( 'lib/tax/propertytype.php' );
-//         require_once( 'lib/post-type/neighborhoods.php' );
-//         require_once( 'lib/tax/areas.php' );
-        
-//         // connect properties and neighborhoods
-//         require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
-        
-//     }
-    
-// }
+}
 
 //////////////
 // ENQUEUES //
@@ -239,6 +241,7 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_script( 'apartmentsync-search-properties-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-script.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Properties map (the map itself)
+    // $key = get_option( )
     wp_register_script( 'apartmentsync-google-maps', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBlRKm-v6YtuQf3yNpWMZowrGhQ8qD073w', array(), APARTMENTSYNC_VERSION, true );
     wp_register_script( 'apartmentsync-property-map', APARTMENTSYNC_PATH . 'js/apartmentsync-property-map.js', array( 'jquery', 'apartmentsync-google-maps' ), APARTMENTSYNC_VERSION, true );
     

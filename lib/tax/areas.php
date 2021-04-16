@@ -1,7 +1,6 @@
 <?php
 
-add_action( 'init', 'four_star_register_taxonomies' );
-function four_star_register_taxonomies() {
+function apartmentsync_register_areas_taxonomy() {
 	register_taxonomy(
 		'area',
 		'neighborhoods',

@@ -28,27 +28,30 @@ jQuery(document).ready(function ($) {
 
     function getLocations() {
 
-        // empty array for global
-        var global = [];
+        // clear the map
+        var locationsArray = [];
 
+        // get the positions
         $('.type-properties').each(function () {
             lat = $(this).attr('data-latitude');
             long = $(this).attr('data-longitude');
-            global.push([lat, long]);
+            locationsArray.push([lat, long]);
         });
 
+        markerLoop(locationsArray);
+    }
+
+    function clearMap() {
+        var emptyArray = [];
+        markerLoop(emptyArray);
+    }
+
+    function markerLoop(locationsArray) {
+        console.log(locationsArray);
         markerArray = [];
-
-        for (var i = 0; i < global.length; i++) {
-            console.log(global[i]);
-            markerArray[i] = addMarker(global[i][2], global[i][0], global[i][1], map);
+        for (var i = 0; i < locationsArray.length; i++) {
+            markerArray[i] = addMarker(locationsArray[i][2], locationsArray[i][0], locationsArray[i][1], map);
         }
-
-        // for (var i = 0; i < markerArray.length; i++) {
-        //     bounds.extend(markerArray[i]);
-        // }
-
-
     }
 
     function addMarker(title, x, y, map) {
@@ -72,10 +75,14 @@ jQuery(document).ready(function ($) {
         bounds.extend(position);
         map.fitBounds(bounds);
 
-        return marker;
+        // bounds.extend(position);
+        // map.fitBounds(bounds);
+
+        // return marker;
     }
 
     $(window).on('load', initMap);
+    $(window).on('ajaxComplete', clearMap);
     $(window).on('ajaxComplete', getLocations);
 
 
