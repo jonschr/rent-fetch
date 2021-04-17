@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 1.2.1
+	Version: 1.3.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '1.2.1' );
+define ( 'APARTMENTSYNC_VERSION', '1.3.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -139,7 +139,9 @@ require_once( 'lib/options-pages/main-settings.php' );
 //* Templates
 require_once( 'template/template-detection.php' );
 require_once( 'template/floorplan-in-archive.php' );
+require_once( 'template/properties-in-archive.php' );
 require_once( 'template/single-properties-property-images.php' );
+require_once( 'template/single-neighborhoods-footer-only.php' );
 
 //* Shortcodes
 require_once( 'shortcode/search-properties-map.php' );
@@ -249,6 +251,7 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     
     // Properties in archive
     wp_register_style( 'apartmentsync-properties-in-archive', APARTMENTSYNC_PATH . 'css/properties-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_register_script( 'apartmentsync-property-images-slider-init', APARTMENTSYNC_PATH . 'js/apartmentsync-property-images-slider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Fancybox
     wp_register_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );

@@ -1,3 +1,6 @@
+## 1.3.0
+* Adding properties to the neighborhoods pages
+
 ## 1.2.1
 * Bugfix on maps
 
