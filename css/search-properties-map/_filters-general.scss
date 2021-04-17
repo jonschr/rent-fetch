@@ -195,6 +195,16 @@ form.property-search-starter {
 
             }
 
+            &.dropdown-menu-propertytypes {
+                max-width: 200px;
+
+                .dropdown-menu-items {
+                    label {
+                        width: 100%;
+                    }
+                }
+            }
+
             &.dropdown-menu-pets {
                 width: 250px;
                 right: 0;
