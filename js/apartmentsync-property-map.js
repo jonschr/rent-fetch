@@ -1,97 +1,5 @@
 jQuery(document).ready(function ($) {
 
-
-    var map;
-    var bounds = new google.maps.LatLngBounds();
-
-
-    function initMap() {
-
-        // grab the styles from localization and convert the php array to json
-        var mapStyle = options.json_style;
-        mapsStyle = JSON.stringify(mapStyle);
-
-        var myLatlng = new google.maps.LatLng(39.8484006327939, -104.99522076837074);
-        var mapOptions = {
-            zoom: 10,
-            center: myLatlng,
-            styles: mapStyle,
-            disableDefaultUI: true, // removes the satellite/map selection (might also remove other stuff)
-            // scaleControl: true,
-            zoomControl: true,
-            zoomControlOptions: {
-                position: google.maps.ControlPosition.LEFT_TOP,
-            },
-            fullscreenControl: false,
-        }
-        map = new google.maps.Map(document.getElementById("map"), mapOptions);
-    }
-
-    function getLocations() {
-
-        // clear the map
-        var locationsArray = [];
-
-        // get the positions
-        $('.type-properties').each(function () {
-            lat = $(this).attr('data-latitude');
-            long = $(this).attr('data-longitude');
-            locationsArray.push([lat, long]);
-        });
-
-        markerLoop(locationsArray);
-    }
-
-    function clearMapArra() {
-        var emptyArray = [];
-        markerLoop(emptyArray);
-    }
-
-
-    function markerLoop(locationsArray) {
-        console.log(locationsArray);
-        markerArray = [];
-        for (var i = 0; i < locationsArray.length; i++) {
-            markerArray[i] = addMarker(locationsArray[i][2], locationsArray[i][0], locationsArray[i][1], map);
-        }
-    }
-
-    function addMarker(title, x, y, map) {
-
-        position = new google.maps.LatLng(x, y);
-
-        var marker = new google.maps.Marker({
-            position: position,
-            map: map,
-            title: title
-        });
-
-        infowindow = new google.maps.InfoWindow({
-            content: 'Hello world!',
-        });
-
-        marker.addListener("click", () => {
-            infowindow.open(map, marker);
-        });
-
-        bounds.extend(position);
-        map.fitBounds(bounds);
-
-        // bounds.extend(position);
-        // map.fitBounds(bounds);
-
-        // return marker;
-    }
-
-    // $(window).on('load', initMap);
-    // $(window).on('ajaxComplete', clearMap);
-    // $(window).on('ajaxComplete', getLocations);
-
-
-});
-
-jQuery(document).ready(function ($) {
-
     var map;
     var locationsArray = [];
 
@@ -131,7 +39,10 @@ jQuery(document).ready(function ($) {
             long = $(this).attr('data-longitude');
             title = $(this).find('h3').text();
             content = $(this).find('.property-content').html();
-            locationsArray.push([lat, long, title, content]);
+            image = $(this).find('.property-images-wrap').attr('data-image-url');
+            url = $(this).attr('data-url');
+            id = $(this).attr('data-id');
+            locationsArray.push([lat, long, title, content, image, url, id]);
         });
 
         console.log(locationsArray);
@@ -144,23 +55,28 @@ jQuery(document).ready(function ($) {
 
         for (let i = 0; i < locationsArray.length; i++) {
 
-            let latitude = locationsArray[i][0];
-            let longitude = locationsArray[i][1];
-            let title = locationsArray[i][2];
-            let content = locationsArray[i][3];
-            let theposition = new google.maps.LatLng(latitude, longitude);
+            var latitude = locationsArray[i][0];
+            var longitude = locationsArray[i][1];
+            var title = locationsArray[i][2];
+            var content = locationsArray[i][3];
+            var imageurl = locationsArray[i][4];
+            var url = locationsArray[i][5];
+            var id = locationsArray[i][6];
+            var label = title;
+            var theposition = new google.maps.LatLng(latitude, longitude);
 
             var marker = new google.maps.Marker({
                 position: theposition,
                 map: map,
                 title: title,
+                // label: title, //TODO
             });
 
             bounds.extend(theposition);
             map.fitBounds(bounds);
 
             marker['infowindow'] = new google.maps.InfoWindow({
-                content: content
+                content: '<div class="map-property-popup" id="overlay-' + id + '"><a href="' + url + '" class="image"><img src="' + imageurl + '"/></a>' + content + '</div>',
             });
 
             google.maps.event.addListener(marker, 'click', function () {
@@ -177,7 +93,6 @@ jQuery(document).ready(function ($) {
 
         }
 
-        console.log(markers);
     }
 
 

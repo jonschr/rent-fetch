@@ -1,3 +1,6 @@
+## 1.4.0
+* Map is now pretty functional, still default pins
+
 ## 1.3.0
 * Adding properties to the neighborhoods pages
 

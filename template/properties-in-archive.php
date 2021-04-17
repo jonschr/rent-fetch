@@ -34,7 +34,7 @@ function apartmentsync_each_property( $post, $floorplan ) {
     $class = implode( ' ', $class );
     
     // markup
-    printf( '<div class="%s" data-latitude="%s" data-longitude="%s">', $class, $latitude, $longitude );
+    printf( '<div id="%s" class="%s" data-id="%s" data-url="%s" data-latitude="%s" data-longitude="%s">', $id, $class, $id, $permalink, $latitude, $longitude );
     
         if ( $permalink )
             printf( '<a class="overlay" href="%s"></a>', $permalink );
@@ -98,7 +98,13 @@ function apartmentsync_each_property_images( $post_id ) {
     if ( !$property_images )
         return;
         
-    echo '<div class="property-images-wrap">';
+    // grab the first image url for use in the map
+    $firsturl = $property_images[0]->ImageURL;
+    
+    if ( !$firsturl )
+        $firsturl = apply_filters( 'apartmentsync_sample_image', $image );
+        
+    printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
         echo '<div class="property-slider">';
         
             $count = 1;
