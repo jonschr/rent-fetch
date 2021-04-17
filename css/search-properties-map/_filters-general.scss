@@ -12,6 +12,10 @@ form.property-search-starter {
 
         &:not(.input-wrap-text-search) {
             max-width: 300px;
+
+            @include mobile {
+                max-width: 100%;
+            }
         }
 
         &.input-wrap-text-search {
@@ -90,11 +94,13 @@ form.property-search-starter {
         border: 1px solid transparent;
         background-color: transparent;
         outline: none !important;
-        padding-left: 12px;
-        padding-right: 12px;
+        padding-left: 0;
+        padding-right: 0;
         z-index: 20;
         position: relative;
         line-height: 1em;
+
+
 
     }
 
@@ -196,7 +202,9 @@ form.property-search-starter {
             }
 
             &.dropdown-menu-propertytypes {
-                max-width: 200px;
+                @include desktop {
+                    max-width: 200px;
+                }
 
                 .dropdown-menu-items {
                     label {

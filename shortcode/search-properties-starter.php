@@ -65,7 +65,7 @@ function apartmentsync_propertysearch( $atts ) {
     
         //* Build the text search
         echo '<div class="input-wrap input-wrap-text-search">';
-            echo '<input type="text" name="textsearch" placeholder="Search city or property name..." />';
+            echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
         echo '</div>';
                 
         //* Build the beds filter
