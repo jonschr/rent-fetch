@@ -1,3 +1,6 @@
+## 1.4.1
+* Minor updates
+
 ## 1.4.0
 * Map is now pretty functional, still default pins
 
