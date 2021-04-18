@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'version' => '5.4.3',
+  'version' => '5.4.4',
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1617251093,
+  'updated' => 1618712312,
   'columns' => 
   array (
     'title' => 
@@ -88,6 +88,24 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb796',
+    ),
+    '607b962c381064' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Availability date',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_607b95db3077c',
+      'date_format' => 'm/d/Y',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'filter_format' => '',
+      'name' => '607b962c381064',
     ),
     '600b41d6cb798' => 
     array (

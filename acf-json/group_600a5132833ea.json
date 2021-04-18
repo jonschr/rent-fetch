@@ -41,6 +41,23 @@
             "maxlength": ""
         },
         {
+            "key": "field_607b95db3077c",
+            "label": "Availability date",
+            "name": "availability_date",
+            "type": "date_picker",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "display_format": "d\/m\/Y",
+            "return_format": "d\/m\/Y",
+            "first_day": 1
+        },
+        {
             "key": "field_600a5151d7e0d",
             "label": "Baths",
             "name": "baths",
@@ -374,5 +391,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1615405082
+    "modified": 1618712167
 }

@@ -45,8 +45,12 @@ function apartmentsync_fetch_yardi_floorplans( $property ) {
     apartmentsync_verbose_log( "Transient found for Yardi property $property (named yardi_floorplans_property_id_$property). Looping through data." );
     
     foreach( $floorplans as $floorplan ) {
-                   
+        
+        // save to cpt
         apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $property );
+        
+        // grab and insert the availability information
+        apartmentsync_get_availability_information( $floorplan, $property );
         
     }
 }
@@ -314,4 +318,63 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voya
         wp_reset_postdata();
     }
     
+}
+
+function apartmentsync_get_availability_information( $floorplan, $voyager_property_code ) {
+    
+    $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
+    $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
+    
+    $floorplan_Id = $floorplan['FloorplanId'];
+                    
+    // Do the API request
+    $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=apartmentavailability&floorplanId=%s&apiToken=%s&VoyagerPropertyCode=%s', $floorplan_Id, $yardi_api_key, $voyager_property_code ); // path to your JSON file
+    $data = file_get_contents( $url ); // put the contents of the file into a variable        
+    
+    // process the data to get the date in yardi's format
+    $data = json_decode( $data );            
+    $data = $data[0];
+    $available_date = $data->AvailableDate;
+
+    // bail if there's no date available
+    if ( $available_date == null )
+        return;
+        
+    // var_dump( $available_date );
+    
+    // $available_date = "07/12/2010";
+    $acf_date = date('Ymd', strtotime($available_date));
+    
+    // query to find out if there's already a post for this property
+    $args = array(
+        'post_type' => 'floorplans',
+        'posts_per_page' => -1,
+        'post_status' => 'publish',
+        'meta_query' => array(
+            array(
+                'relation' => 'AND',
+                array(
+                    array(
+                        'key' => 'floorplan_source',
+                        'value' => 'yardi',
+                    ),
+                    array(
+                        'key'   => 'voyager_property_code',
+                        'value' => $voyager_property_code,
+                    ),
+                ),
+            ),
+        ),
+    );
+    
+    $floorplan_query = new WP_Query( $args );
+    $floorplans = $floorplan_query->posts;
+    
+    // var_dump( $floorplans );
+    
+    if ( $floorplans ) {
+        foreach( $floorplans as $floorplan ) {   
+            $success_update_photos = update_post_meta( $floorplan->ID, 'availability_date', $acf_date );
+        }
+    }
 }

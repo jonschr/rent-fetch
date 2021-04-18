@@ -1,9 +1,7 @@
 ul.amenities {
-    display: flex;
-    flex-flow: row wrap;
     margin-left: 0;
     padding-left: 0;
-    justify-content: space-between;
+    columns: 3;
 
     li {
         width: 200px;

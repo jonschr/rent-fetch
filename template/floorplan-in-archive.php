@@ -27,10 +27,14 @@ function apartmentsync_floorplan_in_archive( $post ) {
     $minimum_rent = get_field( 'minimum_rent', $post_id );
     $minimum_sqft = get_field( 'minimum_sqft', $post_id );
     $property_id = get_field( 'property_id', $post_id );
+    $availability_date = get_post_meta( $post_id, 'availability_date', true );
     $property_show_specials = get_field( 'property_show_specials', $post_id );
     $unit_type_mapping = get_field( 'unit_type_mapping', $post_id );
     $floorplan_source = get_post_meta( $post_id, 'floorplan_source', true );
         
+    
+    echo $availability_date;
+    
     //* Figure things out
     $beds = apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings );
         
