@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 1.5.0
+	Version: 1.6.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '1.5.0' );
+define ( 'APARTMENTSYNC_VERSION', '1.6.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -235,7 +235,6 @@ function apartmentsync_enqueue_scripts_stylesheets() {
 	
 	// Plugin styles
     wp_register_style( 'apartmentsync-single-properties', APARTMENTSYNC_PATH . 'css/single-properties.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_style( 'apartmentsync-floorplan-in-archive', APARTMENTSYNC_PATH . 'css/floorplan-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     
     // Properties map search
     wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );
@@ -252,6 +251,10 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     // Properties in archive
     wp_register_style( 'apartmentsync-properties-in-archive', APARTMENTSYNC_PATH . 'css/properties-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-property-images-slider-init', APARTMENTSYNC_PATH . 'js/apartmentsync-property-images-slider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
+    // Floorplans in archive
+    wp_register_style( 'apartmentsync-floorplan-in-archive', APARTMENTSYNC_PATH . 'css/floorplan-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_register_script( 'apartmentsync-floorplan-images-slider-init', APARTMENTSYNC_PATH . 'js/apartmentsync-floorplan-images-slider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Fancybox
     wp_register_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );

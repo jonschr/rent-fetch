@@ -393,7 +393,7 @@ function apartmentsync_floorplangrid_block_get_posts( $settings ) {
     
 }
 
-
+//todo probably deprecate this
 function apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings ) {
      
     $string = sprintf( '%s_bedrooms_label', $numberofbeds );

@@ -179,7 +179,7 @@ echo '<div class="single-properties-wrap">';
                     if ( $bed == '0' ) {
                         echo 'Studio';
                     } else {
-                        echo $bed . ' bedroom';
+                        echo $bed . ' Bedroom';
                     }
                 echo '</h3></summary>';
                 echo '<div class="floorplan-in-archive">';

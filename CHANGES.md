@@ -1,3 +1,9 @@
+## 1.6.0
+* Adding the layout for floorplans archives
+* Adding the floorplans archive slider
+* Adding fancyboxes in floorplans archives
+* Adding in the availability data into the floorplans archives
+
 ## 1.4.1
 * Minor updates
 

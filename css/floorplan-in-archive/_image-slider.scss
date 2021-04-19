@@ -1,8 +1,6 @@
-.properties-loop {
+.floorplan-in-archive {
 
-    .property-slide {
-        height: 200px;
-        background-color: $light;
+    .floorplan-slide {
         position: relative;
         border-radius: 3px;
         overflow: hidden;
@@ -10,13 +8,13 @@
         img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
     }
 
-    .entry.type-properties {
+    .entry.type-floorplans {
         &:hover {
-            .property-slider {
+            .floorplan-slider {
                 .slick-arrow {
                     @include desktop {
                         opacity: 1;
@@ -32,7 +30,7 @@
         }
     }
 
-    .property-slider {
+    .floorplan-slider {
         opacity: 0;
         margin-bottom: 0 !important;
 
@@ -50,7 +48,7 @@
             transition: .3s all ease;
 
             @include desktop {
-                opacity: 0;
+                // opacity: 0;
             }
 
             &:before {
@@ -84,7 +82,7 @@
             transition: .3s all ease;
 
             @include desktop {
-                opacity: 0;
+                // opacity: 0;
             }
 
             li {
