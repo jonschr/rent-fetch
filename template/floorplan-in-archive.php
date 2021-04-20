@@ -27,7 +27,7 @@ function apartmentsync_floorplan_in_archive( $post ) {
         $floorplanclass[] = 'no-units-available';  
     } 
         
-    $floorplanclass = implode( $floorplanclass, ' ' );
+    $floorplanclass = implode( ' ', $floorplanclass );
 
     //* Do the markup
     printf( '<div class="%s">', $floorplanclass );
