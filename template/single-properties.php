@@ -225,7 +225,7 @@ echo '<div class="single-properties-wrap">';
         'id'   => 'properties_to_neighborhoods',
         'to' => get_the_ID(),
     ] );
-    
+        
     $neighborhood = $neighborhoods[0];   
      
     $neighborhood_id = $neighborhood->ID;
