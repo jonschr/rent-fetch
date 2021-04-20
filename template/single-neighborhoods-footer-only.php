@@ -1,11 +1,34 @@
 <?php
 
-
-add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_to_neighborhood_footer', 0 );
-function apartmentsync_add_properties_to_neighborhood_footer() {
+add_action( 'apartmentsync_single_properties_nearby_properties', 'apartmentsync_add_properties_to_neighborhood_and_property_footer' );
+add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 0 );
+function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
+        
+    if ( !is_singular( 'neighborhoods') && !is_singular( 'properties' ) )
+    return;
+                
+    // if this is a property, we need to find the connected neightborhoods to use later
+    if ( is_singular( 'properties' ) ) {
+                
+        $neighborhoods = MB_Relationships_API::get_connected( [
+            'id'   => 'properties_to_neighborhoods',
+            'to' => get_the_ID(),
+        ] );
+        
+        if ( !$neighborhoods )
+            return;
+                    
+        $connected_neighborhoods = array();
+        
+        foreach ( $neighborhoods as $neighborhood ) {            
+            $connected_neighborhoods[] = $neighborhood->ID;
+        }        
+    }
     
-    if ( !is_singular( 'neighborhoods') )
-        return;
+    if ( is_singular( 'neighborhoods' ) ) {
+        $connected_neighborhoods = array( get_the_ID() );
+    }
+    
     
     // do a floorplans query
     $args = array(
@@ -147,7 +170,7 @@ function apartmentsync_add_properties_to_neighborhood_footer() {
         'no_found_rows' => true,
         'relationship' => array(
             'id'   => 'properties_to_neighborhoods',
-            'from' => get_the_ID(), // You can pass object ID or full object
+            'from' => $connected_neighborhoods, // You can pass object ID or full object
         ),
 	);
     
@@ -165,9 +188,20 @@ function apartmentsync_add_properties_to_neighborhood_footer() {
     // print_r( $propertyquery );
     // echo '</pre>';
     
+    $countposts = $propertyquery->post_count;
+    if ( $countposts < 2 )
+        return;
+        
+   
+    
     if( $propertyquery->have_posts() ) :
-        echo '<div id="neighborhood-prefooter"><div class="properties-loop">';    
-            
+        echo '<div id="neighborhood-prefooter">';
+        
+            // if ( is_singular( 'properties' ) )
+                echo '<h2>Nearby properties</h2>';
+        
+            echo '<div class="properties-loop">';
+        
             while( $propertyquery->have_posts() ): $propertyquery->the_post();
                 $property_id = get_post_meta( get_the_ID(), 'property_id', true );
                 $floorplan = $floorplans[$property_id ];

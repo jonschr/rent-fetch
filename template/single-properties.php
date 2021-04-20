@@ -143,6 +143,9 @@ echo '<div class="single-properties-wrap">';
     // FLOORPLANS //
     ////////////////
     
+    // grab the gravity forms lightbox, if enabled on this page
+    do_action( 'apartmentsync_do_gform_lightbox' );
+    
     // get the possible values for the beds
     $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
     $beds = array_unique( $beds );
@@ -211,10 +214,13 @@ echo '<div class="single-properties-wrap">';
     // TODO Add Lease Details
     
     // TODO Add Neighborhood details 
+    echo '<div class="neighborhoods-wrap">';
     
-    // grab the gravity forms lightbox, if enabled on this page
-    do_action( 'apartmentsync_do_gform_lightbox' );
+    echo '</div>';
     
+    // property grid for the neighborhood
+    do_action( 'apartmentsync_single_properties_nearby_properties' );
+        
 echo '</div>'; // .single-properties-wrap
 
 get_footer();
