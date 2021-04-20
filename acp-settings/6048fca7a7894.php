@@ -5,7 +5,7 @@ return array (
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1618712312,
+  'updated' => 1618888074,
   'columns' => 
   array (
     'title' => 
@@ -106,6 +106,23 @@ return array (
       'filter_label' => '',
       'filter_format' => '',
       'name' => '607b962c381064',
+    ),
+    '607e4575ed4fe0' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Video or tour URL',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_607e4413bc855',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '607e4575ed4fe0',
     ),
     '600b41d6cb798' => 
     array (
@@ -308,40 +325,6 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '60492043ac8b44',
-    ),
-    '6049205ff645a0' => 
-    array (
-      'type' => 'column-acf_field',
-      'label' => 'External Image Name',
-      'width' => '',
-      'width_unit' => '%',
-      'field' => 'field_60491ffd31bcf',
-      'character_limit' => '20',
-      'export' => 'off',
-      'sort' => 'on',
-      'edit' => 'on',
-      'bulk_edit' => 'on',
-      'search' => 'on',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '6049205ff645a0',
-    ),
-    '60492063947ae0' => 
-    array (
-      'type' => 'column-acf_field',
-      'label' => 'External Image Alt Text',
-      'width' => '',
-      'width_unit' => '%',
-      'field' => 'field_6049200931bd0',
-      'character_limit' => '20',
-      'export' => 'off',
-      'sort' => 'on',
-      'edit' => 'on',
-      'bulk_edit' => 'on',
-      'search' => 'on',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '60492063947ae0',
     ),
     '600b41d6cb7a9' => 
     array (

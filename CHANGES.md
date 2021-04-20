@@ -1,3 +1,6 @@
+## 1.7.0
+* All buttons added to the floorplans archives
+
 ## 1.6.0
 * Adding the layout for floorplans archives
 * Adding the floorplans archive slider

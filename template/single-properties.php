@@ -195,8 +195,6 @@ echo '<div class="single-properties-wrap">';
     }
     
     echo '</div>'; // .floorplans-wrap
-    
-    
         
     $terms = get_the_terms( get_the_ID(), 'amenities' );
     if ( $terms ) {
@@ -210,9 +208,12 @@ echo '<div class="single-properties-wrap">';
         echo '</div>';
     }
     
-    //TODO Add Lease Details
+    // TODO Add Lease Details
     
-    //? TODO Add Neighborhood details 
+    // TODO Add Neighborhood details 
+    
+    // grab the gravity forms lightbox, if enabled on this page
+    do_action( 'apartmentsync_do_gform_lightbox' );
     
 echo '</div>'; // .single-properties-wrap
 
