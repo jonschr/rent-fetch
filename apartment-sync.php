@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 1.8.0
+	Version: 1.9.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '1.8.0' );
+define ( 'APARTMENTSYNC_VERSION', '1.9.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -141,7 +141,7 @@ require_once( 'template/template-detection.php' );
 require_once( 'template/floorplan-in-archive.php' );
 require_once( 'template/properties-in-archive.php' );
 require_once( 'template/single-properties-property-images.php' );
-require_once( 'template/single-neighborhoods-footer-only.php' );
+require_once( 'template/property-grid-footer.php' );
 
 //* Shortcodes
 require_once( 'shortcode/search-properties-map.php' );

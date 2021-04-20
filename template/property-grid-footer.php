@@ -5,8 +5,8 @@ add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_
 function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         
     if ( !is_singular( 'neighborhoods') && !is_singular( 'properties' ) )
-    return;
-                
+        return;
+                        
     // if this is a property, we need to find the connected neightborhoods to use later
     if ( is_singular( 'properties' ) ) {
                 
@@ -40,21 +40,21 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
 	);
     
     //* Remove anything with an unrealistically low value for rent
-    $args['meta_query'][] = array(
-        array(
-            'key' => 'minimum_rent',
-            'value' => 100,
-            'compare' => '>',
-        )
-    );
+    // $args['meta_query'][] = array(
+    //     array(
+    //         'key' => 'minimum_rent',
+    //         'value' => 100,
+    //         'compare' => '>',
+    //     )
+    // );
     
-    $args['meta_query'][] = array(
-        array(
-            'key' => 'maximum_rent',
-            'value' => 100,
-            'compare' => '>',
-        )
-    );
+    // $args['meta_query'][] = array(
+    //     array(
+    //         'key' => 'maximum_rent',
+    //         'value' => 100,
+    //         'compare' => '>',
+    //     )
+    // );
     
     $query = new WP_Query( $args );
 
@@ -137,10 +137,13 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         $min = min( $floorplan['minimum_rent'] );
         
         if ( $max == $min ) {
-            $floorplans[$key]['rentrange'] = $max;
+            $floorplans[$key]['rentrange'] = '$' . $max;
         } else {
-            $floorplans[$key]['rentrange'] = $min . '-' . $max;
+            $floorplans[$key]['rentrange'] = '$' . $min . '-' . $max;
         }
+        
+        if ( $min < 100 || $max < 100 )
+            $floorplans[$key]['rentrange'] = 'Pricing unavailable';
         
         $max = max( $floorplan['maximum_sqft'] );
         $min = min( $floorplan['minimum_sqft'] );

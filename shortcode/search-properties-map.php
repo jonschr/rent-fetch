@@ -482,10 +482,13 @@ function apartmentsync_filter_properties(){
         $min = min( $floorplan['minimum_rent'] );
         
         if ( $max == $min ) {
-            $floorplans[$key]['rentrange'] = $max;
+            $floorplans[$key]['rentrange'] = '$' . $max;
         } else {
-            $floorplans[$key]['rentrange'] = $min . '-' . $max;
+            $floorplans[$key]['rentrange'] = '$' . $min . '-' . $max;
         }
+        
+        if ( $min < 100 || $max < 100 )
+            $floorplans[$key]['rentrange'] = 'Pricing unavailable';
         
         $max = max( $floorplan['maximum_sqft'] );
         $min = min( $floorplan['minimum_sqft'] );

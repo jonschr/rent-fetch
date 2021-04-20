@@ -1,6 +1,9 @@
+## 1.9.0
+* Adding improvements to the properties footer (showing even when unavailable)
+* Adding the neighborhood to the single-properties template
+
 ## 1.8.0
 * Adding nearby properties to the single-properties template
-
 ## 1.7.0
 * All buttons added to the floorplans archives
 

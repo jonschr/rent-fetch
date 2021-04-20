@@ -198,7 +198,11 @@ echo '<div class="single-properties-wrap">';
     }
     
     echo '</div>'; // .floorplans-wrap
-        
+    
+    ///////////////
+    // AMENITIES //
+    ///////////////
+    
     $terms = get_the_terms( get_the_ID(), 'amenities' );
     if ( $terms ) {
         echo '<div class="amenities-wrap">';
@@ -213,12 +217,46 @@ echo '<div class="single-properties-wrap">';
     
     // TODO Add Lease Details
     
-    // TODO Add Neighborhood details 
-    echo '<div class="neighborhoods-wrap">';
+    ///////////////////////
+    // NEIGHBORHOOD INFO //
+    ///////////////////////
     
-    echo '</div>';
+    $neighborhoods = MB_Relationships_API::get_connected( [
+        'id'   => 'properties_to_neighborhoods',
+        'to' => get_the_ID(),
+    ] );
     
-    // property grid for the neighborhood
+    $neighborhood = $neighborhoods[0];   
+     
+    $neighborhood_id = $neighborhood->ID;
+    $permalink = get_the_permalink( $neighborhood_id );
+    $thumb = get_the_post_thumbnail_url( $neighborhood_id, 'large' );
+    $title = get_the_title( $neighborhood_id );
+    $excerpt = apply_filters( 'the_content', get_the_excerpt( $neighborhood_id ) );
+        
+    if ( !empty( $neighborhood ) ) {
+        echo '<div class="neighborhoods-wrap">';
+        
+            printf( '<div class="neighborhood-photo-wrap"><a href="%s" class="neighborhood-photo" style="background-image:url(%s);"></a></div>', $permalink, $thumb );
+            
+            echo '<div class="neighborhood-content">';
+            
+                echo '<h4>The neighborhood</h4>';
+                printf( '<h2>Life in %s</h2>', $title );
+                
+                if ( $excerpt )
+                    printf( '<div class="excerpt">%s</div>', $excerpt );
+                    
+                printf( '<a href="%s" class="button">Explore the neighborhood</a>', $permalink );
+                
+            echo '</div>';
+        echo '</div>';
+    }
+    
+    ///////////////////
+    // PROPERTY GRID //
+    ///////////////////
+    
     do_action( 'apartmentsync_single_properties_nearby_properties' );
         
 echo '</div>'; // .single-properties-wrap
