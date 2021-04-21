@@ -122,7 +122,15 @@ add_action( 'apartmentsync_do_save_property_data_to_cpt', 'apartmentsync_save_pr
 function apartmentsync_save_property_data_to_cpt( $property_data ) {
     
     $property_data = $property_data[0];
-    // var_dump( $property_data );
+    
+    // bail if there's no property data
+    if ( !isset( $property_data['PropertyData'] ) )
+        return;
+
+    // bail if there's no voyager property code
+    if ( !isset( $property_data['PropertyData']['VoyagerPropertyCode'] ) )
+        return;
+        
     $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
             
     // query to find out if there's already a post for this property
