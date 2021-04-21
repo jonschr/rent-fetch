@@ -97,23 +97,21 @@ function apartmentsync_each_property_images( $post_id ) {
     if ( !$property_images )
         return;
         
+    $firsturl = null;
+        
     // grab the first image url for use in the map
-    $firsturl = $property_images[0]->ImageURL;
+    if ( isset( $property_images[0]->ImageURL ) )
+        $firsturl = $property_images[0]->ImageURL;
     
     if ( !$firsturl )
-        $firsturl = apply_filters( 'apartmentsync_sample_image', $image );
+        $firsturl = apply_filters( 'apartmentsync_sample_image', APARTMENTSYNC_PATH . 'images/fallback-property.svg' );
         
     printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
         echo '<div class="property-slider">';
-        
-            $count = 1;
-            
+                    
+            $property_images = array_slice( $property_images, 0, 3 );
             
             foreach( $property_images as $property_image ) {
-                                
-                // max 3 slides
-                if ( $count > 3 )
-                    break;
                           
                 $title = null;
                 if ( isset( $property_image->Title ) )
@@ -141,9 +139,7 @@ function apartmentsync_each_property_images( $post_id ) {
                 echo '<div class="property-slide">';
                     printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
                 echo '</div>';
-                
-                $count++;
-                
+                                
             }
         
         echo '</div>';
