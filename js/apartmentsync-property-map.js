@@ -21,7 +21,7 @@ jQuery(document).ready(function ($) {
             // scaleControl: true,
             zoomControl: true,
             zoomControlOptions: {
-                position: google.maps.ControlPosition.LEFT_TOP,
+                position: google.maps.ControlPosition.RIGHT_TOP,
             },
             fullscreenControl: false,
         }
@@ -95,10 +95,20 @@ jQuery(document).ready(function ($) {
 
     }
 
+    function waitThenResetMap() {
+        // setTimeout(renderMap, 50);
+        renderMap();
+        getLocations();
+        addMarkers();
+    }
+
 
     // $(window).on('load', renderMap);
     $(window).on('ajaxComplete', renderMap);
     $(window).on('ajaxComplete', getLocations);
     $(window).on('ajaxComplete', addMarkers);
+
+    $('.toggle').on('click', waitThenResetMap);
+
 
 });

@@ -1,3 +1,6 @@
+## 1.13.0
+* Adding map toggle reset functionality (it was breaking without it)
+
 ## 1.12.0
 * Fix line break issue in property archives
 * Add toggle to maps

@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 1.11.0
+	Version: 1.13.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '1.11.0' );
+define ( 'APARTMENTSYNC_VERSION', '1.13.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -240,6 +240,7 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-search-properties-ajax', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-ajax.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     wp_register_script( 'apartmentsync-search-properties-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-script.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'apartmentsync-toggle-map', APARTMENTSYNC_PATH . 'js/apartmentsync-toggle-map.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Properties map (the map itself)
     wp_register_script( 'apartmentsync-property-map', APARTMENTSYNC_PATH . 'js/apartmentsync-property-map.js', array( 'jquery', 'apartmentsync-google-maps' ), APARTMENTSYNC_VERSION, true );

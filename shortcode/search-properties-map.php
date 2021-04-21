@@ -10,6 +10,7 @@ function apartmentsync_propertymap( $atts ) {
     wp_enqueue_script( 'apartmentsync-search-filters-general' );
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
+    wp_enqueue_script( 'apartmentsync-toggle-map' );
     
     // slick
     wp_enqueue_script( 'apartmentsync-slick-main-script' );
@@ -35,9 +36,8 @@ function apartmentsync_propertymap( $atts ) {
     <script>
         
         jQuery(document).ready(function ($) {
-
-            $(document).ajaxComplete(function () {
-                                
+            
+            function loadSlick() {
                 $('.property-slider').slick({
                     dots: true,
                     infinite: false,
@@ -45,11 +45,12 @@ function apartmentsync_propertymap( $atts ) {
                     speed: 500,
                     fade: true,
                     cssEase: 'linear',
-                    azyLoad: 'ondemand',
+                    lazyLoad: 'ondemand',
                 });
-                
-            });
-
+            }
+            
+            $( document ).on( 'ajaxComplete', loadSlick );
+            
         });
 
     </script>
@@ -313,6 +314,7 @@ function apartmentsync_propertymap( $atts ) {
     //* Our container markup for the results
     echo '<div class="map-response-wrap">';
         echo '<div id="response"></div>';
+        echo '<a class="toggle"></a>';
         echo '<div id="map"></div>';
     echo '</div>';
 

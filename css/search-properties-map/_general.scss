@@ -12,6 +12,37 @@
         flex-flow: column-reverse wrap;
     }
 
+    &.toggle-map-off {
+        @include notmobile {
+            #response {
+                width: 100%;
+                height: auto;
+                overflow: visible;
+            }
+
+            .toggle {
+                left: auto;
+                right: 0;
+                z-index: 50;
+                border-top-left-radius: 100%;
+                border-bottom-left-radius: 100%;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                box-shadow: none;
+
+                &:before {
+                    transform: rotate(180deg) translateY(50%);
+                    right: auto;
+                    left: 10px;
+                }
+            }
+
+            #map {
+                width: 3px;
+            }
+        }
+    }
+
 
     .count {
         margin-bottom: 15px;
@@ -30,6 +61,10 @@
         width: 60%;
         padding: 50px;
         overflow-y: auto;
+        z-index: 30;
+        position: relative;
+        background-color: white;
+        // transition: .3s all ease;
 
         @include notdesktop {
             padding: 30px;
@@ -42,14 +77,70 @@
         }
     }
 
+    .toggle {
+        top: 70px;
+        transform: translateY(-50%);
+        left: calc(60% - 15px);
+        width: 50px;
+        height: 50px;
+        background-color: white;
+        position: absolute;
+        display: block;
+        z-index: 20;
+        border: 1px solid #ebebeb;
+        box-shadow: 0 0 10px 0 rgba($dark, 0.15);
+        border-top-right-radius: 100%;
+        border-bottom-right-radius: 100%;
+        transition: .3s transform ease;
+        cursor: pointer;
+
+        @include mobile {
+            display: none;
+        }
+
+        &:before {
+            content: "\f345";
+            color: $default;
+            position: absolute;
+            top: 50%;
+            right: 5px;
+            transform: translateY(-50%);
+            font-family: 'dashicons';
+            font-size: 25px;
+            // transition: .3s all ease;
+        }
+
+        &:hover {
+            &:before {
+                color: $dark;
+            }
+        }
+    }
+
     #map {
+        // transition: .3s all ease;
         height: 800px;
         width: 40%;
         background-color: $light;
+        z-index: 10;
+        position: relative;
+        box-shadow: inset 0 0 20px rgba($dark, .12);
 
         @include mobile {
             width: 100%;
             height: 30vh;
+        }
+
+        &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            box-shadow: inset 0 0 20px rgba($dark, .1);
+            pointer-events: none;
+            z-index: 12;
         }
     }
 }
