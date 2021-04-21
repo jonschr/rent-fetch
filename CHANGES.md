@@ -1,3 +1,6 @@
+## 1.10.0
+* Add setting for the max properties to show in the footer grid
+
 ## 1.9.0
 * Adding improvements to the properties footer (showing even when unavailable)
 * Adding the neighborhood to the single-properties template

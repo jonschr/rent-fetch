@@ -164,10 +164,16 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     // print_r( $property_ids );
     // echo '</pre>';
     
+    $number_properties = '-1';
+    
+    $property_footer_settings = get_field( 'property_footer_grid', 'options' );
+    if ( isset( $property_footer_settings['number_properties'] ) )
+        $number_properties = $property_footer_settings['number_properties'];
+        
     //* The base property query
     $propertyargs = array(
         'post_type' => 'properties',
-        'posts_per_page' => 4,
+        'posts_per_page' => $number_properties,
 		'orderby' => 'menu_order',
 		'order'	=> 'ASC', // ASC or DESC
         'no_found_rows' => true,
@@ -194,8 +200,6 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     $countposts = $propertyquery->post_count;
     if ( $countposts < 2 )
         return;
-        
-   
     
     if( $propertyquery->have_posts() ) :
         echo '<div id="neighborhood-prefooter">';
