@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'apartmentsync_do_each_property', 'apartmentsync_each_property', 10, 2 );
-function apartmentsync_each_property( $post, $floorplan ) {
+function apartmentsync_each_property( $id, $floorplan ) {
     
     // properties in archive styles
     wp_enqueue_style( 'apartmentsync-properties-in-archive' );
@@ -13,9 +13,8 @@ function apartmentsync_each_property( $post, $floorplan ) {
     wp_enqueue_style( 'apartmentsync-slick-main-theme' );
     
     // vars
-    $id = $post->ID;
-    $title = $post->post_title;
-    $permalink = get_the_permalink();
+    $title = get_the_title( $id );
+    $permalink = get_the_permalink( $id );
     $property_id = get_post_meta( $id, 'property_id', true );
     $address = get_post_meta( $id, 'address', true );
     $city = get_post_meta( $id, 'city', true );

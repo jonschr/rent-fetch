@@ -212,7 +212,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
             while( $propertyquery->have_posts() ): $propertyquery->the_post();
                 $property_id = get_post_meta( get_the_ID(), 'property_id', true );
                 $floorplan = $floorplans[$property_id ];
-                do_action( 'apartmentsync_do_each_property', $propertyquery->post, $floorplan );
+                do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
             endwhile;
         
             wp_reset_postdata();
