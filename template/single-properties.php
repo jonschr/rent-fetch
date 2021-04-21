@@ -237,15 +237,15 @@ echo '<div class="single-properties-wrap">';
         'to' => get_the_ID(),
     ] );
         
-    $neighborhood = $neighborhoods[0];   
-     
-    $neighborhood_id = $neighborhood->ID;
-    $permalink = get_the_permalink( $neighborhood_id );
-    $thumb = get_the_post_thumbnail_url( $neighborhood_id, 'large' );
-    $title = get_the_title( $neighborhood_id );
-    $excerpt = apply_filters( 'the_content', get_the_excerpt( $neighborhood_id ) );
+    if ( !empty( $neighborhoods ) ) {
         
-    if ( !empty( $neighborhood ) ) {
+        $neighborhood = $neighborhoods[0];   
+        $neighborhood_id = $neighborhood->ID;
+        $permalink = get_the_permalink( $neighborhood_id );
+        $thumb = get_the_post_thumbnail_url( $neighborhood_id, 'large' );
+        $title = get_the_title( $neighborhood_id );
+        $excerpt = apply_filters( 'the_content', get_the_excerpt( $neighborhood_id ) );
+        
         echo '<div class="neighborhoods-wrap">';
         
             printf( '<div class="neighborhood-photo-wrap"><a href="%s" class="neighborhood-photo" style="background-image:url(%s);"></a></div>', $permalink, $thumb );
