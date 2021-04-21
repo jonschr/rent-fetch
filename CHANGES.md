@@ -1,3 +1,6 @@
+## 1.11.0
+* Add new content area for properties
+
 ## 1.10.0
 * Add setting for the max properties to show in the footer grid
 
