@@ -1,3 +1,10 @@
+## 1.15.0
+* Fixing several php notices
+* Adding new logic for the availability dates (fixing a major bug where all floorplans from a given property were getting the same date)
+
+## 1.14.0
+* Performance optimization
+
 ## 1.13.0
 * Adding map toggle reset functionality (it was breaking without it)
 

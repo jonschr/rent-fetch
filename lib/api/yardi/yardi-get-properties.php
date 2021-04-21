@@ -277,6 +277,14 @@ function apartmentsync_update_yardi_property( $property_data ) {
     }
     
     //* Pets
+    if ( !isset( $property_data['PetPolicy'] ) )
+        return;
+        
+    if ( !isset( $property_data['PetPolicy'][0] ) )
+        return;
+        
+    if ( !isset( $property_data['PetPolicy'][0]['PetType'] ) )
+        return;
     
     $pets = $property_data['PetPolicy'][0]['PetType'];
         
