@@ -5,7 +5,7 @@ return array (
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1619032418,
+  'updated' => 1619036579,
   'columns' => 
   array (
     'title' => 
@@ -54,6 +54,23 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb7a6',
+    ),
+    '600b41d6cb79b' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Floorplan ID',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_600a5183d7e10',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '600b41d6cb79b',
     ),
     '600b41d6cb794' => 
     array (
@@ -157,23 +174,6 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb799',
-    ),
-    '600b41d6cb79b' => 
-    array (
-      'type' => 'column-acf_field',
-      'label' => 'Floorplan ID',
-      'width' => '',
-      'width_unit' => '%',
-      'field' => 'field_600a5183d7e10',
-      'character_limit' => '20',
-      'export' => 'off',
-      'sort' => 'on',
-      'edit' => 'on',
-      'bulk_edit' => 'on',
-      'search' => 'off',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '600b41d6cb79b',
     ),
     '600b41d6cb79c' => 
     array (
