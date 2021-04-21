@@ -167,7 +167,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     //* The base property query
     $propertyargs = array(
         'post_type' => 'properties',
-        'posts_per_page' => -1,
+        'posts_per_page' => 4,
 		'orderby' => 'menu_order',
 		'order'	=> 'ASC', // ASC or DESC
         'no_found_rows' => true,
