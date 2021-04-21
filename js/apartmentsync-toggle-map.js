@@ -5,7 +5,7 @@ jQuery(document).ready(function ($) {
     }
 
     function waitThenGo() {
-        setTimeout(reLoadSlick, 50);
+        setTimeout(reLoadSlick, 100);
     }
 
     function reLoadSlick() {
@@ -21,8 +21,9 @@ jQuery(document).ready(function ($) {
         //     lazyLoad: 'ondemand',
         // });
 
-        // $('.property-slider').slick('slickGoTo', 2);
-        $('.property-slider').slick('reinit');
+        // $('.property-slider').slick('destroy');
+        // $('.property-slider').slick('init');
+        $('.property-slider').slick('refresh');
     }
 
     $('.toggle').on('click', toggleTheMap);
