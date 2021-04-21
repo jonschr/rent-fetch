@@ -256,6 +256,25 @@
             "return_format": "array",
             "ajax": 0,
             "placeholder": ""
+        },
+        {
+            "key": "field_607f98a92a8af",
+            "label": "Content area",
+            "name": "content_area",
+            "type": "wysiwyg",
+            "instructions": "It's recommended to start this section with a heading level 2. This can be whatever content you'd like to add – it displays by default below the amenities and above the neighborhood (if connected to a neighborhood).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 0,
+            "delay": 0
         }
     ],
     "location": [
@@ -275,5 +294,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1618372057
+    "modified": 1618975041
 }

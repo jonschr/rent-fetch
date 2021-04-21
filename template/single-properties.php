@@ -215,8 +215,19 @@ echo '<div class="single-properties-wrap">';
         echo '</div>';
     }
     
-    // TODO Add Lease Details
+    ///////////////////
+    // LEASE DETAILS //
+    ///////////////////
     
+    $content_area = get_post_meta( get_the_ID(), 'content_area', true );
+    if ( !empty( $content_area ) ) {
+        $content_area = apply_filters( 'the_content', $content_area );
+        
+        echo '<div class="content-area-wrap">';
+            echo $content_area;
+        echo '</div>';
+    }
+        
     ///////////////////////
     // NEIGHBORHOOD INFO //
     ///////////////////////
