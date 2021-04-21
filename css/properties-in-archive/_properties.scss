@@ -39,7 +39,7 @@
 
         span {
             margin-right: 0.2em;
-            display: inline;
+            display: inline-block;
         }
 
         span.city {
@@ -55,8 +55,8 @@
         line-height: 1em;
 
         // &:before {
-    //     content: "$";
-    // }
+        //     content: "$";
+        // }
     }
 
     .property-content {

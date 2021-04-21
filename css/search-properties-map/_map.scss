@@ -84,10 +84,6 @@
                 @include tablet {
                     font-size: 16px;
                 }
-
-                &:before {
-                    content: "$";
-                }
             }
         }
 

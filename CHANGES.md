@@ -1,3 +1,8 @@
+## 1.12.0
+* Fix line break issue in property archives
+* Add toggle to maps
+* Remove the double dollar sign on properties in the map
+
 ## 1.11.0
 * Add new content area for properties
 
