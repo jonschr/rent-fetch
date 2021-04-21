@@ -5,7 +5,7 @@ return array (
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1618888074,
+  'updated' => 1619032418,
   'columns' => 
   array (
     'title' => 
@@ -50,7 +50,7 @@ return array (
       'sort' => 'on',
       'edit' => 'on',
       'bulk_edit' => 'on',
-      'search' => 'off',
+      'search' => 'on',
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb7a6',
