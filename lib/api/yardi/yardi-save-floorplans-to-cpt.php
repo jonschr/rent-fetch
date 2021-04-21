@@ -320,32 +320,53 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voya
     
 }
 
-function apartmentsync_get_availability_information( $floorplan, $voyager_property_code ) {
+// add_action( 'init', 'apartmentsync_get_availability_information' );
+function apartmentsync_get_availability_information( $floorplan = 'hello', $voyager_property_code = 'world' ) {
+    
     
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
     
     $floorplan_Id = $floorplan['FloorplanId'];
+    
+    // //TODO TESTING
+    // $voyager_property_code = '73029th';
+    // $floorplan_Id = '3559242';
                     
     // Do the API request
     $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=apartmentavailability&floorplanId=%s&apiToken=%s&VoyagerPropertyCode=%s', $floorplan_Id, $yardi_api_key, $voyager_property_code ); // path to your JSON file
-    $data = file_get_contents( $url ); // put the contents of the file into a variable        
+    $datas = file_get_contents( $url ); // put the contents of the file into a variable        
     
     // process the data to get the date in yardi's format
-    $data = json_decode( $data );            
-    $data = $data[0];
-    $available_date = $data->AvailableDate;
+    $datas = json_decode( $datas );  
+        
+    $available_dates = array();
+    foreach( $datas as $data ) {
+        $date = $data->AvailableDate;
+        $date = date('Ymd', strtotime($date));
+        
+        $available_dates[] = $date;
+    }
+    
+    sort( $available_dates );
+        
+    $soonest_date = $available_dates[0];    
+    $today = date('Ymd');
+    
+    // if the soonest date is before today, set the date to save to today. 
+    // otherwise, let's use the soonest available date.
+    
+    if ( $soonest_date < $today ) {
+        $available_date = $today;
+    } else {
+        $available_date = $soonest_date;
+    }
 
     // bail if there's no date available
     if ( $available_date == null )
         return;
-        
-    // var_dump( $available_date );
     
-    // $available_date = "07/12/2010";
-    $acf_date = date('Ymd', strtotime($available_date));
-    
-    // query to find out if there's already a post for this property
+    // query to find any posts for this floorplan
     $args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
@@ -359,8 +380,8 @@ function apartmentsync_get_availability_information( $floorplan, $voyager_proper
                         'value' => 'yardi',
                     ),
                     array(
-                        'key'   => 'voyager_property_code',
-                        'value' => $voyager_property_code,
+                        'key'   => 'floorplan_id',
+                        'value' => $floorplan_Id,
                     ),
                 ),
             ),
@@ -370,11 +391,11 @@ function apartmentsync_get_availability_information( $floorplan, $voyager_proper
     $floorplan_query = new WP_Query( $args );
     $floorplans = $floorplan_query->posts;
     
-    // var_dump( $floorplans );
+    var_dump( $floorplans );
     
     if ( $floorplans ) {
         foreach( $floorplans as $floorplan ) {   
-            $success_update_photos = update_post_meta( $floorplan->ID, 'availability_date', $acf_date );
+            $success_update_photos = update_post_meta( $floorplan->ID, 'availability_date', $available_date );
         }
     }
 }
