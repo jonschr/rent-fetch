@@ -12,6 +12,11 @@ function apartmentsync_propertymap( $atts ) {
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     wp_enqueue_script( 'apartmentsync-toggle-map' );
     
+    // nouislider
+    wp_enqueue_style( 'apartmentsync-nouislider-style' );
+    wp_enqueue_script( 'apartmentsync-nouislider-script' );
+    wp_enqueue_script( 'apartmentsync-nouislider-init-script' );
+    
     // slick
     wp_enqueue_script( 'apartmentsync-slick-main-script' );
     wp_enqueue_style( 'apartmentsync-slick-main-styles' );
@@ -173,18 +178,11 @@ function apartmentsync_propertymap( $atts ) {
         }
         
         //* Move-in date
-        echo '<div class="input-wrap input-wrap-move-in-date incomplete">';
+        echo '<div class="input-wrap input-wrap-move-in incomplete">';
             echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Move-in">Move-in</button>';
-                echo '<div class="dropdown-menu">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
+                echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
                     echo '<div class="dropdown-menu-items">';
-                        // foreach( $baths as $bath ) {
-                        //     if ( in_array( $bath, $bathsparam ) ) {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     } else {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
-                        //     }
-                        // }
                     echo '</div>';
                     echo '<div class="filter-application">';
                         echo '<a class="clear" href="#">Clear</a>';
@@ -195,16 +193,32 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Price range
-        echo '<div class="input-wrap input-wrap-price-range incomplete">';
+        echo '<div class="input-wrap input-wrap-prices">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Price">Price</button>';
-                echo '<div class="dropdown-menu">';
+                echo '<div class="dropdown-menu dropdown-menu-prices">';
                     echo '<div class="dropdown-menu-items">';
-                        // foreach( $baths as $bath ) {
-                        //     if ( in_array( $bath, $bathsparam ) ) {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked>%s Bathroom</input></label>', $bath, $bath, $bath );
+                    
+                        echo '<div class="price-slider-wrap"><div id="price-slider" style="width:100%;"></div></div>';
+                        
+                        echo '<div class="price-display">';
+                            echo '<div id="pricesmall-display" class="pricesmall"></div>';
+                            echo '<div id="pricebig-display" class="pricebig"></div>';
+                        echo '</div>';
+                        
+                        echo '<div class="inputs-prices">';
+                            echo '<input type="number" name="pricesmall" id="pricesmall" value=100 />';
+                            echo '<input type="number" name="pricebig" id="pricebig" value=6000 />';
+                        echo '</div>';
+                        
+                        
+                        // foreach( $prices as $propertytype ) {
+                        //     $name = $propertytype->name;
+                        //     $propertytype_term_id = $propertytype->term_id;
+                        //     if ( in_array( $propertytype_term_id, $pricesparam ) ) {
+                        //             printf( '<label><input type="checkbox" data-prices="%s" data-pricesname="%s" name="prices-%s" checked /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
                         //     } else {
-                        //         printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s">%s Bathroom</input></label>', $bath, $bath, $bath );
+                        //         printf( '<label><input type="checkbox" data-prices="%s" data-pricesname="%s" name="prices-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
                         //     }
                         // }
                     echo '</div>';
@@ -303,7 +317,7 @@ add_action( 'wp_ajax_nopriv_propertysearch', 'apartmentsync_filter_properties' )
 function apartmentsync_filter_properties(){
             
     //* start with floorplans
-	$args = array(
+	$floorplans_args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
 		'orderby' => 'date', // we will sort posts by date
@@ -327,9 +341,9 @@ function apartmentsync_filter_properties(){
         }
     }
     
-    // add the meta query array to our $args
+    // add the meta query array to our $floorplans_args
     if ( isset( $bedsarray ) ) {
-        $args['meta_query'][] = array(
+        $floorplans_args['meta_query'][] = array(
             array(
                 'key' => 'beds',
                 'value' => $bedsarray,
@@ -350,9 +364,9 @@ function apartmentsync_filter_properties(){
         }
     }
     
-    // add the meta query array to our $args
+    // add the meta query array to our $floorplans_args
     if ( isset( $bathsarray ) ) {
-        $args['meta_query'][] = array(
+        $floorplans_args['meta_query'][] = array(
             array(
                 'key' => 'baths',
                 'value' => $bathsarray,
@@ -361,7 +375,7 @@ function apartmentsync_filter_properties(){
     }
     
     //* Remove anything with an unrealistically low value for rent
-    $args['meta_query'][] = array(
+    $floorplans_args['meta_query'][] = array(
         array(
             'key' => 'minimum_rent',
             'value' => 100,
@@ -369,33 +383,61 @@ function apartmentsync_filter_properties(){
         )
     );
     
-    $args['meta_query'][] = array(
-        array(
-            'key' => 'maximum_rent',
-            'value' => 100,
-            'compare' => '>',
-        )
-    );
+    //* Add the actual rent parameters if those are set
+    if ( isset( $_POST['pricesmall'] ) ) {
+        $pricesmall = $_POST['pricesmall' ];
+        if ( $pricesmall > 100 ) {
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'minimum_rent',
+                    'value' => $pricesmall,
+                    'compare' => '>',
+                )
+            );
+        } else {
+            // remove anything unrealistically low no matter what
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'minimum_rent',
+                    'value' => 100,
+                    'compare' => '>',
+                )
+            );
+        }
+    }
+    
+    if ( isset( $_POST['pricebig'] ) ) {
+        $pricebig = $_POST['pricebig' ];
+        if ( $pricebig > 100 ) {
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'minimum_rent',
+                    'value' => $pricebig,
+                    'compare' => '<',
+                )
+            );
+        }
+    }
  
     // echo '<pre style="font-size: 14px;">';
-    // print_r( $args );
+    // print_r( $floorplans_args );
     // echo '</pre>';
     
-	$query = new WP_Query( $args );
+	$floorplans_query = new WP_Query( $floorplans_args );
 
     // echo '<pre style="font-size: 14px;">';
-    // print_r( $query->post );
+    // print_r( $floorplans_query->post );
     // echo '</pre>';
     
     // reset the floorplans array
     $floorplans = array();
      
-	if( $query->have_posts() ) :
+	if( $floorplans_query->have_posts() ) :
         
         // printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> results</h2><p>Note: Right now this is searching floorplans. Long-term, it will need to search the floorplans first, then do a secondary search of the associated properties.</p></div>', $numberofposts );
         
-            while( $query->have_posts() ): $query->the_post();
-            
+            while( $floorplans_query->have_posts() ): $floorplans_query->the_post();
+                        
                 $id = get_the_ID();
                 $property_id = get_post_meta( $id, 'property_id', true );
                 $beds = get_post_meta( $id, 'beds', true );

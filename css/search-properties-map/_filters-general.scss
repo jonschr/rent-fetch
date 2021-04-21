@@ -5,6 +5,11 @@ form.property-search-starter {
     padding: 20px 0;
     justify-content: space-around;
 
+    .price-slider-wrap {
+        padding: 10px 20px 20px;
+        width: 100%;
+    }
+
     .input-wrap {
         flex: 1 1 auto;
         margin-right: 6px;

@@ -236,6 +236,11 @@ function apartmentsync_enqueue_scripts_stylesheets() {
 	// Plugin styles
     wp_register_style( 'apartmentsync-single-properties', APARTMENTSYNC_PATH . 'css/single-properties.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     
+    // NoUISlider (for dropdown double range slider)
+    wp_register_style( 'apartmentsync-nouislider-style', APARTMENTSYNC_PATH . 'vendor/nouislider/nouislider.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_register_script( 'apartmentsync-nouislider-script', APARTMENTSYNC_PATH . 'vendor/nouislider/nouislider.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'apartmentsync-nouislider-init-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-map-nouislider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
     // Properties map search
     wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-search-properties-ajax', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-ajax.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
