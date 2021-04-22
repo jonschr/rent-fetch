@@ -182,7 +182,7 @@ function apartmentsync_propertymap( $atts ) {
         wp_enqueue_script( 'apartmentsync-flatpickr-script' );
         wp_enqueue_script( 'apartmentsync-flatpickr-script-init' );
         
-        echo '<div class="input-wrap input-wrap-date-available incomplete">';
+        echo '<div class="input-wrap input-wrap-date-available">';
             // echo '<input id="datepicker" placeholder="Select Date..."  />';
             echo '<div class="dropdown">';
                 echo '<div class="flatpickr">';
