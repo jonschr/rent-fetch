@@ -1,3 +1,6 @@
+## 1.17.0
+* Better functionality for the price-based search
+
 ## 1.15.0
 * Fixing several php notices
 * Adding new logic for the availability dates (fixing a major bug where all floorplans from a given property were getting the same date)
