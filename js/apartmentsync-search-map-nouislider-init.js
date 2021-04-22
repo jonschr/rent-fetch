@@ -1,30 +1,21 @@
 jQuery(document).ready(function ($) {
 
-    var valSmall = 0;
-    var valLarge = 12000;
-    var valStep = 50;
+    var defaultValSmall = 0;
+    var defaultValBig = 12000;
+    var defaultValStep = 50;
 
     var slider = document.getElementById('price-slider');
 
     noUiSlider.create(slider, {
-        start: [valSmall, valLarge],
+        start: [defaultValSmall, defaultValBig],
         connect: true,
         margin: 100,
-        step: valStep,
+        step: defaultValStep,
         range: {
-            'min': valSmall,
-            'max': valLarge
+            'min': defaultValSmall,
+            'max': defaultValBig
         },
     });
-
-    // Give the slider dimensions
-    // range.style.height = '400px';
-    // range.style.margin = '0 auto 30px';
-
-    var valuesDivs = [
-        document.getElementById('pricesmall-display'),
-        document.getElementById('pricebig-display'),
-    ];
 
     var valuesInputs = [
         document.getElementById('pricesmall'),
@@ -41,11 +32,34 @@ jQuery(document).ready(function ($) {
     slider.noUiSlider.on('update', function (values, handle) {
         var values = slider.noUiSlider.get();
         values[handle] = parseInt(values[handle]);
-        valuesDivs[handle].innerHTML = values[handle];
         valuesInputs[handle].value = values[handle];
-        // diffDivs[0].innerHTML = values[1] - values[0];
-        // diffDivs[1].innerHTML = values[2] - values[1];
-        // diffDivs[2].innerHTML = values[3] - values[2];
+
+        // need to grab these values from the fields so that they always exist
+        valSmall = $('#pricesmall').val();
+        valBig = $('#pricebig').val();
+
+        if (valSmall != defaultValSmall || valBig != defaultValBig) {
+            // update the button
+            $('.input-wrap-prices button.dropdown-toggle').addClass('active');
+            $('.input-wrap-prices button.dropdown-toggle').text('$' + valSmall + '-' + valBig);
+        }
+
     });
+
+    function updateRange() {
+        valSmall = $('#pricesmall').val();
+        valBig = $('#pricebig').val();
+        slider.noUiSlider.set([valSmall, valBig]);
+    }
+
+    function resetRange() {
+        console.log('reset');
+        slider.noUiSlider.set([defaultValSmall, defaultValBig]);
+        $('#pricesmall').val(defaultValSmall);
+        $('#pricebig').val(defaultValBig);
+    }
+
+    $('#pricesmall, #pricebig').on('change', updateRange);
+    $('.clear').on('click', resetRange);
 
 });

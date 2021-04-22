@@ -11,12 +11,7 @@ function apartmentsync_propertymap( $atts ) {
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     wp_enqueue_script( 'apartmentsync-toggle-map' );
-    
-    // nouislider
-    wp_enqueue_style( 'apartmentsync-nouislider-style' );
-    wp_enqueue_script( 'apartmentsync-nouislider-script' );
-    wp_enqueue_script( 'apartmentsync-nouislider-init-script' );
-    
+        
     // slick
     wp_enqueue_script( 'apartmentsync-slick-main-script' );
     wp_enqueue_style( 'apartmentsync-slick-main-styles' );
@@ -37,49 +32,21 @@ function apartmentsync_propertymap( $atts ) {
     wp_localize_script( 'apartmentsync-property-map', 'options', $maps_options );
     
     wp_enqueue_script( 'apartmentsync-property-map');
-   
     
-    //* Get parameters
-    
-    // search parameter
-    if (isset($_GET['textsearch'])) {
-        $searchtext = $_GET['textsearch'];
-        $searchtext = esc_attr( $searchtext );
-        
-    } else {
-        $searchtext = null;
-    }
-    
-    // beds parameter
-    if (isset($_GET['beds'])) {
-        $bedsparam = $_GET['beds'];
-        $bedsparam = explode( ',', $bedsparam );
-        $bedsparam = array_map( 'esc_attr', $bedsparam );
-    } else {
-        $bedsparam = array();
-    }
-    
-    // baths parameter
-    if (isset($_GET['baths'])) {
-        $bathsparam = $_GET['baths'];
-        $bathsparam = explode( ',', $bathsparam );
-        $bathsparam = array_map( 'esc_attr', $bathsparam );
-    } else {
-        $bathsparam = array();
-    }
-    
-    // propertytypes parameter
-    if ( isset( $_GET['propertytypes'])) {
-        $propertytypesparam = $_GET['propertytypes'];
-        $propertytypesparam = explode( ',', $propertytypesparam );
-        $propertytypesparam = array_map( 'esc_attr', $propertytypesparam );
-    } else {
-        $propertytypesparam = array();
-    }    
-    
+    //* Start the form...
     printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter">', site_url() );
     
         //* Build the text search
+        
+        // check the query to see if we have a text search
+        if (isset($_GET['textsearch'])) {
+            $searchtext = $_GET['textsearch'];
+            $searchtext = esc_attr( $searchtext );
+            
+        } else {
+            $searchtext = null;
+        }
+    
         echo '<div class="input-wrap input-wrap-text-search">';
             if ( $searchtext ) {
                 printf( '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." class="active" value="%s" />', $searchtext );
@@ -92,6 +59,16 @@ function apartmentsync_propertymap( $atts ) {
         printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
         
         //* Build the beds filter
+        
+        // beds parameter
+        if (isset($_GET['beds'])) {
+            $bedsparam = $_GET['beds'];
+            $bedsparam = explode( ',', $bedsparam );
+            $bedsparam = array_map( 'esc_attr', $bedsparam );
+        } else {
+            $bedsparam = array();
+        }
+    
         $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
         $beds = array_unique( $beds );
         asort( $beds );
@@ -119,6 +96,16 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Build the baths filter
+    
+        // baths parameter
+        if (isset($_GET['baths'])) {
+            $bathsparam = $_GET['baths'];
+            $bathsparam = explode( ',', $bathsparam );
+            $bathsparam = array_map( 'esc_attr', $bathsparam );
+        } else {
+            $bathsparam = array();
+        }
+    
         $baths = apartentsync_get_meta_values( 'baths', 'floorplans' );
         $baths = array_unique( $baths );
         asort( $baths );
@@ -145,13 +132,25 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Property types
+        
+        // check the query
+        if ( isset( $_GET['propertytypes'])) {
+            $propertytypesparam = $_GET['propertytypes'];
+            $propertytypesparam = explode( ',', $propertytypesparam );
+            $propertytypesparam = array_map( 'esc_attr', $propertytypesparam );
+        } else {
+            $propertytypesparam = array();
+        }   
+    
+        // get terms from the db
         $propertytypes = get_terms( 
             array(
                 'taxonomy' => 'propertytypes',
                 'hide_empty' => true,
             ),
         );
-                
+        
+        // markup for filter
         if ( !empty( $propertytypes ) ) {
             echo '<div class="input-wrap input-wrap-propertytypes">';
                 echo '<div class="dropdown">';
@@ -177,11 +176,11 @@ function apartmentsync_propertymap( $atts ) {
             echo '</div>'; // .input-wrap
         }
         
-        //* Move-in date
-        echo '<div class="input-wrap input-wrap-move-in incomplete">';
+        //* Date available
+        echo '<div class="input-wrap input-wrap-date-available incomplete">';
             echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
+                echo '<button type="button" class="dropdown-toggle" data-reset="Date available">Date available</button>';
+                echo '<div class="dropdown-menu dropdown-menu-move-in">';
                     echo '<div class="dropdown-menu-items">';
                     echo '</div>';
                     echo '<div class="filter-application">';
@@ -193,34 +192,24 @@ function apartmentsync_propertymap( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Price range
+        $valueSmall = 0;
+        $valueBig = 12000;
+        
+        // nouislider
+        wp_enqueue_style( 'apartmentsync-nouislider-style' );
+        wp_enqueue_script( 'apartmentsync-nouislider-script' );
+        wp_enqueue_script( 'apartmentsync-nouislider-init-script' );
+        
         echo '<div class="input-wrap input-wrap-prices">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Price">Price</button>';
                 echo '<div class="dropdown-menu dropdown-menu-prices">';
                     echo '<div class="dropdown-menu-items">';
-                    
                         echo '<div class="price-slider-wrap"><div id="price-slider" style="width:100%;"></div></div>';
-                        
-                        echo '<div class="price-display">';
-                            echo '<div id="pricesmall-display" class="pricesmall"></div>';
-                            echo '<div id="pricebig-display" class="pricebig"></div>';
-                        echo '</div>';
-                        
                         echo '<div class="inputs-prices">';
-                            echo '<input type="number" name="pricesmall" id="pricesmall" />';
-                            echo '<input type="number" name="pricebig" id="pricebig" />';
+                            printf( '<input type="number" name="pricesmall" id="pricesmall" value="%s" />', $valueSmall );
+                            printf( '<input type="number" name="pricebig" id="pricebig" value="%s" />', $valueBig );
                         echo '</div>';
-                        
-                        
-                        // foreach( $prices as $propertytype ) {
-                        //     $name = $propertytype->name;
-                        //     $propertytype_term_id = $propertytype->term_id;
-                        //     if ( in_array( $propertytype_term_id, $pricesparam ) ) {
-                        //             printf( '<label><input type="checkbox" data-prices="%s" data-pricesname="%s" name="prices-%s" checked /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
-                        //     } else {
-                        //         printf( '<label><input type="checkbox" data-prices="%s" data-pricesname="%s" name="prices-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
-                        //     }
-                        // }
                     echo '</div>';
                     echo '<div class="filter-application">';
                         echo '<a class="clear" href="#">Clear</a>';
@@ -295,11 +284,10 @@ function apartmentsync_propertymap( $atts ) {
             echo '</div>'; // .input-wrap
         }
             
-        //* Buttons
-        // echo '<button type="reset">Reset</button>';
-        
+        //* Buttons        
         echo '<button type="submit" style="display:none;">Submit</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
+        
     echo '</form>';
     
     //* Our container markup for the results

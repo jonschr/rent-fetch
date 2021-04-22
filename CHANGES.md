@@ -1,3 +1,6 @@
+## 1.18.0
+* Price-based search complete
+
 ## 1.17.0
 * Better functionality for the price-based search
 

@@ -144,20 +144,12 @@ jQuery(document).ready(function ($) {
     }
 
     function clearDropdown() {
-        event.preventDefault();
         $(this).closest('.dropdown-menu').find('input[type="checkbox"]').prop("checked", false);
         $(this).closest('.dropdown-menu').find('input[type="radio"]').prop("checked", false);
         var button = $(this).closest('.input-wrap').find('button');
         var text = button.attr('data-reset');
         button.text(text);
         button.removeClass('active');
-    }
-
-    function closeActiveButtonOnClick() {
-        console.log('hello world');
-        $(this).removeClass('active');
-
-        $(this).siblings('.dropdown-menu').removeClass('show');
     }
 
     // on load, do these functions
@@ -171,9 +163,7 @@ jQuery(document).ready(function ($) {
     $('.input-wrap-pets input').on('change', importPetsToButton);
     $('.input-wrap-propertytypes input').on('change', importPropertyTypes);
     $('.input-wrap-amenities input').on('change', importAmenities);
-    // $('.dropdown button.active').on('click', closeActiveButtonOnClick);
     $('.clear').on('click', clearDropdown);
-    // $('button[type="reset"]').on('click', clearAllDropdowns);
     $('input[type="text"]').on('change', textInputActive);
 
 });

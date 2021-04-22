@@ -38,6 +38,18 @@ form.property-search-starter {
             }
         }
 
+        &.input-wrap-prices {
+            .inputs-prices {
+                display: flex;
+                justify-content: space-between;
+
+                input {
+                    width: 48%;
+                    border-radius: 3px;
+                }
+            }
+        }
+
     }
 
     button {
