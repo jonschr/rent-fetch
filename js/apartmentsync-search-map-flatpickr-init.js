@@ -8,14 +8,17 @@ jQuery(document).ready(function ($) {
     // });
 
 
-    $("#datepicker").flatpickr(
+    $('.flatpickr').flatpickr(
         {
             altInput: true,
             altFormat: "F j",
             dateFormat: "Ymd",
             mode: "range",
             minDate: "today",
-            inline: true,
+            wrap: true,
+            onClose: submitForm,
+            onChange: makeActive,
+            // inline: true,
             // disable: [
             //     function (date) {
             //         // disable every multiple of 8
@@ -24,5 +27,13 @@ jQuery(document).ready(function ($) {
             // ]
         }
     );
+
+    function makeActive() {
+        $('.input-wrap-date-available .form-control').addClass('active');
+    }
+
+    function submitForm() {
+        $('#filter').submit();
+    }
 
 });

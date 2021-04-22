@@ -183,17 +183,31 @@ function apartmentsync_propertymap( $atts ) {
         wp_enqueue_script( 'apartmentsync-flatpickr-script-init' );
         
         echo '<div class="input-wrap input-wrap-date-available incomplete">';
+            // echo '<input id="datepicker" placeholder="Select Date..."  />';
             echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Date available">Date available</button>';
-                echo '<div class="dropdown-menu dropdown-menu-date-available">';
-                    echo '<div class="dropdown-menu-items">';
-                        echo '<input id="datepicker">';
-                    echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply" href="#">Apply</a>';
-                    echo '</div>';
+                echo '<div class="flatpickr">';
+                    echo '<input type="text" name="dates" placeholder="Available date" style="width:auto;" data-input>';
+
+                    // echo '<a class="input-button" title="toggle" data-toggle>';
+                    //     echo '<i class="icon-calendar"></i>';
+                    // echo '</a>';
+
+                    // echo '<a class="input-button" title="clear" data-clear>';
+                    //     echo '<i class="icon-close"></i>';
+                    // echo '</a>';
                 echo '</div>';
+            
+                
+                // echo '<button type="button" class="dropdown-toggle" data-reset="Date available">Date available</button>';
+                // echo '<div class="dropdown-menu dropdown-menu-date-available">';
+                //     echo '<div class="dropdown-menu-items">';
+                        
+                //     echo '</div>';
+                //     echo '<div class="filter-application">';
+                //         echo '<a class="clear" href="#">Clear</a>';
+                //         echo '<a class="apply" href="#">Apply</a>';
+                //     echo '</div>';
+                // echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
         

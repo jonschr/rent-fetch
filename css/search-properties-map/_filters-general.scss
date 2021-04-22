@@ -56,11 +56,20 @@ form.property-search-starter {
             }
         }
 
+        &.input-wrap-date-available {
+            max-width: 190px;
+
+            .form-control {
+                background-color: $light;
+            }
+        }
+
     }
 
     button {
         width: 100%;
         position: relative;
+        min-height: 50px;
 
         &.dropdown-toggle {
             text-overflow: ellipsis;
