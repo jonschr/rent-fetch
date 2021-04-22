@@ -185,9 +185,9 @@ function apartmentsync_propertymap( $atts ) {
         echo '<div class="input-wrap input-wrap-date-available incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Date available">Date available</button>';
-                echo '<div class="dropdown-menu dropdown-menu-move-in">';
+                echo '<div class="dropdown-menu dropdown-menu-date-available">';
                     echo '<div class="dropdown-menu-items">';
-                        echo '<div id="datepicker"></div>';
+                        echo '<input id="datepicker">';
                     echo '</div>';
                     echo '<div class="filter-application">';
                         echo '<a class="clear" href="#">Clear</a>';

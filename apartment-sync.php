@@ -244,7 +244,7 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     // Flatpickr
     wp_register_style( 'apartmentsync-flatpickr-style', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-flatpickr-script', 'https://cdn.jsdelivr.net/npm/flatpickr', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-flatpickr-script-init', 'https://cdn.jsdelivr.net/npm/flatpickr', array( 'apartmentsync-flatpickr-script' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'apartmentsync-flatpickr-script-init', APARTMENTSYNC_PATH . 'js/apartmentsync-search-map-flatpickr-init.js', array( 'apartmentsync-flatpickr-script' ), APARTMENTSYNC_VERSION, true );
     
     // Properties map search
     wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );

@@ -10,8 +10,8 @@ jQuery(document).ready(function ($) {
     });
 
     // if the target of the click isn't the container nor a descendant of the container
-    $(document).mouseup(function (e) {
-        var container = $('.dropdown-menu');
+    $(document).mousedown(function (e) {
+        var container = $('.dropdown-menu, .flatpickr-calendar');
         if (!container.is(e.target) && container.has(e.target).length === 0) {
             container.removeClass('show');
         }

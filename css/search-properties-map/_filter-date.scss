@@ -1,0 +1,17 @@
+body {
+    .flatpickr-current-month select.flatpickr-monthDropdown-months:hover {
+        background-color: white;
+    }
+
+    select.flatpickr-monthDropdown-months {
+        min-height: 0px;
+    }
+
+    .flatpickr-current-month input.cur-year {
+        min-height: 0;
+    }
+
+    .flatpickr-months .flatpickr-month {
+        height: 44px;
+    }
+}
