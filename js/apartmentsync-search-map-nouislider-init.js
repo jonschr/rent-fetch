@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
-    var valSmall = 500;
-    var valLarge = 15000;
+    var valSmall = 0;
+    var valLarge = 12000;
     var valStep = 50;
 
     var slider = document.getElementById('price-slider');

@@ -207,8 +207,8 @@ function apartmentsync_propertymap( $atts ) {
                         echo '</div>';
                         
                         echo '<div class="inputs-prices">';
-                            echo '<input type="number" name="pricesmall" id="pricesmall" value=100 />';
-                            echo '<input type="number" name="pricebig" id="pricebig" value=6000 />';
+                            echo '<input type="number" name="pricesmall" id="pricesmall" />';
+                            echo '<input type="number" name="pricebig" id="pricebig" />';
                         echo '</div>';
                         
                         
@@ -373,61 +373,48 @@ function apartmentsync_filter_properties(){
             )
         );
     }
-    
-    //* Remove anything with an unrealistically low value for rent
-    $floorplans_args['meta_query'][] = array(
-        array(
-            'key' => 'minimum_rent',
-            'value' => 100,
-            'compare' => '>',
-        )
-    );
-    
+            
     //* Add the actual rent parameters if those are set
-    if ( isset( $_POST['pricesmall'] ) ) {
-        $pricesmall = $_POST['pricesmall' ];
-        if ( $pricesmall > 100 ) {
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'minimum_rent',
-                    'value' => $pricesmall,
-                    'compare' => '>',
-                )
-            );
-        } else {
-            // remove anything unrealistically low no matter what
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'minimum_rent',
-                    'value' => 100,
-                    'compare' => '>',
-                )
-            );
-        }
+    if ( isset( $_POST['pricesmall'] ) && isset( $_POST['pricebig'] ) ) {
+        
+        $defaultpricesmall = 100;
+        $defaultpricebig = 12000;
+        
+        // get the small value
+        if ( isset( $_POST['pricesmall'] ) )
+            $pricesmall = $_POST['pricesmall'];
+            
+        // if it's not a good value, then change it to something sensible
+        if ( $pricesmall < 100 )
+            $pricesmall = $defaultpricesmall;
+        
+        // get the big value
+        if ( isset( $_POST['pricebig'] ) )
+            $pricebig = $_POST['pricebig'];
+            
+        // if there's isn't one, then use the default instead
+        if ( empty( $pricebig ) )
+            $pricebig = $defaultpricebig;
+                
+        $floorplans_args['meta_query'][] = array(
+            array(
+                'key' => 'minimum_rent',
+                'value' => array( $pricesmall, $pricebig ),
+                'type' => 'numeric',
+                'compare' => 'BETWEEN',
+            )
+        );
     }
-    
-    if ( isset( $_POST['pricebig'] ) ) {
-        $pricebig = $_POST['pricebig' ];
-        if ( $pricebig > 100 ) {
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'minimum_rent',
-                    'value' => $pricebig,
-                    'compare' => '<',
-                )
-            );
-        }
-    }
- 
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $floorplans_args );
-    // echo '</pre>';
+     
+    echo '<pre style="font-size: 14px;">';
+    print_r( $floorplans_args );
+    echo '</pre>';
     
 	$floorplans_query = new WP_Query( $floorplans_args );
 
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $floorplans_query->post );
-    // echo '</pre>';
+    echo '<pre style="font-size: 14px;">';
+    print_r( $floorplans_query->post );
+    echo '</pre>';
     
     // reset the floorplans array
     $floorplans = array();
