@@ -1,3 +1,6 @@
+## 1.19.0
+* Flatpickr in place
+
 ## 1.18.0
 * Price-based search complete
 
