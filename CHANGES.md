@@ -1,3 +1,6 @@
+## 2.0.1 
+* Prevent load flash on filters
+
 ## 2.0.0
 * Search now fully functional
 
