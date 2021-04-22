@@ -257,7 +257,6 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     
     // Properties searchbar
     wp_register_script( 'apartmentsync-search-filters-general', APARTMENTSYNC_PATH . 'js/apartmentsync-search-filters-general.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-searchbar', APARTMENTSYNC_PATH . 'js/apartmentsync-searchbar.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
     
     // Properties in archive
     wp_register_style( 'apartmentsync-properties-in-archive', APARTMENTSYNC_PATH . 'css/properties-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );

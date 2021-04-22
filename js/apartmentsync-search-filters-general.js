@@ -152,10 +152,15 @@ jQuery(document).ready(function ($) {
         button.removeClass('active');
     }
 
+    function showSearch() {
+        $('form.property-search-filters, form.property-search-starter').css('opacity', '1');
+    }
+
     // on load, do these functions
     importBedsToButton();
     importBathsToButton();
     importPropertyTypes();
+    showSearch();
 
     // do some of these functions when something happens
     $('.input-wrap-baths input').on('change', importBathsToButton);

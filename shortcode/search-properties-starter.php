@@ -11,7 +11,6 @@ function apartmentsync_propertysearch( $atts ) {
     
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
     wp_enqueue_script( 'apartmentsync-search-filters-general' );
-    wp_enqueue_script( 'apartmentsync-searchbar' );
     
     ob_start();
     
@@ -61,7 +60,7 @@ function apartmentsync_propertysearch( $atts ) {
     </script>
     <?php
     
-    printf( '<form class="property-search-starter" onsubmit="return false" id="filter">' );
+    printf( '<form class="property-search-starter" onsubmit="return false" id="filter" style="opacity:0;">' );
     
         //* Build the text search
         echo '<div class="input-wrap input-wrap-text-search">';

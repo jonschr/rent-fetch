@@ -34,7 +34,7 @@ function apartmentsync_propertymap( $atts ) {
     wp_enqueue_script( 'apartmentsync-property-map');
     
     //* Start the form...
-    printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter">', site_url() );
+    printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter" style="opacity:0;">', site_url() );
     
         //* Build the text search
         
