@@ -39,6 +39,10 @@ form.property-search-starter {
         }
 
         &.input-wrap-prices {
+            .noUi-connect {
+                background: $default;
+            }
+
             .inputs-prices {
                 display: flex;
                 justify-content: space-between;
@@ -47,6 +51,8 @@ form.property-search-starter {
                     width: 48%;
                     border-radius: 3px;
                 }
+
+
             }
         }
 
