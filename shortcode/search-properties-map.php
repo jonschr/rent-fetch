@@ -298,7 +298,7 @@ function apartmentsync_propertymap( $atts ) {
         //* Buttons
         // echo '<button type="reset">Reset</button>';
         
-        // echo '<button type="submit">Apply filter</button>';
+        echo '<button type="submit" style="display:none;">Submit</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
     echo '</form>';
     
@@ -412,9 +412,9 @@ function apartmentsync_filter_properties(){
     
 	$floorplans_query = new WP_Query( $floorplans_args );
 
-    echo '<pre style="font-size: 14px;">';
-    print_r( $floorplans_query->post );
-    echo '</pre>';
+    // echo '<pre style="font-size: 14px;">';
+    // print_r( $floorplans_query->post );
+    // echo '</pre>';
     
     // reset the floorplans array
     $floorplans = array();
