@@ -818,7 +818,7 @@
             "label": "Number of amenities to show",
             "name": "number_of_amenities_to_show",
             "type": "number",
-            "instructions": "If this site uses amenities, how many should be shown in the search? (Amenities will be shown in order of how commonly the properties have them.)",
+            "instructions": "If this site uses amenities, how many should be shown in the search filter? (Shown in order of popularity.)",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -833,6 +833,86 @@
             "min": "",
             "max": "",
             "step": ""
+        },
+        {
+            "key": "field_6081cb6a61666",
+            "label": "Price filter",
+            "name": "price_filter",
+            "type": "group",
+            "instructions": "Settings for the price filter",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_6081d1b561667",
+                    "label": "Minimum value",
+                    "name": "minimum",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "33",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 0,
+                    "placeholder": "",
+                    "prepend": "$",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_6081d1bd61668",
+                    "label": "Maximum value",
+                    "name": "maximum",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "33",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 5000,
+                    "placeholder": "",
+                    "prepend": "$",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                },
+                {
+                    "key": "field_6081d1cb61669",
+                    "label": "Step",
+                    "name": "step",
+                    "type": "number",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "33",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": 50,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                }
+            ]
         },
         {
             "key": "field_607f966693794",
@@ -906,5 +986,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1618974536
+    "modified": 1619120862
 }

@@ -25,12 +25,11 @@ function apartmentsync_propertymap( $atts ) {
     $key = get_field( 'google_maps_api_key', 'option' );
     wp_enqueue_script( 'apartmentsync-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), APARTMENTSYNC_VERSION, true );
     
-    // Localize the google maps script
+    // Localize the google maps script, then enqueue that
     $maps_options = array(
         'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
     );
     wp_localize_script( 'apartmentsync-property-map', 'options', $maps_options );
-    
     wp_enqueue_script( 'apartmentsync-property-map');
     
     //* Start the form...
@@ -183,41 +182,29 @@ function apartmentsync_propertymap( $atts ) {
         wp_enqueue_script( 'apartmentsync-flatpickr-script-init' );
         
         echo '<div class="input-wrap input-wrap-date-available">';
-            // echo '<input id="datepicker" placeholder="Select Date..."  />';
             echo '<div class="dropdown">';
                 echo '<div class="flatpickr">';
                     echo '<input type="text" name="dates" placeholder="Available date" style="width:auto;" data-input>';
-
-                    // echo '<a class="input-button" title="toggle" data-toggle>';
-                    //     echo '<i class="icon-calendar"></i>';
-                    // echo '</a>';
-
-                    // echo '<a class="input-button" title="clear" data-clear>';
-                    //     echo '<i class="icon-close"></i>';
-                    // echo '</a>';
                 echo '</div>';
-            
-                
-                // echo '<button type="button" class="dropdown-toggle" data-reset="Date available">Date available</button>';
-                // echo '<div class="dropdown-menu dropdown-menu-date-available">';
-                //     echo '<div class="dropdown-menu-items">';
-                        
-                //     echo '</div>';
-                //     echo '<div class="filter-application">';
-                //         echo '<a class="clear" href="#">Clear</a>';
-                //         echo '<a class="apply" href="#">Apply</a>';
-                //     echo '</div>';
-                // echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
         
         //* Price range
-        $valueSmall = 0;
-        $valueBig = 12000;
+        $price_settings = get_field( 'price_filter', 'options' );
+        $valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
+        $valueBig = isset( $price_settings['maximum'] ) ? $price_settings['maximum'] : 5000;
+        $step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
         
         // nouislider
         wp_enqueue_style( 'apartmentsync-nouislider-style' );
         wp_enqueue_script( 'apartmentsync-nouislider-script' );
+        wp_localize_script( 'apartmentsync-nouislider-init-script', 'settings', 
+            array(
+                'valueSmall' => $valueSmall,
+                'valueBig' => $valueBig,
+                'step' => $step,
+            )
+        );
         wp_enqueue_script( 'apartmentsync-nouislider-init-script' );
         
         echo '<div class="input-wrap input-wrap-prices">';

@@ -1,8 +1,9 @@
 jQuery(document).ready(function ($) {
 
-    var defaultValSmall = 0;
-    var defaultValBig = 12000;
-    var defaultValStep = 50;
+    // get settings from localization
+    var defaultValSmall = parseInt(settings.valueSmall);
+    var defaultValBig = parseInt(settings.valueBig);
+    var defaultValStep = parseInt(settings.step);
 
     var slider = document.getElementById('price-slider');
 

@@ -1,3 +1,6 @@
+## 2.0.2 
+* Add settings on backend for the price filter values
+
 ## 2.0.1 
 * Prevent load flash on filters
 
