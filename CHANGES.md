@@ -1,3 +1,6 @@
+## 2.0.0
+* Search now fully functional
+
 ## 1.19.0
 * Flatpickr in place
 
