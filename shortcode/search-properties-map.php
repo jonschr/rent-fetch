@@ -406,9 +406,9 @@ function apartmentsync_filter_properties(){
         );
     }
      
-    echo '<pre style="font-size: 14px;">';
-    print_r( $floorplans_args );
-    echo '</pre>';
+    // echo '<pre style="font-size: 14px;">';
+    // print_r( $floorplans_args );
+    // echo '</pre>';
     
 	$floorplans_query = new WP_Query( $floorplans_args );
 
