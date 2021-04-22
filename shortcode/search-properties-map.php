@@ -381,6 +381,30 @@ function apartmentsync_filter_properties(){
             )
         );
     }
+    
+    //* Date    
+    if ( isset( $_POST['dates'] ) ) {
+        
+        // get the dates, in a format like this: 'YYYYMMDD to YYYYMMDD'
+        $datestring = sanitize_text_field( $_POST['dates'] );
+        
+        if ( !empty( $datestring ) ) {
+            
+            // turn that into an array
+            $dates = explode( ' to ', $datestring  );
+        
+            // do a between query agains the availability dates
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'availability_date',
+                    'value' => array( $dates[0], $dates[1] ),
+                    'type' => 'numeric',
+                    'compare' => 'BETWEEN',
+                )
+            );
+        }
+        
+    }
             
     //* Add the actual rent parameters if those are set
     if ( isset( $_POST['pricesmall'] ) && isset( $_POST['pricebig'] ) ) {
@@ -390,7 +414,7 @@ function apartmentsync_filter_properties(){
         
         // get the small value
         if ( isset( $_POST['pricesmall'] ) )
-            $pricesmall = $_POST['pricesmall'];
+            $pricesmall = sanitize_text_field( $_POST['pricesmall'] );
             
         // if it's not a good value, then change it to something sensible
         if ( $pricesmall < 100 )
@@ -398,7 +422,7 @@ function apartmentsync_filter_properties(){
         
         // get the big value
         if ( isset( $_POST['pricebig'] ) )
-            $pricebig = $_POST['pricebig'];
+            $pricebig = sanitize_text_field( $_POST['pricebig'] );
             
         // if there's isn't one, then use the default instead
         if ( empty( $pricebig ) )
@@ -563,7 +587,7 @@ function apartmentsync_filter_properties(){
         $propertyargs['meta_query'][] = array(
             array(
                 'key' => 'pets',
-                'value' => $_POST['pets'],
+                'value' => sanitize_text_field( $_POST['pets'] ),
             )
         );
     }
