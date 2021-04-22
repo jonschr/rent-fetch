@@ -177,11 +177,17 @@ function apartmentsync_propertymap( $atts ) {
         }
         
         //* Date available
+        
+        wp_enqueue_style( 'apartmentsync-flatpickr-style' );
+        wp_enqueue_script( 'apartmentsync-flatpickr-script' );
+        wp_enqueue_script( 'apartmentsync-flatpickr-script-init' );
+        
         echo '<div class="input-wrap input-wrap-date-available incomplete">';
             echo '<div class="dropdown">';
                 echo '<button type="button" class="dropdown-toggle" data-reset="Date available">Date available</button>';
                 echo '<div class="dropdown-menu dropdown-menu-move-in">';
                     echo '<div class="dropdown-menu-items">';
+                        echo '<div id="datepicker"></div>';
                     echo '</div>';
                     echo '<div class="filter-application">';
                         echo '<a class="clear" href="#">Clear</a>';
