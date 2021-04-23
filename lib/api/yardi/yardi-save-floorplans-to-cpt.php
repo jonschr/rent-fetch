@@ -342,15 +342,20 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
         
     $available_dates = array();
     foreach( $datas as $data ) {
-        $date = $data->AvailableDate;
-        $date = date('Ymd', strtotime($date));
         
-        $available_dates[] = $date;
+        if ( isset( $data->AvailableDate ) ) {
+            
+            $date = $data->AvailableDate;
+            $date = date('Ymd', strtotime($date));
+            $available_dates[] = $date;
+        }            
     }
     
     sort( $available_dates );
         
-    $soonest_date = $available_dates[0];    
+    if ( isset( $available_dates[0] ) )
+        $soonest_date = $available_dates[0];    
+        
     $today = date('Ymd');
     
     // if the soonest date is before today, set the date to save to today. 

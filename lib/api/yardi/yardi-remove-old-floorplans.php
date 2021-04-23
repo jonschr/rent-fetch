@@ -34,7 +34,7 @@ function apartentsync_get_meta_values( $key = '', $type = 'post', $status = 'pub
         AND p.post_status = %s 
         AND p.post_type = %s
     ", $key, $status, $type ) );
-
+    
     return $r;
 }
 
