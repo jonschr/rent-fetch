@@ -107,6 +107,9 @@ function apartmentsync_each_property_images( $post_id ) {
         $firsturl = apply_filters( 'apartmentsync_sample_image', APARTMENTSYNC_PATH . 'images/fallback-property.svg' );
         
     printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
+    
+        do_action( 'apartmentsync_properties_archive_before_images' );
+        
         echo '<div class="property-slider">';
                     
             $property_images = array_slice( $property_images, 0, 3 );
@@ -143,7 +146,22 @@ function apartmentsync_each_property_images( $post_id ) {
             }
         
         echo '</div>';
+        
+        do_action( 'apartmentsync_properties_archive_after_images' );
                 
     echo '</div>';
     
 }
+
+add_action( 'apartmentsync_properties_archive_before_images', 'apartmentsync_favorite_property_link' );
+function apartmentsync_favorite_property_link() {
+    
+    wp_enqueue_script( 'apartmentsync-property-favorites-cookies' );
+    wp_enqueue_script( 'apartmentsync-property-favorites' );
+    
+    $post_id = get_the_ID();
+    
+    if ( $post_id )
+        printf( '<a href="#" class="favorite-heart" data-property-id="%s" data-favorite="1"></a>', $post_id );
+        
+} 

@@ -1,0 +1,17 @@
+.favorite-heart {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    z-index: 30;
+    width: 29px;
+    height: 26px;
+    background-image: url('../images/heart-icon-unfilled.svg');
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+
+    &:hover,
+    &.active {
+        background-image: url('../images/heart-icon-filled.svg');
+    }
+}

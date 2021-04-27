@@ -34,7 +34,7 @@ jQuery(document).ready(function ($) {
         locationsArray = [];
 
         // get the positions
-        $('.type-properties').each(function () {
+        $('#response .type-properties').each(function () {
             lat = $(this).attr('data-latitude');
             long = $(this).attr('data-longitude');
             title = $(this).find('h3').text();
@@ -45,7 +45,7 @@ jQuery(document).ready(function ($) {
             locationsArray.push([lat, long, title, content, image, url, id]);
         });
 
-        console.log(locationsArray);
+        // console.log(locationsArray);
 
     }
 
@@ -95,7 +95,7 @@ jQuery(document).ready(function ($) {
 
     }
 
-    function waitThenResetMap() {
+    function resetMap() {
         // setTimeout(renderMap, 50);
         renderMap();
         getLocations();
@@ -104,11 +104,11 @@ jQuery(document).ready(function ($) {
 
 
     // $(window).on('load', renderMap);
-    $(window).on('ajaxComplete', renderMap);
-    $(window).on('ajaxComplete', getLocations);
-    $(window).on('ajaxComplete', addMarkers);
+    $(document).on('ajaxComplete', resetMap);
+    // $(document).on('ajaxComplete', getLocations);
+    // $(document).on('ajaxComplete', addMarkers);
 
-    $('.toggle').on('click', waitThenResetMap);
+    $('.toggle').on('click', resetMap);
 
 
 });

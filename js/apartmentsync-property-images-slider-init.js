@@ -1,7 +1,7 @@
 jQuery(document).ready(function ($) {
 
     function loadSlick() {
-        $('.property-slider').slick({
+        $('.property-slider').not('.slick-initialized').slick({
             dots: true,
             infinite: false,
             arrows: true,
@@ -12,7 +12,10 @@ jQuery(document).ready(function ($) {
         });
     }
 
+    // run when the page loads
+    loadSlick();
+
+    // run when ajax completes
     $(document).on('ajaxComplete', loadSlick);
-    $(window).on('load', loadSlick);
 
 });

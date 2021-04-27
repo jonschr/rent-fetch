@@ -17,9 +17,13 @@ function apartmentsync_propertymap( $atts ) {
     wp_enqueue_style( 'apartmentsync-slick-main-styles' );
     wp_enqueue_style( 'apartmentsync-slick-main-theme' );
     
-    // properties in archive styles
+    // properties in archive
     wp_enqueue_style( 'apartmentsync-properties-in-archive' );
     wp_enqueue_script( 'apartmentsync-property-images-slider-init' );
+    
+    // favorites
+    wp_enqueue_script( 'apartmentsync-property-favorites-cookies' );
+    wp_enqueue_script( 'apartmentsync-property-favorites' );
     
      // the map itself
     $key = get_field( 'google_maps_api_key', 'option' );

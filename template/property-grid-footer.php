@@ -29,8 +29,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         $connected_neighborhoods = array( get_the_ID() );
     }
     
-    
-    // do a floorplans query
+    // floorplan args
     $args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
@@ -39,23 +38,87 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         'no_found_rows' => true,
 	);
     
-    //* Remove anything with an unrealistically low value for rent
-    // $args['meta_query'][] = array(
-    //     array(
-    //         'key' => 'minimum_rent',
-    //         'value' => 100,
-    //         'compare' => '>',
-    //     )
-    // );
+    //* Process the floorplans
+    $floorplans = apartmentsync_get_floorplan_info_for_properties_grid( $args );
     
-    // $args['meta_query'][] = array(
-    //     array(
-    //         'key' => 'maximum_rent',
-    //         'value' => 100,
-    //         'compare' => '>',
-    //     )
-    // );
+    $property_ids = array_keys( $floorplans );
+    if ( empty( $property_ids ) )
+    $property_ids = array( '1' ); // if there aren't any properties, we shouldn't find anything – empty array will let us find everything, so let's pass nonsense to make the search find nothing
     
+    // echo '<pre style="font-size: 14px;">';
+    // print_r( $property_ids );
+    // echo '</pre>';
+    
+    $number_properties = '-1';
+    
+    $property_footer_settings = get_field( 'property_footer_grid', 'options' );
+    if ( isset( $property_footer_settings['number_properties'] ) )
+        $number_properties = $property_footer_settings['number_properties'];
+        
+    //* The base property query
+    $propertyargs = array(
+        'post_type' => 'properties',
+        'posts_per_page' => $number_properties,
+		'orderby' => 'menu_order',
+		'order'	=> 'ASC', // ASC or DESC
+        'no_found_rows' => true,
+        'relationship' => array(
+            'id'   => 'properties_to_neighborhoods',
+            'from' => $connected_neighborhoods, // You can pass object ID or full object
+        ),
+	);
+    
+    //* Add all of our property IDs into the property search
+    $propertyargs['meta_query'] = array(
+        array(
+            'key' => 'property_id',
+            'value' => $property_ids,
+        ),
+    );
+    
+    $propertyquery = new WP_Query( $propertyargs );
+    
+    // echo '<pre>';
+    // print_r( $propertyquery );
+    // echo '</pre>';
+    
+    $countposts = $propertyquery->post_count;
+    if ( $countposts < 2 )
+        return;
+    
+    if( $propertyquery->have_posts() ) :
+        echo '<div id="neighborhood-prefooter">';
+        
+            // if ( is_singular( 'properties' ) )
+                echo '<h2>Nearby properties</h2>';
+        
+            echo '<div class="properties-loop">';
+        
+            while( $propertyquery->have_posts() ): $propertyquery->the_post();
+                $property_id = get_post_meta( get_the_ID(), 'property_id', true );
+                $floorplan = $floorplans[$property_id ];
+                do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
+            endwhile;
+        
+            wp_reset_postdata();
+            
+        echo '</div></div>';
+        
+    else :
+            
+        // echo 'No properties found matching the current search parameters.';
+        
+    endif;
+    
+}
+
+
+/**
+ * Gets all of the floorplan information for all floorplans matching the $args, then format it
+ *
+ * @return  array  formatted information for all floorplans to be used in the properties grids
+ */
+function apartmentsync_get_floorplan_info_for_properties_grid( $args ) {
     $query = new WP_Query( $args );
 
     // echo '<pre style="font-size: 14px;">';
@@ -156,73 +219,5 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         
     }
     
-    $property_ids = array_keys( $floorplans );
-    if ( empty( $property_ids ) )
-    $property_ids = array( '1' ); // if there aren't any properties, we shouldn't find anything – empty array will let us find everything, so let's pass nonsense to make the search find nothing
-    
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $property_ids );
-    // echo '</pre>';
-    
-    $number_properties = '-1';
-    
-    $property_footer_settings = get_field( 'property_footer_grid', 'options' );
-    if ( isset( $property_footer_settings['number_properties'] ) )
-        $number_properties = $property_footer_settings['number_properties'];
-        
-    //* The base property query
-    $propertyargs = array(
-        'post_type' => 'properties',
-        'posts_per_page' => $number_properties,
-		'orderby' => 'menu_order',
-		'order'	=> 'ASC', // ASC or DESC
-        'no_found_rows' => true,
-        'relationship' => array(
-            'id'   => 'properties_to_neighborhoods',
-            'from' => $connected_neighborhoods, // You can pass object ID or full object
-        ),
-	);
-    
-    //* Add all of our property IDs into the property search
-    $propertyargs['meta_query'] = array(
-        array(
-            'key' => 'property_id',
-            'value' => $property_ids,
-        ),
-    );
-    
-    $propertyquery = new WP_Query( $propertyargs );
-    
-    // echo '<pre>';
-    // print_r( $propertyquery );
-    // echo '</pre>';
-    
-    $countposts = $propertyquery->post_count;
-    if ( $countposts < 2 )
-        return;
-    
-    if( $propertyquery->have_posts() ) :
-        echo '<div id="neighborhood-prefooter">';
-        
-            // if ( is_singular( 'properties' ) )
-                echo '<h2>Nearby properties</h2>';
-        
-            echo '<div class="properties-loop">';
-        
-            while( $propertyquery->have_posts() ): $propertyquery->the_post();
-                $property_id = get_post_meta( get_the_ID(), 'property_id', true );
-                $floorplan = $floorplans[$property_id ];
-                do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
-            endwhile;
-        
-            wp_reset_postdata();
-            
-        echo '</div></div>';
-        
-    else :
-            
-        // echo 'No properties found matching the current search parameters.';
-        
-    endif;
-    
+    return $floorplans;
 }

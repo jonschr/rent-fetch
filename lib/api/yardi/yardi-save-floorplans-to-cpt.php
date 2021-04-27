@@ -341,6 +341,8 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
     $datas = json_decode( $datas );  
         
     $available_dates = array();
+    $soonest_date = null;
+    
     foreach( $datas as $data ) {
         
         if ( isset( $data->AvailableDate ) ) {

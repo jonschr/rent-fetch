@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 2.0.2
+	Version: 2.1.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '2.0.2' );
+define ( 'APARTMENTSYNC_VERSION', '2.1.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -146,6 +146,7 @@ require_once( 'template/property-grid-footer.php' );
 //* Shortcodes
 require_once( 'shortcode/search-properties-map.php' );
 require_once( 'shortcode/search-properties-starter.php' );
+require_once( 'shortcode/favorite-properties.php' );
 
 //* Documentation
 require_once( 'lib/options-pages/documentation-sidebar-link.php' );
@@ -261,6 +262,10 @@ function apartmentsync_enqueue_scripts_stylesheets() {
     // Properties in archive
     wp_register_style( 'apartmentsync-properties-in-archive', APARTMENTSYNC_PATH . 'css/properties-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_register_script( 'apartmentsync-property-images-slider-init', APARTMENTSYNC_PATH . 'js/apartmentsync-property-images-slider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    
+    // Favorite properties
+    wp_register_script( 'apartmentsync-property-favorites-cookies', 'https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'apartmentsync-property-favorites', APARTMENTSYNC_PATH . 'js/apartmentsync-property-favorites.js', array( 'apartmentsync-property-favorites-cookies' ), APARTMENTSYNC_VERSION, true );
     
     // Floorplans in archive
     wp_register_style( 'apartmentsync-floorplan-in-archive', APARTMENTSYNC_PATH . 'css/floorplan-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
