@@ -80,7 +80,7 @@ function apartmentsync_output_favorite_properties( $favorite_properties ) {
 add_action( 'apartmentsync_do_output_no_properties_default_message', 'apartmentsync_output_no_properties_default_message' );
 function apartmentsync_output_no_properties_default_message() {
     ?>
-    <p>Oops! Looks like you haven't set any favorite properties. Just click the heart icon as many properties as you'd like, and you'll see them show up here whenever you reload this page.</p>
+    <p>Oops! Looks like you haven't set any favorite properties. Just click the heart icon to add as many properties as you'd like, and you'll see them show up here whenever you reload this page.</p>
     <?php
 }
 
