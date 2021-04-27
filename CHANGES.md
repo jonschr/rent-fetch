@@ -1,3 +1,6 @@
+## 2.1.0
+* Adding the favorites functionality
+
 ## 2.0.2 
 * Add settings on backend for the price filter values
 
