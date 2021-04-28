@@ -1,7 +1,8 @@
 <?php
 
+// add_action( 'apartmentsync_do_floorplan_in_floorplans_block', 'apartmentsync_floorplan_in_archive', 10, 1 );
 add_action( 'apartmentsync_do_floorplan_in_archive', 'apartmentsync_floorplan_in_archive', 10, 1 );
-function apartmentsync_floorplan_in_archive( $post ) {
+function apartmentsync_floorplan_in_archive( $post_id ) {
     
     // styles for the layout
     wp_enqueue_style( 'apartmentsync-floorplan-in-archive' );
@@ -12,14 +13,14 @@ function apartmentsync_floorplan_in_archive( $post ) {
     wp_enqueue_style( 'apartmentsync-slick-main-styles' );
     wp_enqueue_style( 'apartmentsync-slick-main-theme' );
     
-    $post_id = $post->ID;
+    // $post_id = $post->ID;
         
     //* Grab the data
     $title = get_the_title( $post_id );
     $available_units = get_field( 'available_units', $post_id );    
         
     //* Set up the classes
-    $floorplanclass = get_post_class();
+    $floorplanclass = get_post_class( $post_id );
     
     if ( $available_units > 0 ) {
         $floorplanclass[] = 'units-available';
@@ -87,6 +88,9 @@ function apartmentsync_each_floorplan_baths() {
     $baths = get_field( 'baths', $post_id );
     $baths = intval( $baths );
     
+    // allow for hooking in
+    $baths = apply_filters( 'apartmentsync_customize_baths_text', $baths );
+    
     if ( $baths )
         printf( '<span class="floorplan-baths">%s</span>', $baths );
     
@@ -100,8 +104,8 @@ function apartmentsync_each_floorplan_beds() {
     $beds = get_field( 'beds', $post_id );
     $beds = intval( $beds );
     
-    if ( $beds === 0 )
-        $beds = 'Studio';
+    // allow for hooking in
+    $beds = apply_filters( 'apartmentsync_customize_beds_text', $beds );
         
     if ( $beds )
         printf( '<span class="floorplan-beds">%s</span>', $beds );
@@ -133,7 +137,7 @@ function apartmentsync_each_floorplan_rent_range() {
     if ( $maximum_rent && !$minimum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $maximum_rent );
     
     if ( $rent_range )
-        printf( '<p class="rent_range">%s</p>', $rent_range );
+        sprintf( '<p class="rent_range">%s</p>', $rent_range );
     
 }
 
@@ -336,8 +340,20 @@ function apartmentsync_each_floorplan_squarefoot_range() {
     if ( $minimum_sqft && !$maximum_sqft ) $sqft_range = sprintf( '%s', $minimum_sqft );
     if ( !$minimum_sqft && $maximum_sqft ) $sqft_range = sprintf( '%s', $maximum_sqft );
     
+    $sqft_range = apply_filters( 'apartmentsync_customize_sqft_text', $sqft_range );
+    
     if ( $sqft_range )
-        printf( '<span class="floorplan-sqft_range">%s sqft</span>', $sqft_range );
+        printf( '<span class="floorplan-sqft_range">%s</span>', $sqft_range );
+}
+
+add_filter( 'apartmentsync_customize_sqft_text', 'apartmentsync_default_beds_text', 10, 1  );
+function apartmentsync_default_beds_text( $sqft_range ) {
+    
+    // bail if there isn't a value
+    if ( $sqft_range == null )
+        return;
+        
+    return $sqft_range . ' sqft';
 }
 
 add_action( 'apartmentsync_do_each_floorplan_images', 'apartmentsync_each_floorplan_images' );

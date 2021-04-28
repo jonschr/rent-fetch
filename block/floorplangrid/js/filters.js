@@ -3,7 +3,6 @@ jQuery(document).ready(function ($) {
     //* Get the floorplans parameter in case we need it
     var urlParams = new URLSearchParams(window.location.search);
     var currentOnLoad = urlParams.get('filter');
-    console.log(currentOnLoad);
 
     if (currentOnLoad) {
         updatePlans(currentOnLoad);
@@ -13,14 +12,16 @@ jQuery(document).ready(function ($) {
     $('.filter-select').click(function (e) {
         e.preventDefault();
         var current = $(this).data('filter');
-        console.log(current);
         updatePlans(current);
         updateButton(current);
     });
 
     function updatePlans(current) {
-        $('.floorplan').hide();
-        $('.' + current).show();
+
+        console.log(current);
+
+        $('.floorplangrid .floorplans').hide();
+        $('.floorplangrid .' + current).show();
 
         if ('URLSearchParams' in window) {
             var searchParams = new URLSearchParams(window.location.search);

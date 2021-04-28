@@ -1,3 +1,6 @@
+## 2.2.0
+* Reworking the floorplans and getting those ready for other sites to use.
+
 ## 2.1.0
 * Adding the favorites functionality
 

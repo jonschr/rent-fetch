@@ -1,11 +1,4 @@
-.floorplan {
-    background-color: #F5F5F5;
-    box-shadow: 0 5px 10px 0 rgba(black, 0.12);
-
-    .floorplangrid__art-wrap {
-        padding: 15px;
-        background-color: white;
-    }
+.floorplangrid {
 
     .floorplangrid__content {
         padding: 15px;
@@ -15,7 +8,8 @@
         }
 
         p.floorplangrid__info,
-        p.floorplangrid__rent_range {
+        p.floorplangrid__rent_range,
+        p.availability-date {
             margin-bottom: 5px;
         }
     }

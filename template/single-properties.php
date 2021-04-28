@@ -187,7 +187,7 @@ echo '<div class="single-properties-wrap">';
                 echo '</h3></summary>';
                 echo '<div class="floorplan-in-archive">';
                     while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
-                        do_action( 'apartmentsync_do_floorplan_in_archive', $post );                    
+                        do_action( 'apartmentsync_do_floorplan_in_archive', $post->ID );                    
                     endwhile;
                 echo '</div>'; // .floorplans
             echo '</details>';
