@@ -29,6 +29,7 @@ If you're having trouble with syncing down on a development environment, it migh
 - single-floorplans.php (override this in your theme if you like by dropping a file into your main theme directory, currently not used for anything)
 
 ## Shortcodes
+This plugin includes three shortcodes. There's more information about each of these on the [wiki](https://github.com/jonschr/apartment-sync/wiki/Included-shortcodes), but none of them take any parameters.
 ```
 [propertymap]
 [propertysearch]
