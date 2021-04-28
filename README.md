@@ -35,7 +35,6 @@ This plugin includes three shortcodes. There's more information about each of th
 [propertysearch]
 [favoriteproperties]
 ```
-[More information](https://github.com/jonschr/apartment-sync/wiki/Included-shortcodes)
 
 ## Gutenberg blocks
 - Floorplans: shows a configurable grid of the floorplans, using either local information or information from an API that's been synced into a content type.
