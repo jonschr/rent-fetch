@@ -1,6 +1,6 @@
 # ApartmentSync
 A plugin which gathers properties and floorplans from the Yardi API and displays them in a number of different ways.
-[More detailsed information in the Wiki](https://github.com/jonschr/apartment-sync/wiki)
+[More detailed information in the Wiki](https://github.com/jonschr/apartment-sync/wiki)
 
 ## Important Note
 If you're having trouble with syncing down on a development environment, it might be because you're behind basic authentication, which prevents WP Cron from running. Use the [WP Cron HTTP Auth plugin](https://wordpress.org/plugins/wp-cron-http-auth/) to fix that.
