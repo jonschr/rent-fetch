@@ -1,3 +1,7 @@
+
+## 2.3.1 
+* Add a filter to urls for the property website links in case they don't have them. This filter is also available for themes to dynamically change those URLs if needed.
+
 ## 2.3.0
 * Adding support for updating properties (whoops! We had just missed this one, other than the amenities and pets, as those items are actually only handled as part of an update task, as we want to ensure the post actually exists before hooking it up with external stuff).
 

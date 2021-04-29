@@ -51,6 +51,8 @@ if ( $city && !$state )
 if ( !$city && $state )
     $location = sprintf( '<span class="city-state">in %s</span>', $state );
 
+// prepare the property url
+$url = apply_filters( 'apartmentsync_filter_property_url', $url );
     
 //* Markup
 echo '<div class="single-properties-wrap">';
