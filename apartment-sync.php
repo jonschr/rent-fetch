@@ -130,6 +130,7 @@ require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
 
 //* Common functions
 require_once( 'lib/common/apartmentsync_get_sync_term.php' );
+require_once( 'lib/common/filter_property_urls.php' );
 require_once( 'lib/common/set_post_terms.php' );
 
 //* Settings pages

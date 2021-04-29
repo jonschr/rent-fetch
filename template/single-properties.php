@@ -50,9 +50,6 @@ if ( $city && !$state )
     
 if ( !$city && $state )
     $location = sprintf( '<span class="city-state">in %s</span>', $state );
-
-// prepare the property url
-$url = apply_filters( 'apartmentsync_filter_property_url', $url );
     
 //* Markup
 echo '<div class="single-properties-wrap">';
@@ -114,11 +111,17 @@ echo '<div class="single-properties-wrap">';
                 
             echo '</p>';
         echo '</div>';
-        echo '<div class="property-website">';
         
-            printf( '<a class="button property-link" target="_blank" href="%s">Visit property website</a>', $url );
+        // prepare the property url
+        $url = apply_filters( 'apartmentsync_filter_property_url', $url );
         
-        echo '</div>';
+        if ( $url ) {
+            echo '<div class="property-website">';
+            
+                printf( '<a class="button property-link" target="_blank" href="%s">Visit property website</a>', $url );
+            
+            echo '</div>';
+        }
     echo '</div>';
     
     //////////////////////////

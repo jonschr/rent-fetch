@@ -64,14 +64,3 @@ function apartmentsync_check_if_sync_settings_have_changed() {
     // return false if it hasn't changed
     return $haschanged;
 }
-
-add_filter( 'apartmentsync_filter_property_url', 'apartmentsync_add_prefix_to_property_url', 10, 1 );
-function apartmentsync_add_prefix_to_property_url( $url ) {
-    
-    // force http:// to be added to the URL if it's missing
-    if (strpos($url,'http') === false)
-        $url = 'http://'.$url;
-        
-    return $url;
-    
-}
