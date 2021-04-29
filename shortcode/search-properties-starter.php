@@ -124,7 +124,7 @@ function apartmentsync_propertysearch( $atts ) {
             echo '<div class="input-wrap input-wrap-propertytypes">';
                 echo '<div class="dropdown">';
                     echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                    echo '<div class="dropdown-menu">';
+                    echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
                         echo '<div class="dropdown-menu-items">';
                             foreach( $propertytypes as $propertytype ) {
                                 $name = $propertytype->name;
