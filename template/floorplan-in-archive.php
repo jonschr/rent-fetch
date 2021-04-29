@@ -118,6 +118,8 @@ function apartmentsync_each_floorplan_rent_range() {
     $minimum_rent = get_field( 'minimum_rent', $post_id );
     $maximum_rent = get_field( 'maximum_rent', $post_id );
     
+    
+    
     $rent_range = null;
     if ( $minimum_rent && $maximum_rent ) {
         
@@ -129,15 +131,17 @@ function apartmentsync_each_floorplan_rent_range() {
                     
     }
     
+    
+    
     if ( $minimum_rent < 100 || $maximum_rent < 100 )
         $rent_range = 'Pricing unavailable';
             
             
     if ( $minimum_rent && !$maximum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $minimum_rent );
     if ( $maximum_rent && !$minimum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $maximum_rent );
-    
+        
     if ( $rent_range )
-        sprintf( '<p class="rent_range">%s</p>', $rent_range );
+        printf( '<p class="rent_range">%s</p>', $rent_range );
     
 }
 
