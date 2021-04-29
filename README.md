@@ -41,3 +41,4 @@ This plugin includes three shortcodes. There's more information about each of th
 
 ## Customization
 - [Labels](https://github.com/jonschr/apartment-sync/wiki/Customizing-labels-for-beds,-baths,-and-square-feet): you can customize the labels for bedrooms, bathrooms, and square footage. Useful for setting "0 bedroom" to be "studio" instead.
+- [Property URLs](https://github.com/jonschr/apartment-sync/wiki/Customizing-property-URLs): sometimes, property managers don't add "http://" or "https://" in front of the url. If we click a link without that, it won't work property. So there's a filter to change that, and the plugin already hooks into there to add the http or https – but this can also be used to disallow particular buttons from outputting, etc.
