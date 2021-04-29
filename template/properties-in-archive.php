@@ -26,6 +26,7 @@ function apartmentsync_each_property( $id, $floorplan ) {
     $bathsrange = $floorplan['bathsrange'];    
     $rentrange = $floorplan['rentrange'];
     $sqftrange = $floorplan['sqftrange'];
+    $has_specials = $floorplan['property_has_specials'];
     $permalink = get_the_permalink( $id );
     
     // class
@@ -37,6 +38,11 @@ function apartmentsync_each_property( $id, $floorplan ) {
     
         if ( $permalink )
             printf( '<a class="overlay" href="%s"></a>', $permalink );
+                        
+        if ( $has_specials == true ) {
+            $specials_text = apply_filters( 'apartmentsync_has_specials_text', $text );
+            printf( '<div class="has-specials-property">%s</div>', $specials_text );
+        }
             
         do_action( 'apartmentsync_do_each_property_images', $id );
     

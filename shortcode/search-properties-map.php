@@ -457,6 +457,7 @@ function apartmentsync_filter_properties(){
                 $minimum_sqft = get_post_meta( $id, 'minimum_sqft', true );
                 $maximum_sqft = get_post_meta( $id, 'maximum_sqft', true );
                 $available_units = get_post_meta( $id, 'available_units', true );
+                $has_specials = get_post_meta( $id, 'has_specials', true );
                 
                 if ( !isset( $floorplans[$property_id ] ) ) {
                     $floorplans[ $property_id ] = array(
@@ -468,6 +469,7 @@ function apartmentsync_filter_properties(){
                         'minimum_sqft' => array( $minimum_sqft ),
                         'maximum_sqft' => array( $maximum_sqft ),
                         'available_units' => array( $available_units ),
+                        'has_specials' => array( $has_specials ),
                     );
                 } else {
                     $floorplans[ $property_id ]['id'][] = $id;
@@ -478,6 +480,7 @@ function apartmentsync_filter_properties(){
                     $floorplans[ $property_id ]['minimum_sqft'][] = $minimum_sqft;
                     $floorplans[ $property_id ]['maximum_sqft'][] = $maximum_sqft;
                     $floorplans[ $property_id ]['available_units'][] = $available_units;
+                    $floorplans[ $property_id ]['has_specials'][] = $has_specials;
                 }
                 
             endwhile;
@@ -529,6 +532,15 @@ function apartmentsync_filter_properties(){
         } else {
             $floorplans[$key]['sqftrange'] = $min . '-' . $max;
         }
+        
+        // default value
+        $floorplans[$key]['property_has_specials'] = false;
+        
+        // if there are specials, save that
+        $has_specials = $floorplan['has_specials'];
+        
+        if ( in_array( true, $has_specials ) )        
+            $floorplans[$key]['property_has_specials'] = true;
         
     }
     

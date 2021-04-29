@@ -1,4 +1,9 @@
 
+## 2.5.0
+* Add specials to floorplans layouts
+* Add specials to properties layouts
+* Add specials to floorplansgrid block
+
 ## 2.4.0
 * More reliable cancelling of upcoming actions when paused or deleted is set
 * Pulling in beds and baths when decimals are used without accidentally converting those to integers

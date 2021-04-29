@@ -382,6 +382,9 @@ function apartmentsync_each_floorplan_images() {
         $floorplan_image = APARTMENTSYNC_PATH . 'images/fallback-property.svg';
         
         echo '<div class="floorplan-images-wrap">';
+        
+            do_action( 'apartmentsync_floorplan_in_archive_do_show_specials' );
+            
             echo '<div class="floorplan-slider">';
                     echo '<div class="floorplan-slide">';
                         printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $floorplan_image, $page_title, $page_title );
@@ -392,6 +395,9 @@ function apartmentsync_each_floorplan_images() {
     } else {
         
         echo '<div class="floorplan-images-wrap">';
+        
+            do_action( 'apartmentsync_floorplan_in_archive_do_show_specials' );
+            
             echo '<div class="floorplan-slider">';
                         
                 foreach( $floorplan_images as $floorplan_image ) {
@@ -417,3 +423,23 @@ function apartmentsync_each_floorplan_images() {
     
     
 }
+
+add_action( 'apartmentsync_floorplan_in_archive_do_show_specials', 'apartmentsync_floorplan_in_archive_show_specials' );
+function apartmentsync_floorplan_in_archive_show_specials() {
+    $post_id = get_the_ID();
+    
+    $has_specials = get_post_meta( $post_id, 'has_specials', true );
+    
+    // bail if there are no specials
+    if ( $has_specials != true )
+        return;
+        
+    $specials_text = apply_filters( 'apartmentsync_has_specials_text', $text );    
+    printf( '<div class="has-specials-floorplan">%s</div>', $specials_text );
+}
+
+add_filter( 'apartmentsync_has_specials_text', 'apartmentsync_default_specials_text', 10, 1 );
+function apartmentsync_default_specials_text( $specials_text ) {
+    $specials_text = 'Specials available';
+    return $specials_text;
+} 
