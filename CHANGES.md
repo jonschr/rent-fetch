@@ -1,3 +1,5 @@
+## 2.6.0
+* Only show available properties in footers (so now only properties with at least one available floorplan will show anywhere on the site)
 
 ## 2.5.0
 * Add specials to floorplans layouts

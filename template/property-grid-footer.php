@@ -30,16 +30,24 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     }
     
     // floorplan args
-    $args = array(
+    $floorplans_args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
 		'orderby' => 'date', // we will sort posts by date
 		'order'	=> 'ASC', // ASC or DESC
         'no_found_rows' => true,
+        'meta_query' => array(
+            array(
+                'key' => 'available_units',
+                'value' => 1,
+                'type' => 'numeric',
+                'compare' => '>',
+            )
+        ),
 	);
     
     //* Process the floorplans
-    $floorplans = apartmentsync_get_floorplan_info_for_properties_grid( $args );
+    $floorplans = apartmentsync_get_floorplan_info_for_properties_grid( $floorplans_args );
     
     $property_ids = array_keys( $floorplans );
     if ( empty( $property_ids ) )
