@@ -257,9 +257,7 @@ function apartmentsync_update_yardi_property( $property_data ) {
     $properties = $property_query->posts;
     $post_id = $properties[0]->ID;
     
-    
     //* Amenities
-    
     // now that we have the post ID, remove existing amenities
     wp_delete_object_term_relationships( $post_id, array( 'amenities' ) );
 
@@ -291,5 +289,85 @@ function apartmentsync_update_yardi_property( $property_data ) {
     $success_pets = update_post_meta( $post_id, 'pets', $pets );
     if ( $success_pets == true )
         apartmentsync_log( "Property $voyager_property_code meta updated: pets is now $pets." );
+        
+        
+    //* Update the title
+    $post_info = array(
+        'ID' => $post_id,
+        'post_title' => $property_data['PropertyData']['name'],
+    );
+    
+    wp_update_post( $post_info );
+    
+    //* Update the meta
+    $address = $property_data['PropertyData']['address'];
+    $city = $property_data['PropertyData']['city'];
+    $state = $property_data['PropertyData']['state'];
+    $zipcode = $property_data['PropertyData']['zipcode'];
+    $url = $property_data['PropertyData']['url'];
+    $description = $property_data['PropertyData']['description'];
+    $email = $property_data['PropertyData']['email'];
+    $phone = $property_data['PropertyData']['phone'];
+    $latitude = $property_data['PropertyData']['Latitude'];
+    $longitude = $property_data['PropertyData']['Longitude'];
+    $property_code = $property_data['PropertyData']['PropertyCode'];
+    $property_id = $property_data['PropertyData']['PropertyId'];
+    $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
+    
+    $success_address = update_post_meta( $post_id, 'address', $address );
+    if ( $success_address == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: address is now $address." );
+        
+    $success_city = update_post_meta( $post_id, 'city', $city );
+    if ( $success_city == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: city is now $city." );
+        
+    $success_state = update_post_meta( $post_id, 'state', $state );
+    if ( $success_state == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: state is now $state." );
+        
+    $success_zipcode = update_post_meta( $post_id, 'zipcode', $zipcode );
+    if ( $success_zipcode == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: zipcode is now $zipcode." );
+        
+    $success_url = update_post_meta( $post_id, 'url', $url );
+    if ( $success_url == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: url is now $url." );
+        
+    $success_description = update_post_meta( $post_id, 'description', $description );
+    if ( $success_description == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: description is now $description." );
+        
+    $success_email = update_post_meta( $post_id, 'email', $email );
+    if ( $success_email == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: email is now $email." );
+        
+    $success_phone = update_post_meta( $post_id, 'phone', $phone );
+    if ( $success_phone == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: phone is now $phone." );
+        
+    $success_latitude = update_post_meta( $post_id, 'latitude', $latitude );
+    if ( $success_latitude == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: latitude is now $latitude." );
+        
+    $success_longitude = update_post_meta( $post_id, 'longitude', $longitude );
+    if ( $success_longitude == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: longitude is now $longitude." );
+        
+    $success_property_code = update_post_meta( $post_id, 'property_code', $property_code );
+    if ( $success_property_code == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: property_code is now $property_code." );
+        
+    $success_property_id = update_post_meta( $post_id, 'property_id', $property_id );
+    if ( $success_property_id == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: property_id is now $property_id." );
+        
+    $success_city = update_post_meta( $post_id, 'city', $city );
+    if ( $success_city == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: city is now $city." );
+        
+    $success_city = update_post_meta( $post_id, 'city', $city );
+    if ( $success_city == true )
+        apartmentsync_log( "Property $voyager_property_code meta updated: city is now $city." );
         
 }

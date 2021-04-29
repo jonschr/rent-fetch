@@ -1,3 +1,6 @@
+## 2.3.0
+* Adding support for updating properties (whoops! We had just missed this one, other than the amenities and pets, as those items are actually only handled as part of an update task, as we want to ensure the post actually exists before hooking it up with external stuff).
+
 ## 2.2.0
 * Reworking the floorplans and getting those ready for other sites to use.
 
