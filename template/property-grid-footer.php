@@ -189,6 +189,7 @@ function apartmentsync_get_floorplan_info_for_properties_grid( $args ) {
     // echo '</pre>';
     
     foreach ( $floorplans as $key => $floorplan ) {
+                
         $max = max( $floorplan['beds'] );
         $min = min( $floorplan['beds'] );
         
@@ -206,7 +207,10 @@ function apartmentsync_get_floorplan_info_for_properties_grid( $args ) {
         } else {
             $floorplans[$key]['bathsrange'] = $min . '-' . $max;
         }
-        
+                
+        $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'apartmentsync_check_if_above_100' );
+        $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'apartmentsync_check_if_above_100' );
+                
         $max = max( $floorplan['maximum_rent'] );
         $min = min( $floorplan['minimum_rent'] );
         

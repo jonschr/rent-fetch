@@ -1,3 +1,6 @@
+## 2.7.0
+* Better min/max calculations for rent
+
 ## 2.6.0
 * Only show available properties in footers (so now only properties with at least one available floorplan will show anywhere on the site)
 
