@@ -86,7 +86,7 @@ function apartmentsync_each_floorplan_baths() {
     $post_id = get_the_ID();
         
     $baths = get_field( 'baths', $post_id );
-    $baths = intval( $baths );
+    $baths = floatval( $baths );
     
     // allow for hooking in
     $baths = apply_filters( 'apartmentsync_customize_baths_text', $baths );
@@ -102,7 +102,7 @@ function apartmentsync_each_floorplan_beds() {
     $post_id = get_the_ID();
         
     $beds = get_field( 'beds', $post_id );
-    $beds = intval( $beds );
+    $beds = floatval( $beds );
     
     // allow for hooking in
     $beds = apply_filters( 'apartmentsync_customize_beds_text', $beds );

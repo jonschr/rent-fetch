@@ -109,8 +109,8 @@ function apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode ) {
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
     $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
-    $Baths = intval( $floorplan['Baths'] );
-    $Beds = intval( $floorplan['Beds'] );
+    $Baths = floatval( $floorplan['Baths'] );
+    $Beds = floatval( $floorplan['Beds'] );
     $FloorplanHasSpecials = $floorplan['FloorplanHasSpecials'];
     $FloorplanId = $floorplan['FloorplanId'];
     $FloorplanImageAltText = $floorplan['FloorplanImageAltText'];
@@ -174,8 +174,8 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voya
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
     $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
-    $Baths = intval( $floorplan['Baths'] );
-    $Beds = intval( $floorplan['Beds'] );
+    $Baths = floatval( $floorplan['Baths'] );
+    $Beds = floatval( $floorplan['Beds'] );
     $FloorplanHasSpecials = $floorplan['FloorplanHasSpecials'];
     $FloorplanId = $floorplan['FloorplanId'];
     $FloorplanImageAltText = $floorplan['FloorplanImageAltText'];
