@@ -515,8 +515,17 @@ function apartmentsync_filter_properties(){
         $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'apartmentsync_check_if_above_100' );
         $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'apartmentsync_check_if_above_100' );
         
-        $max = max( $floorplan['maximum_rent'] );
-        $min = min( $floorplan['minimum_rent'] );
+        if ( !empty( $floorplan['maximum_rent'] ) ) {
+            $max = max( $floorplan['maximum_rent'] );
+        } else {
+            $max = 0;
+        }
+        
+        if ( !empty( $floorplan['minimum_rent'] ) ) {
+            $min = min( $floorplan['minimum_rent'] );
+        } else {
+            $min = 0;
+        }
         
         if ( $max == $min ) {
             $floorplans[$key]['rentrange'] = '$' . $max;
