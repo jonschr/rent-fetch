@@ -40,7 +40,8 @@ function apartmentsync_each_property( $id, $floorplan ) {
             printf( '<a class="overlay" href="%s"></a>', $permalink );
                         
         if ( $has_specials == true ) {
-            $specials_text = apply_filters( 'apartmentsync_has_specials_text', $text );
+            $specials_text = 'Specials available';
+            $specials_text = apply_filters( 'apartmentsync_has_specials_text', $specials_text );
             printf( '<div class="has-specials-property">%s</div>', $specials_text );
         }
             
