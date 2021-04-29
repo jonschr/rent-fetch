@@ -13,9 +13,9 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
           
         // if syncing is paused or data dync is off, then then bail, as we won't be restarting anything
         if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
-            as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
-            as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
-            apartmentsync_verbose_log( "Sync term has changed for saving to CPT. Removing upcoming actions." );
+            // as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
+            // as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans', array( $property ), 'yardi' );
+            // apartmentsync_verbose_log( "Sync term has changed for saving to CPT. Removing upcoming actions." );
             continue;
         }
                 
@@ -398,7 +398,7 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
     $floorplan_query = new WP_Query( $args );
     $floorplans = $floorplan_query->posts;
     
-    var_dump( $floorplans );
+    // var_dump( $floorplans );
     
     if ( $floorplans ) {
         foreach( $floorplans as $floorplan ) {   

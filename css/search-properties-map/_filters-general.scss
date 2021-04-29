@@ -17,7 +17,7 @@ form.property-search-starter {
         margin-bottom: 6px;
 
         &:not(.input-wrap-text-search) {
-            max-width: 300px;
+            // max-width: 300px;
 
             @include mobile {
                 max-width: 100%;

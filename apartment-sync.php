@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 2.3.1
+	Version: 2.4.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -29,7 +29,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '2.3.1' );
+define ( 'APARTMENTSYNC_VERSION', '2.4.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -174,6 +174,18 @@ require_once( 'block/floorplangrid/floorplangrid.php' );
 add_action( 'init', 'apartmentsync_start_sync' );
 function apartmentsync_start_sync() {
     
+    $sync_term = get_field( 'sync_term', 'option' );
+    $data_sync = get_field( 'data_sync', 'option' );
+    
+    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
+        as_unschedule_action( 'apartmentsync_do_get_yardi_property_from_api' );
+        as_unschedule_all_actions( 'apartmentsync_do_get_yardi_property_from_api' );
+        as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property' );
+        as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property' );
+        as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans' );
+        as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans' );
+    }
+    
     //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
     
     if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
@@ -184,6 +196,8 @@ function apartmentsync_start_sync() {
         
     if ( as_next_scheduled_action( 'apartmentsync_do_remove_old_data' ) === false  ) 
         as_enqueue_async_action( 'apartmentsync_do_remove_old_data' );
+        
+    
             
     // do_action( 'apartmentsync_do_sync_logic' );
     // do_action( 'apartmentsync_do_chron_activation' );

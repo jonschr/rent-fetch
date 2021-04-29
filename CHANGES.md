@@ -1,4 +1,9 @@
 
+## 2.4.0
+* More reliable cancelling of upcoming actions when paused or deleted is set
+* Pulling in beds and baths when decimals are used without accidentally converting those to integers
+* Minor style adjustments to the filters (removing max width, as we might not always have tons of filters to fill the space)
+
 ## 2.3.1 
 * Add a filter to urls for the property website links in case they don't have them. This filter is also available for themes to dynamically change those URLs if needed.
 

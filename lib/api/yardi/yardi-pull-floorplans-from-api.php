@@ -20,9 +20,9 @@ function apartmentsync_get_floorplans_yardi() {
             
         // if syncing is paused or data dync is off, then bail, as we won't be restarting anything
         if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
-            as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
-            as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
-            apartmentsync_verbose_log( "Sync term has changed for pulling from API. Removing upcoming actions." );
+            // as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
+            // as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property', array( $property, $yardi_api_key ), 'yardi' );
+            // apartmentsync_verbose_log( "Sync term has changed for pulling from API. Removing upcoming actions." );
             continue;
         }
                         
