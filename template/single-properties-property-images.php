@@ -9,6 +9,10 @@ function apartmentsync_single_property_images_yardi( $property_images ) {
     wp_enqueue_style( 'apartmentsync-fancybox-style' );
     wp_enqueue_script( 'apartmentsync-fancybox-script' );
             
+    // bail if this is an object (errors will return objects here)
+    if ( is_object( $property_images ) )
+        return;
+    
     $number_of_images = count( $property_images );
         
     if ( $number_of_images <= 5 ) {

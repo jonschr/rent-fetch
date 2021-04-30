@@ -1,3 +1,6 @@
+## 2.8.0
+* Fix error on single when the API returns an error instead of images for a property
+
 ## 2.7.0
 * Better min/max calculations for rent
 
