@@ -10,6 +10,8 @@ function apartmentsync_do_remove_floorplans_from_orphan_yardi_properties() {
     if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
         as_unschedule_action( 'apartmentsync_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' );
         as_unschedule_all_actions( 'apartmentsync_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' );
+        as_unschedule_action( 'apartmentsync_do_remove_orphan_yardi_properties', array(), 'yardi' );
+        as_unschedule_all_actions( 'apartmentsync_do_remove_orphan_yardi_properties', array(), 'yardi' );
         return;
     }
     
