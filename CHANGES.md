@@ -1,3 +1,6 @@
+## 2.9.0
+* Remove the properties that are no longer in the setting
+
 ## 2.8.0
 * Fix error on single when the API returns an error instead of images for a property
 

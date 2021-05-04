@@ -17,6 +17,11 @@ function apartmentsync_do_remove_floorplans_from_orphan_yardi_properties() {
         apartmentsync_verbose_log( "Scheduling regular task to remove floorplans from properties that are no longer set to sync." );
         as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' );
     }
+    
+    if ( as_next_scheduled_action( 'apartmentsync_do_remove_orphan_yardi_properties', array(), 'yardi' ) == false ) {
+        apartmentsync_verbose_log( "Scheduling regular task to remove properties that are no longer set to sync." );
+        as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_remove_orphan_yardi_properties', array(), 'yardi' );
+    }
  
 }
 
@@ -38,7 +43,64 @@ function apartentsync_get_meta_values( $key = '', $type = 'post', $status = 'pub
     return $r;
 }
 
-// //* TEMP activation of this function
+// //* Temp activation of the script to delete properties
+// add_action( 'init', 'apartmentsync_remove_orphan_yardi_properties' );
+
+add_action( 'apartmentsync_do_remove_orphan_yardi_properties', 'apartmentsync_remove_orphan_yardi_properties' );
+function apartmentsync_remove_orphan_yardi_properties() {
+    $property_ids_attached_to_properties = apartentsync_get_meta_values( 'voyager_property_code', 'properties' );
+    $property_ids_attached_to_properties = array_unique( $property_ids_attached_to_properties );
+    
+    // echo 'In the database: ' . count( $property_ids_attached_to_properties ) . '<br/>';
+
+    // get the property ids from the setting
+    $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
+    $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
+    $properties_in_setting = $yardi_integration_creds['yardi_property_code'];
+    $properties_in_setting = explode( ',', $properties_in_setting );
+    $properties_in_setting = array_unique( $properties_in_setting );
+    
+    // echo 'In setting: ' . count( $properties_in_setting ) . '<br/>';
+    
+    // get the ones that are in the database, but that aren't in the setting
+    $properties = array_diff( $property_ids_attached_to_properties, $properties_in_setting );
+    
+    // var_dump( $properties );
+    // echo 'Diff: ' . count( $properties );
+    
+    // for each property that's in the DB but not in our list, do a query for floorplans that correspond, then delete those
+    foreach( $properties as $property ) {
+        
+        $args = array(
+            'post_type' => 'properties',
+            'posts_per_page' => -1,
+            'meta_query' => array(
+                array(
+                    'relation' => 'AND',
+                    array(
+                        'key' => 'property_source',
+                        'value' => 'yardi',
+                    ),
+                    array(
+                        'key'   => 'voyager_property_code',
+                        'value' => $property,
+                    ),
+                ),
+            ),
+        );
+        
+        $property_query = new WP_Query($args);
+        $properties_to_delete = $property_query->posts;
+        
+        foreach ($properties_to_delete as $property_to_delete) {
+            apartmentsync_verbose_log( "Deleting property $property_to_delete->ID." );
+            wp_delete_post( $property_to_delete->ID, true );
+        }
+                
+    }
+}
+
+// //* TEMP activation of the function to delete floorplans
 // add_action( 'init', 'apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific' );
 
 add_action( 'apartmentsync_do_remove_floorplans_from_orphan_yardi_properties_specific', 'apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific' );
