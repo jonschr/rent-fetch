@@ -255,6 +255,11 @@ function apartmentsync_default_availability_button() {
     if ( $availability_url )
         $link = $availability_url;
         
+        
+    // bail if there's no link to output
+    if ( !$link )
+        return;
+        
     if ( $available_units > 0 || $button_behavior === 'fallback' )
         printf( '<a href="%s" class="button availability-button" target="_blank">%s</a>', $link, $button_label );
         

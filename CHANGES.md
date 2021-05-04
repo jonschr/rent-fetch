@@ -1,3 +1,7 @@
+## 2.10.0
+* Minor CSS fixes and updates
+* Adding a check to make sure we don't output an availability button in the floorplan archive if there shouldn't be one (if we don't have a link)
+
 ## 2.9.0
 * Remove the properties that are no longer in the setting
 
