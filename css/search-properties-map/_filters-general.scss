@@ -165,6 +165,8 @@ form.property-search-starter {
         color: $default;
         width: 100%;
         font-size: 16px;
+        background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(hsla(0, 0%, 100%, 0)), to(hsla(0, 0%, 100%, 0)));
+        background-image: -webkit-linear-gradient(hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0));
 
         &::placeholder {
             color: $default;
