@@ -34,15 +34,15 @@ function apartmentsync_get_properties_yardi() {
     }
 }
 
-add_action( 'init', 'test_funct' );
-function test_funct() {
+// add_action( 'init', 'test_funct' );
+// function test_funct() {
         
-    $voyager_id = '1002univ';
-    $yardi_api_key = '532b316d-fbcb-480c-b1bd-481fbe699360';
+//     $voyager_id = '1002univ';
+//     $yardi_api_key = '532b316d-fbcb-480c-b1bd-481fbe699360';
     
-    do_action( 'test_act', $voyager_id, $yardi_api_key );
+//     do_action( 'test_act', $voyager_id, $yardi_api_key );
 
-}
+// }
 
 
 //* Get the property using the Properties API

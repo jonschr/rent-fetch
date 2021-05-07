@@ -1,3 +1,7 @@
+## 2.11.0
+* Better detection of properties for deletion: mismatches in capitalization were causing things to delete that shouldnt have
+* Better detection of properties for deletion: when none were found, properties were slowly deleting over time.
+
 ## 2.10.0
 * Minor CSS fixes and updates
 * Adding a check to make sure we don't output an availability button in the floorplan archive if there shouldn't be one (if we don't have a link)
