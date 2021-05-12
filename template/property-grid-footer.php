@@ -68,7 +68,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         'post_type' => 'properties',
         'posts_per_page' => $number_properties,
 		'orderby' => 'menu_order',
-		'order'	=> 'ASC', // ASC or DESC
+		'order'	=> 'DESC', // ASC or DESC
         'no_found_rows' => true,
         'relationship' => array(
             'id'   => 'properties_to_neighborhoods',
