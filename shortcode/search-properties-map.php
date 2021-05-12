@@ -569,7 +569,7 @@ function apartmentsync_filter_properties(){
         'post_type' => 'properties',
         'posts_per_page' => -1,
 		'orderby' => 'menu_order',
-		'order'	=> 'ASC', // ASC or DESC
+		'order'	=> 'DESC', // ASC or DESC
         'no_found_rows' => true,
 	);
     
