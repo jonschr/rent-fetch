@@ -312,6 +312,30 @@
             "maxlength": ""
         },
         {
+            "key": "field_609b3c225274f",
+            "label": "Map marker",
+            "name": "google_map_marker",
+            "type": "image",
+            "instructions": "An optional custom marker. Important: this needs to be uploaded at actual size to work properly (even if it's an SVG file). Google's default marker is 43px tall and 27px wide, for reference.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "url",
+            "preview_size": "full",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
             "key": "field_60792662d1fff",
             "label": "Map styles",
             "name": "google_maps_styles",
@@ -986,5 +1010,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1619120862
+    "modified": 1620786697
 }

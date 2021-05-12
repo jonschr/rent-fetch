@@ -2,15 +2,17 @@ jQuery(document).ready(function ($) {
 
     var map;
     var locationsArray = [];
-
     var markers = [];
 
-    function renderMap() {
-        // console.log('renderMap');
+    //* Vars from localization
+    // grab the marker image from localization
+    var markerImage = options.marker_url;
 
-        // grab the styles from localization and convert the php array to json
-        var mapStyle = options.json_style;
-        mapsStyle = JSON.stringify(mapStyle);
+    // grab the styles from localization and convert the php array to json
+    var mapStyle = options.json_style;
+    mapsStyle = JSON.stringify(mapStyle);
+
+    function renderMap() {
 
         var myLatlng = new google.maps.LatLng(39.8484006327939, -104.99522076837074);
         var mapOptions = {
@@ -45,8 +47,6 @@ jQuery(document).ready(function ($) {
             locationsArray.push([lat, long, title, content, image, url, id]);
         });
 
-        // console.log(locationsArray);
-
     }
 
     function addMarkers() {
@@ -65,12 +65,26 @@ jQuery(document).ready(function ($) {
             var label = title;
             var theposition = new google.maps.LatLng(latitude, longitude);
 
-            var marker = new google.maps.Marker({
-                position: theposition,
-                map: map,
-                title: title,
-                // label: title, //TODO
-            });
+            if (typeof markerImage !== 'undefined') {
+
+                // if there's a custom marker set, use that
+                var marker = new google.maps.Marker({
+                    position: theposition,
+                    map: map,
+                    title: title,
+                    icon: markerImage,
+                });
+
+            } else {
+
+                // if there's no custom icon, just use the google default
+                var marker = new google.maps.Marker({
+                    position: theposition,
+                    map: map,
+                    title: title,
+                });
+
+            }
 
             bounds.extend(theposition);
             map.fitBounds(bounds);
@@ -96,19 +110,12 @@ jQuery(document).ready(function ($) {
     }
 
     function resetMap() {
-        // setTimeout(renderMap, 50);
         renderMap();
         getLocations();
         addMarkers();
     }
 
-
-    // $(window).on('load', renderMap);
     $(document).on('ajaxComplete', resetMap);
-    // $(document).on('ajaxComplete', getLocations);
-    // $(document).on('ajaxComplete', addMarkers);
-
     $('.toggle').on('click', resetMap);
-
 
 });

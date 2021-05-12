@@ -1,3 +1,6 @@
+## 2.13.0
+* Adding custom marker capabilities
+
 ## 2.12.0
 * Allowing custom sorting of properties with the "Order" attribute
 

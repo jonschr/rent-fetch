@@ -32,6 +32,7 @@ function apartmentsync_propertymap( $atts ) {
     // Localize the google maps script, then enqueue that
     $maps_options = array(
         'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
+        'marker_url' => get_field( 'google_map_marker', 'option' ),
     );
     wp_localize_script( 'apartmentsync-property-map', 'options', $maps_options );
     wp_enqueue_script( 'apartmentsync-property-map');
