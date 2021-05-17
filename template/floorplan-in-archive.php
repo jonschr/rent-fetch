@@ -380,16 +380,10 @@ function apartmentsync_each_floorplan_images() {
     
     $page_title = get_the_title();
     
-    //* pull from the field (source is Yardi)
-    $floorplan_image_urls = get_field( 'floorplan_image_url', $post_id );    
-    
-    if ( $floorplan_image_urls )
-        $floorplan_image_urls = explode( ',', $floorplan_image_urls );
-        
-    //TODO add capabilities for manually adding multiple images. For now, we're making the selection always the Yardi images and automatic
-    $floorplan_images = $floorplan_image_urls;
-        
-    // bail if ther aren't any images
+    //* get the images from whatever source we have
+    $floorplan_images = apply_filters( 'floorplan_image_urls', $floorplan_image_urls );
+                
+    // if there aren't any images, then output a fallback
     if ( !$floorplan_images ) {
         
         $floorplan_image = APARTMENTSYNC_PATH . 'images/fallback-property.svg';
@@ -433,9 +427,44 @@ function apartmentsync_each_floorplan_images() {
             echo '</div>';
         echo '</div>';
     }    
+}
+
+add_filter( 'floorplan_image_urls', 'floorplan_get_image_urls', $floorplan_image_urls );
+function floorplan_get_image_urls() {
     
+    // get the ID of the post we're on
+    $post_id = get_the_ID();
+    
+    // set the value of floorplan_image_urls to nothing
+    $floorplan_image_urls = array();
+    
+    //* Try for manual images first
+    $manual_images = get_field( 'manual_images', $post_id );
+        
+    if ( $manual_images !== null ) {
+        
+        foreach ( $manual_images as $manual_image ) {
+            $floorplan_image_urls[] = $manual_image['sizes']['large'];
+        }
+        
+        return $floorplan_image_urls;
+    }
+      
+    //* Try for Yardi images next
+    $yardi_image_urls = get_field( 'floorplan_image_url', $post_id );
+        
+    if ( $yardi_image_urls ) {
+        
+        $floorplan_image_urls = explode( ',', $yardi_image_urls );
+        
+        return $floorplan_image_urls;    
+    }
+        
+    //* if we didn't find any images, just return nothing
+    return null;
     
 }
+
 
 add_action( 'apartmentsync_floorplan_in_archive_do_show_specials', 'apartmentsync_floorplan_in_archive_show_specials' );
 function apartmentsync_floorplan_in_archive_show_specials() {
