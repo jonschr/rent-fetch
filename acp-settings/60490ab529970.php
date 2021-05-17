@@ -1,31 +1,29 @@
 <?php
 
 return array (
-  'version' => '5.4.3',
+  'version' => '5.5.1',
   'title' => 'Manual entry',
   'type' => 'floorplans',
   'id' => '60490ab529970',
-  'updated' => 1615834974,
+  'updated' => 1621278999,
   'columns' => 
   array (
-    '604a6657e7ae14' => 
+    '60a2bfa9d91688' => 
     array (
-      'type' => 'column-featured_image',
-      'label' => 'Image',
-      'width' => '130',
+      'type' => 'column-acf_field',
+      'label' => 'Images',
+      'width' => '290',
       'width_unit' => 'px',
-      'featured_image_display' => 'image',
+      'field' => 'field_60a2bf39efa3a',
       'image_size' => 'cpac-custom',
-      'image_size_w' => '120',
+      'image_size_w' => '60',
       'image_size_h' => '60',
+      'number_of_items' => '8',
       'export' => 'off',
-      'sort' => 'on',
       'edit' => 'on',
       'bulk_edit' => 'on',
       'search' => 'on',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '604a6657e7ae14',
+      'name' => '60a2bfa9d91688',
     ),
     'title' => 
     array (
@@ -39,25 +37,6 @@ return array (
       'bulk_edit' => 'on',
       'search' => 'on',
       'name' => 'title',
-    ),
-    '604faf4fa28f5c' => 
-    array (
-      'type' => 'column-taxonomy',
-      'label' => 'Taxonomy',
-      'width' => '',
-      'width_unit' => '%',
-      'taxonomy' => 'floorplantype',
-      'term_link_to' => 'filter',
-      'number_of_items' => '10',
-      'export' => 'off',
-      'sort' => 'on',
-      'edit' => 'on',
-      'enable_term_creation' => 'off',
-      'bulk_edit' => 'on',
-      'search' => 'on',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '604faf4fa28f5c',
     ),
     '600b41d6cb794' => 
     array (

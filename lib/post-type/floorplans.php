@@ -12,7 +12,7 @@ function apartmentsync_register_floorplans_cpt() {
 	$post_type = 'floorplans';
 	$slug = 'floorplans';
 	$icon = 'table-col-before'; //* https://developer.wordpress.org/resource/dashicons/
-	$supports = array( 'title', 'thumbnail' );
+	$supports = array( 'title' );
 
 	$labels = array(
 		'name' => $name_plural,
