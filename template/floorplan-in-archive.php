@@ -267,6 +267,8 @@ function apartmentsync_default_availability_button() {
 
 add_action( 'apartmentsync_do_floorplan_each_button', 'apartmentsync_default_contact_button', 15 );
 function apartmentsync_default_contact_button() {
+    
+    // ob_start();
         
     // get the options
     $contact_button = get_field( 'contact_button', 'options' ); 
@@ -293,11 +295,13 @@ function apartmentsync_default_contact_button() {
     if ( isset( $contact_button['button_label'] ) )
         $button_label = $contact_button['button_label'];
     
-    if ( $button_type === 'link' )
-        printf( '<a href="%s" class="button contact-button" target="%s">%s</a>', $link, $link_target, $button_label );
-    
+    if ( $button_type === 'link' && !empty( $link ) && !empty( $link_target ) && !empty( $button_label ) )
+        printf( '<a href="%s" target="%s" class="button contact-button">%s</a>', $link, $link_target, $button_label );
+            
     if ( $button_type === 'gform' && !empty( $gravity_form_id ) )
         printf( '<a href="#" data-fancybox data-src="#gform_wrapper_%s" class="button contact-button">%s</a>', $gravity_form_id, $button_label );
+        
+    // return ob_get_clean();
         
 }
 
