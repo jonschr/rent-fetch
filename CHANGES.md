@@ -1,3 +1,7 @@
+## 2.14.0
+* Adding capability for custom floorplan images (for manual entry), falling back to Yardi images, and then to a fallback image if neither are found
+* Adding capability for fallback images for properties
+
 ## 2.13.0
 * Adding custom marker capabilities
 

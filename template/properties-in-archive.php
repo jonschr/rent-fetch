@@ -116,41 +116,58 @@ function apartmentsync_each_property_images( $post_id ) {
     printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
     
         do_action( 'apartmentsync_properties_archive_before_images' );
-        
+                
         echo '<div class="property-slider">';
-                    
-            $property_images = array_slice( $property_images, 0, 3 );
+        
+            if ( $property_images ) {
+                
+                $property_images = array_slice( $property_images, 0, 3 );
             
-            foreach( $property_images as $property_image ) {
-                          
-                $title = null;
-                if ( isset( $property_image->Title ) )
-                    $title = $property_image->Title;
-                
-                $url = null;
-                if ( isset( $property_image->ImageURL ) )
-                    $url = $property_image->ImageURL;
-                
-                $alt = null;
-                if ( isset( $property_image->AltText ) )
-                    $alt = $property_image->AltText;
+                foreach( $property_images as $property_image ) {
+                            
+                    $title = null;
+                    if ( isset( $property_image->Title ) )
+                        $title = $property_image->Title;
                     
-                // bail if there is no image src
-                if ( $url == null )
-                    break;
-                                
-                // detect if there are special characters
-                $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $url);
+                    $url = null;
+                    if ( isset( $property_image->ImageURL ) )
+                        $url = $property_image->ImageURL;
+                        
+                    // if we don't have an image, use a placeholder
+                    if ( empty( $url ) )
+                        $url = APARTMENTSYNC_PATH . 'images/fallback-property.svg';
+                                            
+                    $alt = null;
+                    if ( isset( $property_image->AltText ) )
+                        $alt = $property_image->AltText;
+                        
+                    // bail if there is no image src
+                    if ( $url == null )
+                        break;
                                     
-                // bail on this slide if there are special characters in the image url
-                if ( $regex )
-                    break;
+                    // detect if there are special characters
+                    $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $url);
+                                        
+                    // bail on this slide if there are special characters in the image url
+                    if ( $regex )
+                        break;
+                                        
+                    echo '<div class="property-slide">';
+                        printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
+                    echo '</div>';
                                     
+                }
+                
+            } else {
+                
+                $property_image = APARTMENTSYNC_PATH . 'images/fallback-property.svg';
+        
                 echo '<div class="property-slide">';
-                    printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
+                    printf( '<img loading=lazy src="%s" />', $property_image );
                 echo '</div>';
-                                
             }
+                    
+            
         
         echo '</div>';
         
