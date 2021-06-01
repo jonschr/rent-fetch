@@ -487,6 +487,7 @@ function apartmentsync_floorplan_in_archive_show_specials() {
     if ( $has_specials != true )
         return;
         
+    $text = null; // set $text to null, since we're not passing anything in
     $specials_text = apply_filters( 'apartmentsync_has_specials_text', $text );    
     printf( '<div class="has-specials-floorplan">%s</div>', $specials_text );
 }

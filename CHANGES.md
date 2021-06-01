@@ -1,3 +1,6 @@
+## 2.18.0
+* Add mechanism to allow for limiting the number of floorplans shown in the floorplansgrid block settings
+
 ## 2.17.0
 * Making the whole area clickable inside map areas
 

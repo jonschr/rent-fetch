@@ -62,6 +62,7 @@ function apartmentsync_floorplangrid_block_render( $block, $content = '', $is_pr
         'floorplan_limit' => get_field( 'floorplan_limit' ),
         'limit_number_of_bedrooms' => get_field( 'limit_number_of_bedrooms' ),
         'limit_floorplan_type' => get_field( 'limit_floorplan_type' ),
+        'maximum_number_of_floorplans_to_show' => get_field( 'maximum_number_of_floorplans_to_show' ),
     );
 
     // Create id attribute allowing for custom "anchor" value.
@@ -278,12 +279,13 @@ function apartmentsync_floorplangrid_block_get_posts( $settings ) {
     // limits
     $limit_number_of_bedrooms = $settings['limit_number_of_bedrooms'];
     $limit_floorplan_type = $settings['limit_floorplan_type'];
+    $maximum_number_of_floorplans_to_show = $settings['maximum_number_of_floorplans_to_show'];
         
     $args = array(
         'post_type' => 'floorplans',
-        'posts_per_page' => '-1'
+        'posts_per_page' => $maximum_number_of_floorplans_to_show,
     ); 
-    
+        
     //* Limit by bedroom
     if ( $settings['floorplan_limit'] == 'bedrooms' ) {
         if ( $limit_number_of_bedrooms ) {    

@@ -20,6 +20,27 @@
             "endpoint": 0
         },
         {
+            "key": "field_60b58f549efde",
+            "label": "Maximum number of floorplans to show",
+            "name": "maximum_number_of_floorplans_to_show",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 50,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
             "key": "field_604fa38d75806",
             "label": "Add floorplans limitation",
             "name": "floorplan_limit",
@@ -169,5 +190,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1619579294
+    "modified": 1622511577
 }
