@@ -74,10 +74,12 @@ function apartmentsync_each_floorplan_availability() {
     $post_id = get_the_ID();
     
     $availability_date = get_post_meta( $post_id, 'availability_date', true );
-    $availability_date = date('m/d/y', strtotime($availability_date));
     
-    if ( $availability_date )
+    if ( $availability_date ) {
+        $availability_date = date('m/d/y', strtotime($availability_date));
         printf( '<p class="availability-date"><span class="availability">Availability:</span> %s</p>', $availability_date );
+    }
+    
 }
 
 add_action( 'apartmentsync_do_each_floorplan_baths', 'apartmentsync_each_floorplan_baths' );
