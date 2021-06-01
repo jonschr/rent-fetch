@@ -1,3 +1,6 @@
+## 2.17.0
+* Making the whole area clickable inside map areas
+
 ## 2.16.0
 * Fixing error where floorplans weren't showing when a floorplan had previously had manual images but they'd been removed in the time since (was returning false, but was checking for null)
 * Fixing Matterport links showing up properly, implementing a check to output different things if it's a youtube/vimeo video or if it's something else (eg matterport).

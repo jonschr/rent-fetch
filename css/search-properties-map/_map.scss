@@ -34,6 +34,14 @@
 
         }
 
+        a.overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
         .property-info {
             margin-bottom: 0;
             max-width: calc(100% - 120px);

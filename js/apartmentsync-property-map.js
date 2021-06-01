@@ -90,7 +90,7 @@ jQuery(document).ready(function ($) {
             map.fitBounds(bounds);
 
             marker['infowindow'] = new google.maps.InfoWindow({
-                content: '<div class="map-property-popup" id="overlay-' + id + '"><a href="' + url + '" class="image"><img src="' + imageurl + '"/></a>' + content + '</div>',
+                content: '<div class="map-property-popup" id="overlay-' + id + '"><a class="overlay" href="' + url + '"></a><a href="' + url + '" class="image"><img src="' + imageurl + '"/></a>' + content + '</div>',
             });
 
             google.maps.event.addListener(marker, 'click', function () {
