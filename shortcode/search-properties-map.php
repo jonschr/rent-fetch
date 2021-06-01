@@ -83,7 +83,13 @@ function apartmentsync_propertymap( $atts ) {
                 echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
                 echo '<div class="dropdown-menu dropdown-menu-beds">';
                     echo '<div class="dropdown-menu-items">';
+                    
                         foreach( $beds as $bed ) {
+                            
+                            // skip if there's a null value for bed
+                            if ( $bed === null )
+                                continue;
+                                
                             if ( in_array( $bed, $bedsparam ) ) {
                                 printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                             } else {

@@ -79,6 +79,11 @@ function apartmentsync_propertysearch( $atts ) {
                 echo '<div class="dropdown-menu">';
                     echo '<div class="dropdown-menu-items">';
                         foreach( $beds as $bed ) {
+                            
+                            // skip if the number isn't defined
+                            if ( $bed === null )
+                                continue;
+                                
                             printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                         }
                     echo '</div>';

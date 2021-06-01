@@ -1,3 +1,6 @@
+## 2.19.1
+* Fixing a bug when the number of bedrooms isn't defined
+
 ## 2.19.0
 * Adding a field for an access token. Nonfunctional at this time.
 
