@@ -19,6 +19,23 @@
             "endpoint": 0
         },
         {
+            "key": "field_60b596b465b2d",
+            "label": "Github token",
+            "name": "github_token",
+            "type": "password",
+            "instructions": "Required for updates for this plugin to work properly",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_5fffab9b598c2",
             "label": "Site type",
             "name": "apartment_site_type",
@@ -1031,5 +1048,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1622508166
+    "modified": 1622513465
 }

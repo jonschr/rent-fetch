@@ -1,3 +1,6 @@
+## 2.19.0
+* Adding a field for an access token. Nonfunctional at this time.
+
 ## 2.18.0
 * Add mechanism to allow for limiting the number of floorplans shown in the floorplansgrid block settings
 
