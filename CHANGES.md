@@ -1,3 +1,7 @@
+## 2.16.0
+* Fixing error where floorplans weren't showing when a floorplan had previously had manual images but they'd been removed in the time since (was returning false, but was checking for null)
+* Fixing Matterport links showing up properly, implementing a check to output different things if it's a youtube/vimeo video or if it's something else (eg matterport).
+
 ## 2.15.0
 * Fixing php notice for an undefined variable for floorplan images
 * Adding setting and capability for setting a maximum number of properties to show, defaulting to 100.

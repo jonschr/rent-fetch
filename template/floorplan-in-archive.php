@@ -214,8 +214,17 @@ function apartmentsync_default_tour_button() {
     if ( isset( $tour_button['button_label'] ) )
         $button_label = $tour_button['button_label'];
 
-    if ( $floorplan_video_or_tour && $link_target === 'lightbox' )
-        printf( '<a href="#" data-fancybox data-src="%s" class="button tour-button">%s</a>', $floorplan_video_or_tour, $button_label );
+    if ( $floorplan_video_or_tour && $link_target === 'lightbox' ) {
+        
+        if ( strpos( $floorplan_video_or_tour, 'youtube' ) !== false || strpos( $floorplan_video_or_tour, 'vimeo' ) !== false ) {
+            // if this is a youtube/vimeo link
+            printf( '<a href="#" data-fancybox data-src="%s" class="button tour-button">%s</a>', $floorplan_video_or_tour, $button_label );
+        } else {
+            // if it's anything else
+            printf( '<a href="%s" data-fancybox data-type="iframe" class="button tour-button">%s</a>', $floorplan_video_or_tour, $button_label );
+        }
+        
+    }
         
     if ( $floorplan_video_or_tour && $link_target === 'newtab' )
         printf( '<a href="%s" target="blank" class="button tour-button">%s</a>', $floorplan_video_or_tour, $button_label );
@@ -381,6 +390,7 @@ function apartmentsync_each_floorplan_images() {
     $page_title = get_the_title();
     
     //* get the images from whatever source we have
+    $floorplan_image_urls = null;
     $floorplan_images = apply_filters( 'floorplan_image_urls', $floorplan_image_urls );
                 
     // if there aren't any images, then output a fallback
@@ -441,8 +451,8 @@ function floorplan_get_image_urls() {
     
     //* Try for manual images first
     $manual_images = get_field( 'manual_images', $post_id );
-        
-    if ( $manual_images !== null ) {
+            
+    if ( $manual_images !== null && $manual_images !== false ) {
         
         foreach ( $manual_images as $manual_image ) {
             $floorplan_image_urls[] = $manual_image['sizes']['large'];
