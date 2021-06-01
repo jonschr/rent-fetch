@@ -429,6 +429,7 @@ function apartmentsync_each_floorplan_images() {
     }    
 }
 
+$floorplan_image_urls = null;
 add_filter( 'floorplan_image_urls', 'floorplan_get_image_urls', $floorplan_image_urls );
 function floorplan_get_image_urls() {
     

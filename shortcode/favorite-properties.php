@@ -60,8 +60,15 @@ function apartmentsync_output_favorite_properties( $favorite_properties ) {
         
             while( $propertyquery->have_posts() ): $propertyquery->the_post();
                 $property_id = get_post_meta( get_the_ID(), 'property_id', true );
-                $floorplan = $floorplans[$property_id ];
+                
+                if ( isset( $floorplans[$property_id ] ) ) {
+                    $floorplan = $floorplans[$property_id ];
+                } else {
+                    break;
+                }
+                                        
                 do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
+                
             endwhile;
         
             wp_reset_postdata();

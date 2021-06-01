@@ -1,3 +1,8 @@
+## 2.15.0
+* Fixing php notice for an undefined variable for floorplan images
+* Adding setting and capability for setting a maximum number of properties to show, defaulting to 100.
+* Fixing undefined offset error in the favories functionality when a favorite is no longer available on the site
+
 ## 2.14.0
 * Adding capability for custom floorplan images (for manual entry), falling back to Yardi images, and then to a fallback image if neither are found
 * Adding capability for fallback images for properties

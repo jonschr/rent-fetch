@@ -565,10 +565,14 @@ function apartmentsync_filter_properties(){
     // print_r( $property_ids );
     // echo '</pre>';
     
+    // set null for $properties_posts_per_page
+    $properties_maximum_per_page = null;
+    $properties_maximum_per_page = apply_filters( 'apartmentsync_properties_maximum', $properties_maximum_per_page );
+    
     //* The base property query
     $propertyargs = array(
         'post_type' => 'properties',
-        'posts_per_page' => -1,
+        'posts_per_page' => $properties_maximum_per_page,
 		'orderby' => 'menu_order',
 		'order'	=> 'DESC', // ASC or DESC
         'no_found_rows' => true,
@@ -687,7 +691,12 @@ function apartmentsync_filter_properties(){
     if( $propertyquery->have_posts() ) :
         
         $numberofposts = $propertyquery->post_count;
-        printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> results</h2></div>', $numberofposts );
+        
+        if ( $numberofposts == $properties_maximum_per_page ) {
+            printf( '<div class="count"><h2 class="post-count">More than <span class="number">%s</span> properties found</h2></div>', $numberofposts );
+        } else {
+            printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> results</h2></div>', $numberofposts );
+        }
         
         echo '<div class="properties-loop">';
             while( $propertyquery->have_posts() ): $propertyquery->the_post();
@@ -708,3 +717,15 @@ function apartmentsync_filter_properties(){
 	die();
 }
 
+// Add a filter for the maximum properties to show per page, setting the fallback to 100 if there's nothing set
+add_filter( 'apartmentsync_properties_maximum', 'apartmentsync_properties_maximum_setting', 10, 1 );
+function apartmentsync_properties_maximum_setting( $properties_maximum_per_page ) {
+    
+    $properties_maximum_per_page = get_field( 'maximum_number_of_properties_to_show', 'option' );
+    
+    if ( $properties_maximum_per_page )
+        return $properties_maximum_per_page;
+        
+    return 100;
+    
+}

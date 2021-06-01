@@ -838,6 +838,27 @@
             "endpoint": 0
         },
         {
+            "key": "field_60b5824d8186e",
+            "label": "Maximum number of properties to show",
+            "name": "maximum_number_of_properties_to_show",
+            "type": "number",
+            "instructions": "-1 allows for ALL available properties to show",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 100,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
             "key": "field_6076785d3ea87",
             "label": "Number of amenities to show",
             "name": "number_of_amenities_to_show",
@@ -1010,5 +1031,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1620786697
+    "modified": 1622508166
 }
