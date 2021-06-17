@@ -30,7 +30,7 @@ function apartmentsync_floorplangrid_block_register_block() {
 
 //* Enqueues
 function apartmentsync_floorplangrid_block_enqueue() {
-    
+        
     // Fancybox
     wp_enqueue_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
     wp_enqueue_script( 'apartmentsync-fancybox-script', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
@@ -133,10 +133,10 @@ function apartmentsync_floorplangrid_render_each_floorplan( $post_id ) {
         $floorplanclass[] = 'no-units-available';  
     } 
     
-    if ( $number_of_beds )
+    if ( $number_of_beds !== null )
         $floorplanclass[] = sprintf( 'beds-%s', $number_of_beds );
         
-    if ( $number_of_baths )
+    if ( $number_of_baths !== null )
         $floorplanclass[] = sprintf( 'baths-%s', $number_of_baths );
         
     $floorplanclass = implode( ' ', $floorplanclass );
@@ -261,7 +261,7 @@ function apartmentsync_floorplangrid_block_show_filter_bedrooms( $settings ) {
     
     ksort( $bedrooms );
     $bedroomnumbers = array_keys( $bedrooms );
-    
+        
     echo '<ul class="filters">';
         printf( '<li><a data-filter="%s" class="active filter-select" href="#">%s</a></li>', 'floorplans', 'All' );
         
@@ -359,9 +359,11 @@ function apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $s
     
     if ( !empty( $settings[$string] ) ) {
         $bedslabel = $settings[$string];
+    } elseif ( !$numberofbeds ){
+        $bedslabel = 'Studio';
     } else {
-        $bedslabel = sprintf( '%s bedroom', $numberofbeds );
-    }
+        $bedslabel = sprintf( '%s Bedroom', $numberofbeds );
+    }    
             
     return $bedslabel;
 } 

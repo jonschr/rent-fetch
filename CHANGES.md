@@ -1,3 +1,6 @@
+## 2.19.2
+* Adding support for studio beds in the grid (they weren't showing up correctly)
+
 ## 2.19.1
 * Fixing a bug when the number of bedrooms isn't defined
 
