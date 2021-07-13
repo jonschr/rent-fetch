@@ -1,3 +1,6 @@
+## 2.19.3
+* Ensuring that ACF doesn't load twice
+
 ## 2.19.2
 * Adding support for studio beds in the grid (they weren't showing up correctly)
 

@@ -3,7 +3,7 @@
 	Plugin Name: Apartment Sync
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 2.19.2
+	Version: 2.19.3
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '2.19.2' );
+define ( 'APARTMENTSYNC_VERSION', '2.19.3' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -44,11 +44,16 @@ require_once( plugin_dir_path( __FILE__ ) . 'vendor/action-scheduler/action-sche
 define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
 define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
 
-// Include the ACF plugin.
-include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
+if( !class_exists('ACF') ) {
+    
+    // Include the ACF plugin.
+    include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
+    
+    // Customize the url setting to fix incorrect asset URLs.
+    add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
+    
+}
 
-// Customize the url setting to fix incorrect asset URLs.
-add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
 function apartmentsync_acf_settings_url( $url ) {
     return APARTMENTSYNC_ACF_URL;
 }
