@@ -1,3 +1,9 @@
+## 2.21.0
+* Adding capability to set a maximum number of bedrooms in search
+
+## 2.20.0
+* Refactoring the single-properties template to allow themes to edit this in a more fine-grained way.
+
 ## 2.19.3
 * Ensuring that ACF doesn't load twice
 

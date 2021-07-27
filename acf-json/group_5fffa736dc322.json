@@ -897,6 +897,27 @@
             "step": ""
         },
         {
+            "key": "field_60ff5db6fc32d",
+            "label": "Maximum bedrooms to search",
+            "name": "maximum_bedrooms_to_search",
+            "type": "number",
+            "instructions": "If you were to enter \"9\" then the bedrooms dropdown would show \"9+ Bedrooms\" and would hide all numbers above 9.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 9,
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
             "key": "field_6081cb6a61666",
             "label": "Price filter",
             "name": "price_filter",
@@ -1048,5 +1069,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1622513465
+    "modified": 1627355263
 }

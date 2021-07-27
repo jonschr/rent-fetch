@@ -3,6 +3,8 @@
 add_shortcode( 'propertysearch', 'apartmentsync_propertysearch' );
 function apartmentsync_propertysearch( $atts ) {
     
+    ob_start();
+    
     $a = shortcode_atts( array(
         'url' => '/property-search',
     ), $atts );
@@ -10,9 +12,13 @@ function apartmentsync_propertysearch( $atts ) {
     $url = $a['url'];
     
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
-    wp_enqueue_script( 'apartmentsync-search-filters-general' );
     
-    ob_start();
+    // Localize the search filters general script, then enqueue that
+    $search_options = array(
+        'maximum_bedrooms_to_search' => intval( get_field( 'maximum_bedrooms_to_search', 'option' ) ),
+    );
+    wp_localize_script( 'apartmentsync-search-filters-general', 'searchoptions', $search_options );
+    wp_enqueue_script( 'apartmentsync-search-filters-general' );
     
     ?>
     <script>

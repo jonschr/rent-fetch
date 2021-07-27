@@ -7,7 +7,14 @@ function apartmentsync_propertymap( $atts ) {
     
     // search scripts and styles
     wp_enqueue_style( 'apartmentsync-search-properties-map' );
+    
+    // Localize the search filters general script, then enqueue that
+    $search_options = array(
+        'maximum_bedrooms_to_search' => intval( get_field( 'maximum_bedrooms_to_search', 'option' ) ),
+    );
+    wp_localize_script( 'apartmentsync-search-filters-general', 'searchoptions', $search_options );
     wp_enqueue_script( 'apartmentsync-search-filters-general' );
+        
     wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
     wp_enqueue_script( 'apartmentsync-search-properties-script' );
     wp_enqueue_script( 'apartmentsync-toggle-map' );

@@ -1,5 +1,18 @@
 jQuery(document).ready(function ($) {
 
+    //* Vars from localization
+    var maximumBeds = parseInt(searchoptions.maximum_bedrooms_to_search);
+
+    console.log('max beds: ' + maximumBeds);
+
+    //* Other vars
+    var bedsInputs = $('.input-wrap-beds input');
+    var currentBedsInput = $('input[data-beds=' + maximumBeds + ']');
+    var maximumBedsChecked = null;
+
+    // Hide beds over the maximum on load
+    bedsInputs.each(hideEachBedrooms);
+
     // onload, hide the dropdowns
     $('.dropdown-menu').removeClass('show');
 
@@ -22,6 +35,60 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
         $(this).parents('.dropdown-menu').removeClass('show');
     });
+
+    //* if there's a maximum number of bedrooms, hide all the ones above that
+    function hideEachBedrooms() {
+
+        if (!maximumBeds)
+            return;
+
+        var currentNumber = $(this).attr('data-beds');
+
+        // if the one we're looking at is higher than the max...
+        if (currentNumber > maximumBeds) {
+
+            // hide the parent element (including both the input and the parent label)
+            $(this).parent().hide();
+
+        }
+
+        if (currentNumber == maximumBeds) {
+            $(this).siblings('span').text(currentNumber + '+ Bedroom');
+        }
+    }
+
+    //* duplicate the state of the checked beds
+    function duplicateCheckedStateBeds() {
+        var currentNumber = $(this).attr('data-beds');
+
+        // if the one we're looking at is higher than the max...
+        if (currentNumber > maximumBeds) {
+
+            // hide the parent element (including both the input and the parent label)
+            // $(this).parent().hide();
+            if (maximumBedsChecked == true) {
+                $(this).prop("checked", true);
+            } else {
+                $(this).prop("checked", false);
+            }
+
+        }
+
+    }
+
+    //* detect checked bedrooms
+    function detectCheckedBeds() {
+
+        maximumBedsChecked = $('input[data-beds=' + maximumBeds + ']:checked').length;
+
+        if (maximumBedsChecked == 0) {
+            maximumBedsChecked = false;
+        } else {
+            maximumBedsChecked = true;
+        }
+
+        bedsInputs.each(duplicateCheckedStateBeds);
+    }
 
     //* text for baths button
     function importBathsToButton() {
@@ -164,6 +231,7 @@ jQuery(document).ready(function ($) {
 
     // do some of these functions when something happens
     $('.input-wrap-baths input').on('change', importBathsToButton);
+    currentBedsInput.on('change', detectCheckedBeds);
     $('.input-wrap-beds input').on('change', importBedsToButton);
     $('.input-wrap-pets input').on('change', importPetsToButton);
     $('.input-wrap-propertytypes input').on('change', importPropertyTypes);
