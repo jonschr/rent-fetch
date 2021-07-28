@@ -268,7 +268,7 @@ function apartmentsync_update_yardi_property( $property_data ) {
     foreach ( $amenities as $amenity ) {
         
         // get the name
-        $name = $amenity['AmenityName'];
+        $name = $amenity['CustomAmenityName'];
                 
         // this function checks if the amenity exists, creates it if not, then adds it to the post
         apartmentsync_set_post_term( $post_id, $name, 'amenities' );

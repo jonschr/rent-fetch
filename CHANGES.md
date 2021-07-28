@@ -1,3 +1,6 @@
+## 2.21.1
+* Getting the custom amenity name instead of the amenity name
+
 ## 2.21.0
 * Adding capability to set a maximum number of bedrooms in search
 
