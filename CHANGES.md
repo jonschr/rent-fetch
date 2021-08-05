@@ -1,3 +1,6 @@
+## 2.22.1
+* Fixing a bug where the property grid wasn' picking up any properties with floorplans available when only one unit was available for a floorplan (it previously was only picking up those with 2+ available)
+
 ## 2.22.0
 * Adding capability for a shortcode for properties
 

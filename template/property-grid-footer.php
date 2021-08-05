@@ -72,7 +72,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args
                 'key' => 'available_units',
                 'value' => 1,
                 'type' => 'numeric',
-                'compare' => '>',
+                'compare' => '>=',
             )
         ),
 	);
@@ -96,6 +96,8 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args
         
     if ( isset( $args['posts_per_page'] ) )
         $number_properties = $args['posts_per_page'];
+        
+    // 1402,1404,1406,1407,1408,1409,1410,1411,1413,1414,1415,1416,1417,1418,1419
         
     //* The base property query
     $propertyargs = array(
