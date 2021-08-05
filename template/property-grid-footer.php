@@ -1,13 +1,32 @@
 <?php
 
-add_action( 'apartmentsync_single_properties_nearby_properties', 'apartmentsync_add_properties_to_neighborhood_and_property_footer' );
-add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 0 );
-function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
+// [bartag foo="foo-value"]
+add_shortcode( 'propertiesgrid', 'apartmentsync_properties_grid' );
+function apartmentsync_properties_grid( $atts ) {
+    
+    ob_start();
+    
+    $args = shortcode_atts( array(
+        'neighborhood' => null,
+        'posts_per_page' => 4,
+    ), $atts );
+    
+    do_action( 'apartmentsync_property_grid_shortcode', $args );
+
+    return ob_get_clean();
+}
+
+add_action( 'apartmentsync_property_grid_shortcode', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+add_action( 'apartmentsync_single_properties_nearby_properties', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args ) {
         
-    if ( !is_singular( 'neighborhoods') && !is_singular( 'properties' ) )
+    
+    // bail if we don't have any data and we're not on a page where this should pull in automatically
+    if ( !is_singular( 'neighborhoods') && !is_singular( 'properties' ) && !isset( $args['neighborhood'] )  )
         return;
-                        
-    // if this is a property, we need to find the connected neightborhoods to use later
+                                        
+    // if this is a property, we need to find the connected neighborhoods to use later
     if ( is_singular( 'properties' ) ) {
                 
         $neighborhoods = MB_Relationships_API::get_connected( [
@@ -25,10 +44,22 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
         }        
     }
     
+    // if this is a neighborhood, just grab the ID and make that the $connected_neighborhoods 
     if ( is_singular( 'neighborhoods' ) ) {
         $connected_neighborhoods = array( get_the_ID() );
     }
     
+    // if this is the shortcode, we need to save the connected neighborhoods
+    if ( isset( $args['neighborhood'] ) ) {
+        
+        // get the nieghborhoods
+        $connected_neighborhoods = explode( ',', $args['neighborhood'] );
+        
+        // convert to int just in case
+        $connected_neighborhoods = array_map( 'intval', $connected_neighborhoods );
+        
+    }
+        
     // floorplan args
     $floorplans_args = array(
         'post_type' => 'floorplans',
@@ -48,7 +79,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     
     //* Process the floorplans
     $floorplans = apartmentsync_get_floorplan_info_for_properties_grid( $floorplans_args );
-    
+            
     $property_ids = array_keys( $floorplans );
     if ( empty( $property_ids ) )
     $property_ids = array( '1' ); // if there aren't any properties, we shouldn't find anything – empty array will let us find everything, so let's pass nonsense to make the search find nothing
@@ -62,6 +93,9 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     $property_footer_settings = get_field( 'property_footer_grid', 'options' );
     if ( isset( $property_footer_settings['number_properties'] ) )
         $number_properties = $property_footer_settings['number_properties'];
+        
+    if ( isset( $args['posts_per_page'] ) )
+        $number_properties = $args['posts_per_page'];
         
     //* The base property query
     $propertyargs = array(
@@ -91,26 +125,32 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer() {
     // echo '</pre>';
     
     $countposts = $propertyquery->post_count;
+    
+    // var_dump( $countposts );
+    
     if ( $countposts < 2 )
         return;
     
     if( $propertyquery->have_posts() ) :
-        echo '<div id="neighborhood-prefooter">';
         
-            // if ( is_singular( 'properties' ) )
+        echo '<div id="neighborhood-prefooter">';
+                
+            if ( is_singular( 'properties' ) )
                 echo '<h2>Nearby properties</h2>';
         
             echo '<div class="properties-loop">';
         
-            while( $propertyquery->have_posts() ): $propertyquery->the_post();
-                $property_id = get_post_meta( get_the_ID(), 'property_id', true );
-                $floorplan = $floorplans[$property_id ];
-                do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
-            endwhile;
-        
-            wp_reset_postdata();
-            
-        echo '</div></div>';
+                while( $propertyquery->have_posts() ): $propertyquery->the_post();
+                    $property_id = get_post_meta( get_the_ID(), 'property_id', true );
+                    $floorplan = $floorplans[$property_id ];
+                    do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
+                endwhile;
+                
+                echo '</div>';
+                
+                wp_reset_postdata();
+                
+        echo '</div>';
         
     else :
             

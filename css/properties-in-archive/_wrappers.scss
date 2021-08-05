@@ -27,3 +27,9 @@
         grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     }
 }
+
+body.page {
+    #neighborhood-prefooter {
+        padding: 0 0 20px;
+    }
+}

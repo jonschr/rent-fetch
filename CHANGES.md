@@ -1,3 +1,6 @@
+## 2.22.0
+* Adding capability for a shortcode for properties
+
 ## 2.21.1
 * Getting the custom amenity name instead of the amenity name
 
