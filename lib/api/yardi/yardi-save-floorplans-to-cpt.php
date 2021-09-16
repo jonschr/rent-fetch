@@ -363,15 +363,15 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
     // if the soonest date is before today, set the date to save to today. 
     // otherwise, let's use the soonest available date.
     
-    if ( $soonest_date < $today ) {
+    if ( $soonest_date < $today && $available_date != null ) {
         $available_date = $today;
     } else {
         $available_date = $soonest_date;
     }
 
     // bail if there's no date available
-    if ( $available_date == null )
-        return;
+    // if ( $available_date == null )
+    //     return;
     
     // query to find any posts for this floorplan
     $args = array(
