@@ -1,3 +1,6 @@
+## 2.22.3
+* Bugfix: we need to ensure that when we're not doing a date-based search, ALL floorplans with 0 units available are being excluded from the search.
+
 ## 2.22.2
 * When we're not given a floorplan availability date, save a null value instead of updating it to today by default.
 

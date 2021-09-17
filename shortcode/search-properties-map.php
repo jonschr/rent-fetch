@@ -389,7 +389,7 @@ function apartmentsync_filter_properties(){
     
     //* Date    
     if ( isset( $_POST['dates'] ) ) {
-        
+                
         // get the dates, in a format like this: 'YYYYMMDD to YYYYMMDD'
         $datestring = sanitize_text_field( $_POST['dates'] );
         
@@ -407,6 +407,17 @@ function apartmentsync_filter_properties(){
                     'compare' => 'BETWEEN',
                 )
             );
+        } else {
+            
+            // if the date, in fact, is empty, then we need to only pick up floorplans that have more than 0 units available
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'available_units',
+                    'value' => 0,
+                    'compare' => '>'
+                )
+            );
+            
         }
         
     }
