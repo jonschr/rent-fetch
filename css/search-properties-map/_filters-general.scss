@@ -216,6 +216,8 @@ form.property-search-starter {
                 padding: 15px;
                 display: flex;
                 flex-flow: row wrap;
+                max-height: 175px;
+                overflow-y: auto;
 
                 label {
                     cursor: pointer;

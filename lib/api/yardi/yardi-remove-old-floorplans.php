@@ -118,9 +118,9 @@ function apartmentsync_remove_orphan_yardi_properties() {
 }
 
 // //* TEMP activation of the function to delete floorplans
-add_action( 'init', 'apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific' );
+// add_action( 'init', 'apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific' );
 
-// add_action( 'apartmentsync_do_remove_floorplans_from_orphan_yardi_properties_specific', 'apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific' );
+add_action( 'apartmentsync_do_remove_floorplans_from_orphan_yardi_properties_specific', 'apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific' );
 function apartmentsync_remove_floorplans_from_orphan_yardi_properties_specific() {
     
     // get the property ids which exist in our floorplans CPT 'property_id' meta field

@@ -167,7 +167,7 @@ jQuery(document).ready(function ($) {
         }
     }
 
-    //* text for propertytypes button
+    //* text for amenities button
     function importAmenities() {
 
         var inputs = $('.input-wrap-amenities input');
@@ -183,6 +183,31 @@ jQuery(document).ready(function ($) {
 
         if (jQuery.isEmptyObject(AmenityNames) == false) {
             var text = AmenityNames.join(', ');
+            button.text(text);
+            button.addClass('active');
+        } else {
+            text = button.attr('data-reset');
+            button.text(text);
+            button.removeClass('active');
+        }
+    }
+
+    //* text for neighborhoods button
+    function importNeighborhoods() {
+
+        var inputs = $('.input-wrap-neighborhoods input');
+        var button = $('.input-wrap-neighborhoods button');
+        var NeighborhoodNames = [];
+
+        inputs.each(function () {
+            if (this.checked) {
+                NeighborhoodName = $(this).attr('data-neighborhoods-name');
+                NeighborhoodNames.push(NeighborhoodName);
+            }
+        });
+
+        if (jQuery.isEmptyObject(NeighborhoodNames) == false) {
+            var text = NeighborhoodNames.join(', ');
             button.text(text);
             button.addClass('active');
         } else {
@@ -236,6 +261,7 @@ jQuery(document).ready(function ($) {
     $('.input-wrap-pets input').on('change', importPetsToButton);
     $('.input-wrap-propertytypes input').on('change', importPropertyTypes);
     $('.input-wrap-amenities input').on('change', importAmenities);
+    $('.input-wrap-neighborhoods input').on('change', importNeighborhoods);
     $('.clear').on('click', clearDropdown);
     $('input[type="text"]').on('change', textInputActive);
 
