@@ -1,3 +1,7 @@
+## 2.23.1
+* Move the neighborhood search to the right
+## 2.23.0
+* Add the neighborhood search to the site
 ## 2.22.3
 * Bugfix: we need to ensure that when we're not doing a date-based search, ALL floorplans with 0 units available are being excluded from the search.
 

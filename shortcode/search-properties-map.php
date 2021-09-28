@@ -69,72 +69,7 @@ function apartmentsync_propertymap( $atts ) {
         //* Reset
         printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
         
-        
-        //* Build the neighborhoods filter
-        
-        
-        //TODO add a param for this to the search start page
-        if (isset($_GET['neighborhoods'])) {
-            $neighborhoodsparam = $_GET['neighborhoods'];
-            $neighborhoodsparam = explode( ',', $neighborhoodsparam );
-            $neighborhoodsparam = array_map( 'esc_attr', $neighborhoodsparam );
-        } else {
-            $neighborhoodsparam = array();
-        }
                 
-        $getneighborhoodsargs = array(
-            'post_type' => 'neighborhoods',
-            'posts_per_page' => '-1',
-            'orderby' => 'name',
-            'order' => 'DESC',
-        );
-        
-        $neighborhoods = get_posts( $getneighborhoodsargs );
-        
-        if ( $neighborhoods ) {            
-            echo '<div class="input-wrap input-wrap-neighborhoods">';
-                echo '<div class="dropdown">';
-                    echo '<button type="button" class="dropdown-toggle" data-reset="Neighborhoods">Neighborhoods</button>';
-                    echo '<div class="dropdown-menu dropdown-menu-neighborhoods">';
-                        echo '<div class="dropdown-menu-items">';
-                                            
-                            foreach( $neighborhoods as $neighborhood ) {
-                                
-                                // skip if there's a null value for neighborhood
-                                if ( $neighborhood === null )
-                                    continue;
-                                    
-                                $connected_properties = MB_Relationships_API::get_connected( [
-                                    'id'   => 'properties_to_neighborhoods',
-                                    'from' => $neighborhood,
-                                ] );
-                                    
-                                // skip if there'snothing connected to the neighborhood
-                                if ( empty( $connected_properties ) )
-                                    continue;
-                                
-                                $neighborhood_name = $neighborhood->post_title;
-                                $neighborhood_id = $neighborhood->ID;
-                                    
-                                printf( '<label><input type="checkbox" data-neighborhoods="%s" data-neighborhoods-name="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_name, $neighborhood_id, $neighborhood_name );
-                                                                        
-                                // if ( in_array( $neighborhood, $neighborhoodsparam ) ) {
-                                //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" checked /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
-                                // } else {
-                                //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
-                                // }
-                            }
-                            
-                        echo '</div>';
-                        echo '<div class="filter-application">';
-                            echo '<a class="clear" href="#">Clear</a>';
-                            echo '<a class="apply" href="#">Apply</a>';
-                        echo '</div>';
-                    echo '</div>';
-                echo '</div>'; // .dropdown
-            echo '</div>'; // .input-wrap
-        }
-        
         //* Build the beds filter
         
         // beds parameter
@@ -213,6 +148,70 @@ function apartmentsync_propertymap( $atts ) {
                 echo '</div>';
             echo '</div>'; // .dropdown
         echo '</div>'; // .input-wrap
+        
+        //* Build the neighborhoods filter
+                
+        //TODO add a param for this to the search start page
+        if (isset($_GET['neighborhoods'])) {
+            $neighborhoodsparam = $_GET['neighborhoods'];
+            $neighborhoodsparam = explode( ',', $neighborhoodsparam );
+            $neighborhoodsparam = array_map( 'esc_attr', $neighborhoodsparam );
+        } else {
+            $neighborhoodsparam = array();
+        }
+                
+        $getneighborhoodsargs = array(
+            'post_type' => 'neighborhoods',
+            'posts_per_page' => '-1',
+            'orderby' => 'name',
+            'order' => 'DESC',
+        );
+        
+        $neighborhoods = get_posts( $getneighborhoodsargs );
+        
+        if ( $neighborhoods ) {            
+            echo '<div class="input-wrap input-wrap-neighborhoods">';
+                echo '<div class="dropdown">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Neighborhoods">Neighborhoods</button>';
+                    echo '<div class="dropdown-menu dropdown-menu-neighborhoods">';
+                        echo '<div class="dropdown-menu-items">';
+                                            
+                            foreach( $neighborhoods as $neighborhood ) {
+                                
+                                // skip if there's a null value for neighborhood
+                                if ( $neighborhood === null )
+                                    continue;
+                                    
+                                $connected_properties = MB_Relationships_API::get_connected( [
+                                    'id'   => 'properties_to_neighborhoods',
+                                    'from' => $neighborhood,
+                                ] );
+                                    
+                                // skip if there'snothing connected to the neighborhood
+                                if ( empty( $connected_properties ) )
+                                    continue;
+                                
+                                $neighborhood_name = $neighborhood->post_title;
+                                $neighborhood_id = $neighborhood->ID;
+                                    
+                                printf( '<label><input type="checkbox" data-neighborhoods="%s" data-neighborhoods-name="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_name, $neighborhood_id, $neighborhood_name );
+                                                                        
+                                // if ( in_array( $neighborhood, $neighborhoodsparam ) ) {
+                                //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" checked /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
+                                // } else {
+                                //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
+                                // }
+                            }
+                            
+                        echo '</div>';
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply" href="#">Apply</a>';
+                        echo '</div>';
+                    echo '</div>';
+                echo '</div>'; // .dropdown
+            echo '</div>'; // .input-wrap
+        }
         
         //* Property types
         
