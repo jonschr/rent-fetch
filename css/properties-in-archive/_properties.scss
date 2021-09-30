@@ -32,7 +32,8 @@
         text-overflow: ellipsis;
     }
 
-    .the-address {
+    .the-address,
+    .admin-data {
         margin-bottom: 10px;
         font-size: 85%;
         line-height: 1.2em;
@@ -47,6 +48,16 @@
                 content: ",";
             }
         }
+    }
+
+    .admin-data {
+        position: relative;
+        z-index: 99;
+    }
+
+
+    .admin-data span {
+        display: block;
     }
 
     span.rentrange {

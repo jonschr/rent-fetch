@@ -40,7 +40,7 @@ function apartmentsync_floorplan_in_archive( $post_id ) {
             
                 if ( $title )
                     printf( '<h3 class="floorplan-title">%s</h3>', $title );
-                    
+                                        
                 do_action( 'apartmentsync_do_each_floorplan_availability' );
                     
                 echo '<p class="info">';
@@ -50,6 +50,21 @@ function apartmentsync_floorplan_in_archive( $post_id ) {
                     do_action( 'apartmentsync_do_each_floorplan_squarefoot_range' );
                                                                 
                 echo '</p>';
+                
+                if ( current_user_can( 'edit_posts' ) ) {
+                    echo '<p class="admin-data">';
+                    
+                        $floorplan_id = get_post_meta( get_the_ID(), 'floorplan_id', true );
+                        $property_id = get_post_meta( get_the_ID(), 'property_id', true );
+                    
+                        if ( $floorplan_id )
+                            printf( '<span><strong>Floorplan ID:</strong> %s</span>', $floorplan_id );
+                            
+                        if ( $property_id )
+                            printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
+                    
+                    echo '</p>';
+                }
                 
                 edit_post_link( 'Edit', '', '', $post_id );
                 

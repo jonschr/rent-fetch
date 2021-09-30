@@ -1,3 +1,6 @@
+## 2.23.3
+* Add property and floorplan IDs on the frontend for admins only
+
 ## 2.23.2
 * BUGFIX: Further updates to availability dates which hopefully will resolve availability showing in the past
 * Making deletions happen much faster, at the risk of temporarily overloading the site if there's too much information (but happens a lot faster)

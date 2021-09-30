@@ -18,6 +18,8 @@ function apartmentsync_single_property_title() {
     $title = get_the_title();
     $city = get_post_meta( $id, 'city', true );
     $state = get_post_meta( $id, 'state', true );
+    $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
+    $property_id = get_post_meta( $id, 'property_id', true );
     
     // prepare the location
     if ( $city && $state )
@@ -33,6 +35,18 @@ function apartmentsync_single_property_title() {
 
         if ( $title )
             printf( '<h1>%s %s</h1>', $title, $location );
+            
+        if ( current_user_can( 'edit_posts' ) ) {
+            echo '<p class="admin-data">';
+            
+                if ( $voyager_property_code )
+                    printf( '<span><strong>Voyager Property Code:</strong> %s</span>', $voyager_property_code );
+                    
+                if ( $property_id )
+                    printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
+            
+            echo '</p>';
+        }
 
     echo '</div>';
 }

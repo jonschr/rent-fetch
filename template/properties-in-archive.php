@@ -16,6 +16,7 @@ function apartmentsync_each_property( $id, $floorplan ) {
     $title = get_the_title( $id );
     $permalink = get_the_permalink( $id );
     $property_id = get_post_meta( $id, 'property_id', true );
+    $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
     $address = get_post_meta( $id, 'address', true );
     $city = get_post_meta( $id, 'city', true );
     $state = get_post_meta( $id, 'state', true );
@@ -53,9 +54,21 @@ function apartmentsync_each_property( $id, $floorplan ) {
     
                 if ( $title )
                     printf( '<h3>%s</h3>', $title );
-                                                        
+                    
+                if ( current_user_can( 'edit_posts' ) ) {
+                    echo '<p class="admin-data">';
+                    
+                    if ( $voyager_property_code )
+                        printf( '<span><strong>Voyager Property Code:</strong> %s</span>', $voyager_property_code );
+                        
+                    if ( $property_id )
+                        printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
+                    
+                    echo '</p>';
+                }
+                                                                            
                 echo '<p class="the-address">';
-                
+                                
                     if ( $address )
                         printf( '<span class="address">%s</span>', $address );
                     
@@ -72,7 +85,7 @@ function apartmentsync_each_property( $id, $floorplan ) {
                                 
                 if ( $rentrange )
                     printf( '<span class="rentrange">%s</span>', $rentrange );
-                
+                                    
             echo '</div>';
             echo '<div class="floorplan-info">';
             
