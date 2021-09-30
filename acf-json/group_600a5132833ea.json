@@ -123,47 +123,9 @@
             "maxlength": ""
         },
         {
-            "key": "field_600a515fd7e0f",
-            "label": "Has Specials",
-            "name": "has_specials",
-            "type": "true_false",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "message": "",
-            "default_value": 0,
-            "ui": 1,
-            "ui_on_text": "",
-            "ui_off_text": ""
-        },
-        {
-            "key": "field_600a5183d7e10",
-            "label": "Floorplan ID",
-            "name": "floorplan_id",
-            "type": "text",
-            "instructions": "The ID given by the API this floorplan comes from",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "maxlength": ""
-        },
-        {
-            "key": "field_600aaf6750e41",
-            "label": "Maximum Deposit",
-            "name": "maximum_deposit",
+            "key": "field_600ab0ce50e45",
+            "label": "Minimum Rent",
+            "name": "minimum_rent",
             "type": "number",
             "instructions": "",
             "required": 0,
@@ -185,6 +147,27 @@
             "key": "field_600aafb250e42",
             "label": "Maximum Rent",
             "name": "maximum_rent",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
+        },
+        {
+            "key": "field_600ab0d850e46",
+            "label": "Minimum Sqft",
+            "name": "minimum_sqft",
             "type": "number",
             "instructions": "",
             "required": 0,
@@ -245,9 +228,9 @@
             "step": ""
         },
         {
-            "key": "field_600ab0ce50e45",
-            "label": "Minimum Rent",
-            "name": "minimum_rent",
+            "key": "field_600aaf6750e41",
+            "label": "Maximum Deposit",
+            "name": "maximum_deposit",
             "type": "number",
             "instructions": "",
             "required": 0,
@@ -266,11 +249,11 @@
             "step": ""
         },
         {
-            "key": "field_600ab0d850e46",
-            "label": "Minimum Sqft",
-            "name": "minimum_sqft",
-            "type": "number",
-            "instructions": "",
+            "key": "field_600a5183d7e10",
+            "label": "Floorplan ID",
+            "name": "floorplan_id",
+            "type": "text",
+            "instructions": "The ID given by the API this floorplan comes from",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -282,9 +265,7 @@
             "placeholder": "",
             "prepend": "",
             "append": "",
-            "min": "",
-            "max": "",
-            "step": ""
+            "maxlength": ""
         },
         {
             "key": "field_600ab10550e47",
@@ -304,6 +285,25 @@
             "prepend": "",
             "append": "",
             "maxlength": ""
+        },
+        {
+            "key": "field_600a515fd7e0f",
+            "label": "Has Specials",
+            "name": "has_specials",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
         },
         {
             "key": "field_600ab11750e48",
@@ -399,5 +399,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1621278550
+    "modified": 1633030035
 }

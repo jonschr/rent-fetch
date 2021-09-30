@@ -1,3 +1,6 @@
+## 2.23.4
+* Updating the positions of Floorplans fields for better data entry
+
 ## 2.23.3
 * Add property and floorplan IDs on the frontend for admins only
 
