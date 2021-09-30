@@ -1,3 +1,6 @@
+## 2.24.1
+* Add scheduled actions button
+
 ## 2.24.0
 * Adding functionality to clean up orphan Yardi floorplans, but keeping it disabled for now
 

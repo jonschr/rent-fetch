@@ -40,7 +40,7 @@ function apartmentsync_single_property_title() {
             echo '<p class="admin-data">';
             
                 if ( $voyager_property_code )
-                    printf( '<span><strong>Voyager Property Code:</strong> %s</span>', $voyager_property_code );
+                    printf( '<span><strong>Voyager Property Code:</strong> %s <a target="_blank" href="/wp-admin/tools.php?page=action-scheduler&status=pending&s=%s&action=-1&paged=1&action2=-1">View scheduled actions...</a></span>', $voyager_property_code, $voyager_property_code );
                     
                 if ( $property_id )
                     printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
