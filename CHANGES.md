@@ -1,3 +1,6 @@
+## 2.24.0
+* Adding functionality to clean up orphan Yardi floorplans, but keeping it disabled for now
+
 ## 2.23.4
 * Updating the positions of Floorplans fields for better data entry
 
