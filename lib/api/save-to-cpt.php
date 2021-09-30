@@ -13,11 +13,6 @@ function apartmentsync_run_chron() {
     $enabled_integrations = get_field( 'enabled_integrations', 'option' );
     $data_sync = get_field( 'data_sync', 'option' );
     
-    if ( $data_sync == 'delete' ) {
-        do_action( 'apartment_do_delete' );
-        return; 
-    }
-    
     // bail if there aren't any integrations enabled
     if ( !$enabled_integrations )
         return;

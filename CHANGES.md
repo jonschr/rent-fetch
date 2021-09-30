@@ -1,3 +1,7 @@
+## 2.23.2
+* BUGFIX: Further updates to availability dates which hopefully will resolve availability showing in the past
+* Making deletions happen much faster, at the risk of temporarily overloading the site if there's too much information (but happens a lot faster)
+
 ## 2.23.1
 * Move the neighborhood search to the right
 ## 2.23.0

@@ -323,15 +323,14 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voya
 // add_action( 'init', 'apartmentsync_get_availability_information' );
 function apartmentsync_get_availability_information( $floorplan = 'hello', $voyager_property_code = 'world' ) {
     
-    
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
     
     $floorplan_Id = $floorplan['FloorplanId'];
     
-    // //TODO TESTING
-    // $voyager_property_code = '73029th';
-    // $floorplan_Id = '3559242';
+    // // //TODO TESTING
+    // $voyager_property_code = '7200evan';
+    // $floorplan_Id = '3957491';
                     
     // Do the API request
     $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=apartmentavailability&floorplanId=%s&apiToken=%s&VoyagerPropertyCode=%s', $floorplan_Id, $yardi_api_key, $voyager_property_code ); // path to your JSON file
@@ -339,9 +338,10 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
     
     // process the data to get the date in yardi's format
     $datas = json_decode( $datas );  
-        
+            
     $available_dates = array();
     $soonest_date = null;
+    $today = date('Ymd');
     
     foreach( $datas as $data ) {
         
@@ -352,26 +352,22 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
             $available_dates[] = $date;
         }            
     }
-    
+        
     sort( $available_dates );
         
     if ( isset( $available_dates[0] ) )
-        $soonest_date = $available_dates[0];    
+        $soonest_date = $available_dates[0];   
         
-    $today = date('Ymd');
-    
-    // if the soonest date is before today, set the date to save to today. 
-    // otherwise, let's use the soonest available date.
-    
-    if ( $soonest_date < $today && $available_date != null ) {
+        
+    // if the soonest date is before today, just set the available date to today
+    if ( $soonest_date == null ) {
+        $available_date = null;
+    }
+    elseif ( $today > $soonest_date ) {
         $available_date = $today;
     } else {
         $available_date = $soonest_date;
     }
-
-    // bail if there's no date available
-    // if ( $available_date == null )
-    //     return;
     
     // query to find any posts for this floorplan
     $args = array(
@@ -397,9 +393,7 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
     
     $floorplan_query = new WP_Query( $args );
     $floorplans = $floorplan_query->posts;
-    
-    // var_dump( $floorplans );
-    
+        
     if ( $floorplans ) {
         foreach( $floorplans as $floorplan ) {   
             $success_update_photos = update_post_meta( $floorplan->ID, 'availability_date', $available_date );
