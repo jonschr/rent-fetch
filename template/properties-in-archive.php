@@ -59,7 +59,7 @@ function apartmentsync_each_property( $id, $floorplan ) {
                     echo '<p class="admin-data">';
                     
                     if ( $voyager_property_code )
-                        printf( '<span><strong>Voyager Property Code:</strong> %s</span>', $voyager_property_code );
+                        printf( '<span><strong>Voyager Code:</strong> %s</span>', $voyager_property_code );
                         
                     if ( $property_id )
                         printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );

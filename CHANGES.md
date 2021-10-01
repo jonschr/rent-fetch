@@ -1,3 +1,6 @@
+## 2.24.2
+* Fix minor bug where no properties came up when only one date (and not a range) was selected in the search
+
 ## 2.24.1
 * Add scheduled actions button
 

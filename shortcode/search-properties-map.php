@@ -457,13 +457,14 @@ function apartmentsync_filter_properties(){
                 
         // get the dates, in a format like this: 'YYYYMMDD to YYYYMMDD'
         $datestring = sanitize_text_field( $_POST['dates'] );
+    
+        // get the dates into an array
+        $dates = explode( ' to ', $datestring  );
         
-        if ( !empty( $datestring ) ) {
-            
-            // turn that into an array
-            $dates = explode( ' to ', $datestring  );
-        
-            // do a between query agains the availability dates
+        // typical use, we have two dates, a start and end
+        if ( count( $dates ) == 2 ) {
+                    
+            // do a between query against the availability dates
             $floorplans_args['meta_query'][] = array(
                 array(
                     'key' => 'availability_date',
@@ -472,9 +473,26 @@ function apartmentsync_filter_properties(){
                     'compare' => 'BETWEEN',
                 )
             );
-        } else {
             
-            // if the date, in fact, is empty, then we need to only pick up floorplans that have more than 0 units available
+        // or we might just have one date, which we'll treat as an end
+        } elseif ( count( $dates ) == 1 && !empty( $dates[0] ) ) {
+            
+            $yesterday = date('Ymd',strtotime("-1 days"));
+                        
+            // do a between query between yesterday and the date entered
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'availability_date',
+                    'value' => array( $yesterday, $dates[0] ),
+                    'type' => 'numeric',
+                    'compare' => 'BETWEEN',
+                )
+            );
+           
+        // no date is set, so let's not make that part of the query; fall back to available units
+        } else {
+                        
+            // if the date is anything else, then we need to only pick up floorplans that have more than 0 units available
             $floorplans_args['meta_query'][] = array(
                 array(
                     'key' => 'available_units',
