@@ -11,7 +11,7 @@ jQuery(document).ready(function ($) {
     $('.flatpickr').flatpickr(
         {
             altInput: true,
-            altFormat: "F j",
+            altFormat: "M. j",
             dateFormat: "Ymd",
             mode: "range",
             minDate: "today",
