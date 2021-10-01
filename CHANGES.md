@@ -1,3 +1,6 @@
+## 2.24.3
+* Update Flatpickr initialization so that we use abbreviated dates
+
 ## 2.24.2
 * Fix minor bug where no properties came up when only one date (and not a range) was selected in the search
 
