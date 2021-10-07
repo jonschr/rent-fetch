@@ -1,4 +1,7 @@
-
+## 3.0.2
+* Adding manual entry version of fields for properties
+* Reordering some fields in the birds-eye view for both properties and floorplans
+* Testing update capabilities
 ## 3.0.1
 * Adding updates back into the plugin
 * More name changes

@@ -3,6 +3,33 @@
     "title": "Property details",
     "fields": [
         {
+            "key": "field_615f6486f5fe0",
+            "label": "Images",
+            "name": "images",
+            "type": "gallery",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "thumbnail",
+            "insert": "append",
+            "library": "all",
+            "min": "",
+            "max": "",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
             "key": "field_6064eb41cac1a",
             "label": "Property ID",
             "name": "property_id",
@@ -294,5 +321,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1618975041
+    "modified": 1633641636
 }
