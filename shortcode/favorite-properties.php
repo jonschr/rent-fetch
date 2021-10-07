@@ -1,7 +1,7 @@
 <?php
 
-add_shortcode( 'favoriteproperties', 'apartmentsync_output_the_favorite_properties' );
-function apartmentsync_output_the_favorite_properties( $atts ) {
+add_shortcode( 'favoriteproperties', 'rentfetch_output_the_favorite_properties' );
+function rentfetch_output_the_favorite_properties( $atts ) {
     
     $args = shortcode_atts( array(
         'foo' => 'something',
@@ -15,18 +15,18 @@ function apartmentsync_output_the_favorite_properties( $atts ) {
         $favorite_properties = $_COOKIE['favorite_properties'];
         
     if ( empty( $favorite_properties ) ) {
-        do_action( 'apartmentsync_do_output_no_properties_default_message' );
+        do_action( 'rentfetch_do_output_no_properties_default_message' );
     } else {        
         $favorite_properties = explode( ',', $favorite_properties );        
-        do_action( 'apartmentsync_do_output_favorite_properties', $favorite_properties );
+        do_action( 'rentfetch_do_output_favorite_properties', $favorite_properties );
     }
     
     return ob_get_clean();
     
 }
 
-add_action( 'apartmentsync_do_output_favorite_properties', 'apartmentsync_output_favorite_properties', 10, 1 );
-function apartmentsync_output_favorite_properties( $favorite_properties ) {
+add_action( 'rentfetch_do_output_favorite_properties', 'rentfetch_output_favorite_properties', 10, 1 );
+function rentfetch_output_favorite_properties( $favorite_properties ) {
     
     //* Get the information we'll need from all floorplans
     // floorplan args
@@ -39,7 +39,7 @@ function apartmentsync_output_favorite_properties( $favorite_properties ) {
 	);
     
     //* Process the floorplans
-    $floorplans = apartmentsync_get_floorplan_info_for_properties_grid( $args );
+    $floorplans = rentfetch_get_floorplan_info_for_properties_grid( $args );
     
     //* The base property query
     $propertyargs = array(
@@ -67,7 +67,7 @@ function apartmentsync_output_favorite_properties( $favorite_properties ) {
                     break;
                 }
                                         
-                do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
+                do_action( 'rentfetch_do_each_property', $propertyquery->post->ID, $floorplan );
                 
             endwhile;
         
@@ -84,8 +84,8 @@ function apartmentsync_output_favorite_properties( $favorite_properties ) {
     
 }
 
-add_action( 'apartmentsync_do_output_no_properties_default_message', 'apartmentsync_output_no_properties_default_message' );
-function apartmentsync_output_no_properties_default_message() {
+add_action( 'rentfetch_do_output_no_properties_default_message', 'rentfetch_output_no_properties_default_message' );
+function rentfetch_output_no_properties_default_message() {
     ?>
     <p>Oops! Looks like you haven't set any favorite properties. Just click the heart icon to add as many properties as you'd like, and you'll see them show up here whenever you reload this page.</p>
     <?php

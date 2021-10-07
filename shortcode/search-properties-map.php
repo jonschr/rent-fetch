@@ -1,7 +1,7 @@
 <?php
 
-add_shortcode( 'propertymap', 'apartmentsync_propertymap' );
-function apartmentsync_propertymap( $atts ) {
+add_shortcode( 'propertymap', 'rentfetch_propertymap' );
+function rentfetch_propertymap( $atts ) {
     
     ob_start();
     
@@ -390,9 +390,9 @@ function apartmentsync_propertymap( $atts ) {
     return ob_get_clean();
 }
 
-add_action( 'wp_ajax_propertysearch', 'apartmentsync_filter_properties' ); // wp_ajax_{ACTION HERE} 
-add_action( 'wp_ajax_nopriv_propertysearch', 'apartmentsync_filter_properties' );
-function apartmentsync_filter_properties(){
+add_action( 'wp_ajax_propertysearch', 'rentfetch_filter_properties' ); // wp_ajax_{ACTION HERE} 
+add_action( 'wp_ajax_nopriv_propertysearch', 'rentfetch_filter_properties' );
+function rentfetch_filter_properties(){
             
     //* start with floorplans
 	$floorplans_args = array(
@@ -677,7 +677,7 @@ function apartmentsync_filter_properties(){
     
     // set null for $properties_posts_per_page
     $properties_maximum_per_page = null;
-    $properties_maximum_per_page = apply_filters( 'apartmentsync_properties_maximum', $properties_maximum_per_page );
+    $properties_maximum_per_page = apply_filters( 'rentfetch_properties_maximum', $properties_maximum_per_page );
     
     //* The base property query
     $propertyargs = array(
@@ -789,7 +789,7 @@ function apartmentsync_filter_properties(){
     } 
     
     // get the list of properties connected to the selected properties
-    $properties_connected_to_selected_neighborhoods = apartmentsync_get_connected_properties_from_selected_neighborhoods();
+    $properties_connected_to_selected_neighborhoods = rentfetch_get_connected_properties_from_selected_neighborhoods();
     if ( $properties_connected_to_selected_neighborhoods ) {
         $propertyargs['post__in'] = $properties_connected_to_selected_neighborhoods;            
     }    
@@ -818,7 +818,7 @@ function apartmentsync_filter_properties(){
             while( $propertyquery->have_posts() ): $propertyquery->the_post();
                 $property_id = get_post_meta( get_the_ID(), 'property_id', true );
                 $floorplan = $floorplans[$property_id ];
-                do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
+                do_action( 'rentfetch_do_each_property', $propertyquery->post->ID, $floorplan );
             endwhile;
         echo '</div>';
         
@@ -834,8 +834,8 @@ function apartmentsync_filter_properties(){
 }
 
 // Add a filter for the maximum properties to show per page, setting the fallback to 100 if there's nothing set
-add_filter( 'apartmentsync_properties_maximum', 'apartmentsync_properties_maximum_setting', 10, 1 );
-function apartmentsync_properties_maximum_setting( $properties_maximum_per_page ) {
+add_filter( 'rentfetch_properties_maximum', 'rentfetch_properties_maximum_setting', 10, 1 );
+function rentfetch_properties_maximum_setting( $properties_maximum_per_page ) {
     
     $properties_maximum_per_page = get_field( 'maximum_number_of_properties_to_show', 'option' );
     
@@ -846,7 +846,7 @@ function apartmentsync_properties_maximum_setting( $properties_maximum_per_page 
     
 }
 
-function apartmentsync_get_connected_properties_from_selected_neighborhoods() {
+function rentfetch_get_connected_properties_from_selected_neighborhoods() {
     
     $getneighborhoodsargs = array(
         'post_type' => 'neighborhoods',

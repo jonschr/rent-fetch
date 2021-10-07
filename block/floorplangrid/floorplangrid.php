@@ -16,7 +16,7 @@ function rentfetch_floorplangrid_block_register_block() {
             'enqueue_assets'    => 'rentfetch_floorplangrid_block_enqueue',
             'category'          => 'formatting',
             'icon'              => 'table-col-before',
-            'keywords'          => array( 'floorplan', 'apartment', 'grid', 'availability' ),
+            'keywords'          => array( 'floorplan', 'apartment', 'grid', 'availability', 'rent', 'fetch' ),
             'mode'              => 'preview',
             'align'              => 'normal',
             'supports'          => array(
@@ -152,7 +152,7 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
                 if ( $title )
                     printf( '<h3 class="floorplangrid__title">%s</h3>', $title );
                     
-                do_action( 'apartmentsync_do_each_floorplan_availability' );
+                do_action( 'rentfetch_do_each_floorplan_availability' );
                     
                 echo '<p class="floorplangrid__info">';
                 
@@ -221,7 +221,7 @@ function rentfetch_floorplangrid_output_gform() {
     if ( !$gravity_form_id )
         return;
     
-    printf( '<div style="display:none;" id="gform-%s" class="apartmentsync-gform">', $gravity_form_id );
+    printf( '<div style="display:none;" id="gform-%s" class="rentfetch-gform">', $gravity_form_id );
         echo do_shortcode( '[gravityform id="' . $gravity_form_id . '" title=false description=false ajax=true tabindex=49]');
     echo '</div>';
     
@@ -267,7 +267,7 @@ function rentfetch_floorplangrid_block_show_filter_bedrooms( $settings ) {
         
         foreach ( $bedroomnumbers as $bedroomnumber ) {
             
-            $label = apartmentsync_floorplangrid_number_of_bedrooms_label( $bedroomnumber, $settings );
+            $label = rentfetch_floorplangrid_number_of_bedrooms_label( $bedroomnumber, $settings );
             printf( '<li><a data-filter="beds-%s" class="filter-select" href="#">%s</a></li>', $bedroomnumber, $label );
         }
     echo '</ul>';
@@ -353,7 +353,7 @@ function rentfetch_floorplangrid_block_get_posts( $settings ) {
 }
 
 //todo probably deprecate this
-function apartmentsync_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings ) {
+function rentfetch_floorplangrid_number_of_bedrooms_label( $numberofbeds, $settings ) {
      
     $string = sprintf( '%s_bedrooms_label', $numberofbeds );
     

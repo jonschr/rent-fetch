@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'apartmentsync_do_each_property', 'apartmentsync_each_property', 10, 2 );
-function apartmentsync_each_property( $id, $floorplan ) {
+add_action( 'rentfetch_do_each_property', 'rentfetch_each_property', 10, 2 );
+function rentfetch_each_property( $id, $floorplan ) {
     
     // properties in archive styles
     wp_enqueue_style( 'rentfetch-properties-in-archive' );
@@ -42,11 +42,11 @@ function apartmentsync_each_property( $id, $floorplan ) {
                         
         if ( $has_specials == true ) {
             $specials_text = 'Specials available';
-            $specials_text = apply_filters( 'apartmentsync_has_specials_text', $specials_text );
+            $specials_text = apply_filters( 'rentfetch_has_specials_text', $specials_text );
             printf( '<div class="has-specials-property">%s</div>', $specials_text );
         }
             
-        do_action( 'apartmentsync_do_each_property_images', $id );
+        do_action( 'rentfetch_do_each_property_images', $id );
     
         echo '<div class="property-content">';
         
@@ -103,12 +103,10 @@ function apartmentsync_each_property( $id, $floorplan ) {
                                         
     echo '</div>';
     
-    
-    
 }
 
-add_action( 'apartmentsync_do_each_property_images', 'apartmentsync_each_property_images', 10, 1 );
-function apartmentsync_each_property_images( $post_id ) {
+add_action( 'rentfetch_do_each_property_images', 'rentfetch_each_property_images', 10, 1 );
+function rentfetch_each_property_images( $post_id ) {
         
     // these are images pulled from an API and stored as a JSON array
     $property_images = get_post_meta( $post_id, 'property_images', true );
@@ -124,11 +122,11 @@ function apartmentsync_each_property_images( $post_id ) {
         $firsturl = $property_images[0]->ImageURL;
     
     if ( !$firsturl )
-        $firsturl = apply_filters( 'apartmentsync_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
+        $firsturl = apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
         
     printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
     
-        do_action( 'apartmentsync_properties_archive_before_images' );
+        do_action( 'rentfetch_properties_archive_before_images' );
                 
         echo '<div class="property-slider">';
         
@@ -184,14 +182,14 @@ function apartmentsync_each_property_images( $post_id ) {
         
         echo '</div>';
         
-        do_action( 'apartmentsync_properties_archive_after_images' );
+        do_action( 'rentfetch_properties_archive_after_images' );
                 
     echo '</div>';
     
 }
 
-add_action( 'apartmentsync_properties_archive_before_images', 'apartmentsync_favorite_property_link' );
-function apartmentsync_favorite_property_link() {
+add_action( 'rentfetch_properties_archive_before_images', 'rentfetch_favorite_property_link' );
+function rentfetch_favorite_property_link() {
     
     wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
     wp_enqueue_script( 'rentfetch-property-favorites' );

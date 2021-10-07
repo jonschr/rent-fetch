@@ -9,7 +9,7 @@ function rentfetch_add_documentation_sidebar_link() {
     $submenu[$menu_slug][] = array(
         'Documentation', 
         'manage_options', 
-        'https://github.com/jonschr/apartment-sync',
+        'https://github.com/jonschr/rent-fetch',
     );
 }
 

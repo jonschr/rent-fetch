@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'apartmentsync_do_save_yardi_floorplans_to_cpt', 'apartmentsync_save_yardi_floorplans_to_cpt' );
-function apartmentsync_save_yardi_floorplans_to_cpt() {
+add_action( 'rentfetch_do_save_yardi_floorplans_to_cpt', 'rentfetch_save_yardi_floorplans_to_cpt' );
+function rentfetch_save_yardi_floorplans_to_cpt() {
             
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $properties = $yardi_integration_creds['yardi_property_code'];
@@ -31,8 +31,8 @@ function apartmentsync_save_yardi_floorplans_to_cpt() {
 /**
  * For a particular property in Yardi, grab the transient, then start processing floorplans
  */
-add_action( 'rentfetch_do_fetch_yardi_floorplans', 'apartmentsync_fetch_yardi_floorplans', 10, 1 );
-function apartmentsync_fetch_yardi_floorplans( $property ) {
+add_action( 'rentfetch_do_fetch_yardi_floorplans', 'rentfetch_fetch_yardi_floorplans', 10, 1 );
+function rentfetch_fetch_yardi_floorplans( $property ) {
     
     $floorplans = get_transient( 'yardi_floorplans_property_id_' . $property );
             
@@ -47,21 +47,21 @@ function apartmentsync_fetch_yardi_floorplans( $property ) {
     foreach( $floorplans as $floorplan ) {
         
         // save to cpt
-        apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $property );
+        rentfetch_sync_yardi_floorplan_to_cpt( $floorplan, $property );
         
         // grab and insert the availability information
-        apartmentsync_get_availability_information( $floorplan, $property );
+        rentfetch_get_availability_information( $floorplan, $property );
         
     }
     
     //TODO uncomment this to enable deleting orphan floorplans
-    // apartmentsync_delete_orphan_yardi_floorplans( $floorplans, $property );
+    // rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property );
 }
 
 /**
  * For a particular floorplan, perform a sync
  */
-function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $voyagercode ) {
+function rentfetch_sync_yardi_floorplan_to_cpt( $floorplan, $voyagercode ) {
     
     $FloorplanId = $floorplan['FloorplanId'];
     $FloorplanName = $floorplan['FloorplanName'];
@@ -83,12 +83,12 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $voyagercode ) {
     // insert the post if there isn't one already (this prevents duplicates)
     if ( !$matchingposts ) {
         rentfetch_verbose_log( "Floorplan $FloorplanId, $FloorplanName, does not exist yet in the database. Inserting." );
-        apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode );
+        rentfetch_insert_yardi_floorplan( $floorplan, $voyagercode );
         
     // if there's exactly one post found, then update the meta for that
     } elseif ( $count == 1 ) {
         rentfetch_verbose_log( "Floorplan $FloorplanId, $FloorplanName, already exists in the database. Checking post meta." );
-        apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voyagercode );
+        rentfetch_update_yardi_floorplan( $floorplan, $matchingposts, $voyagercode );
         
     // if there are more than one found, delete all of those that match and add fresh, since we likely have some bad data
     } elseif( $count > 1 ) {
@@ -96,7 +96,7 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $voyagercode ) {
         foreach ($matchingposts as $matchingpost) {
             wp_delete_post( $matchingpost->ID, true );
         }
-        apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode );
+        rentfetch_insert_yardi_floorplan( $floorplan, $voyagercode );
     }
 }
 
@@ -107,7 +107,7 @@ function apartmentsync_sync_yardi_floorplan_to_cpt( $floorplan, $voyagercode ) {
  *
  * @return  none              
  */
-function apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode ) {
+function rentfetch_insert_yardi_floorplan( $floorplan, $voyagercode ) {
     
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
@@ -172,7 +172,7 @@ function apartmentsync_insert_yardi_floorplan( $floorplan, $voyagercode ) {
  *
  * @return  none  
  */
-function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voyagercode ) {
+function rentfetch_update_yardi_floorplan( $floorplan, $matchingposts, $voyagercode ) {
     
     // all of the available variables
     $AvailabilityURL = $floorplan['AvailabilityURL'];
@@ -323,8 +323,8 @@ function apartmentsync_update_yardi_floorplan( $floorplan, $matchingposts, $voya
     
 }
 
-// add_action( 'init', 'apartmentsync_get_availability_information' );
-function apartmentsync_get_availability_information( $floorplan = 'hello', $voyager_property_code = 'world' ) {
+// add_action( 'init', 'rentfetch_get_availability_information' );
+function rentfetch_get_availability_information( $floorplan = 'hello', $voyager_property_code = 'world' ) {
     
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
@@ -404,8 +404,8 @@ function apartmentsync_get_availability_information( $floorplan = 'hello', $voya
     }
 }
 
-// add_action( 'init', 'apartmentsync_delete_orphan_yardi_floorplans' ); // for testing only
-function apartmentsync_delete_orphan_yardi_floorplans( $floorplans, $property ) {
+// add_action( 'init', 'rentfetch_delete_orphan_yardi_floorplans' ); // for testing only
+function rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property ) {
     
     // // sample data for testing
     // $property = '175wbell';

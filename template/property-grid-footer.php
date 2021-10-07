@@ -1,8 +1,8 @@
 <?php
 
 // [bartag foo="foo-value"]
-add_shortcode( 'propertiesgrid', 'apartmentsync_properties_grid' );
-function apartmentsync_properties_grid( $atts ) {
+add_shortcode( 'propertiesgrid', 'rentfetch_properties_grid' );
+function rentfetch_properties_grid( $atts ) {
     
     ob_start();
     
@@ -11,15 +11,15 @@ function apartmentsync_properties_grid( $atts ) {
         'posts_per_page' => 4,
     ), $atts );
     
-    do_action( 'apartmentsync_property_grid_shortcode', $args );
+    do_action( 'rentfetch_property_grid_shortcode', $args );
 
     return ob_get_clean();
 }
 
-add_action( 'apartmentsync_property_grid_shortcode', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
-add_action( 'rentfetch_single_properties_nearby_properties', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
-add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
-function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args ) {
+add_action( 'rentfetch_property_grid_shortcode', 'rentfetch_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+add_action( 'rentfetch_single_properties_nearby_properties', 'rentfetch_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+add_action( 'genesis_after_content_sidebar_wrap', 'rentfetch_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+function rentfetch_add_properties_to_neighborhood_and_property_footer( $args ) {
         
     
     // bail if we don't have any data and we're not on a page where this should pull in automatically
@@ -78,7 +78,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args
 	);
     
     //* Process the floorplans
-    $floorplans = apartmentsync_get_floorplan_info_for_properties_grid( $floorplans_args );
+    $floorplans = rentfetch_get_floorplan_info_for_properties_grid( $floorplans_args );
             
     $property_ids = array_keys( $floorplans );
     if ( empty( $property_ids ) )
@@ -145,7 +145,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args
                 while( $propertyquery->have_posts() ): $propertyquery->the_post();
                     $property_id = get_post_meta( get_the_ID(), 'property_id', true );
                     $floorplan = $floorplans[$property_id ];
-                    do_action( 'apartmentsync_do_each_property', $propertyquery->post->ID, $floorplan );
+                    do_action( 'rentfetch_do_each_property', $propertyquery->post->ID, $floorplan );
                 endwhile;
                 
                 echo '</div>';
@@ -168,7 +168,7 @@ function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args
  *
  * @return  array  formatted information for all floorplans to be used in the properties grids
  */
-function apartmentsync_get_floorplan_info_for_properties_grid( $args ) {
+function rentfetch_get_floorplan_info_for_properties_grid( $args ) {
     $query = new WP_Query( $args );
 
     // echo '<pre style="font-size: 14px;">';

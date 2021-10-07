@@ -1,8 +1,8 @@
 <?php
 /*
 	Plugin Name: Rent Fetch
-	Plugin URI: https://github.com/jonschr/apartment-sync
-    Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
+	Plugin URI: https://github.com/jonschr/rent-fetch
+    Description: Syncs properties, and floorplans with various rental APIs
 	Version: 3.0.1
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
@@ -104,7 +104,7 @@ add_filter( 'acp/storage/repositories', function( array $repositories, ListScree
     $rules->add_rule( new Rule\EqualType( 'neighborhoods' ) );
     
     // 3. Register your repository to the stack
-    $repositories['apartment-sync'] = $factory->create(
+    $repositories['rent-fetch'] = $factory->create(
         RENTFETCH_DIR . '/acp-settings',
         $writable,
         $rules

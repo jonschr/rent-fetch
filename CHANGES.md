@@ -1,6 +1,7 @@
 
 ## 3.0.1
 * Adding updates back into the plugin
+* More name changes
 
 ## 3.0
 * Changing the plugin name to Rent Fetch, updating hooks throughout, and verifying that all functionality is still working

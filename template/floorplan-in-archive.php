@@ -1,8 +1,8 @@
 <?php
 
-// add_action( 'rentfetch_do_floorplan_in_floorplans_block', 'apartmentsync_floorplan_in_archive', 10, 1 );
-add_action( 'rentfetch_do_floorplan_in_archive', 'apartmentsync_floorplan_in_archive', 10, 1 );
-function apartmentsync_floorplan_in_archive( $post_id ) {
+// add_action( 'rentfetch_do_floorplan_in_floorplans_block', 'rentfetch_floorplan_in_archive', 10, 1 );
+add_action( 'rentfetch_do_floorplan_in_archive', 'rentfetch_floorplan_in_archive', 10, 1 );
+function rentfetch_floorplan_in_archive( $post_id ) {
     
     // styles for the layout
     wp_enqueue_style( 'rentfetch-floorplan-in-archive' );
@@ -41,7 +41,7 @@ function apartmentsync_floorplan_in_archive( $post_id ) {
                 if ( $title )
                     printf( '<h3 class="floorplan-title">%s</h3>', $title );
                                         
-                do_action( 'apartmentsync_do_each_floorplan_availability' );
+                do_action( 'rentfetch_do_each_floorplan_availability' );
                     
                 echo '<p class="info">';
                 
@@ -83,8 +83,8 @@ function apartmentsync_floorplan_in_archive( $post_id ) {
     
 }
 
-add_action( 'apartmentsync_do_each_floorplan_availability', 'apartmentsync_each_floorplan_availability' );
-function apartmentsync_each_floorplan_availability() {
+add_action( 'rentfetch_do_each_floorplan_availability', 'rentfetch_each_floorplan_availability' );
+function rentfetch_each_floorplan_availability() {
     
     $post_id = get_the_ID();
     
@@ -97,8 +97,8 @@ function apartmentsync_each_floorplan_availability() {
     
 }
 
-add_action( 'rentfetch_do_each_floorplan_baths', 'apartmentsync_each_floorplan_baths' );
-function apartmentsync_each_floorplan_baths() {
+add_action( 'rentfetch_do_each_floorplan_baths', 'rentfetch_each_floorplan_baths' );
+function rentfetch_each_floorplan_baths() {
     
     $post_id = get_the_ID();
         
@@ -113,8 +113,8 @@ function apartmentsync_each_floorplan_baths() {
     
 }
 
-add_action( 'rentfetch_do_each_floorplan_beds', 'apartmentsync_each_floorplan_beds' );
-function apartmentsync_each_floorplan_beds() {
+add_action( 'rentfetch_do_each_floorplan_beds', 'rentfetch_each_floorplan_beds' );
+function rentfetch_each_floorplan_beds() {
     
     $post_id = get_the_ID();
         
@@ -128,8 +128,8 @@ function apartmentsync_each_floorplan_beds() {
         printf( '<span class="floorplan-beds">%s</span>', $beds );
 }
 
-add_action( 'rentfetch_do_each_floorplan_rent_range', 'apartmentsync_each_floorplan_rent_range' );
-function apartmentsync_each_floorplan_rent_range() {
+add_action( 'rentfetch_do_each_floorplan_rent_range', 'rentfetch_each_floorplan_rent_range' );
+function rentfetch_each_floorplan_rent_range() {
     
     $post_id = get_the_ID();
     $minimum_rent = get_field( 'minimum_rent', $post_id );
@@ -162,8 +162,8 @@ function apartmentsync_each_floorplan_rent_range() {
     
 }
 
-add_action( 'rentfetch_do_gform_lightbox', 'apartmentsync_gform_lightbox' );
-function apartmentsync_gform_lightbox() {
+add_action( 'rentfetch_do_gform_lightbox', 'rentfetch_gform_lightbox' );
+function rentfetch_gform_lightbox() {
     
     // fancybox
     wp_enqueue_style( 'rentfetch-fancybox-style' );
@@ -186,13 +186,13 @@ function apartmentsync_gform_lightbox() {
     if ( !$gravity_form_id )
         return;
     
-    printf( '<div id="gform-%s" class="apartmentsync-gform">', $gravity_form_id );
+    printf( '<div id="gform-%s" class="rentfetch-gform">', $gravity_form_id );
         echo do_shortcode( '[gravityform id="' . $gravity_form_id . '" title=false description=false ajax=true tabindex=49]');
     echo '</div>';
 }
 
-add_action( 'rentfetch_do_each_floorplan_buttons', 'apartmentsync_each_floorplan_buttons' );
-function apartmentsync_each_floorplan_buttons() {
+add_action( 'rentfetch_do_each_floorplan_buttons', 'rentfetch_each_floorplan_buttons' );
+function rentfetch_each_floorplan_buttons() {
     
     // fancybox
     wp_enqueue_style( 'rentfetch-fancybox-style' );
@@ -204,13 +204,13 @@ function apartmentsync_each_floorplan_buttons() {
     echo '<div class="floorplan-buttons">';
     
         // each of the buttons is hooked onto this action, which allows for simpler reordering if needed
-        do_action( 'apartmentsync_do_floorplan_each_button' );
+        do_action( 'rentfetch_do_floorplan_each_button' );
             
     echo '</div>'; // .buttons
 }
 
-add_action( 'apartmentsync_do_floorplan_each_button', 'apartmentsync_default_tour_button', 5 );
-function apartmentsync_default_tour_button() {
+add_action( 'rentfetch_do_floorplan_each_button', 'rentfetch_default_tour_button', 5 );
+function rentfetch_default_tour_button() {
     
     // get the options
     $tour_button = get_field( 'tour_button', 'options' ); 
@@ -248,8 +248,8 @@ function apartmentsync_default_tour_button() {
         
 }
 
-add_action( 'apartmentsync_do_floorplan_each_button', 'apartmentsync_default_availability_button', 10 );
-function apartmentsync_default_availability_button() {
+add_action( 'rentfetch_do_floorplan_each_button', 'rentfetch_default_availability_button', 10 );
+function rentfetch_default_availability_button() {
     
     $post_id = get_the_ID();
     
@@ -291,8 +291,8 @@ function apartmentsync_default_availability_button() {
         
 }
 
-add_action( 'apartmentsync_do_floorplan_each_button', 'apartmentsync_default_contact_button', 15 );
-function apartmentsync_default_contact_button() {
+add_action( 'rentfetch_do_floorplan_each_button', 'rentfetch_default_contact_button', 15 );
+function rentfetch_default_contact_button() {
     
     // ob_start();
         
@@ -331,8 +331,8 @@ function apartmentsync_default_contact_button() {
         
 }
 
-add_action( 'apartmentsync_do_floorplan_each_button', 'apartmentsync_default_single_button', 20 );
-function apartmentsync_default_single_button() {
+add_action( 'rentfetch_do_floorplan_each_button', 'rentfetch_default_single_button', 20 );
+function rentfetch_default_single_button() {
     
     // get the options
     $single_button = get_field( 'single_button', 'options' ); 
@@ -356,8 +356,8 @@ function apartmentsync_default_single_button() {
         
 }
 
-add_action( 'rentfetch_do_each_floorplan_squarefoot_range', 'apartmentsync_each_floorplan_squarefoot_range' );
-function apartmentsync_each_floorplan_squarefoot_range() {
+add_action( 'rentfetch_do_each_floorplan_squarefoot_range', 'rentfetch_each_floorplan_squarefoot_range' );
+function rentfetch_each_floorplan_squarefoot_range() {
     
     $post_id = get_the_ID();
     
@@ -379,14 +379,14 @@ function apartmentsync_each_floorplan_squarefoot_range() {
     if ( $minimum_sqft && !$maximum_sqft ) $sqft_range = sprintf( '%s', $minimum_sqft );
     if ( !$minimum_sqft && $maximum_sqft ) $sqft_range = sprintf( '%s', $maximum_sqft );
     
-    $sqft_range = apply_filters( 'apartmentsync_customize_sqft_text', $sqft_range );
+    $sqft_range = apply_filters( 'rentfetch_customize_sqft_text', $sqft_range );
     
     if ( $sqft_range )
         printf( '<span class="floorplan-sqft_range">%s</span>', $sqft_range );
 }
 
-add_filter( 'apartmentsync_customize_sqft_text', 'apartmentsync_default_beds_text', 10, 1  );
-function apartmentsync_default_beds_text( $sqft_range ) {
+add_filter( 'rentfetch_customize_sqft_text', 'rentfetch_default_beds_text', 10, 1  );
+function rentfetch_default_beds_text( $sqft_range ) {
     
     // bail if there isn't a value
     if ( $sqft_range == null )
@@ -395,8 +395,8 @@ function apartmentsync_default_beds_text( $sqft_range ) {
     return $sqft_range . ' sqft';
 }
 
-add_action( 'rentfetch_do_each_floorplan_images', 'apartmentsync_each_floorplan_images' );
-function apartmentsync_each_floorplan_images() {
+add_action( 'rentfetch_do_each_floorplan_images', 'rentfetch_each_floorplan_images' );
+function rentfetch_each_floorplan_images() {
     
     // fancybox
     wp_enqueue_style( 'rentfetch-fancybox-style' );
@@ -417,7 +417,7 @@ function apartmentsync_each_floorplan_images() {
         
         echo '<div class="floorplan-images-wrap">';
         
-            do_action( 'apartmentsync_floorplan_in_archive_do_show_specials' );
+            do_action( 'rentfetch_floorplan_in_archive_do_show_specials' );
             
             echo '<div class="floorplan-slider">';
                     echo '<div class="floorplan-slide">';
@@ -430,7 +430,7 @@ function apartmentsync_each_floorplan_images() {
         
         echo '<div class="floorplan-images-wrap">';
         
-            do_action( 'apartmentsync_floorplan_in_archive_do_show_specials' );
+            do_action( 'rentfetch_floorplan_in_archive_do_show_specials' );
             
             echo '<div class="floorplan-slider">';
                         
@@ -494,8 +494,8 @@ function floorplan_get_image_urls() {
 }
 
 
-add_action( 'apartmentsync_floorplan_in_archive_do_show_specials', 'apartmentsync_floorplan_in_archive_show_specials' );
-function apartmentsync_floorplan_in_archive_show_specials() {
+add_action( 'rentfetch_floorplan_in_archive_do_show_specials', 'rentfetch_floorplan_in_archive_show_specials' );
+function rentfetch_floorplan_in_archive_show_specials() {
     $post_id = get_the_ID();
     
     $has_specials = get_post_meta( $post_id, 'has_specials', true );
@@ -505,12 +505,12 @@ function apartmentsync_floorplan_in_archive_show_specials() {
         return;
         
     $text = null; // set $text to null, since we're not passing anything in
-    $specials_text = apply_filters( 'apartmentsync_has_specials_text', $text );    
+    $specials_text = apply_filters( 'rentfetch_has_specials_text', $text );    
     printf( '<div class="has-specials-floorplan">%s</div>', $specials_text );
 }
 
-add_filter( 'apartmentsync_has_specials_text', 'apartmentsync_default_specials_text', 10, 1 );
-function apartmentsync_default_specials_text( $specials_text ) {
+add_filter( 'rentfetch_has_specials_text', 'rentfetch_default_specials_text', 10, 1 );
+function rentfetch_default_specials_text( $specials_text ) {
     $specials_text = 'Specials available';
     return $specials_text;
 } 

@@ -25,7 +25,7 @@ function rentfetch_get_sync_term_in_seconds() {
 /**
  * Check whether the sync term has changed
  */
-function apartmentsync_check_if_sync_settings_have_changed() {
+function rentfetch_check_if_sync_settings_have_changed() {
     
     $haschanged = false;
     
@@ -35,29 +35,29 @@ function apartmentsync_check_if_sync_settings_have_changed() {
     
     // sync term: this is continuous, hourly, daily, paused
     $current_sync_term = get_field( 'sync_term', 'option' );
-    $old_sync_term = get_transient( 'apartmentsync_sync_term' );
+    $old_sync_term = get_transient( 'rentfetch_sync_term' );
     
     if ( empty( $old_sync_term ) )
-        set_transient( 'apartmentsync_sync_term', $current_sync_term, YEAR_IN_SECONDS );
+        set_transient( 'rentfetch_sync_term', $current_sync_term, YEAR_IN_SECONDS );
         
     // if the old one and the new one don't match (it's changed), then reset the transient
     if ( $current_sync_term != $old_sync_term ) {        
-        delete_transient( 'apartmentsync_sync_term' );
-        set_transient( 'apartmentsync_sync_term', $current_sync_term, YEAR_IN_SECONDS );
+        delete_transient( 'rentfetch_sync_term' );
+        set_transient( 'rentfetch_sync_term', $current_sync_term, YEAR_IN_SECONDS );
         $haschanged = true;
     }
     
     // data sync: this is nosync, updatesync, delete
     $current_data_sync = get_field( 'data_sync', 'option' );
-    $old_data_sync = get_transient( 'apartmentsync_data_sync' );
+    $old_data_sync = get_transient( 'rentfetch_data_sync' );
         
     if ( empty( $old_data_sync ) )
-        set_transient( 'apartmentsync_data_sync', $current_data_sync, YEAR_IN_SECONDS );
+        set_transient( 'rentfetch_data_sync', $current_data_sync, YEAR_IN_SECONDS );
     
     // if the old one and the new one don't match (it's changed), then reset the transient
     if ( $current_data_sync != $old_data_sync ) {        
-        delete_transient( 'apartmentsync_data_sync' );
-        set_transient( 'apartmentsync_data_sync', $current_data_sync, YEAR_IN_SECONDS );
+        delete_transient( 'rentfetch_data_sync' );
+        set_transient( 'rentfetch_data_sync', $current_data_sync, YEAR_IN_SECONDS );
         $haschanged = true;
     }
     

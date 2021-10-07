@@ -1,7 +1,7 @@
 <?php
 
-add_shortcode( 'propertysearch', 'apartmentsync_propertysearch' );
-function apartmentsync_propertysearch( $atts ) {
+add_shortcode( 'propertysearch', 'rentfetch_propertysearch' );
+function rentfetch_propertysearch( $atts ) {
     
     ob_start();
     

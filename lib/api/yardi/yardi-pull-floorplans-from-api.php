@@ -55,7 +55,7 @@ function get_yardi_floorplans_from_api_for_property( $property, $yardi_api_key )
     
     if ( isset( $floorplans[0]['Error'] ) ) {
         
-        do_action( 'apartmentsync_yardi_floorplan_show_error', $floorplans[0]['Error'], $property );
+        do_action( 'rentfetch_yardi_floorplan_show_error', $floorplans[0]['Error'], $property );
 
         // error has happened
         $errorcode = $floorplans[0]['Error'];
