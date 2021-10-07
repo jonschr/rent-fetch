@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 3.0
+	Version: 3.0.1
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.0' );
+define ( 'RENTFETCH_VERSION', '3.0.1' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -322,19 +322,16 @@ function rentfetch_enqueue_scripts_stylesheets() {
 // PLUGIN UPDATER //
 ////////////////////
 
+// Updater
 require 'vendor/plugin-update-checker/plugin-update-checker.php';
 $myUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
-	'https://github.com/jonschr/apartment-sync',
+	'https://github.com/jonschr/rent-fetch',
 	__FILE__,
-	'apartment-sync'
+	'rent-fetch'
 );
 
 // Optional: Set the branch that contains the stable release.
 $myUpdateChecker->setBranch( 'main' );
-
-// Optional: If you're using a private repository, specify the access token like this:
-$token = get_field( 'github_token', 'option' );
-$myUpdateChecker->setAuthentication( $token );
 
 /////////////
 // LOGGING //
