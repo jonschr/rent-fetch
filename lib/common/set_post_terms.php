@@ -11,7 +11,7 @@
  * @since    1.0.0
  */
 
-function apartmentsync_set_post_term( $post_id, $value, $taxonomy ) {
+function rentfetch_set_post_term( $post_id, $value, $taxonomy ) {
 
 	$term = term_exists( $value, $taxonomy );
     $slug = strtolower( str_ireplace( ' ', '-', $value ) );

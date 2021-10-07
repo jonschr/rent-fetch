@@ -6,10 +6,10 @@ function apartmentsync_load_single_templates( $template ) {
     global $post;
             
     if ( 'floorplans' === $post->post_type && locate_template( array( 'single-floorplans.php' ) ) !== $template )
-        return APARTMENTSYNC_DIR . 'template/single-floorplans.php';
+        return RENTFETCH_DIR . 'template/single-floorplans.php';
         
     if ( 'properties' === $post->post_type && locate_template( array( 'single-properties.php' ) ) !== $template )
-        return APARTMENTSYNC_DIR . 'template/single-properties.php';
+        return RENTFETCH_DIR . 'template/single-properties.php';
 
     return $template;
 }

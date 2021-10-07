@@ -19,12 +19,12 @@ function apartmentsync_add_properties_body_class( $classes ) {
 get_header();
 
 
-wp_enqueue_style( 'apartmentsync-single-properties' );
+wp_enqueue_style( 'rentfetch-single-properties' );
 
 //* Markup
 echo '<div class="single-properties-wrap">';
 
-    do_action( 'apartmentsync_do_single_properties' );
+    do_action( 'rentfetch_do_single_properties' );
     
 echo '</div>'; // .single-properties-wrap
 

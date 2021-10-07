@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'admin_menu', 'apartments_add_documentation_sidebar_link');
-function apartments_add_documentation_sidebar_link() {
+add_action( 'admin_menu', 'rentfetch_add_documentation_sidebar_link');
+function rentfetch_add_documentation_sidebar_link() {
     
     global $submenu;
     $menu_slug = "edit.php?post_type=floorplans"; // used as "key" in menus
@@ -13,8 +13,8 @@ function apartments_add_documentation_sidebar_link() {
     );
 }
 
-add_action( 'admin_footer', 'apartments_admin_menu_open_new_tab' );    
-function apartments_admin_menu_open_new_tab() {
+add_action( 'admin_footer', 'rentfetch_admin_menu_open_new_tab' );    
+function rentfetch_admin_menu_open_new_tab() {
     ?>
     <script type="text/javascript">
     jQuery(document).ready(function($) {

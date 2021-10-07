@@ -6,43 +6,43 @@ function apartmentsync_propertymap( $atts ) {
     ob_start();
     
     // search scripts and styles
-    wp_enqueue_style( 'apartmentsync-search-properties-map' );
+    wp_enqueue_style( 'rentfetch-search-properties-map' );
     
     // Localize the search filters general script, then enqueue that
     $search_options = array(
         'maximum_bedrooms_to_search' => intval( get_field( 'maximum_bedrooms_to_search', 'option' ) ),
     );
-    wp_localize_script( 'apartmentsync-search-filters-general', 'searchoptions', $search_options );
-    wp_enqueue_script( 'apartmentsync-search-filters-general' );
+    wp_localize_script( 'rentfetch-search-filters-general', 'searchoptions', $search_options );
+    wp_enqueue_script( 'rentfetch-search-filters-general' );
         
-    wp_enqueue_script( 'apartmentsync-search-properties-ajax' );
-    wp_enqueue_script( 'apartmentsync-search-properties-script' );
-    wp_enqueue_script( 'apartmentsync-toggle-map' );
+    wp_enqueue_script( 'rentfetch-search-properties-ajax' );
+    wp_enqueue_script( 'rentfetch-search-properties-script' );
+    wp_enqueue_script( 'rentfetch-toggle-map' );
         
     // slick
-    wp_enqueue_script( 'apartmentsync-slick-main-script' );
-    wp_enqueue_style( 'apartmentsync-slick-main-styles' );
-    wp_enqueue_style( 'apartmentsync-slick-main-theme' );
+    wp_enqueue_script( 'rentfetch-slick-main-script' );
+    wp_enqueue_style( 'rentfetch-slick-main-styles' );
+    wp_enqueue_style( 'rentfetch-slick-main-theme' );
     
     // properties in archive
-    wp_enqueue_style( 'apartmentsync-properties-in-archive' );
-    wp_enqueue_script( 'apartmentsync-property-images-slider-init' );
+    wp_enqueue_style( 'rentfetch-properties-in-archive' );
+    wp_enqueue_script( 'rentfetch-property-images-slider-init' );
     
     // favorites
-    wp_enqueue_script( 'apartmentsync-property-favorites-cookies' );
-    wp_enqueue_script( 'apartmentsync-property-favorites' );
+    wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
+    wp_enqueue_script( 'rentfetch-property-favorites' );
     
      // the map itself
     $key = get_field( 'google_maps_api_key', 'option' );
-    wp_enqueue_script( 'apartmentsync-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), APARTMENTSYNC_VERSION, true );
+    wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), RENTFETCH_VERSION, true );
     
     // Localize the google maps script, then enqueue that
     $maps_options = array(
         'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
         'marker_url' => get_field( 'google_map_marker', 'option' ),
     );
-    wp_localize_script( 'apartmentsync-property-map', 'options', $maps_options );
-    wp_enqueue_script( 'apartmentsync-property-map');
+    wp_localize_script( 'rentfetch-property-map', 'options', $maps_options );
+    wp_enqueue_script( 'rentfetch-property-map');
     
     //* Start the form...
     printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter" style="opacity:0;">', site_url() );
@@ -81,7 +81,7 @@ function apartmentsync_propertymap( $atts ) {
             $bedsparam = array();
         }
     
-        $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+        $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
         $beds = array_unique( $beds );
         asort( $beds );
                 
@@ -124,7 +124,7 @@ function apartmentsync_propertymap( $atts ) {
             $bathsparam = array();
         }
     
-        $baths = apartentsync_get_meta_values( 'baths', 'floorplans' );
+        $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
         $baths = array_unique( $baths );
         asort( $baths );
         
@@ -260,9 +260,9 @@ function apartmentsync_propertymap( $atts ) {
         
         //* Date available
         
-        wp_enqueue_style( 'apartmentsync-flatpickr-style' );
-        wp_enqueue_script( 'apartmentsync-flatpickr-script' );
-        wp_enqueue_script( 'apartmentsync-flatpickr-script-init' );
+        wp_enqueue_style( 'rentfetch-flatpickr-style' );
+        wp_enqueue_script( 'rentfetch-flatpickr-script' );
+        wp_enqueue_script( 'rentfetch-flatpickr-script-init' );
         
         echo '<div class="input-wrap input-wrap-date-available">';
             echo '<div class="dropdown">';
@@ -279,16 +279,16 @@ function apartmentsync_propertymap( $atts ) {
         $step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
         
         // nouislider
-        wp_enqueue_style( 'apartmentsync-nouislider-style' );
-        wp_enqueue_script( 'apartmentsync-nouislider-script' );
-        wp_localize_script( 'apartmentsync-nouislider-init-script', 'settings', 
+        wp_enqueue_style( 'rentfetch-nouislider-style' );
+        wp_enqueue_script( 'rentfetch-nouislider-script' );
+        wp_localize_script( 'rentfetch-nouislider-init-script', 'settings', 
             array(
                 'valueSmall' => $valueSmall,
                 'valueBig' => $valueBig,
                 'step' => $step,
             )
         );
-        wp_enqueue_script( 'apartmentsync-nouislider-init-script' );
+        wp_enqueue_script( 'rentfetch-nouislider-init-script' );
         
         echo '<div class="input-wrap input-wrap-prices">';
             echo '<div class="dropdown">';
@@ -346,7 +346,7 @@ function apartmentsync_propertymap( $atts ) {
         }
         
         //* Build the pets filter
-        $pets = apartentsync_get_meta_values( 'pets', 'properties' );
+        $pets = rentfetch_get_meta_values( 'pets', 'properties' );
         $pets = array_unique( $pets );
         asort( $pets );
         $pets = array_filter( $pets );
@@ -407,7 +407,7 @@ function apartmentsync_filter_properties(){
 	);
         
     //* bedrooms
-    $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+    $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
     $beds = array_unique( $beds );
     asort( $beds );
     
@@ -430,7 +430,7 @@ function apartmentsync_filter_properties(){
     }
     
     //* bathrooms
-    $baths = apartentsync_get_meta_values( 'baths', 'floorplans' );
+    $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
     $baths = array_unique( $baths );
     asort( $baths );
     
@@ -620,8 +620,8 @@ function apartmentsync_filter_properties(){
             $floorplans[$key]['bathsrange'] = $min . '-' . $max;
         }
         
-        $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'apartmentsync_check_if_above_100' );
-        $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'apartmentsync_check_if_above_100' );
+        $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'rentfetch_check_if_above_100' );
+        $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'rentfetch_check_if_above_100' );
         
         if ( !empty( $floorplan['maximum_rent'] ) ) {
             $max = max( $floorplan['maximum_rent'] );

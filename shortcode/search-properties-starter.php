@@ -11,14 +11,14 @@ function apartmentsync_propertysearch( $atts ) {
     
     $url = $a['url'];
     
-    wp_enqueue_style( 'apartmentsync-search-properties-map' );
+    wp_enqueue_style( 'rentfetch-search-properties-map' );
     
     // Localize the search filters general script, then enqueue that
     $search_options = array(
         'maximum_bedrooms_to_search' => intval( get_field( 'maximum_bedrooms_to_search', 'option' ) ),
     );
-    wp_localize_script( 'apartmentsync-search-filters-general', 'searchoptions', $search_options );
-    wp_enqueue_script( 'apartmentsync-search-filters-general' );
+    wp_localize_script( 'rentfetch-search-filters-general', 'searchoptions', $search_options );
+    wp_enqueue_script( 'rentfetch-search-filters-general' );
     
     ?>
     <script>
@@ -74,7 +74,7 @@ function apartmentsync_propertysearch( $atts ) {
         echo '</div>';
                 
         //* Build the beds filter
-        $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+        $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
         $beds = array_unique( $beds );
         asort( $beds );
                 
@@ -102,7 +102,7 @@ function apartmentsync_propertysearch( $atts ) {
         echo '</div>'; // .input-wrap
         
         //* Build the baths filter
-        $baths = apartentsync_get_meta_values( 'baths', 'floorplans' );
+        $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
         $baths = array_unique( $baths );
         asort( $baths );
         

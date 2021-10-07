@@ -4,13 +4,13 @@ add_action( 'apartmentsync_do_each_property', 'apartmentsync_each_property', 10,
 function apartmentsync_each_property( $id, $floorplan ) {
     
     // properties in archive styles
-    wp_enqueue_style( 'apartmentsync-properties-in-archive' );
+    wp_enqueue_style( 'rentfetch-properties-in-archive' );
     
     // slick
-    wp_enqueue_script( 'apartmentsync-slick-main-script' );
-    wp_enqueue_script( 'apartmentsync-property-images-slider-init' );
-    wp_enqueue_style( 'apartmentsync-slick-main-styles' );
-    wp_enqueue_style( 'apartmentsync-slick-main-theme' );
+    wp_enqueue_script( 'rentfetch-slick-main-script' );
+    wp_enqueue_script( 'rentfetch-property-images-slider-init' );
+    wp_enqueue_style( 'rentfetch-slick-main-styles' );
+    wp_enqueue_style( 'rentfetch-slick-main-theme' );
     
     // vars
     $title = get_the_title( $id );
@@ -124,7 +124,7 @@ function apartmentsync_each_property_images( $post_id ) {
         $firsturl = $property_images[0]->ImageURL;
     
     if ( !$firsturl )
-        $firsturl = apply_filters( 'apartmentsync_sample_image', APARTMENTSYNC_PATH . 'images/fallback-property.svg' );
+        $firsturl = apply_filters( 'apartmentsync_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
         
     printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
     
@@ -148,7 +148,7 @@ function apartmentsync_each_property_images( $post_id ) {
                         
                     // if we don't have an image, use a placeholder
                     if ( empty( $url ) )
-                        $url = APARTMENTSYNC_PATH . 'images/fallback-property.svg';
+                        $url = RENTFETCH_PATH . 'images/fallback-property.svg';
                                             
                     $alt = null;
                     if ( isset( $property_image->AltText ) )
@@ -173,7 +173,7 @@ function apartmentsync_each_property_images( $post_id ) {
                 
             } else {
                 
-                $property_image = APARTMENTSYNC_PATH . 'images/fallback-property.svg';
+                $property_image = RENTFETCH_PATH . 'images/fallback-property.svg';
         
                 echo '<div class="property-slide">';
                     printf( '<img loading=lazy src="%s" />', $property_image );
@@ -193,8 +193,8 @@ function apartmentsync_each_property_images( $post_id ) {
 add_action( 'apartmentsync_properties_archive_before_images', 'apartmentsync_favorite_property_link' );
 function apartmentsync_favorite_property_link() {
     
-    wp_enqueue_script( 'apartmentsync-property-favorites-cookies' );
-    wp_enqueue_script( 'apartmentsync-property-favorites' );
+    wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
+    wp_enqueue_script( 'rentfetch-property-favorites' );
     
     $post_id = get_the_ID();
     

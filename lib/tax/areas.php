@@ -1,6 +1,6 @@
 <?php
 
-function apartmentsync_register_areas_taxonomy() {
+function rentfetch_register_areas_taxonomy() {
 	register_taxonomy(
 		'area',
 		'neighborhoods',

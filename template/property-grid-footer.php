@@ -17,7 +17,7 @@ function apartmentsync_properties_grid( $atts ) {
 }
 
 add_action( 'apartmentsync_property_grid_shortcode', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
-add_action( 'apartmentsync_single_properties_nearby_properties', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
+add_action( 'rentfetch_single_properties_nearby_properties', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
 add_action( 'genesis_after_content_sidebar_wrap', 'apartmentsync_add_properties_to_neighborhood_and_property_footer', 10, 1 );
 function apartmentsync_add_properties_to_neighborhood_and_property_footer( $args ) {
         
@@ -250,8 +250,8 @@ function apartmentsync_get_floorplan_info_for_properties_grid( $args ) {
             $floorplans[$key]['bathsrange'] = $min . '-' . $max;
         }
                 
-        $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'apartmentsync_check_if_above_100' );
-        $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'apartmentsync_check_if_above_100' );
+        $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'rentfetch_check_if_above_100' );
+        $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'rentfetch_check_if_above_100' );
                         
         if ( !empty( $floorplan['maximum_rent'] ) ) {
             $max = max( $floorplan['maximum_rent'] );

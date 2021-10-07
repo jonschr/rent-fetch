@@ -4,7 +4,7 @@
  * Register the content stypes
  */
 
-function apartmentsync_register_neighborhoods_cpt() {
+function rentfetch_register_neighborhoods_cpt() {
 
 	//* Neighborhoods
 	$name_plural = 'Neighborhoods';

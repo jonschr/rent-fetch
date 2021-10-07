@@ -7,7 +7,7 @@
 /**
  * Loop through the enabled integrations and start the process for each one
  */
-add_action( 'apartmentsync_do_chron_activation', 'apartmentsync_run_chron' );
+add_action( 'rentfetch_do_chron_activation', 'apartmentsync_run_chron' );
 function apartmentsync_run_chron() {
     
     $enabled_integrations = get_field( 'enabled_integrations', 'option' );

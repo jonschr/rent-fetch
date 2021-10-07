@@ -3,7 +3,7 @@
 /**
  * Get the sync term and return it in seconds
  */
-function apartmentsync_get_sync_term_in_seconds() {
+function rentfetch_get_sync_term_in_seconds() {
     $sync_term = get_field( 'sync_term', 'option' );
     
     if ( empty( $sync_term ) )

@@ -1,6 +1,6 @@
 <?php
 
-function apartmentsync_register_propertytype_taxonomy() {
+function rentfetch_register_propertytype_taxonomy() {
 	register_taxonomy(
 		'propertytypes',
 		'properties',

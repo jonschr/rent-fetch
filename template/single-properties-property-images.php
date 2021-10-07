@@ -1,13 +1,13 @@
 <?php
 
-add_action( 'apartmentsync_do_single_property_images_yardi', 'apartmentsync_single_property_images_yardi', 10, 1 );
-function apartmentsync_single_property_images_yardi( $property_images ) {
+add_action( 'rentfetch_do_single_property_images_yardi', 'rentfetch_single_property_images_yardi', 10, 1 );
+function rentfetch_single_property_images_yardi( $property_images ) {
         
     if ( !$property_images )
         return;
         
-    wp_enqueue_style( 'apartmentsync-fancybox-style' );
-    wp_enqueue_script( 'apartmentsync-fancybox-script' );
+    wp_enqueue_style( 'rentfetch-fancybox-style' );
+    wp_enqueue_script( 'rentfetch-fancybox-script' );
             
     // bail if this is an object (errors will return objects here)
     if ( is_object( $property_images ) )

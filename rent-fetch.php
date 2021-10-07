@@ -1,9 +1,9 @@
 <?php
 /*
-	Plugin Name: Apartment Sync
+	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/apartment-sync
     Description: Syncs neighborhoods, properties, and floorplans with various apartment rental APIs
-	Version: 2.24.3
+	Version: 3.0
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -24,11 +24,11 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Plugin directory
-define( 'APARTMENTSYNC_DIR', plugin_dir_path( __FILE__ ) );
-define( 'APARTMENTSYNC_PATH', plugin_dir_url( __FILE__ ) );
+define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
+define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'APARTMENTSYNC_VERSION', '2.24.3' );
+define ( 'RENTFETCH_VERSION', '3.0' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -41,43 +41,43 @@ require_once( plugin_dir_path( __FILE__ ) . 'vendor/action-scheduler/action-sche
 /////////////////
 
 // Define path and URL to the ACF plugin.
-define( 'APARTMENTSYNC_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
-define( 'APARTMENTSYNC_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
+define( 'RENTFETCH_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
+define( 'RENTFETCH_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
 
 if( !class_exists('ACF') ) {
     
     // Include the ACF plugin.
-    include_once( APARTMENTSYNC_ACF_PATH . 'acf.php' );
+    include_once( RENTFETCH_ACF_PATH . 'acf.php' );
     
     // Customize the url setting to fix incorrect asset URLs.
-    add_filter('acf/settings/url', 'apartmentsync_acf_settings_url');
+    add_filter('acf/settings/url', 'rentfetch_acf_settings_url');
     
 }
 
-function apartmentsync_acf_settings_url( $url ) {
-    return APARTMENTSYNC_ACF_URL;
+function rentfetch_acf_settings_url( $url ) {
+    return RENTFETCH_ACF_URL;
 }
 
 //! UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
-// add_filter('acf/settings/save_json', 'apartmentsync_acf_json_save_point');
-function apartmentsync_acf_json_save_point( $path ) {
+// add_filter('acf/settings/save_json', 'rentfetch_acf_json_save_point');
+function rentfetch_acf_json_save_point( $path ) {
     
     // update path
-    $path = APARTMENTSYNC_DIR . 'acf-json';
+    $path = RENTFETCH_DIR . 'acf-json';
     
     // return
     return $path;
     
 }
 
-add_filter( 'acf/settings/load_json', 'apartmentsync_acf_json_load_point' );
-function apartmentsync_acf_json_load_point( $paths ) {
+add_filter( 'acf/settings/load_json', 'rentfetch_acf_json_load_point' );
+function rentfetch_acf_json_load_point( $paths ) {
     
     // remove original path (optional)
     unset($paths[0]);
     
     // append path
-    $paths[] = APARTMENTSYNC_DIR . 'acf-json';
+    $paths[] = RENTFETCH_DIR . 'acf-json';
     
     // return
     return $paths;
@@ -105,7 +105,7 @@ add_filter( 'acp/storage/repositories', function( array $repositories, ListScree
     
     // 3. Register your repository to the stack
     $repositories['apartment-sync'] = $factory->create(
-        APARTMENTSYNC_DIR . '/acp-settings',
+        RENTFETCH_DIR . '/acp-settings',
         $writable,
         $rules
     );
@@ -133,7 +133,7 @@ require_once( 'lib/tax/areas.php' );
 require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
 
 //* Common functions
-require_once( 'lib/common/apartmentsync_get_sync_term.php' );
+require_once( 'lib/common/get_sync_term.php' );
 require_once( 'lib/common/filter_property_urls.php' );
 require_once( 'lib/common/array_filter_over_100.php' );
 require_once( 'lib/common/set_post_terms.php' );
@@ -177,41 +177,55 @@ require_once( 'block/floorplangrid/floorplangrid.php' );
 // START THE ENGINE //
 //////////////////////
 
-add_action( 'init', 'apartmentsync_start_sync' );
-function apartmentsync_start_sync() {
+add_action( 'init', 'rentfetch_start_sync' );
+function rentfetch_start_sync() {
+    
+    //* REMOVE ALL ACTIONS ADDED BY OLD APARTMENTSYNC, ADDED IN 3.0, CAN BE REMOVED IN A LATER RELEASE
+    as_unschedule_action( 'apartmentsync_do_get_yardi_property_from_api' );
+    as_unschedule_all_actions( 'apartmentsync_do_get_yardi_property_from_api' );
+    as_unschedule_action( 'apartmentsync_do_get_yardi_floorplans_from_api_for_property' );
+    as_unschedule_all_actions( 'apartmentsync_do_get_yardi_floorplans_from_api_for_property' );
+    as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans' );
+    as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans' );
+    as_unschedule_action( 'do_get_yardi_property_from_api' );
+    as_unschedule_all_actions( 'do_get_yardi_property_from_api' );
+    as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property' );
+    as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property' );
+    as_unschedule_action( 'do_fetch_yardi_floorplans' );
+    as_unschedule_all_actions( 'do_fetch_yardi_floorplans' );
     
     $sync_term = get_field( 'sync_term', 'option' );
     $data_sync = get_field( 'data_sync', 'option' );
-    
-    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
-        as_unschedule_action( 'apartmentsync_do_get_yardi_property_from_api' );
-        as_unschedule_all_actions( 'apartmentsync_do_get_yardi_property_from_api' );
-        as_unschedule_action( 'do_get_yardi_floorplans_from_api_for_property' );
-        as_unschedule_all_actions( 'do_get_yardi_floorplans_from_api_for_property' );
-        as_unschedule_action( 'apartmentsync_do_fetch_yardi_floorplans' );
-        as_unschedule_all_actions( 'apartmentsync_do_fetch_yardi_floorplans' );
+            
+    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {        
+        as_unschedule_action( 'rentfetch_do_get_yardi_property_from_api' );
+        as_unschedule_all_actions( 'rentfetch_do_get_yardi_property_from_api' );
+        as_unschedule_action( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
+        as_unschedule_all_actions( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
+        as_unschedule_action( 'rentfetch_do_fetch_yardi_floorplans' );
+        as_unschedule_all_actions( 'rentfetch_do_fetch_yardi_floorplans' );
     }
     
     //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
-    if ( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) === false  ) 
-        as_enqueue_async_action( 'apartmentsync_do_sync_logic' );
+    if ( as_next_scheduled_action( 'rentfetch_do_sync_logic' ) === false  ) 
+        as_enqueue_async_action( 'rentfetch_do_sync_logic' );
         
-    if ( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) === false  ) 
-        as_enqueue_async_action( 'apartmentsync_do_chron_activation' );
+    if ( as_next_scheduled_action( 'rentfetch_do_chron_activation' ) === false  ) 
+        as_enqueue_async_action( 'rentfetch_do_chron_activation' );
         
-    if ( as_next_scheduled_action( 'apartmentsync_do_remove_old_data' ) === false  ) 
-        as_enqueue_async_action( 'apartmentsync_do_remove_old_data' );
+    if ( as_next_scheduled_action( 'rentfetch_do_remove_old_data' ) === false  ) 
+        as_enqueue_async_action( 'rentfetch_do_remove_old_data' );
         
     //* Delete everything if we're set to delete
     if ( $data_sync == 'delete' )
-        do_action( 'apartment_do_delete' );
+        do_action( 'rentfetch_do_delete' );
             
-    // do_action( 'apartmentsync_do_sync_logic' );
-    // do_action( 'apartmentsync_do_chron_activation' );
+    // do_action( 'rentfetch_do_sync_logic' );
+    // do_action( 'rentfetch_do_chron_activation' );
         
     // // Look and see whether there's another scheduled action waiting
-    // var_dump( as_next_scheduled_action( 'apartmentsync_do_sync_logic' ) ); 
-    // var_dump( as_next_scheduled_action( 'apartmentsync_do_chron_activation' ) );
+    // var_dump( as_next_scheduled_action( 'rentfetch_do_sync_logic' ) ); 
+    // var_dump( as_next_scheduled_action( 'rentfetch_do_chron_activation' ) );
     
 }
 
@@ -220,8 +234,8 @@ function apartmentsync_start_sync() {
 //////////////////////
 
 
-add_action( 'init', 'apartmentsync_register_content_types' );
-function apartmentsync_register_content_types() {
+add_action( 'init', 'rentfetch_register_content_types' );
+function rentfetch_register_content_types() {
             
     //* figure out whether this is a single 
     $apartment_site_type = get_field( 'apartment_site_type', 'option' );
@@ -230,17 +244,17 @@ function apartmentsync_register_content_types() {
     if ( $apartment_site_type == 'multiple' ) {
         
         // properties cpt
-        add_action( 'init', 'apartmentsync_register_properties_cpt', 20 );
+        add_action( 'init', 'rentfetch_register_properties_cpt', 20 );
         
         // amenities property taxes
-        add_action( 'init', 'apartmentsync_register_amenities_taxonomy', 20 );
-        add_action( 'init', 'apartmentsync_register_propertytype_taxonomy', 20 );
+        add_action( 'init', 'rentfetch_register_amenities_taxonomy', 20 );
+        add_action( 'init', 'rentfetch_register_propertytype_taxonomy', 20 );
         
         // neighborhoods cpt
-        add_action( 'init', 'apartmentsync_register_neighborhoods_cpt', 20 );
+        add_action( 'init', 'rentfetch_register_neighborhoods_cpt', 20 );
         
         // neighborhoods taxes
-        add_action( 'init', 'apartmentsync_register_areas_taxonomy', 20 );
+        add_action( 'init', 'rentfetch_register_areas_taxonomy', 20 );
         
         // connect properties and neighborhoods
         require_once( 'lib/cpt-connections/properties-to-neighborhoods.php' );
@@ -253,55 +267,54 @@ function apartmentsync_register_content_types() {
 // ENQUEUES //
 //////////////
 
-add_action( 'wp_enqueue_scripts', 'apartmentsync_enqueue_scripts_stylesheets' );
-function apartmentsync_enqueue_scripts_stylesheets() {
+add_action( 'wp_enqueue_scripts', 'rentfetch_enqueue_scripts_stylesheets' );
+function rentfetch_enqueue_scripts_stylesheets() {
 	
 	// Plugin styles
-    wp_register_style( 'apartmentsync-single-properties', APARTMENTSYNC_PATH . 'css/single-properties.css', array(), APARTMENTSYNC_VERSION, 'screen' );
+    wp_register_style( 'rentfetch-single-properties', RENTFETCH_PATH . 'css/single-properties.css', array(), RENTFETCH_VERSION, 'screen' );
     
     // NoUISlider (for dropdown double range slider)
-    wp_register_style( 'apartmentsync-nouislider-style', APARTMENTSYNC_PATH . 'vendor/nouislider/nouislider.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_script( 'apartmentsync-nouislider-script', APARTMENTSYNC_PATH . 'vendor/nouislider/nouislider.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-nouislider-init-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-map-nouislider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_style( 'rentfetch-nouislider-style', RENTFETCH_PATH . 'vendor/nouislider/nouislider.min.css', array(), RENTFETCH_VERSION, 'screen' );
+    wp_register_script( 'rentfetch-nouislider-script', RENTFETCH_PATH . 'vendor/nouislider/nouislider.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_register_script( 'rentfetch-nouislider-init-script', RENTFETCH_PATH . 'js/rentfetch-search-map-nouislider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Flatpickr
-    wp_register_style( 'apartmentsync-flatpickr-style', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_script( 'apartmentsync-flatpickr-script', 'https://cdn.jsdelivr.net/npm/flatpickr', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-flatpickr-script-init', APARTMENTSYNC_PATH . 'js/apartmentsync-search-map-flatpickr-init.js', array( 'apartmentsync-flatpickr-script' ), APARTMENTSYNC_VERSION, true );
+    wp_register_style( 'rentfetch-flatpickr-style', 'https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css', array(), RENTFETCH_VERSION, 'screen' );
+    wp_register_script( 'rentfetch-flatpickr-script', 'https://cdn.jsdelivr.net/npm/flatpickr', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_register_script( 'rentfetch-flatpickr-script-init', RENTFETCH_PATH . 'js/rentfetch-search-map-flatpickr-init.js', array( 'rentfetch-flatpickr-script' ), RENTFETCH_VERSION, true );
     
     // Properties map search
-    wp_register_style( 'apartmentsync-search-properties-map', APARTMENTSYNC_PATH . 'css/search-properties-map.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_script( 'apartmentsync-search-properties-ajax', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-ajax.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-search-properties-script', APARTMENTSYNC_PATH . 'js/apartmentsync-search-properties-script.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-toggle-map', APARTMENTSYNC_PATH . 'js/apartmentsync-toggle-map.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_style( 'rentfetch-search-properties-map', RENTFETCH_PATH . 'css/search-properties-map.css', array(), RENTFETCH_VERSION, 'screen' );
+    wp_register_script( 'rentfetch-search-properties-ajax', RENTFETCH_PATH . 'js/rentfetch-search-properties-ajax.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_register_script( 'rentfetch-search-properties-script', RENTFETCH_PATH . 'js/rentfetch-search-properties-script.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_register_script( 'rentfetch-toggle-map', RENTFETCH_PATH . 'js/rentfetch-toggle-map.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Properties map (the map itself)
-    wp_register_script( 'apartmentsync-property-map', APARTMENTSYNC_PATH . 'js/apartmentsync-property-map.js', array( 'jquery', 'apartmentsync-google-maps' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'rentfetch-property-map', RENTFETCH_PATH . 'js/rentfetch-property-map.js', array( 'jquery', 'rentfetch-google-maps' ), RENTFETCH_VERSION, true );
     
     // Properties searchbar
-    wp_register_script( 'apartmentsync-search-filters-general', APARTMENTSYNC_PATH . 'js/apartmentsync-search-filters-general.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'rentfetch-search-filters-general', RENTFETCH_PATH . 'js/rentfetch-search-filters-general.js', array( 'jquery' ), RENTFETCH_VERSION, true );
         
     // Properties in archive
-    wp_register_style( 'apartmentsync-properties-in-archive', APARTMENTSYNC_PATH . 'css/properties-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_script( 'apartmentsync-property-images-slider-init', APARTMENTSYNC_PATH . 'js/apartmentsync-property-images-slider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_style( 'rentfetch-properties-in-archive', RENTFETCH_PATH . 'css/properties-in-archive.css', array(), RENTFETCH_VERSION, 'screen' );
+    wp_register_script( 'rentfetch-property-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-property-images-slider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Favorite properties
-    wp_register_script( 'apartmentsync-property-favorites-cookies', 'https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
-    wp_register_script( 'apartmentsync-property-favorites', APARTMENTSYNC_PATH . 'js/apartmentsync-property-favorites.js', array( 'apartmentsync-property-favorites-cookies' ), APARTMENTSYNC_VERSION, true );
+    wp_register_script( 'rentfetch-property-favorites-cookies', 'https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_register_script( 'rentfetch-property-favorites', RENTFETCH_PATH . 'js/rentfetch-property-favorites.js', array( 'rentfetch-property-favorites-cookies' ), RENTFETCH_VERSION, true );
     
     // Floorplans in archive
-    wp_register_style( 'apartmentsync-floorplan-in-archive', APARTMENTSYNC_PATH . 'css/floorplan-in-archive.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_script( 'apartmentsync-floorplan-images-slider-init', APARTMENTSYNC_PATH . 'js/apartmentsync-floorplan-images-slider-init.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_style( 'rentfetch-floorplan-in-archive', RENTFETCH_PATH . 'css/floorplan-in-archive.css', array(), RENTFETCH_VERSION, 'screen' );
+    wp_register_script( 'rentfetch-floorplan-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-floorplan-images-slider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Fancybox
-    wp_register_style( 'apartmentsync-fancybox-style', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), APARTMENTSYNC_VERSION, 'screen' );
-    wp_register_script( 'apartmentsync-fancybox-script', APARTMENTSYNC_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), APARTMENTSYNC_VERSION, true );
+    wp_register_style( 'rentfetch-fancybox-style', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), RENTFETCH_VERSION, 'screen' );
+    wp_register_script( 'rentfetch-fancybox-script', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
         
     // Slick
-    wp_register_script( 'apartmentsync-slick-main-script', APARTMENTSYNC_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
-    wp_register_style( 'apartmentsync-slick-main-styles', APARTMENTSYNC_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
-    wp_register_style( 'apartmentsync-slick-main-theme', APARTMENTSYNC_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
-    
+    wp_register_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
+    wp_register_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
+    wp_register_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
     	
 }
 
@@ -335,7 +348,7 @@ function console_log( $data ){
 }
 
 //* Add debug logging
-function apartmentsync_log($message) { 
+function rentfetch_log($message) { 
     
     if( is_array( $message ) )
         $message = json_encode($message); 
@@ -351,7 +364,7 @@ function apartmentsync_log($message) {
 }
 
 //* Add debug verbose logging
-function apartmentsync_verbose_log($message) { 
+function rentfetch_verbose_log($message) { 
     
     if( is_array( $message ) )
         $message = json_encode($message); 
@@ -371,5 +384,5 @@ function apartmentsync_verbose_log($message) {
  */
 add_filter( 'action_scheduler_retention_period', 'wpb_action_scheduler_purge' );
 function wpb_action_scheduler_purge() {
-    return HOUR_IN_SECONDS;
+    return DAY_IN_SECONDS;
 }

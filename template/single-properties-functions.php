@@ -1,16 +1,16 @@
 <?php
 
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_title', 10 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_images', 20 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_basic_info', 30 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_description', 40 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_floorplans', 50 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_amenities', 60 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_lease_details', 70 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_neighborhood', 80 );
-add_action( 'apartmentsync_do_single_properties', 'apartmentsync_single_property_nearby_properties', 90 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_title', 10 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_images', 20 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_basic_info', 30 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_description', 40 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_floorplans', 50 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_amenities', 60 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_lease_details', 70 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_neighborhood', 80 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_nearby_properties', 90 );
 
-function apartmentsync_single_property_title() {
+function rentfetch_single_property_title() {
         
     global $post;
     
@@ -51,7 +51,7 @@ function apartmentsync_single_property_title() {
     echo '</div>';
 }
 
-function apartmentsync_single_property_images() {
+function rentfetch_single_property_images() {
     
     global $post;
     $id = get_the_ID();
@@ -63,13 +63,13 @@ function apartmentsync_single_property_images() {
         $property_images = json_decode( $property_images );
                 
         if ( $property_images )
-            do_action( 'apartmentsync_do_single_property_images_yardi', $property_images );
+            do_action( 'rentfetch_do_single_property_images_yardi', $property_images );
         
     echo '</div>';
     
 }
 
-function apartmentsync_single_property_basic_info() {
+function rentfetch_single_property_basic_info() {
     
     global $post;
     $id = get_the_ID();
@@ -109,7 +109,7 @@ function apartmentsync_single_property_basic_info() {
         echo '</div>';
         
         // prepare the property url
-        $url = apply_filters( 'apartmentsync_filter_property_url', $url );
+        $url = apply_filters( 'rentfetch_filter_property_url', $url );
         
         if ( $url ) {
             echo '<div class="property-website">';
@@ -121,7 +121,7 @@ function apartmentsync_single_property_basic_info() {
     echo '</div>';
 }
 
-function apartmentsync_single_property_description() {
+function rentfetch_single_property_description() {
     
     global $post;
     $id = get_the_ID();
@@ -147,17 +147,17 @@ function apartmentsync_single_property_description() {
     }
 }
 
-function apartmentsync_single_property_floorplans() {
+function rentfetch_single_property_floorplans() {
     
     global $post;
     $id = get_the_ID();
     $property_id = get_post_meta( $id, 'property_id', true );
     
     // grab the gravity forms lightbox, if enabled on this page
-    do_action( 'apartmentsync_do_gform_lightbox' );
+    do_action( 'rentfetch_do_gform_lightbox' );
     
     // get the possible values for the beds
-    $beds = apartentsync_get_meta_values( 'beds', 'floorplans' );
+    $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
     $beds = array_unique( $beds );
     asort( $beds );
     
@@ -197,7 +197,7 @@ function apartmentsync_single_property_floorplans() {
                 echo '</h3></summary>';
                 echo '<div class="floorplan-in-archive">';
                     while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
-                        do_action( 'apartmentsync_do_floorplan_in_archive', $post->ID );                    
+                        do_action( 'rentfetch_do_floorplan_in_archive', $post->ID );                    
                     endwhile;
                 echo '</div>'; // .floorplans
             echo '</details>';
@@ -211,7 +211,7 @@ function apartmentsync_single_property_floorplans() {
     
 }
 
-function apartmentsync_single_property_amenities() {
+function rentfetch_single_property_amenities() {
     
     global $post;
     
@@ -228,7 +228,7 @@ function apartmentsync_single_property_amenities() {
     }
 }
 
-function apartmentsync_single_property_lease_details() {
+function rentfetch_single_property_lease_details() {
     
     global $post;
     
@@ -242,7 +242,7 @@ function apartmentsync_single_property_lease_details() {
     }
 }
 
-function apartmentsync_single_property_neighborhood() {
+function rentfetch_single_property_neighborhood() {
     
     global $post;
     
@@ -279,10 +279,10 @@ function apartmentsync_single_property_neighborhood() {
     }
 }
 
-function apartmentsync_single_property_nearby_properties() {
+function rentfetch_single_property_nearby_properties() {
     
     global $post;
     
-    do_action( 'apartmentsync_single_properties_nearby_properties' );
+    do_action( 'rentfetch_single_properties_nearby_properties' );
     
 }

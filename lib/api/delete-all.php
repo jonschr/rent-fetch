@@ -3,11 +3,11 @@
 /**
  * Delete all posts with a data source
  */
-add_action( 'apartment_do_delete', 'apartment_delete' );
+add_action( 'rentfetch_do_delete', 'apartment_delete' );
 function apartment_delete() {
     
     //* FLOORPLANS
-    apartmentsync_log( "Deleting all floorplans that have a third-party data source." );
+    rentfetch_log( "Deleting all floorplans that have a third-party data source." );
         
     // do a query to check and see if a post already exists with this ID 
     $args = array(
@@ -28,7 +28,7 @@ function apartment_delete() {
     }
     
     //* PROPERTIES
-    apartmentsync_log( "Deleting all properties that have a third-party data source." );
+    rentfetch_log( "Deleting all properties that have a third-party data source." );
     
     // do a query to check and see if a post already exists with this ID 
     $args = array(

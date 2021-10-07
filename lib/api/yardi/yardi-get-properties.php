@@ -1,11 +1,11 @@
 <?php
 
-add_action( 'apartmentsync_do_get_properties_yardi', 'apartmentsync_get_properties_yardi' );
-function apartmentsync_get_properties_yardi() {
+add_action( 'rentfetch_do_get_properties_yardi', 'rentfetch_get_properties_yardi' );
+function rentfetch_get_properties_yardi() {
     
     // notify the user, then bail if we're missing credential data
-    if ( apartmentsync_check_creds_yardi() == false ) {
-        add_action( 'admin_notices', 'apartmentsync_yardi_missing_user_pass_notice');
+    if ( rentfetch_check_creds_yardi() == false ) {
+        add_action( 'admin_notices', 'rentfetch_yardi_missing_user_pass_notice');
         return;
     }
     
@@ -20,16 +20,16 @@ function apartmentsync_get_properties_yardi() {
             
         // if syncing is paused or data dync is off, then bail, as we won't be restarting anything
         if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
-            as_unschedule_action( 'apartmentsync_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
-            as_unschedule_all_actions( 'apartmentsync_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
-            apartmentsync_verbose_log( "Sync term has changed for pulling property from API. Removing upcoming actions." );
+            as_unschedule_action( 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
+            as_unschedule_all_actions( 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
+            rentfetch_verbose_log( "Sync term has changed for pulling property from API. Removing upcoming actions." );
             continue;
         }
                         
-        if ( as_next_scheduled_action( 'apartmentsync_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' ) == false ) {
-            apartmentsync_verbose_log( "Upcoming actions not found. Scheduling tasks $sync_term to get Yardi property $property from API." );    
-            as_enqueue_async_action( 'apartmentsync_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
-            as_schedule_recurring_action( time(), apartmentsync_get_sync_term_in_seconds(), 'apartmentsync_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
+        if ( as_next_scheduled_action( 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' ) == false ) {
+            rentfetch_verbose_log( "Upcoming actions not found. Scheduling tasks $sync_term to get Yardi property $property from API." );    
+            as_enqueue_async_action( 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
+            as_schedule_recurring_action( time(), rentfetch_get_sync_term_in_seconds(), 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
         }            
     }
 }
@@ -47,10 +47,10 @@ function apartmentsync_get_properties_yardi() {
 
 //* Get the property using the Properties API
 // add_action( 'test_act', 'get_yardi_property_from_api', 10, 2 );
-add_action( 'apartmentsync_do_get_yardi_property_from_api', 'get_yardi_property_from_api', 10, 2 );
+add_action( 'rentfetch_do_get_yardi_property_from_api', 'get_yardi_property_from_api', 10, 2 );
 function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
    
-    apartmentsync_verbose_log( "Pulling property data for $voyager_id from yardi API." );
+    rentfetch_verbose_log( "Pulling property data for $voyager_id from yardi API." );
             
     // Do the API request
     $url = sprintf( 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=property&type=marketingData&apiToken=%s&VoyagerPropertyCode=%s', $yardi_api_key, $voyager_id ); // path to your JSON file
@@ -60,21 +60,21 @@ function get_yardi_property_from_api( $voyager_id, $yardi_api_key ) {
     $errorcode = null;
         
     if ( !$errorcode && !empty( $propertydata ) ) {
-        apartmentsync_verbose_log( "Yardi returned property data for property $voyager_id successfully. New transient set: yardi_property_id_$voyager_id" );                
+        rentfetch_verbose_log( "Yardi returned property data for property $voyager_id successfully. New transient set: yardi_property_id_$voyager_id" );                
         
-        do_action( 'apartmentsync_do_save_property_data_to_cpt', $propertydata );
+        do_action( 'rentfetch_do_save_property_data_to_cpt', $propertydata );
         
     } elseif( !$errorcode && empty( $propertydata ) ) {
-        apartmentsync_log( "No property data received from Yardi for property $voyager_id." );
+        rentfetch_log( "No property data received from Yardi for property $voyager_id." );
     } else {
-        apartmentsync_log( "Property API query: Yardi returned error code $errorcode for property $voyager_id." );
+        rentfetch_log( "Property API query: Yardi returned error code $errorcode for property $voyager_id." );
     }
     
 }
 
 //* Get the property from the Images API and update the property
 // add_action( 'test_act', 'get_yardi_property_images_from_api', 10, 2 );
-add_action( 'apartmentsync_do_get_yardi_property_from_api', 'get_yardi_property_images_from_api', 10, 2 );
+add_action( 'rentfetch_do_get_yardi_property_from_api', 'get_yardi_property_images_from_api', 10, 2 );
 function get_yardi_property_images_from_api( $voyager_id, $yardi_api_key ) {
                 
     // Do the API request
@@ -118,8 +118,8 @@ function get_yardi_property_images_from_api( $voyager_id, $yardi_api_key ) {
     }
 }
 
-add_action( 'apartmentsync_do_save_property_data_to_cpt', 'apartmentsync_save_property_data_to_cpt', 10, 1 );
-function apartmentsync_save_property_data_to_cpt( $property_data ) {
+add_action( 'rentfetch_do_save_property_data_to_cpt', 'rentfetch_save_property_data_to_cpt', 10, 1 );
+function rentfetch_save_property_data_to_cpt( $property_data ) {
     
     $property_data = $property_data[0];
     
@@ -161,11 +161,11 @@ function apartmentsync_save_property_data_to_cpt( $property_data ) {
     
     // if there's no post, then add one
     if ( $count === 0 )
-        do_action( 'apartmentsync_do_insert_yardi_property', $property_data );
+        do_action( 'rentfetch_do_insert_yardi_property', $property_data );
     
     // if there's a post, update it
     if ( $count === 1 )
-        do_action( 'apartmentsync_do_update_yardi_property', $property_data );
+        do_action( 'rentfetch_do_update_yardi_property', $property_data );
     
     // if we somehow got multiple posts, delete them
     if ( $count > 1 ) {
@@ -175,8 +175,8 @@ function apartmentsync_save_property_data_to_cpt( $property_data ) {
     }
 }
 
-add_action( 'apartmentsync_do_insert_yardi_property', 'apartmentsync_insert_yardi_property', 10, 1 );
-function apartmentsync_insert_yardi_property( $property_data ) {
+add_action( 'rentfetch_do_insert_yardi_property', 'rentfetch_insert_yardi_property', 10, 1 );
+function rentfetch_insert_yardi_property( $property_data ) {
             
     $title = $property_data['PropertyData']['name'];
     $address = $property_data['PropertyData']['address'];
@@ -226,8 +226,8 @@ function apartmentsync_insert_yardi_property( $property_data ) {
 
 }
 
-add_action( 'apartmentsync_do_update_yardi_property', 'apartmentsync_update_yardi_property', 10, 1 );
-function apartmentsync_update_yardi_property( $property_data ) {
+add_action( 'rentfetch_do_update_yardi_property', 'rentfetch_update_yardi_property', 10, 1 );
+function rentfetch_update_yardi_property( $property_data ) {
     
     $voyager_property_code = $property_data['PropertyData']['VoyagerPropertyCode'];
         
@@ -271,7 +271,7 @@ function apartmentsync_update_yardi_property( $property_data ) {
         $name = $amenity['CustomAmenityName'];
                 
         // this function checks if the amenity exists, creates it if not, then adds it to the post
-        apartmentsync_set_post_term( $post_id, $name, 'amenities' );
+        rentfetch_set_post_term( $post_id, $name, 'amenities' );
     }
     
     //* Pets
@@ -288,7 +288,7 @@ function apartmentsync_update_yardi_property( $property_data ) {
         
     $success_pets = update_post_meta( $post_id, 'pets', $pets );
     if ( $success_pets == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: pets is now $pets." );
+        rentfetch_log( "Property $voyager_property_code meta updated: pets is now $pets." );
         
         
     //* Update the title
@@ -316,58 +316,58 @@ function apartmentsync_update_yardi_property( $property_data ) {
     
     $success_address = update_post_meta( $post_id, 'address', $address );
     if ( $success_address == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: address is now $address." );
+        rentfetch_log( "Property $voyager_property_code meta updated: address is now $address." );
         
     $success_city = update_post_meta( $post_id, 'city', $city );
     if ( $success_city == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: city is now $city." );
+        rentfetch_log( "Property $voyager_property_code meta updated: city is now $city." );
         
     $success_state = update_post_meta( $post_id, 'state', $state );
     if ( $success_state == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: state is now $state." );
+        rentfetch_log( "Property $voyager_property_code meta updated: state is now $state." );
         
     $success_zipcode = update_post_meta( $post_id, 'zipcode', $zipcode );
     if ( $success_zipcode == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: zipcode is now $zipcode." );
+        rentfetch_log( "Property $voyager_property_code meta updated: zipcode is now $zipcode." );
         
     $success_url = update_post_meta( $post_id, 'url', $url );
     if ( $success_url == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: url is now $url." );
+        rentfetch_log( "Property $voyager_property_code meta updated: url is now $url." );
         
     $success_description = update_post_meta( $post_id, 'description', $description );
     if ( $success_description == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: description is now $description." );
+        rentfetch_log( "Property $voyager_property_code meta updated: description is now $description." );
         
     $success_email = update_post_meta( $post_id, 'email', $email );
     if ( $success_email == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: email is now $email." );
+        rentfetch_log( "Property $voyager_property_code meta updated: email is now $email." );
         
     $success_phone = update_post_meta( $post_id, 'phone', $phone );
     if ( $success_phone == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: phone is now $phone." );
+        rentfetch_log( "Property $voyager_property_code meta updated: phone is now $phone." );
         
     $success_latitude = update_post_meta( $post_id, 'latitude', $latitude );
     if ( $success_latitude == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: latitude is now $latitude." );
+        rentfetch_log( "Property $voyager_property_code meta updated: latitude is now $latitude." );
         
     $success_longitude = update_post_meta( $post_id, 'longitude', $longitude );
     if ( $success_longitude == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: longitude is now $longitude." );
+        rentfetch_log( "Property $voyager_property_code meta updated: longitude is now $longitude." );
         
     $success_property_code = update_post_meta( $post_id, 'property_code', $property_code );
     if ( $success_property_code == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: property_code is now $property_code." );
+        rentfetch_log( "Property $voyager_property_code meta updated: property_code is now $property_code." );
         
     $success_property_id = update_post_meta( $post_id, 'property_id', $property_id );
     if ( $success_property_id == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: property_id is now $property_id." );
+        rentfetch_log( "Property $voyager_property_code meta updated: property_id is now $property_id." );
         
     $success_city = update_post_meta( $post_id, 'city', $city );
     if ( $success_city == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: city is now $city." );
+        rentfetch_log( "Property $voyager_property_code meta updated: city is now $city." );
         
     $success_city = update_post_meta( $post_id, 'city', $city );
     if ( $success_city == true )
-        apartmentsync_log( "Property $voyager_property_code meta updated: city is now $city." );
+        rentfetch_log( "Property $voyager_property_code meta updated: city is now $city." );
         
 }
