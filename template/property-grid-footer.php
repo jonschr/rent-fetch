@@ -20,7 +20,10 @@ add_action( 'rentfetch_property_grid_shortcode', 'rentfetch_add_properties_to_ne
 add_action( 'rentfetch_single_properties_nearby_properties', 'rentfetch_add_properties_to_neighborhood_and_property_footer', 10, 1 );
 add_action( 'genesis_after_content_sidebar_wrap', 'rentfetch_add_properties_to_neighborhood_and_property_footer', 10, 1 );
 function rentfetch_add_properties_to_neighborhood_and_property_footer( $args ) {
-        
+
+    // bail if we don't have Metabox relationships installed
+    if ( !class_exists( 'MB_Relationships_API' ) )
+        return;
     
     // bail if we don't have any data and we're not on a page where this should pull in automatically
     if ( !is_singular( 'neighborhoods') && !is_singular( 'properties' ) && !isset( $args['neighborhood'] )  )

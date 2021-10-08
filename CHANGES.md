@@ -1,3 +1,6 @@
+## 3.0.3
+* BUGFIX: removing functionality for related neighborhoods if the Metabox Relationships dependency doesn't exist in the single properties template
+
 ## 3.0.2
 * Adding manual entry version of fields for properties
 * Reordering some fields in the birds-eye view for both properties and floorplans

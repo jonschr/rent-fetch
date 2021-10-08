@@ -244,8 +244,12 @@ function rentfetch_single_property_lease_details() {
 
 function rentfetch_single_property_neighborhood() {
     
-    global $post;
+    // bail if we dont have metabox's relationships plugin installed
+    if ( !class_exists( 'MB_Relationships_API' ) )
+        return;
     
+    global $post;
+        
     $neighborhoods = MB_Relationships_API::get_connected( [
         'id'   => 'properties_to_neighborhoods',
         'to' => get_the_ID(),
