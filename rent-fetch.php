@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.0.3
+	Version: 3.0.4
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.0.3' );
+define ( 'RENTFETCH_VERSION', '3.0.4' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -197,24 +197,28 @@ function rentfetch_start_sync() {
     $sync_term = get_field( 'sync_term', 'option' );
     $data_sync = get_field( 'data_sync', 'option' );
             
-    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {        
+    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {       
+         
         as_unschedule_action( 'rentfetch_do_get_yardi_property_from_api' );
         as_unschedule_all_actions( 'rentfetch_do_get_yardi_property_from_api' );
         as_unschedule_action( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
         as_unschedule_all_actions( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
         as_unschedule_action( 'rentfetch_do_fetch_yardi_floorplans' );
         as_unschedule_all_actions( 'rentfetch_do_fetch_yardi_floorplans' );
+        
+    } else {
+        
+        //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
+        if ( as_next_scheduled_action( 'rentfetch_do_sync_logic' ) === false  ) 
+            as_enqueue_async_action( 'rentfetch_do_sync_logic' );
+            
+        if ( as_next_scheduled_action( 'rentfetch_do_chron_activation' ) === false  ) 
+            as_enqueue_async_action( 'rentfetch_do_chron_activation' );
+            
+        if ( as_next_scheduled_action( 'rentfetch_do_remove_old_data' ) === false  ) 
+            as_enqueue_async_action( 'rentfetch_do_remove_old_data' );
+            
     }
-    
-    //* We're doing these async because we don't want them constantly triggering on each pageload. We'd still like to bundle together our syncing and our chron
-    if ( as_next_scheduled_action( 'rentfetch_do_sync_logic' ) === false  ) 
-        as_enqueue_async_action( 'rentfetch_do_sync_logic' );
-        
-    if ( as_next_scheduled_action( 'rentfetch_do_chron_activation' ) === false  ) 
-        as_enqueue_async_action( 'rentfetch_do_chron_activation' );
-        
-    if ( as_next_scheduled_action( 'rentfetch_do_remove_old_data' ) === false  ) 
-        as_enqueue_async_action( 'rentfetch_do_remove_old_data' );
         
     //* Delete everything if we're set to delete
     if ( $data_sync == 'delete' )

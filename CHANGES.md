@@ -1,3 +1,6 @@
+## 3.0.4
+* Removing the actions if things are supposed to be set to pause/delete (we're accidentally spinning up a TON of actions)
+
 ## 3.0.3
 * BUGFIX: removing functionality for related neighborhoods if the Metabox Relationships dependency doesn't exist in the single properties template
 
