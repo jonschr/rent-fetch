@@ -134,9 +134,7 @@ function rentfetch_each_floorplan_rent_range() {
     $post_id = get_the_ID();
     $minimum_rent = get_field( 'minimum_rent', $post_id );
     $maximum_rent = get_field( 'maximum_rent', $post_id );
-    
-    
-    
+        
     $rent_range = null;
     if ( $minimum_rent && $maximum_rent ) {
         
@@ -147,8 +145,6 @@ function rentfetch_each_floorplan_rent_range() {
             $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $minimum_rent );
                     
     }
-    
-    
     
     if ( $minimum_rent < 100 || $maximum_rent < 100 )
         $rent_range = 'Pricing unavailable';
