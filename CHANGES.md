@@ -1,3 +1,7 @@
+## 3.0.5
+* Updating the single-properties template to remove components if they're not used
+* Fixing several php notices for undefined variables when those items haven't been defined (manual entry)
+
 ## 3.0.4
 * Removing the actions if things are supposed to be set to pause/delete (we're accidentally spinning up a TON of actions)
 
