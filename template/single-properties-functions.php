@@ -20,6 +20,7 @@ function rentfetch_single_property_title() {
     $state = get_post_meta( $id, 'state', true );
     $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
     $property_id = get_post_meta( $id, 'property_id', true );
+    $location = null;
     
     // prepare the location
     if ( $city && $state )
@@ -33,8 +34,11 @@ function rentfetch_single_property_title() {
     
     echo '<div class="single-properties-entry-header">';
 
-        if ( $title )
+        if ( $title && $location )
             printf( '<h1>%s %s</h1>', $title, $location );
+            
+        if ( $title && !$location )
+            printf( '<h1>%s</h1>', $title );
             
         if ( current_user_can( 'edit_posts' ) ) {
             echo '<p class="admin-data">';
@@ -44,6 +48,9 @@ function rentfetch_single_property_title() {
                     
                 if ( $property_id )
                     printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
+                    
+                if ( !$property_id )
+                    echo '<span><strong>Property ID:</strong> (not found)</span>';
             
             echo '</p>';
         }
@@ -81,43 +88,52 @@ function rentfetch_single_property_basic_info() {
     $url = get_post_meta( $id, 'url', true );
     $phone = get_post_meta( $id, 'phone', true );
 
+    
     echo '<div class="basic-info">';
-        echo '<div class="location">';
-            echo '<p class="the-location">';
+    
+        if ( $address || $city || $state || $zipcode ) {
+            echo '<div class="location">';
+                echo '<p class="the-location">';
+                
+                    if ( $address )
+                        printf( '<span class="address">%s</span>', $address );
+                        
+                    if ( $city )
+                        printf( '<span class="city">%s</span>', $city );
+                        
+                    if ( $state )
+                        printf( '<span class="state">%s</span>', $state );
+                        
+                    if ( $zipcode )
+                        printf( '<span class="zipcode">%s</span>', $zipcode );
+                    
+                echo '</p>';
+            echo '</div>';
+        }
+        
+        if ( $phone ) {
+            echo '<div class="call">';
+                echo '<p class="the-call">';
             
-                if ( $address )
-                    printf( '<span class="address">%s</span>', $address );
+                    printf( '<span class="calltoday">Call today</span>' );
+                    printf( '<span class="phone">%s</span>', $phone );
                     
-                if ( $city )
-                    printf( '<span class="city">%s</span>', $city );
-                    
-                if ( $state )
-                    printf( '<span class="state">%s</span>', $state );
-                    
-                if ( $zipcode )
-                    printf( '<span class="zipcode">%s</span>', $zipcode );
-                
-            echo '</p>';
-        echo '</div>';
-        echo '<div class="call">';
-            echo '<p class="the-call">';
-        
-                printf( '<span class="calltoday">Call today</span>' );
-                printf( '<span class="phone">%s</span>', $phone );
-                
-            echo '</p>';
-        echo '</div>';
-        
-        // prepare the property url
-        $url = apply_filters( 'rentfetch_filter_property_url', $url );
+                echo '</p>';
+            echo '</div>';
+        }
         
         if ( $url ) {
+            
+            // prepare the property url
+            $url = apply_filters( 'rentfetch_filter_property_url', $url );
+            
             echo '<div class="property-website">';
             
                 printf( '<a class="button property-link" target="_blank" href="%s">Visit property website</a>', $url );
             
             echo '</div>';
         }
+        
     echo '</div>';
 }
 
