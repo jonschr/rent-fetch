@@ -4,6 +4,7 @@
 
 .images {
     .viewall {
+        pointer-events: none;
         position: absolute;
         z-index: 30;
         bottom: 30px;

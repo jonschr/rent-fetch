@@ -105,9 +105,89 @@ function rentfetch_each_property( $id, $floorplan ) {
     
 }
 
+//* select our data source for images (manual images is preferred, then yardi)
 add_action( 'rentfetch_do_each_property_images', 'rentfetch_each_property_images', 10, 1 );
 function rentfetch_each_property_images( $post_id ) {
+    
+    // manually-added images
+    $property_images_manual = get_post_meta( $post_id, 'images', true );
+                
+    // these are images pulled from an API and stored as a JSON array
+    $property_images_yardi = get_post_meta( $post_id, 'property_images', true );
+    $property_images_yardi = json_decode( $property_images_yardi );
+                    
+    if ( $property_images_manual ) {
+        do_action( 'rentfetch_do_each_property_images_manual', $post_id );
+    } elseif ( $property_images_yardi ) {
+        do_action( 'rentfetch_do_each_property_images_yardi', $post_id );
+    }
+    
+}
+
+//* add markup for when we're adding images from WordPress (manual entry)
+add_action( 'rentfetch_do_each_property_images_manual', 'rentfetch_each_property_images_manual', 10, 1 );
+function rentfetch_each_property_images_manual( $post_id ) {
+    
+    // these are images pulled from an API and stored as a JSON array
+    $property_images = get_post_meta( $post_id, 'images', true );
+            
+    if ( !$property_images )
+        return;
         
+    $firsturl = null;
+            
+    // grab the first image url for use in the map
+    $firsturl = wp_get_attachment_image_url( $property_images[0], 'large' );
+        
+    if ( !$firsturl )
+        $firsturl = apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
+        
+    printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
+    
+        do_action( 'rentfetch_properties_archive_before_images' );
+                
+        echo '<div class="property-slider">';
+        
+            if ( $property_images ) {
+                
+                // limit this location to 3 images
+                $property_images = array_slice( $property_images, 0, 3 );
+                            
+                foreach( $property_images as $property_image ) {
+                            
+                    $url = wp_get_attachment_image_url( $property_image, 'large' );
+                    $alt = get_post_meta($property_image, '_wp_attachment_image_alt', TRUE);
+                    $title = get_the_title($property_image);
+                                        
+                    echo '<div class="property-slide">';
+                        printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
+                    echo '</div>';
+                                    
+                }
+                
+            } else {
+                
+                $property_image = RENTFETCH_PATH . 'images/fallback-property.svg';
+        
+                echo '<div class="property-slide">';
+                    printf( '<img loading=lazy src="%s" />', $property_image );
+                echo '</div>';
+            }
+                    
+            
+        
+        echo '</div>';
+        
+        do_action( 'rentfetch_properties_archive_after_images' );
+                
+    echo '</div>';
+    
+}
+
+//* add markup for when we're adding images from yardi
+add_action( 'rentfetch_do_each_property_images_yardi', 'rentfetch_each_property_images_yardi', 10, 1 );
+function rentfetch_each_property_images_yardi( $post_id ) {
+    
     // these are images pulled from an API and stored as a JSON array
     $property_images = get_post_meta( $post_id, 'property_images', true );
     $property_images = json_decode( $property_images );
@@ -185,7 +265,6 @@ function rentfetch_each_property_images( $post_id ) {
         do_action( 'rentfetch_properties_archive_after_images' );
                 
     echo '</div>';
-    
 }
 
 add_action( 'rentfetch_properties_archive_before_images', 'rentfetch_favorite_property_link' );
