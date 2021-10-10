@@ -1,7 +1,15 @@
 <?php
 
+//* If the images come from Yardi
 add_action( 'rentfetch_do_single_property_images_yardi', 'rentfetch_single_property_images_yardi', 10, 1 );
-function rentfetch_single_property_images_yardi( $property_images ) {
+function rentfetch_single_property_images_yardi() {
+    
+    global $post;
+    $id = get_the_ID();
+    
+    // these are images pulled from an API and stored as a JSON array
+    $property_images = get_post_meta( $id, 'property_images', true );
+    $property_images = json_decode( $property_images );
         
     if ( !$property_images )
         return;
@@ -72,3 +80,5 @@ function rentfetch_single_property_images_yardi( $property_images ) {
         
     }
 }
+
+//* If the images are manual
