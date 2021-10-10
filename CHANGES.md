@@ -1,3 +1,6 @@
+## 3.1.0
+* Adding capability to use manual images for properties (this previously hadn't specifically been requested)
+
 ## 3.0.5
 * Updating the single-properties template to remove components if they're not used
 * Fixing several php notices for undefined variables when those items haven't been defined (manual entry)
