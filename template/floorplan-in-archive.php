@@ -131,10 +131,24 @@ function rentfetch_each_floorplan_beds() {
 add_action( 'rentfetch_do_each_floorplan_rent_range', 'rentfetch_each_floorplan_rent_range' );
 function rentfetch_each_floorplan_rent_range() {
     
+    $rent_range_display_type = get_field( 'floorplan_pricing_display', 'option' );
+    
+    if ( $rent_range_display_type == 'range' || ( !$rent_range_display_type ) ) {
+        // if there's no option set or if it's set to range...
+        do_action( 'rentfetch_do_each_floorplan_rent_range_display_as_range' );        
+    } elseif ( $rent_range_display_type == 'minimum' ) {
+        // if it's set to minimum...
+        do_action( 'rentfetch_do_each_floorplan_rent_range_display_as_minimum' );
+    } 
+}
+
+add_action( 'rentfetch_do_each_floorplan_rent_range_display_as_range', 'rentfetch_each_floorplan_rent_range_display_as_range' );
+function rentfetch_each_floorplan_rent_range_display_as_range() {
+    
     $post_id = get_the_ID();
     $minimum_rent = get_field( 'minimum_rent', $post_id );
     $maximum_rent = get_field( 'maximum_rent', $post_id );
-        
+            
     $rent_range = null;
     if ( $minimum_rent && $maximum_rent ) {
         
@@ -155,7 +169,34 @@ function rentfetch_each_floorplan_rent_range() {
         
     if ( $rent_range )
         printf( '<p class="rent_range">%s</p>', $rent_range );
+}
+
+add_action( 'rentfetch_do_each_floorplan_rent_range_display_as_minimum', 'rentfetch_each_floorplan_rent_range_display_as_minimum' );
+function rentfetch_each_floorplan_rent_range_display_as_minimum() {
     
+    $post_id = get_the_ID();
+    $minimum_rent = get_field( 'minimum_rent', $post_id );
+    $maximum_rent = get_field( 'maximum_rent', $post_id );
+    
+    $rent = null;
+    
+    // get the lesser value above 0
+    if ( $minimum_rent > 100 && $maximum_rent > 100 ) 
+        $rent = min( $minimum_rent, $maximum_rent );
+        
+    if ( $minimum_rent > 100 && $maximum_rent < 100 )
+        $rent = $minimum_rent;
+        
+    if ( $minimum_rent < 100 && $maximum_rent > 100 )
+        $rent = $maximum_rent;
+
+    // output the rent
+    if ( $rent > 100 ) {
+        printf( '<p class="rent_range">From <span class="dollars">$</span><span class="amount">%s</span></p>', $rent );
+    } else {
+        printf( '<p class="rent_range">Pricing unavailable</p>', $rent );
+    }
+        
 }
 
 add_action( 'rentfetch_do_gform_lightbox', 'rentfetch_gform_lightbox' );
@@ -251,9 +292,7 @@ function rentfetch_default_availability_button() {
     
     // get the options
     $availability_button = get_field( 'availability_button', 'options' ); 
-    
-    // var_dump( $availability_button );
-        
+            
     if ( isset( $availability_button['enabled'] ) )
         $enabled = $availability_button['enabled'];
         
@@ -348,8 +387,7 @@ function rentfetch_default_single_button() {
     
     if ( $permalink )
         printf( '<a href="%s" class="button single-button">%s</a>', $permalink, $button_label );
-    
-        
+       
 }
 
 add_action( 'rentfetch_do_each_floorplan_squarefoot_range', 'rentfetch_each_floorplan_squarefoot_range' );

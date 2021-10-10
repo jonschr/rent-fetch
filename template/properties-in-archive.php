@@ -54,19 +54,7 @@ function rentfetch_each_property( $id, $floorplan ) {
     
                 if ( $title )
                     printf( '<h3>%s</h3>', $title );
-                    
-                if ( current_user_can( 'edit_posts' ) ) {
-                    echo '<p class="admin-data">';
-                    
-                    if ( $voyager_property_code )
-                        printf( '<span><strong>Voyager Code:</strong> %s</span>', $voyager_property_code );
-                        
-                    if ( $property_id )
-                        printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
-                    
-                    echo '</p>';
-                }
-                                                                            
+                                                                                                
                 echo '<p class="the-address">';
                                 
                     if ( $address )
@@ -82,11 +70,11 @@ function rentfetch_each_property( $id, $floorplan ) {
                         printf( '<span class="zipcode">%s</span>', $zipcode );
                     
                 echo '</p>';
-                                
-                if ( $rentrange )
-                    printf( '<span class="rentrange">%s</span>', $rentrange );
-                                    
+                             
+                do_action( 'rentfetch_do_each_properties_rent_range', $floorplan );
+                                                    
             echo '</div>';
+                        
             echo '<div class="floorplan-info">';
             
                 if ( $bedsrange !== null )
@@ -100,7 +88,19 @@ function rentfetch_each_property( $id, $floorplan ) {
             
             echo '</div>';
         echo '</div>';
-                                        
+        
+        if ( current_user_can( 'edit_posts' ) ) {
+            echo '<p class="admin-data">';
+            
+            if ( $voyager_property_code )
+                printf( '<span><strong>Voyager Code:</strong> %s</span>', $voyager_property_code );
+                
+            if ( $property_id )
+                printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
+            
+            echo '</p>';
+        }
+                                                
     echo '</div>';
     
 }
@@ -267,6 +267,7 @@ function rentfetch_each_property_images_yardi( $post_id ) {
     echo '</div>';
 }
 
+//* favorite link
 add_action( 'rentfetch_properties_archive_before_images', 'rentfetch_favorite_property_link' );
 function rentfetch_favorite_property_link() {
     
@@ -279,3 +280,43 @@ function rentfetch_favorite_property_link() {
         printf( '<a href="#" class="favorite-heart" data-property-id="%s" data-favorite="1"></a>', $post_id );
         
 } 
+
+//* rent range figuring out how to display it
+add_action( 'rentfetch_do_each_properties_rent_range', 'rentfetch_each_properties_rent_range', 10, 1 );
+function rentfetch_each_properties_rent_range( $floorplan ) {
+    
+    $rent_range_display_type = get_field( 'property_pricing_display', 'option' );
+    
+    if ( $rent_range_display_type == 'range' || ( !$rent_range_display_type ) ) {
+        // if there's no option set or if it's set to range...
+        do_action( 'rentfetch_do_each_properties_rent_range_display_as_range', $floorplan );        
+    } elseif ( $rent_range_display_type == 'minimum' ) {
+        // if it's set to minimum...
+        do_action( 'rentfetch_do_each_properties_rent_range_display_as_minimum', $floorplan );
+    } 
+}
+
+//* rent range (displaying as range)
+add_action( 'rentfetch_do_each_properties_rent_range_display_as_range', 'rentfetch_each_properties_rent_range_display_as_range' );
+function rentfetch_each_properties_rent_range_display_as_range( $floorplan ) {
+    
+    $rentrange = $floorplan['rentrange'];
+    
+    if ( $rentrange )
+        printf( '<span class="rentrange">%s</span>', $rentrange );
+}
+
+//* rent range (displaying as minimum)
+add_action( 'rentfetch_do_each_properties_rent_range_display_as_minimum', 'rentfetch_each_properties_rent_range_display_as_minimum' );
+function rentfetch_each_properties_rent_range_display_as_minimum( $floorplan ) {
+    
+    $minimums = $floorplan['minimum_rent'];
+    $maximums = $floorplan['maximum_rent'];
+        
+    $rents = array_merge( $minimums, $maximums );
+    
+    $rent = min( $rents );
+    
+    if ( $rent > 100 )
+        printf( '<span class="rentrange">From $%s</span>', $rent );
+}

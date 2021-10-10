@@ -57,8 +57,13 @@
     }
 
 
-    .admin-data span {
-        display: block;
+    .admin-data {
+        padding: 10px 20px 20px;
+        margin-bottom: 0;
+
+        span {
+            display: block;
+        }
     }
 
     span.rentrange {

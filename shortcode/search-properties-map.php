@@ -817,7 +817,7 @@ function rentfetch_filter_properties(){
         echo '<div class="properties-loop">';
             while( $propertyquery->have_posts() ): $propertyquery->the_post();
                 $property_id = get_post_meta( get_the_ID(), 'property_id', true );
-                $floorplan = $floorplans[$property_id ];
+                $floorplan = $floorplans[$property_id ];                
                 do_action( 'rentfetch_do_each_property', $propertyquery->post->ID, $floorplan );
             endwhile;
         echo '</div>';

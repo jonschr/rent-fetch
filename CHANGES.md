@@ -1,3 +1,6 @@
+## 3.1.1
+* Ading capabilities for showing minimums (e.g. "From... ) for rent prices for both properties and floorplans
+
 ## 3.1.0
 * Adding capability to use manual images for properties (this previously hadn't specifically been requested)
 

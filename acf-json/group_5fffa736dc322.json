@@ -19,11 +19,11 @@
             "endpoint": 0
         },
         {
-            "key": "field_60b596b465b2d",
-            "label": "Github token",
-            "name": "github_token",
-            "type": "password",
-            "instructions": "Required for updates for this plugin to work properly",
+            "key": "field_61634d012db85",
+            "label": "Rent Fetch API key",
+            "name": "rent_fetch_api_key",
+            "type": "text",
+            "instructions": "In a future release, a license key will be required for all syncing functionality. Manual entry functionality and plugin updates will continue to work normally.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -31,9 +31,11 @@
                 "class": "",
                 "id": ""
             },
+            "default_value": "",
             "placeholder": "",
             "prepend": "",
-            "append": ""
+            "append": "",
+            "maxlength": ""
         },
         {
             "key": "field_5fffab9b598c2",
@@ -370,6 +372,82 @@
             "maxlength": "",
             "rows": "",
             "new_lines": ""
+        },
+        {
+            "key": "field_607f966693794",
+            "label": "Property archives",
+            "name": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_607f967893795",
+            "label": "Property footer grid",
+            "name": "property_footer_grid",
+            "type": "group",
+            "instructions": "By default, this shows on the individual neighborhood and properties templates when multiple properties are connected to a neighborhood. If there are less than two properties that would show, this area simply does not appear.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_607f96bc93796",
+                    "label": "Maximum properties to show",
+                    "name": "number_properties",
+                    "type": "number",
+                    "instructions": "The maximum number of properties to show. By default, this will show all (-1) properties",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": -1,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                }
+            ]
+        },
+        {
+            "key": "field_61634e5949d25",
+            "label": "Property pricing display",
+            "name": "property_pricing_display",
+            "type": "button_group",
+            "instructions": "Show either the pricing range, e.g. \"$1999 to $2999\", or  just the minimum \"From $1999\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "range": "Range",
+                "minimum": "Minimum"
+            },
+            "allow_null": 0,
+            "default_value": "range",
+            "layout": "horizontal",
+            "return_format": "value"
         },
         {
             "key": "field_5fffb22e3a541",
@@ -839,6 +917,28 @@
             ]
         },
         {
+            "key": "field_61634d8c49d24",
+            "label": "Floorplan pricing display",
+            "name": "floorplan_pricing_display",
+            "type": "button_group",
+            "instructions": "Show either the pricing range, e.g. \"$1999 to $2999\", or  just the minimum \"From $1999\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "range": "Range",
+                "minimum": "Minimum"
+            },
+            "allow_null": 0,
+            "default_value": "range",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
             "key": "field_6076784a3ea86",
             "label": "Property search settings",
             "name": "",
@@ -996,60 +1096,6 @@
                     "step": ""
                 }
             ]
-        },
-        {
-            "key": "field_607f966693794",
-            "label": "Property archives",
-            "name": "",
-            "type": "tab",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "placement": "top",
-            "endpoint": 0
-        },
-        {
-            "key": "field_607f967893795",
-            "label": "Property footer grid",
-            "name": "property_footer_grid",
-            "type": "group",
-            "instructions": "By default, this shows on the individual neighborhood and properties templates when multiple properties are connected to a neighborhood. If there are less than two properties that would show, this area simply does not appear.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_607f96bc93796",
-                    "label": "Maximum properties to show",
-                    "name": "number_properties",
-                    "type": "number",
-                    "instructions": "The maximum number of properties to show. By default, this will show all (-1) properties",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": -1,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "min": "",
-                    "max": "",
-                    "step": ""
-                }
-            ]
         }
     ],
     "location": [
@@ -1069,5 +1115,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1627355263
+    "modified": 1633898098
 }
