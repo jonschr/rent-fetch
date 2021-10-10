@@ -66,14 +66,17 @@ function rentfetch_single_property_images() {
         $id = get_the_ID();
         
         // manually-added images
-        
-        
+        $property_images_manual = get_post_meta( $id, 'images', true );
+                
         // these are images pulled from an API and stored as a JSON array
         $property_images_yardi = get_post_meta( $id, 'property_images', true );
         $property_images_yardi = json_decode( $property_images_yardi );
-                        
-        if ( $property_images_yardi )
+                       
+        if ( $property_images_manual ) {
+            do_action( 'rentfetch_do_single_property_images_manual' );
+        } elseif ( $property_images_yardi ) {
             do_action( 'rentfetch_do_single_property_images_yardi' );
+        }
         
     echo '</div>';
     

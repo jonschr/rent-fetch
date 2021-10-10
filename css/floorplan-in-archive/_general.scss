@@ -26,6 +26,14 @@
         align-items: center;
         justify-content: space-between;
 
+        @include mobile {
+            align-items: flex-start;
+
+            >* {
+                margin-bottom: 15px;
+            }
+        }
+
         .floorplan-images-wrap {
             width: 300px;
             min-width: 300px;
