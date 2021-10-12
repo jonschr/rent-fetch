@@ -1,3 +1,6 @@
+## 3.1.3 
+* Bugfix for the sliders not showing on the single-properties page (the floorplans template)
+
 ## 3.1.2
 * MUCH nicer previews for the floorplansgrid block
 

@@ -27,7 +27,19 @@
     // Initialize each block on page load (front end).
     $(document).ready(function () {
         $('.floorplangrid').each(function () {
+            // when this is used in the context of a block
             initializeBlock($(this));
+        });
+
+        // when this is used in another context
+        $('.floorplan-slider').not('.slick-initialized').slick({
+            dots: false,
+            infinite: false,
+            arrows: true,
+            speed: 500,
+            fade: true,
+            cssEase: 'linear',
+            lazyLoad: 'ondemand',
         });
     });
 
