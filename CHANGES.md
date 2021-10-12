@@ -1,3 +1,6 @@
+## 3.1.2
+* MUCH nicer previews for the floorplansgrid block
+
 ## 3.1.1
 * Ading capabilities for showing minimums (e.g. "From... ) for rent prices for both properties and floorplans
 

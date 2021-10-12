@@ -37,13 +37,13 @@ function rentfetch_floorplangrid_block_enqueue() {
     
     // Specific scripts and styles
     wp_enqueue_style( 'rentfetch-floorplangrid-style', RENTFETCH_PATH . 'css/floorplangrid.css', array(), RENTFETCH_VERSION, 'screen' );
-    wp_register_script( 'rentfetch-filters', RENTFETCH_PATH . 'block/floorplangrid/js/filters.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_enqueue_script( 'rentfetch-filters', RENTFETCH_PATH . 'block/floorplangrid/js/filters.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Slick
-    wp_enqueue_script( 'rentfetch-slick-main-script' );
-    wp_enqueue_script( 'rentfetch-floorplan-images-slider-init' );
-    wp_enqueue_style( 'rentfetch-slick-main-styles' );
-    wp_enqueue_style( 'rentfetch-slick-main-theme' );
+    wp_enqueue_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
+    wp_enqueue_script( 'rentfetch-floorplan-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-floorplan-images-slider-init.js', array( 'rentfetch-slick-main-script' ), RENTFETCH_VERSION, true );
+    wp_enqueue_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
+    wp_enqueue_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
         
 }
 
@@ -126,6 +126,9 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
         
     //* Set up the classes
     $floorplanclass = get_post_class( $post_id );
+    
+    if ( is_admin() )
+        $floorplanclass[] = 'is-admin';
     
     if ( $available_units > 0 ) {
         $floorplanclass[] = 'units-available';

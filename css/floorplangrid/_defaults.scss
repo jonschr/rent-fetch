@@ -1,5 +1,15 @@
 .floorplangrid {
 
+    .is-admin {
+        &:before {
+            display: block;
+            content: "";
+            inset: 0;
+            position: absolute;
+            z-index: 1;
+        }
+    }
+
     .floorplangrid__content {
         padding: 15px;
 
