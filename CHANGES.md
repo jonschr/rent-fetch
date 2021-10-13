@@ -1,3 +1,6 @@
+## 3.3.1
+* Make property descriptions a WYSIWYG field for better manual entry
+
 ## 3.3.0
 * Add capability in the floorplans grid block to pull in floorplans from one or more properties specifically
 
