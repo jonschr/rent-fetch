@@ -1,3 +1,6 @@
+## 3.3.0
+* Add capability in the floorplans grid block to pull in floorplans from one or more properties specifically
+
 ## 3.2.0
 * Adding settings for showing/hiding all elements of the search
 

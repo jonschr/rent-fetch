@@ -63,6 +63,7 @@ function rentfetch_floorplangrid_block_render( $block, $content = '', $is_previe
         'limit_number_of_bedrooms' => get_field( 'limit_number_of_bedrooms' ),
         'limit_floorplan_type' => get_field( 'limit_floorplan_type' ),
         'maximum_number_of_floorplans_to_show' => get_field( 'maximum_number_of_floorplans_to_show' ),
+        'display_floorplans_from_specific_properties' => get_field( 'display_floorplans_from_specific_properties' ),
     );
 
     // Create id attribute allowing for custom "anchor" value.
@@ -175,11 +176,16 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
                     do_action( 'rentfetch_do_each_floorplan_rent_range' );
                     
                 echo '</div>'; // .floorplan-rent-range
+                
+                do_action( 'rentfetch_do_each_floorplan_show_property_label' );
+                
                 echo '<div class="buttons">';
                     
                     do_action( 'rentfetch_do_each_floorplan_buttons' );
                     
                 echo '</div>';
+                
+                
                 
                 edit_post_link( 'Edit', '', '', $post_id );
                 
@@ -189,6 +195,48 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
         
     echo '</div>';
     
+}
+
+add_action( 'rentfetch_do_each_floorplan_show_property_label', 'rentfetch_each_floorplan_show_property_label' );
+function rentfetch_each_floorplan_show_property_label() {
+    
+    $display_floorplans_from_specific_properties = get_field( 'display_floorplans_from_specific_properties' );
+    
+    // bail if we're not limiting by property
+    if ( empty( $display_floorplans_from_specific_properties ) )
+        return;
+        
+    // bail if there's less than two properties set
+    if ( count( $display_floorplans_from_specific_properties ) < 2 )
+        return;
+        
+    global $post;
+    $id = get_the_ID();
+        
+    $property_id = get_post_meta( $id, 'property_id', true );
+    
+    $get_property_args = array(
+        'post_type' => 'properties',
+        'meta_query' => array(
+            array(
+                'key' => 'property_id',
+                'value' => $property_id,
+            ),
+        ),
+    );
+    
+    $properties = get_posts( $get_property_args );
+    if ( $properties ) {
+        echo '<p class="properties">';
+        foreach ( $properties as $property ) {
+            $the_id = $property->ID;
+            $title = get_the_title( $the_id );
+            
+            if ( $title )
+                printf( '<span class="associated-property">%s</span>', $title );
+        }
+        echo '</p>';
+    }        
 }
 
 function rentfetch_floorplansgrid_customize_beds_text( $beds ) {
@@ -284,43 +332,39 @@ function rentfetch_floorplangrid_block_get_posts( $settings ) {
     $limit_number_of_bedrooms = $settings['limit_number_of_bedrooms'];
     $limit_floorplan_type = $settings['limit_floorplan_type'];
     $maximum_number_of_floorplans_to_show = $settings['maximum_number_of_floorplans_to_show'];
+    $display_floorplans_from_specific_properties = $settings['display_floorplans_from_specific_properties'];
         
     $args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => $maximum_number_of_floorplans_to_show,
-    ); 
-        
-    //* Limit by bedroom
-    if ( $settings['floorplan_limit'] == 'bedrooms' ) {
-        if ( $limit_number_of_bedrooms ) {    
-            
-            $arr = array( 
-                'meta_query' => array(
-                    'relation' => 'OR',
-                )
-            );
-                
-            foreach ( $limit_number_of_bedrooms as $limit_number_of_bedroom ) {
-                $arr_limit = array(
-                    'key'     => 'beds',
-                    'value'   => $limit_number_of_bedroom,
-                    'compare' => '=',
-                );
-                
-                $arr['meta_query'][] = $arr_limit;
-                
-            }
-            
-            // echo '<pre>';
-            // print_r( $arr );
-            // echo '</pre>';
-            
-            $args = array_merge( $args, $arr );
-            
-        }
+    );
+    
+    if ( $limit_number_of_bedrooms ) {
+        $args['meta_query'][] = array(
+            'key'     => 'beds',
+            'value'   => $limit_number_of_bedrooms,
+        );
     }
     
-    //* Limit by tax
+    //* if we're only getting floorplans from specific properties
+    if ( $display_floorplans_from_specific_properties ) {
+        
+        $property_ids = array();
+    
+        foreach ( $display_floorplans_from_specific_properties as $property ) {
+            $property_id = get_post_meta( $property, 'property_id', true );
+            $property_ids[] = $property_id;
+        }
+                
+        $args['meta_query'][] = array(
+            array(
+                'key' => 'property_id',
+                'value' => $property_ids,
+            ),
+        );
+    }
+    
+    //* limit by taxonomy term
     if ( $settings['floorplan_limit'] == 'floorplantype' ) {
         if ( $limit_floorplan_type ) { 
                         
@@ -343,12 +387,10 @@ function rentfetch_floorplangrid_block_get_posts( $settings ) {
             
         }
     }
-        
+    
     // echo '<pre>';
     // print_r( $args );
     // echo '</pre>';
-    
-    // $floorplans = get_posts( $args );
     
     $floorplans = new WP_Query( $args );
         

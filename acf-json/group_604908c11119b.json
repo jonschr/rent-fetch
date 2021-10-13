@@ -41,6 +41,28 @@
             "step": ""
         },
         {
+            "key": "field_61665e872a581",
+            "label": "Only display floorplans from specific properties",
+            "name": "display_floorplans_from_specific_properties",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "properties"
+            ],
+            "taxonomy": "",
+            "allow_null": 0,
+            "multiple": 1,
+            "return_format": "id",
+            "ui": 1
+        },
+        {
             "key": "field_604fa38d75806",
             "label": "Add floorplans limitation",
             "name": "floorplan_limit",
@@ -92,11 +114,16 @@
                 "2",
                 "3",
                 "4",
-                "5"
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10"
             ],
             "allow_custom": 0,
             "default_value": [],
-            "layout": "vertical",
+            "layout": "horizontal",
             "toggle": 0,
             "return_format": "value",
             "save_custom": 0
@@ -190,5 +217,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1622511577
+    "modified": 1634101422
 }
