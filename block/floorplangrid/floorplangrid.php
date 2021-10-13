@@ -148,7 +148,8 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
     printf( '<div class="%s">', $floorplanclass );
         echo '<div class="floorplan-inner">';
         
-            do_action( 'rentfetch_do_each_floorplan_images' );
+            if ( !is_admin())
+                do_action( 'rentfetch_do_each_floorplan_images' );
                 
             echo '<div class="floorplangrid__content">';
             

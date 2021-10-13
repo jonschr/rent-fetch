@@ -976,11 +976,11 @@
             "step": ""
         },
         {
-            "key": "field_6076785d3ea87",
-            "label": "Number of amenities to show",
-            "name": "number_of_amenities_to_show",
-            "type": "number",
-            "instructions": "If this site uses amenities, how many should be shown in the search filter? (Shown in order of popularity.)",
+            "key": "field_6166445f3ef59",
+            "label": "Starter search components",
+            "name": "starter_search_components",
+            "type": "group",
+            "instructions": "This is the starter search, which can be output with the <strong>[propertysearch]<\/strong> shortcode (usually placed on the homepage of a site).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -988,13 +988,273 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": "",
-            "min": "",
-            "max": "",
-            "step": ""
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_616644b93ef5b",
+                    "label": "Enable text-based search",
+                    "name": "text_based_search",
+                    "type": "true_false",
+                    "instructions": "Please note that this functionality works best with Relevanssi enhancing your site's search capabilities.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_6166451b3ef5d",
+                    "label": "Enable beds search",
+                    "name": "beds_search",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_616645383ef5f",
+                    "label": "Enable baths search",
+                    "name": "baths_search",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664695fe4ca",
+                    "label": "Enable property type search",
+                    "name": "type_search",
+                    "type": "true_false",
+                    "instructions": "Property type is an arbitrary category system that can be assigned to properties (e.g. student housing vs. residential housing). If you've not assigned any categories, this should be left off.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                }
+            ]
+        },
+        {
+            "key": "field_61664900c40b6",
+            "label": "Map search components",
+            "name": "map_search_components",
+            "type": "group",
+            "instructions": "This is the map-based search, which can be output with the <strong>[propertymap]<\/strong> shortcode (by default, this should be placed at \/apartment-search).",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_61664900c40b7",
+                    "label": "Enable text-based search",
+                    "name": "text_based_search",
+                    "type": "true_false",
+                    "instructions": "Please note that this functionality works best with Relevanssi enhancing your site's search capabilities.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664900c40b8",
+                    "label": "Enable beds search",
+                    "name": "beds_search",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664900c40b9",
+                    "label": "Enable baths search",
+                    "name": "baths_search",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664b38cc4e7",
+                    "label": "Enable neighborhoods search",
+                    "name": "neighborhoods_search",
+                    "type": "true_false",
+                    "instructions": "This functionality requires <a target=\"_blank\" href=\"https:\/\/wordpress.org\/plugins\/meta-box\/\">metabox.io<\/a> and the MB <a href=\"https:\/\/docs.metabox.io\/extensions\/mb-relationships\/\" target=\"_blank\">Relationships addon<\/a>, and without both these installed, this will not function properly. It also requires that you've created some neighborhoods and linked properties with those neighborhoods. If you've not done these things, you should disable this field.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664900c40ba",
+                    "label": "Enable property type search",
+                    "name": "type_search",
+                    "type": "true_false",
+                    "instructions": "Property type is an arbitrary category system that can be assigned to properties (e.g. student housing vs. residential housing). If you've not assigned any categories, this should be left off.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664bd9cc4e8",
+                    "label": "Enable date-based search",
+                    "name": "date_search",
+                    "type": "true_false",
+                    "instructions": "The date-based search requires that you have availability dates. If you're managing properties and floorplans manually (not through an API), it's strongly recommended to disable this field.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664c1bcc4e9",
+                    "label": "Enable price-based search",
+                    "name": "price_search",
+                    "type": "true_false",
+                    "instructions": "The price-based search requires that you have pricing set for individual floorplans to work properly.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664c48cc4ea",
+                    "label": "Enable amenities search",
+                    "name": "amenities_search",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                },
+                {
+                    "key": "field_61664c5bcc4eb",
+                    "label": "Enable pet policy search",
+                    "name": "pets_search",
+                    "type": "true_false",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "",
+                    "default_value": 1,
+                    "ui": 1,
+                    "ui_on_text": "",
+                    "ui_off_text": ""
+                }
+            ]
         },
         {
             "key": "field_60ff5db6fc32d",
@@ -1003,7 +1263,22 @@
             "type": "number",
             "instructions": "If you were to enter \"9\" then the bedrooms dropdown would show \"9+ Bedrooms\" and would hide all numbers above 9.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_6166451b3ef5d",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_61664900c40b8",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -1024,7 +1299,15 @@
             "type": "group",
             "instructions": "Settings for the price filter",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_61664c1bcc4e9",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -1096,6 +1379,35 @@
                     "step": ""
                 }
             ]
+        },
+        {
+            "key": "field_6076785d3ea87",
+            "label": "Number of amenities to show",
+            "name": "number_of_amenities_to_show",
+            "type": "number",
+            "instructions": "If this site uses amenities, how many should be shown in the search filter? (Shown in order of popularity.)",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_61664c48cc4ea",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": "",
+            "max": "",
+            "step": ""
         }
     ],
     "location": [
@@ -1115,5 +1427,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1633898098
+    "modified": 1634095279
 }

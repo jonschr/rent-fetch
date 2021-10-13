@@ -68,79 +68,41 @@ function rentfetch_propertysearch( $atts ) {
     
     printf( '<form class="property-search-starter" onsubmit="return false" id="filter" style="opacity:0;">' );
     
-        //* Build the text search
-        echo '<div class="input-wrap input-wrap-text-search">';
-            echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
-        echo '</div>';
-                
-        //* Build the beds filter
-        $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
-        $beds = array_unique( $beds );
-        asort( $beds );
-                
-        // beds
-        echo '<div class="input-wrap input-wrap-beds">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
-                echo '<div class="dropdown-menu">';
-                    echo '<div class="dropdown-menu-items">';
-                        foreach( $beds as $bed ) {
-                            
-                            // skip if the number isn't defined
-                            if ( $bed === null )
-                                continue;
-                                
-                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
-                        }
-                    echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply-local" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
+        //* check whether the text search is enabled
+        $starter_search_components = get_field( 'starter_search_components', 'option' );
+        $enable_text_based_search = $starter_search_components['text_based_search'];
+        if ( $enable_text_based_search == true ) {
+            
+            //* Build the text search
+            echo '<div class="input-wrap input-wrap-text-search">';
+                echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
+            echo '</div>';
+            
+        }
         
-        //* Build the baths filter
-        $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
-        $baths = array_unique( $baths );
-        asort( $baths );
+        //* check whether the beds search is enabled
+        $starter_search_components = get_field( 'starter_search_components', 'option' );
+        $enable_beds_search = $starter_search_components['beds_search'];
+        if ( $enable_beds_search == true ) {
         
-        echo '<div class="input-wrap input-wrap-baths">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Baths">Baths</button>';
-                echo '<div class="dropdown-menu">';
-                    echo '<div class="dropdown-menu-items">';
-                        foreach( $baths as $bath ) {
-                            printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
-                        }
-                    echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply-local" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
-        
-        //* Property types
-        $propertytypes = get_terms( 
-            array(
-                'taxonomy' => 'propertytypes',
-                'hide_empty' => true,
-            ),
-        );
-        
-        if ( !empty( $propertytypes ) ) {
-            echo '<div class="input-wrap input-wrap-propertytypes">';
+            //* Build the beds filter
+            $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
+            $beds = array_unique( $beds );
+            asort( $beds );
+                    
+            // beds
+            echo '<div class="input-wrap input-wrap-beds">';
                 echo '<div class="dropdown">';
-                    echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                    echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
+                    echo '<div class="dropdown-menu">';
                         echo '<div class="dropdown-menu-items">';
-                            foreach( $propertytypes as $propertytype ) {
-                                $name = $propertytype->name;
-                                $propertytype_term_id = $propertytype->term_id;
-                                printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                            foreach( $beds as $bed ) {
+                                
+                                // skip if the number isn't defined
+                                if ( $bed === null )
+                                    continue;
+                                    
+                                printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                             }
                         echo '</div>';
                         echo '<div class="filter-application">';
@@ -150,8 +112,75 @@ function rentfetch_propertysearch( $atts ) {
                     echo '</div>';
                 echo '</div>'; // .dropdown
             echo '</div>'; // .input-wrap
-        }
             
+        }
+        
+        //* check whether the baths search is enabled
+        $starter_search_components = get_field( 'starter_search_components', 'option' );
+        $enable_baths_search = $starter_search_components['baths_search'];
+        if ( $enable_baths_search == true ) {
+        
+            //* Build the baths filter
+            $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
+            $baths = array_unique( $baths );
+            asort( $baths );
+            
+            echo '<div class="input-wrap input-wrap-baths">';
+                echo '<div class="dropdown">';
+                    echo '<button type="button" class="dropdown-toggle" data-reset="Baths">Baths</button>';
+                    echo '<div class="dropdown-menu">';
+                        echo '<div class="dropdown-menu-items">';
+                            foreach( $baths as $bath ) {
+                                printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
+                            }
+                        echo '</div>';
+                        echo '<div class="filter-application">';
+                            echo '<a class="clear" href="#">Clear</a>';
+                            echo '<a class="apply-local" href="#">Apply</a>';
+                        echo '</div>';
+                    echo '</div>';
+                echo '</div>'; // .dropdown
+            echo '</div>'; // .input-wrap
+        
+        }
+        
+        //* check whether type-based search is enabled
+        $starter_search_components = get_field( 'starter_search_components', 'option' );
+        $enable_type_search = $starter_search_components['type_search'];
+        if ( $enable_type_search == true ) {
+        
+            //* Property types
+            $propertytypes = get_terms( 
+                array(
+                    'taxonomy' => 'propertytypes',
+                    'hide_empty' => true,
+                ),
+            );
+            
+            if ( !empty( $propertytypes ) ) {
+                echo '<div class="input-wrap input-wrap-propertytypes">';
+                    echo '<div class="dropdown">';
+                        echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
+                        echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
+                            echo '<div class="dropdown-menu-items">';
+                                foreach( $propertytypes as $propertytype ) {
+                                    $name = $propertytype->name;
+                                    $propertytype_term_id = $propertytype->term_id;
+                                    printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                }
+                            echo '</div>';
+                            echo '<div class="filter-application">';
+                                echo '<a class="clear" href="#">Clear</a>';
+                                echo '<a class="apply-local" href="#">Apply</a>';
+                            echo '</div>';
+                        echo '</div>';
+                    echo '</div>'; // .dropdown
+                echo '</div>'; // .input-wrap
+            }
+            
+        }
+        
+        //* build the submit button
         echo '<div class="input-wrap input-wrap-submit">';
             echo '<button onclick="sendMessage()" type="submit">Submit</button>';
         echo '</div>';
