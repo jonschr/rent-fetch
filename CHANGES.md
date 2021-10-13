@@ -1,3 +1,6 @@
+## 3.2.0
+* Adding settings for showing/hiding all elements of the search
+
 ## 3.1.3 
 * Bugfix for the sliders not showing on the single-properties page (the floorplans template)
 
