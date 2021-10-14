@@ -1,3 +1,6 @@
+## 3.3.2
+* Property descriptions should have the_content filter applied
+
 ## 3.3.1
 * Make property descriptions a WYSIWYG field for better manual entry
 

@@ -150,7 +150,7 @@ function rentfetch_single_property_description() {
     
     $title = get_the_title();
     $city = get_post_meta( $id, 'city', true );
-    $description = get_post_meta( $id, 'description', true );
+    $description = apply_filters( 'the_content', get_post_meta( $id, 'description', true ) );
 
     if ( $description ) {
         
