@@ -1,13 +1,29 @@
 <?php
 
 return array (
-  'version' => '5.5.1',
+  'version' => '5.5.3',
   'title' => 'Manual entry',
   'type' => 'floorplans',
   'id' => '60490ab529970',
-  'updated' => 1621278999,
+  'updated' => 1634265618,
   'columns' => 
   array (
+    '6168d783f43958' => 
+    array (
+      'type' => 'column-status',
+      'label' => 'Status',
+      'width' => '70',
+      'width_unit' => 'px',
+      'use_icon' => '1',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6168d783f43958',
+    ),
     '60a2bfa9d91688' => 
     array (
       'type' => 'column-acf_field',
@@ -37,6 +53,23 @@ return array (
       'bulk_edit' => 'on',
       'search' => 'on',
       'name' => 'title',
+    ),
+    '6168d75a6872b0' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Property ID',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_600ab10550e47',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '6168d75a6872b0',
     ),
     '600b41d6cb794' => 
     array (
@@ -105,22 +138,6 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb799',
-    ),
-    '600b41d6cb79c' => 
-    array (
-      'type' => 'column-acf_field',
-      'label' => 'Has Specials',
-      'width' => '',
-      'width_unit' => '%',
-      'field' => 'field_600a515fd7e0f',
-      'export' => 'off',
-      'sort' => 'on',
-      'edit' => 'on',
-      'bulk_edit' => 'on',
-      'search' => 'on',
-      'filter' => 'off',
-      'filter_label' => '',
-      'name' => '600b41d6cb79c',
     ),
     '600b41d6cb79e' => 
     array (
@@ -223,6 +240,22 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '600b41d6cb7a5',
+    ),
+    '600b41d6cb79c' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Has Specials',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_600a515fd7e0f',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '600b41d6cb79c',
     ),
     '6032102c8ef75' => 
     array (
