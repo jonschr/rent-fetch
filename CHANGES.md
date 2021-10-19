@@ -1,3 +1,6 @@
+## 3.3.4
+* Reordering elements on the single-properties page
+
 ## 3.3.3
 * Adding map to the single-properties template
 
