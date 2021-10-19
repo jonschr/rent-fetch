@@ -1,0 +1,19 @@
+body.single-properties {
+    #map-marker {
+        p {
+            margin-bottom: 0;
+            font-size: 18px;
+            line-height: 1.4em;
+        }
+
+        p.single-property-map-title {
+            font-weight: bold;
+        }
+
+        p.single-property-map-address {
+            span {
+                display: block;
+            }
+        }
+    }
+}

@@ -5,7 +5,7 @@ return array (
   'title' => 'Manual entry',
   'type' => 'properties',
   'id' => '615f620aeffb8',
-  'updated' => 1633641730,
+  'updated' => 1634612266,
   'columns' => 
   array (
     '615f64c42353f8' => 
@@ -123,6 +123,40 @@ return array (
       'filter_label' => '',
       'name' => '6064ec235851ec',
     ),
+    '616e33f7cac084' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Latitude',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_6064eb2ecac18',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'off',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'off',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '616e33f7cac084',
+    ),
+    '616e3400f91688' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Longitude',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_6064eb37cac19',
+      'character_limit' => '20',
+      'export' => 'off',
+      'sort' => 'off',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'off',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '616e3400f91688',
+    ),
     '6074b80cfeb850' => 
     array (
       'type' => 'column-taxonomy',
@@ -149,11 +183,11 @@ return array (
       'width' => '150',
       'width_unit' => 'px',
       'field' => 'field_6064eb17cac15',
-      'character_limit' => '20',
+      'excerpt_length' => '20',
       'export' => 'off',
       'sort' => 'off',
       'edit' => 'on',
-      'bulk_edit' => 'on',
+      'editable_type' => 'textarea',
       'search' => 'off',
       'filter' => 'off',
       'filter_label' => '',

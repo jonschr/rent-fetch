@@ -1,3 +1,6 @@
+## 3.3.3
+* Adding map to the single-properties template
+
 ## 3.3.2
 * Property descriptions should have the_content filter applied
 

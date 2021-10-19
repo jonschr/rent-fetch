@@ -316,7 +316,41 @@ function rentfetch_single_property_nearby_properties() {
 
 
 function rentfetch_single_property_map() {
-    echo '<div class="map">';
     
-    echo '</div>';
+    global $post;
+    $id = get_the_ID();
+
+    $latitude = floatval( get_post_meta( $id, 'latitude', true ) );
+    $longitude = floatval( get_post_meta( $id, 'longitude', true ) );
+    
+    //* bail if there's not a lat or longitude
+    if ( empty( $latitude ) || empty( $longitude) )
+        return;
+        
+    $title = get_the_title( $id );
+    $address = get_post_meta( $id, 'address', true );
+    $city = get_post_meta( $id, 'city', true );
+    $state = get_post_meta( $id, 'state', true );
+    $zip = get_post_meta( $id, 'zip', true );
+    $phone = get_post_meta( $id, 'phone', true );
+    
+    $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zip, $phone );
+
+    // the map itself
+    $key = get_field( 'google_maps_api_key', 'option' );
+    wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), RENTFETCH_VERSION, true );
+
+    // Localize the google maps script, then enqueue that
+    $maps_options = array(
+        'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
+        'marker_url' => get_field( 'google_map_marker', 'option' ),
+        'latitude' => $latitude,
+        'longitude' => $longitude,
+        'location' => $location,
+    );
+    wp_localize_script( 'rentfetch-single-property-map', 'options', $maps_options );
+    wp_enqueue_script( 'rentfetch-single-property-map');
+    
+    echo '<div class="map" id="map"></div>';
+        
 }

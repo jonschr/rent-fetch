@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.3.2
+	Version: 3.3.3
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.3.2' );
+define ( 'RENTFETCH_VERSION', '3.3.3' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -295,6 +295,7 @@ function rentfetch_enqueue_scripts_stylesheets() {
     
     // Properties map (the map itself)
     wp_register_script( 'rentfetch-property-map', RENTFETCH_PATH . 'js/rentfetch-property-map.js', array( 'jquery', 'rentfetch-google-maps' ), RENTFETCH_VERSION, true );
+    wp_register_script( 'rentfetch-single-property-map', RENTFETCH_PATH . 'js/rentfetch-single-property-map.js', array( 'jquery', 'rentfetch-google-maps' ), RENTFETCH_VERSION, true );
     
     // Properties searchbar
     wp_register_script( 'rentfetch-search-filters-general', RENTFETCH_PATH . 'js/rentfetch-search-filters-general.js', array( 'jquery' ), RENTFETCH_VERSION, true );
