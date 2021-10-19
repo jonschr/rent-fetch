@@ -331,10 +331,10 @@ function rentfetch_single_property_map() {
     $address = get_post_meta( $id, 'address', true );
     $city = get_post_meta( $id, 'city', true );
     $state = get_post_meta( $id, 'state', true );
-    $zip = get_post_meta( $id, 'zip', true );
+    $zipcode = get_post_meta( $id, 'zipcode', true );
     $phone = get_post_meta( $id, 'phone', true );
     
-    $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zip, $phone );
+    $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zipcode, $phone );
 
     // the map itself
     $key = get_field( 'google_maps_api_key', 'option' );
