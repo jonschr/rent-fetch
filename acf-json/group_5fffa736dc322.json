@@ -1,6 +1,6 @@
 {
     "key": "group_5fffa736dc322",
-    "title": "Settings",
+    "title": "Rent Fetch Settings",
     "fields": [
         {
             "key": "field_5fffafb0deddf",
@@ -23,7 +23,7 @@
             "label": "Rent Fetch API key",
             "name": "rent_fetch_api_key",
             "type": "text",
-            "instructions": "In a future release, a license key will be required for all syncing functionality. Manual entry functionality and plugin updates will continue to work normally.",
+            "instructions": "In a future release, a license key will be required for all syncing functionality. Manual entry functionality and plugin updates will continue to work normally without an API key.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -141,6 +141,7 @@
             },
             "choices": {
                 "yardi": "Yardi\/RentCafe",
+                "realpage": "RealPage",
                 "entrata": "Entrata"
             },
             "allow_custom": 0,
@@ -194,7 +195,7 @@
                 },
                 {
                     "key": "field_5fffb4149b1b0",
-                    "label": "Yardi Property Code",
+                    "label": "Yardi Property Codes",
                     "name": "yardi_property_code",
                     "type": "text",
                     "instructions": "Multiple property codes should be entered separated by commas",
@@ -278,6 +279,107 @@
                     "key": "field_5fffb5421d62f",
                     "label": "Entrata Property ID",
                     "name": "entrata_property_ids",
+                    "type": "text",
+                    "instructions": "If there are multiple properties to be pulled in, enter those separated by commas",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "e.g. 1234567,2345678",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
+        },
+        {
+            "key": "field_617aeb9c7f548",
+            "label": "RealPage",
+            "name": "realpage_integration_creds",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_600a285dca256",
+                        "operator": "==",
+                        "value": "realpage"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_617aeb9c7f549",
+                    "label": "RealPage Username",
+                    "name": "realpage_user",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_617aeb9c7f54a",
+                    "label": "RealPage Password",
+                    "name": "realpage_pass",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_617aebf07f54c",
+                    "label": "RealPage PMC ID",
+                    "name": "realpage_pmc_id",
+                    "type": "text",
+                    "instructions": "The ID number for the organization as a whole.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "e.g. 1234567",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_617aeb9c7f54b",
+                    "label": "RealPage Site IDs",
+                    "name": "realpage_site_ids",
                     "type": "text",
                     "instructions": "If there are multiple properties to be pulled in, enter those separated by commas",
                     "required": 0,
@@ -1415,7 +1517,7 @@
             {
                 "param": "options_page",
                 "operator": "==",
-                "value": "acf-options-integration-settings"
+                "value": "rent-fetch-settings"
             }
         ]
     ],
@@ -1427,5 +1529,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1634095279
+    "modified": 1635451605
 }

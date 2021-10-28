@@ -25,6 +25,6 @@ function rentfetch_check_creds_yardi() {
  */
 function rentfetch_yardi_missing_user_pass_notice() {
     echo '<div class="notice notice-warning is-dismissible">';
-        echo '<p>Syncing of data with Yardi is enabled, but we\'re missing an API key for the integration. <a href="/wp-admin/edit.php?post_type=floorplans&page=acf-options-integration-settings">Fix that</a></p>';
+        echo '<p>Syncing of data with Yardi is enabled, but we\'re missing an API key for the integration.</p>';
     echo '</div>';
 }
