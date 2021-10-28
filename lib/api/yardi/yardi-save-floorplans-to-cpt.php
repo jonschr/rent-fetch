@@ -5,6 +5,7 @@ function rentfetch_save_yardi_floorplans_to_cpt() {
             
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $properties = $yardi_integration_creds['yardi_property_code'];
+    $properties = preg_replace('/\s+/', '', $properties);
     $properties = explode( ',', $properties );
     $sync_term = get_field( 'sync_term', 'option' );
     $data_sync = get_field( 'data_sync', 'option' );

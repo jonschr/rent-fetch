@@ -64,6 +64,7 @@ function rentfetch_remove_orphan_yardi_properties() {
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
     $properties_in_setting = $yardi_integration_creds['yardi_property_code'];
+    $properties_in_setting = preg_replace('/\s+/', '', $properties_in_setting);
     $properties_in_setting = explode( ',', $properties_in_setting );
     $properties_in_setting = array_unique( $properties_in_setting );
     $properties_in_setting = array_map('strtolower', $properties_in_setting); // lowercase everything, as case mismatches can give us bad results
@@ -131,6 +132,7 @@ function rentfetch_remove_floorplans_from_orphan_yardi_properties_specific() {
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
     $properties_in_setting = $yardi_integration_creds['yardi_property_code'];
+    $properties_in_setting = preg_replace('/\s+/', '', $properties_in_setting);
     $properties_in_setting = explode( ',', $properties_in_setting );
     
     // get the ones that are in floorplans, but that aren't in the setting

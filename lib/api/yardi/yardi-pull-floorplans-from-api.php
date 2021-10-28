@@ -10,7 +10,8 @@ function rentfetch_get_floorplans_yardi() {
     }
     
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
-    $properties = $yardi_integration_creds['yardi_property_code'];      
+    $properties = $yardi_integration_creds['yardi_property_code'];  
+    $properties = preg_replace('/\s+/', '', $properties);    
     $properties = explode( ',', $properties );
     $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
     $sync_term = get_field( 'sync_term', 'option' );
