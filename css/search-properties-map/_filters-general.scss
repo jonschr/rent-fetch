@@ -159,11 +159,14 @@ form.property-search-starter {
         }
     }
 
-    input[type="text"] {
+    input[type="text"],
+    input[type="number"] {
         border-radius: 3px;
         border: 2px solid rgba($default, 0.2);
         color: $default;
         width: 100%;
+        min-height: 50px;
+        padding-left: 15px;
         font-size: 16px;
         background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(hsla(0, 0%, 100%, 0)), to(hsla(0, 0%, 100%, 0)));
         background-image: -webkit-linear-gradient(hsla(0, 0%, 100%, 0), hsla(0, 0%, 100%, 0));

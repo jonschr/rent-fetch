@@ -912,6 +912,10 @@ function rentfetch_properties_maximum_setting( $properties_maximum_per_page ) {
 
 function rentfetch_get_connected_properties_from_selected_neighborhoods() {
     
+    //bail if there's no relationships installed
+    if ( !class_exists( 'MB_Relationships_API' ) )
+        return;
+    
     $getneighborhoodsargs = array(
         'post_type' => 'neighborhoods',
         'posts_per_page' => '-1',
@@ -932,7 +936,7 @@ function rentfetch_get_connected_properties_from_selected_neighborhoods() {
             $selected_neighborhoods[] = $neighborhood_id;
         }
     }
-
+    
     $properties = MB_Relationships_API::get_connected( [
         'id'   => 'properties_to_neighborhoods',
         'from' => $selected_neighborhoods,
