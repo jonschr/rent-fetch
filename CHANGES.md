@@ -1,6 +1,7 @@
 ## 3.4.0
 * Adding the Rent Fetch logo and new menu to the WordPress sidebar
 * Adding the ability to get credentials for RealPage
+* Adding the ability to save and update basic floorplan info via RealPage
 
 ## 3.3.4
 * Reordering elements on the single-properties page
