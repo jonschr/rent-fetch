@@ -1,8 +1,8 @@
 <?php
 
 add_action( 'rentfetch_do_get_floorplans_realpage', 'rentfetch_get_floorplans_realpage' );
-// add_action( 'wp_footer', 'rentfetch_get_floorplans_realpage' );
-// add_action( 'admin_footer', 'rentfetch_get_floorplans_realpage' );
+add_action( 'wp_footer', 'rentfetch_get_floorplans_realpage' );
+add_action( 'admin_footer', 'rentfetch_get_floorplans_realpage' );
 function rentfetch_get_floorplans_realpage() {
         
     // bail if credentials haven't been completed fully
@@ -124,7 +124,12 @@ function rentfetch_save_realpage_floorplans_to_cpt( $realpage_site_id ) {
             'meta_query' => array(
                 array(
                     'key' => 'floorplan_id',
-                    'value' => $realpage_site_id . '_' . $floorplan['FloorPlanID'],
+                    'value' => $floorplan['FloorPlanID'],
+                    'compare' => '=',
+                ),
+                array(
+                    'key' => 'property_id',
+                    'value' => $realpage_site_id,
                     'compare' => '=',
                 )
             )
@@ -170,7 +175,7 @@ function rentfetch_save_realpage_floorplan_to_cpt( $floorplan, $realpage_site_id
     $Baths = floatval( $floorplan['Bathrooms'] );
     $Beds = floatval( $floorplan['Bedrooms'] );
     //! $FloorplanHasSpecials = ;
-    $FloorplanId = $realpage_site_id . '_' . $floorplan['FloorPlanID'];
+    $FloorplanId = $floorplan['FloorPlanID'];
     //! $FloorplanImageAltText = ;
     //! $FloorplanImageName = ;
     //! $FloorplanImageURL = ;
