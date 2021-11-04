@@ -1,8 +1,8 @@
 <?php
 
 add_action( 'rentfetch_do_get_floorplans_realpage', 'rentfetch_get_floorplans_realpage' );
-add_action( 'wp_footer', 'rentfetch_get_floorplans_realpage' );
-add_action( 'admin_footer', 'rentfetch_get_floorplans_realpage' );
+// add_action( 'wp_footer', 'rentfetch_get_floorplans_realpage' );
+// add_action( 'admin_footer', 'rentfetch_get_floorplans_realpage' );
 function rentfetch_get_floorplans_realpage() {
         
     // bail if credentials haven't been completed fully
