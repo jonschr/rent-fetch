@@ -45,237 +45,73 @@ function rentfetch_propertymap( $atts ) {
     wp_enqueue_script( 'rentfetch-property-map');
     
     //* Start the form...
-    printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter" style="opacity:0;">', site_url() );
-    
-        //* check the query to see if we have a text-based search
-        if (isset($_GET['textsearch'])) {
-            $searchtext = $_GET['textsearch'];
-            $searchtext = esc_attr( $searchtext );
-            
-        } else {
-            $searchtext = null;
-        }
-    
-        //* check whether text-based search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_text_based_search = $map_search_components['text_based_search'];
-        if ( $enable_text_based_search == true ) {
-            
-            //* build the text-based search
-            echo '<div class="input-wrap input-wrap-text-search">';
-                if ( $searchtext ) {
-                    printf( '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." class="active" value="%s" />', $searchtext );
-                } else {
-                    echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
-                }
-            echo '</div>';
-            
-        }
+    echo '<div class="properties-search-wrap">';
+        printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter" style="opacity:0;">', site_url() );
+        
+            //* check the query to see if we have a text-based search
+            if (isset($_GET['textsearch'])) {
+                $searchtext = $_GET['textsearch'];
+                $searchtext = esc_attr( $searchtext );
                 
-        //* Reset
-        printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
-        
-        // beds parameter
-        if (isset($_GET['beds'])) {
-            $bedsparam = $_GET['beds'];
-            $bedsparam = explode( ',', $bedsparam );
-            $bedsparam = array_map( 'esc_attr', $bedsparam );
-        } else {
-            $bedsparam = array();
-        }
-        
-        //* check whether beds search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_beds_search = $map_search_components['beds_search'];
-        if ( $enable_beds_search == true ) {
-            
-            //* get info about beds from the database
-            $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
-            $beds = array_unique( $beds );
-            asort( $beds );
-                    
-            //* build the beds search
-            echo '<div class="input-wrap input-wrap-beds">';
-                echo '<div class="dropdown">';
-                    echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
-                    echo '<div class="dropdown-menu dropdown-menu-beds">';
-                        echo '<div class="dropdown-menu-items">';
-                        
-                            foreach( $beds as $bed ) {
-                                
-                                // skip if there's a null value for bed
-                                if ( $bed === null )
-                                    continue;
-                                    
-                                if ( in_array( $bed, $bedsparam ) ) {
-                                    printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
-                                } else {
-                                    printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
-                                }
-                            }
-                        echo '</div>';
-                        echo '<div class="filter-application">';
-                            echo '<a class="clear" href="#">Clear</a>';
-                            echo '<a class="apply" href="#">Apply</a>';
-                        echo '</div>';
-                    echo '</div>';
-                echo '</div>'; // .dropdown
-            echo '</div>'; // .input-wrap
-            
-        }
-            
-        //* get query parameters about baths
-        if (isset($_GET['baths'])) {
-            $bathsparam = $_GET['baths'];
-            $bathsparam = explode( ',', $bathsparam );
-            $bathsparam = array_map( 'esc_attr', $bathsparam );
-        } else {
-            $bathsparam = array();
-        }
-            
-        //* check whether beds search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_baths_search = $map_search_components['baths_search'];
-        if ( $enable_baths_search == true ) {
-            
-            //* get information about baths from the database
-            $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
-            $baths = array_unique( $baths );
-            asort( $baths );
-            
-            //* build the baths search
-            echo '<div class="input-wrap input-wrap-baths">';
-                echo '<div class="dropdown">';
-                    echo '<button type="button" class="dropdown-toggle" data-reset="Baths">Baths</button>';
-                    echo '<div class="dropdown-menu dropdown-menu-baths">';
-                        echo '<div class="dropdown-menu-items">';
-                            foreach( $baths as $bath ) {
-                                if ( in_array( $bath, $bathsparam ) ) {
-                                    printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
-                                } else {
-                                    printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
-                                }
-                            }
-                        echo '</div>';
-                        echo '<div class="filter-application">';
-                            echo '<a class="clear" href="#">Clear</a>';
-                            echo '<a class="apply" href="#">Apply</a>';
-                        echo '</div>';
-                    echo '</div>';
-                echo '</div>'; // .dropdown
-            echo '</div>'; // .input-wrap
-            
-        }
-        
-        
-        //* get query parameters about neighborhoods
-        //TODO add a param for this to the search start page
-        if (isset($_GET['neighborhoods'])) {
-            $neighborhoodsparam = $_GET['neighborhoods'];
-            $neighborhoodsparam = explode( ',', $neighborhoodsparam );
-            $neighborhoodsparam = array_map( 'esc_attr', $neighborhoodsparam );
-        } else {
-            $neighborhoodsparam = array();
-        }
-        
-        //* check whether neighborhoods search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_neighborhoods_search = $map_search_components['neighborhoods_search'];
-        if ( $enable_neighborhoods_search == true ) {
-            
-            //* get information about neighborhoods from the database
-            $getneighborhoodsargs = array(
-                'post_type' => 'neighborhoods',
-                'posts_per_page' => '-1',
-                'orderby' => 'name',
-                'order' => 'DESC',
-            );
-            
-            $neighborhoods = get_posts( $getneighborhoodsargs );
-            
-            //* build neighborhoods search
-            if ( $neighborhoods ) {            
-                echo '<div class="input-wrap input-wrap-neighborhoods">';
-                    echo '<div class="dropdown">';
-                        echo '<button type="button" class="dropdown-toggle" data-reset="Neighborhoods">Neighborhoods</button>';
-                        echo '<div class="dropdown-menu dropdown-menu-neighborhoods">';
-                            echo '<div class="dropdown-menu-items">';
-                                                
-                                foreach( $neighborhoods as $neighborhood ) {
-                                    
-                                    // skip if there's a null value for neighborhood
-                                    if ( $neighborhood === null )
-                                        continue;
-                                        
-                                    $connected_properties = MB_Relationships_API::get_connected( [
-                                        'id'   => 'properties_to_neighborhoods',
-                                        'from' => $neighborhood,
-                                    ] );
-                                        
-                                    // skip if there'snothing connected to the neighborhood
-                                    if ( empty( $connected_properties ) )
-                                        continue;
-                                    
-                                    $neighborhood_name = $neighborhood->post_title;
-                                    $neighborhood_id = $neighborhood->ID;
-                                        
-                                    printf( '<label><input type="checkbox" data-neighborhoods="%s" data-neighborhoods-name="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_name, $neighborhood_id, $neighborhood_name );
-                                                                            
-                                    // if ( in_array( $neighborhood, $neighborhoodsparam ) ) {
-                                    //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" checked /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
-                                    // } else {
-                                    //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
-                                    // }
-                                }
-                                
-                            echo '</div>';
-                            echo '<div class="filter-application">';
-                                echo '<a class="clear" href="#">Clear</a>';
-                                echo '<a class="apply" href="#">Apply</a>';
-                            echo '</div>';
-                        echo '</div>';
-                    echo '</div>'; // .dropdown
-                echo '</div>'; // .input-wrap
+            } else {
+                $searchtext = null;
             }
         
-        }
-        
-        //* get query parameters about types
-        if ( isset( $_GET['propertytypes'])) {
-            $propertytypesparam = $_GET['propertytypes'];
-            $propertytypesparam = explode( ',', $propertytypesparam );
-            $propertytypesparam = array_map( 'esc_attr', $propertytypesparam );
-        } else {
-            $propertytypesparam = array();
-        }   
-        
-        //* check whether type search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_type_search = $map_search_components['type_search'];
-        if ( $enable_type_search == true ) {
+            //* check whether text-based search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_text_based_search = $map_search_components['text_based_search'];
+            if ( $enable_text_based_search == true ) {
+                
+                //* build the text-based search
+                echo '<div class="input-wrap input-wrap-text-search">';
+                    if ( $searchtext ) {
+                        printf( '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." class="active" value="%s" />', $searchtext );
+                    } else {
+                        echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
+                    }
+                echo '</div>';
+                
+            }
+                    
+            //* Reset
+            printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
             
-            //* get information about types from the database
-            $propertytypes = get_terms( 
-                array(
-                    'taxonomy' => 'propertytypes',
-                    'hide_empty' => true,
-                ),
-            );
+            // beds parameter
+            if (isset($_GET['beds'])) {
+                $bedsparam = $_GET['beds'];
+                $bedsparam = explode( ',', $bedsparam );
+                $bedsparam = array_map( 'esc_attr', $bedsparam );
+            } else {
+                $bedsparam = array();
+            }
             
-            //* build types search
-            if ( !empty( $propertytypes ) ) {
-                echo '<div class="input-wrap input-wrap-propertytypes">';
+            //* check whether beds search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_beds_search = $map_search_components['beds_search'];
+            if ( $enable_beds_search == true ) {
+                
+                //* get info about beds from the database
+                $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
+                $beds = array_unique( $beds );
+                asort( $beds );
+                        
+                //* build the beds search
+                echo '<div class="input-wrap input-wrap-beds">';
                     echo '<div class="dropdown">';
-                        echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                        echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
+                        echo '<button type="button" class="dropdown-toggle" data-reset="Beds">Beds</button>';
+                        echo '<div class="dropdown-menu dropdown-menu-beds">';
                             echo '<div class="dropdown-menu-items">';
-                                foreach( $propertytypes as $propertytype ) {
-                                    $name = $propertytype->name;
-                                    $propertytype_term_id = $propertytype->term_id;
-                                    if ( in_array( $propertytype_term_id, $propertytypesparam ) ) {
-                                            printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" checked /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                            
+                                foreach( $beds as $bed ) {
+                                    
+                                    // skip if there's a null value for bed
+                                    if ( $bed === null )
+                                        continue;
+                                        
+                                    if ( in_array( $bed, $bedsparam ) ) {
+                                        printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                                     } else {
-                                        printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                        printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
                                     }
                                 }
                             echo '</div>';
@@ -286,108 +122,40 @@ function rentfetch_propertymap( $atts ) {
                         echo '</div>';
                     echo '</div>'; // .dropdown
                 echo '</div>'; // .input-wrap
-            }
-            
-        }
-    
-        //* check whether date-based search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_date_search = $map_search_components['date_search'];
-        if ( $enable_date_search == true ) {
-            
-            //* enqueue date picker scripts
-            wp_enqueue_style( 'rentfetch-flatpickr-style' );
-            wp_enqueue_script( 'rentfetch-flatpickr-script' );
-            wp_enqueue_script( 'rentfetch-flatpickr-script-init' );
-            
-            //* build the date-based search
-            echo '<div class="input-wrap input-wrap-date-available">';
-                echo '<div class="dropdown">';
-                    echo '<div class="flatpickr">';
-                        echo '<input type="text" name="dates" placeholder="Available date" style="width:auto;" data-input>';
-                    echo '</div>';
-                echo '</div>'; // .dropdown
-            echo '</div>'; // .input-wrap
-            
-        }
-        
-        //* check whether price search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_price_search = $map_search_components['price_search'];
-        if ( $enable_price_search == true ) {
-            
-            //* figure out our min/max values
-            $price_settings = get_field( 'price_filter', 'options' );
-            $valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
-            $valueBig = isset( $price_settings['maximum'] ) ? $price_settings['maximum'] : 5000;
-            $step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
-            
-            //* enqueue the noui slider
-            wp_enqueue_style( 'rentfetch-nouislider-style' );
-            wp_enqueue_script( 'rentfetch-nouislider-script' );
-            wp_localize_script( 'rentfetch-nouislider-init-script', 'settings', 
-                array(
-                    'valueSmall' => $valueSmall,
-                    'valueBig' => $valueBig,
-                    'step' => $step,
-                )
-            );
-            wp_enqueue_script( 'rentfetch-nouislider-init-script' );
-            
-            //* build the price search
-            echo '<div class="input-wrap input-wrap-prices">';
-                echo '<div class="dropdown">';
-                    echo '<button type="button" class="dropdown-toggle" data-reset="Price">Price</button>';
-                    echo '<div class="dropdown-menu dropdown-menu-prices">';
-                        echo '<div class="dropdown-menu-items">';
-                            echo '<div class="price-slider-wrap"><div id="price-slider" style="width:100%;"></div></div>';
-                            echo '<div class="inputs-prices">';
-                                printf( '<input type="number" name="pricesmall" id="pricesmall" value="%s" />', $valueSmall );
-                                printf( '<input type="number" name="pricebig" id="pricebig" value="%s" />', $valueBig );
-                            echo '</div>';
-                        echo '</div>';
-                        echo '<div class="filter-application">';
-                            echo '<a class="clear" href="#">Clear</a>';
-                            echo '<a class="apply" href="#">Apply</a>';
-                        echo '</div>';
-                    echo '</div>';
-                echo '</div>'; // .dropdown
-            echo '</div>'; // .input-wrap
-            
-        }
-        
-        //* check whether amenities search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_amenities_search = $map_search_components['amenities_search'];
-        if ( $enable_amenities_search == true ) {
-            
-            //* figure out how many amenities to show
-            $number_of_amenities_to_show = get_field( 'number_of_amenities_to_show', 'option' );
-            if ( empty( $number_of_amenities_to_show ) )
-                $number_of_amenities_to_show = 10;
-            
-            //* get information about amenities from the database
-            $amenities = get_terms( 
-                array(
-                    'taxonomy'      => 'amenities',
-                    'hide_empty'    => true,
-                    'number'        => $number_of_amenities_to_show,
-                    'orderby'       => 'count',
-                    'order'         => 'DESC',
-                ),
-            );
                 
-            //* build amenities search
-            if ( !empty( $amenities ) ) {
-                echo '<div class="input-wrap input-wrap-amenities">';
+            }
+                
+            //* get query parameters about baths
+            if (isset($_GET['baths'])) {
+                $bathsparam = $_GET['baths'];
+                $bathsparam = explode( ',', $bathsparam );
+                $bathsparam = array_map( 'esc_attr', $bathsparam );
+            } else {
+                $bathsparam = array();
+            }
+                
+            //* check whether beds search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_baths_search = $map_search_components['baths_search'];
+            if ( $enable_baths_search == true ) {
+                
+                //* get information about baths from the database
+                $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
+                $baths = array_unique( $baths );
+                asort( $baths );
+                
+                //* build the baths search
+                echo '<div class="input-wrap input-wrap-baths">';
                     echo '<div class="dropdown">';
-                        echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
-                        echo '<div class="dropdown-menu dropdown-menu-amenities">';
+                        echo '<button type="button" class="dropdown-toggle" data-reset="Baths">Baths</button>';
+                        echo '<div class="dropdown-menu dropdown-menu-baths">';
                             echo '<div class="dropdown-menu-items">';
-                                foreach( $amenities as $amenity ) {
-                                    $name = $amenity->name;
-                                    $amenity_term_id = $amenity->term_id;
-                                    printf( '<label><input type="checkbox" data-amenities="%s" data-amenities-name="%s" name="amenities-%s" /><span>%s</span></label>', $amenity_term_id, $name, $amenity_term_id, $name );
+                                foreach( $baths as $bath ) {
+                                    if ( in_array( $bath, $bathsparam ) ) {
+                                        printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" checked /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
+                                    } else {
+                                        printf( '<label><input type="checkbox" data-baths="%s" name="baths-%s" /><span>%s Bathroom</span></label>', $bath, $bath, $bath );
+                                    }
                                 }
                             echo '</div>';
                             echo '<div class="filter-application">';
@@ -397,59 +165,294 @@ function rentfetch_propertymap( $atts ) {
                         echo '</div>';
                     echo '</div>'; // .dropdown
                 echo '</div>'; // .input-wrap
+                
             }
             
-        }
+            
+            //* get query parameters about neighborhoods
+            //TODO add a param for this to the search start page
+            if (isset($_GET['neighborhoods'])) {
+                $neighborhoodsparam = $_GET['neighborhoods'];
+                $neighborhoodsparam = explode( ',', $neighborhoodsparam );
+                $neighborhoodsparam = array_map( 'esc_attr', $neighborhoodsparam );
+            } else {
+                $neighborhoodsparam = array();
+            }
+            
+            //* check whether neighborhoods search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_neighborhoods_search = $map_search_components['neighborhoods_search'];
+            if ( $enable_neighborhoods_search == true ) {
                 
-        //* check whether pets search is enabled
-        $map_search_components = get_field( 'map_search_components', 'option' );
-        $enable_pets_search = $map_search_components['pets_search'];
-        if ( $enable_pets_search == true ) {
+                //* get information about neighborhoods from the database
+                $getneighborhoodsargs = array(
+                    'post_type' => 'neighborhoods',
+                    'posts_per_page' => '-1',
+                    'orderby' => 'name',
+                    'order' => 'DESC',
+                );
+                
+                $neighborhoods = get_posts( $getneighborhoodsargs );
+                
+                //* build neighborhoods search
+                if ( $neighborhoods ) {            
+                    echo '<div class="input-wrap input-wrap-neighborhoods">';
+                        echo '<div class="dropdown">';
+                            echo '<button type="button" class="dropdown-toggle" data-reset="Neighborhoods">Neighborhoods</button>';
+                            echo '<div class="dropdown-menu dropdown-menu-neighborhoods">';
+                                echo '<div class="dropdown-menu-items">';
+                                                    
+                                    foreach( $neighborhoods as $neighborhood ) {
+                                        
+                                        // skip if there's a null value for neighborhood
+                                        if ( $neighborhood === null )
+                                            continue;
+                                            
+                                        $connected_properties = MB_Relationships_API::get_connected( [
+                                            'id'   => 'properties_to_neighborhoods',
+                                            'from' => $neighborhood,
+                                        ] );
+                                            
+                                        // skip if there'snothing connected to the neighborhood
+                                        if ( empty( $connected_properties ) )
+                                            continue;
+                                        
+                                        $neighborhood_name = $neighborhood->post_title;
+                                        $neighborhood_id = $neighborhood->ID;
+                                            
+                                        printf( '<label><input type="checkbox" data-neighborhoods="%s" data-neighborhoods-name="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_name, $neighborhood_id, $neighborhood_name );
+                                                                                
+                                        // if ( in_array( $neighborhood, $neighborhoodsparam ) ) {
+                                        //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" checked /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
+                                        // } else {
+                                        //     printf( '<label><input type="checkbox" data-neighborhoods="%s" name="neighborhoods-%s" /><span>%s</span></label>', $neighborhood_id, $neighborhood_id, $neighborhood_name );
+                                        // }
+                                    }
+                                    
+                                echo '</div>';
+                                echo '<div class="filter-application">';
+                                    echo '<a class="clear" href="#">Clear</a>';
+                                    echo '<a class="apply" href="#">Apply</a>';
+                                echo '</div>';
+                            echo '</div>';
+                        echo '</div>'; // .dropdown
+                    echo '</div>'; // .input-wrap
+                }
             
-            //* get information about pets from the database
-            $pets = rentfetch_get_meta_values( 'pets', 'properties' );
-            $pets = array_unique( $pets );
-            asort( $pets );
-            $pets = array_filter( $pets );
+            }
             
-            // Get the corresponding acf 'pets' field so that we can use its labels
-            $field = get_field_object('field_60766489d1c66');
-            $pets_choices = $field['choices'];
+            //* get query parameters about types
+            if ( isset( $_GET['propertytypes'])) {
+                $propertytypesparam = $_GET['propertytypes'];
+                $propertytypesparam = explode( ',', $propertytypesparam );
+                $propertytypesparam = array_map( 'esc_attr', $propertytypesparam );
+            } else {
+                $propertytypesparam = array();
+            }   
+            
+            //* check whether type search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_type_search = $map_search_components['type_search'];
+            if ( $enable_type_search == true ) {
+                
+                //* get information about types from the database
+                $propertytypes = get_terms( 
+                    array(
+                        'taxonomy' => 'propertytypes',
+                        'hide_empty' => true,
+                    ),
+                );
+                
+                //* build types search
+                if ( !empty( $propertytypes ) ) {
+                    echo '<div class="input-wrap input-wrap-propertytypes">';
+                        echo '<div class="dropdown">';
+                            echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
+                            echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
+                                echo '<div class="dropdown-menu-items">';
+                                    foreach( $propertytypes as $propertytype ) {
+                                        $name = $propertytype->name;
+                                        $propertytype_term_id = $propertytype->term_id;
+                                        if ( in_array( $propertytype_term_id, $propertytypesparam ) ) {
+                                                printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" checked /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                        } else {
+                                            printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
+                                        }
+                                    }
+                                echo '</div>';
+                                echo '<div class="filter-application">';
+                                    echo '<a class="clear" href="#">Clear</a>';
+                                    echo '<a class="apply" href="#">Apply</a>';
+                                echo '</div>';
+                            echo '</div>';
+                        echo '</div>'; // .dropdown
+                    echo '</div>'; // .input-wrap
+                }
+                
+            }
+        
+            //* check whether date-based search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_date_search = $map_search_components['date_search'];
+            if ( $enable_date_search == true ) {
+                
+                //* enqueue date picker scripts
+                wp_enqueue_style( 'rentfetch-flatpickr-style' );
+                wp_enqueue_script( 'rentfetch-flatpickr-script' );
+                wp_enqueue_script( 'rentfetch-flatpickr-script-init' );
+                
+                //* build the date-based search
+                echo '<div class="input-wrap input-wrap-date-available">';
+                    echo '<div class="dropdown">';
+                        echo '<div class="flatpickr">';
+                            echo '<input type="text" name="dates" placeholder="Available date" style="width:auto;" data-input>';
+                        echo '</div>';
+                    echo '</div>'; // .dropdown
+                echo '</div>'; // .input-wrap
+                
+            }
+            
+            //* check whether price search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_price_search = $map_search_components['price_search'];
+            if ( $enable_price_search == true ) {
+                
+                //* figure out our min/max values
+                $price_settings = get_field( 'price_filter', 'options' );
+                $valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
+                $valueBig = isset( $price_settings['maximum'] ) ? $price_settings['maximum'] : 5000;
+                $step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
+                
+                //* enqueue the noui slider
+                wp_enqueue_style( 'rentfetch-nouislider-style' );
+                wp_enqueue_script( 'rentfetch-nouislider-script' );
+                wp_localize_script( 'rentfetch-nouislider-init-script', 'settings', 
+                    array(
+                        'valueSmall' => $valueSmall,
+                        'valueBig' => $valueBig,
+                        'step' => $step,
+                    )
+                );
+                wp_enqueue_script( 'rentfetch-nouislider-init-script' );
+                
+                //* build the price search
+                echo '<div class="input-wrap input-wrap-prices">';
+                    echo '<div class="dropdown">';
+                        echo '<button type="button" class="dropdown-toggle" data-reset="Price">Price</button>';
+                        echo '<div class="dropdown-menu dropdown-menu-prices">';
+                            echo '<div class="dropdown-menu-items">';
+                                echo '<div class="price-slider-wrap"><div id="price-slider" style="width:100%;"></div></div>';
+                                echo '<div class="inputs-prices">';
+                                    printf( '<input type="number" name="pricesmall" id="pricesmall" value="%s" />', $valueSmall );
+                                    printf( '<input type="number" name="pricebig" id="pricebig" value="%s" />', $valueBig );
+                                echo '</div>';
+                            echo '</div>';
+                            echo '<div class="filter-application">';
+                                echo '<a class="clear" href="#">Clear</a>';
+                                echo '<a class="apply" href="#">Apply</a>';
+                            echo '</div>';
+                        echo '</div>';
+                    echo '</div>'; // .dropdown
+                echo '</div>'; // .input-wrap
+                
+            }
+            
+            //* check whether amenities search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_amenities_search = $map_search_components['amenities_search'];
+            if ( $enable_amenities_search == true ) {
+                
+                //* figure out how many amenities to show
+                $number_of_amenities_to_show = get_field( 'number_of_amenities_to_show', 'option' );
+                if ( empty( $number_of_amenities_to_show ) )
+                    $number_of_amenities_to_show = 10;
+                
+                //* get information about amenities from the database
+                $amenities = get_terms( 
+                    array(
+                        'taxonomy'      => 'amenities',
+                        'hide_empty'    => true,
+                        'number'        => $number_of_amenities_to_show,
+                        'orderby'       => 'count',
+                        'order'         => 'DESC',
+                    ),
+                );
                     
-            //* build the pets search
-            if ( !empty( $pets ) ) {
-                echo '<div class="input-wrap input-wrap-pets">';
-                    echo '<div class="dropdown">';
-                        echo '<button type="button" class="dropdown-toggle" data-reset="Pet policy">Pet policy</button>';
-                        echo '<div class="dropdown-menu dropdown-menu-pets">';
-                            echo '<div class="dropdown-menu-items">';
-                                foreach( $pets as $pet ) {
-                                    printf( '<label><input type="radio" data-pets="%s" data-pets-name="%s" name="pets" value="%s" /><span>%s</span></label>', $pet, $pets_choices[$pet], $pet, $pets_choices[$pet] );
-                                }
+                //* build amenities search
+                if ( !empty( $amenities ) ) {
+                    echo '<div class="input-wrap input-wrap-amenities">';
+                        echo '<div class="dropdown">';
+                            echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
+                            echo '<div class="dropdown-menu dropdown-menu-amenities">';
+                                echo '<div class="dropdown-menu-items">';
+                                    foreach( $amenities as $amenity ) {
+                                        $name = $amenity->name;
+                                        $amenity_term_id = $amenity->term_id;
+                                        printf( '<label><input type="checkbox" data-amenities="%s" data-amenities-name="%s" name="amenities-%s" /><span>%s</span></label>', $amenity_term_id, $name, $amenity_term_id, $name );
+                                    }
+                                echo '</div>';
+                                echo '<div class="filter-application">';
+                                    echo '<a class="clear" href="#">Clear</a>';
+                                    echo '<a class="apply" href="#">Apply</a>';
+                                echo '</div>';
                             echo '</div>';
-                            echo '<div class="filter-application">';
-                                echo '<a class="clear" href="#">Clear</a>';
-                                echo '<a class="apply" href="#">Apply</a>';
-                            echo '</div>';
-                        echo '</div>';
-                    echo '</div>'; // .dropdown
-                echo '</div>'; // .input-wrap
-            }
-            
-        }
+                        echo '</div>'; // .dropdown
+                    echo '</div>'; // .input-wrap
+                }
                 
-        //* Buttons        
-        echo '<button type="submit" style="display:none;">Submit</button>';
-        echo '<input type="hidden" name="action" value="propertysearch">';
+            }
+                    
+            //* check whether pets search is enabled
+            $map_search_components = get_field( 'map_search_components', 'option' );
+            $enable_pets_search = $map_search_components['pets_search'];
+            if ( $enable_pets_search == true ) {
+                
+                //* get information about pets from the database
+                $pets = rentfetch_get_meta_values( 'pets', 'properties' );
+                $pets = array_unique( $pets );
+                asort( $pets );
+                $pets = array_filter( $pets );
+                
+                // Get the corresponding acf 'pets' field so that we can use its labels
+                $field = get_field_object('field_60766489d1c66');
+                $pets_choices = $field['choices'];
+                        
+                //* build the pets search
+                if ( !empty( $pets ) ) {
+                    echo '<div class="input-wrap input-wrap-pets">';
+                        echo '<div class="dropdown">';
+                            echo '<button type="button" class="dropdown-toggle" data-reset="Pet policy">Pet policy</button>';
+                            echo '<div class="dropdown-menu dropdown-menu-pets">';
+                                echo '<div class="dropdown-menu-items">';
+                                    foreach( $pets as $pet ) {
+                                        printf( '<label><input type="radio" data-pets="%s" data-pets-name="%s" name="pets" value="%s" /><span>%s</span></label>', $pet, $pets_choices[$pet], $pet, $pets_choices[$pet] );
+                                    }
+                                echo '</div>';
+                                echo '<div class="filter-application">';
+                                    echo '<a class="clear" href="#">Clear</a>';
+                                    echo '<a class="apply" href="#">Apply</a>';
+                                echo '</div>';
+                            echo '</div>';
+                        echo '</div>'; // .dropdown
+                    echo '</div>'; // .input-wrap
+                }
+                
+            }
+                    
+            //* Buttons        
+            echo '<button type="submit" style="display:none;">Search</button>';
+            echo '<input type="hidden" name="action" value="propertysearch">';
+            
+        echo '</form>';
         
-    echo '</form>';
+        //* Our container markup for the results
+        echo '<div class="map-response-wrap">';
+            echo '<div id="response"></div>';
+            echo '<a class="toggle"></a>';
+            echo '<div id="map"></div>';
+        echo '</div>';
     
-    //* Our container markup for the results
-    echo '<div class="map-response-wrap">';
-        echo '<div id="response"></div>';
-        echo '<a class="toggle"></a>';
-        echo '<div id="map"></div>';
-    echo '</div>';
+    echo '</div>'; // .properties-search-wrap
 
     return ob_get_clean();
 }
