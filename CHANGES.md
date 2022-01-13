@@ -1,3 +1,12 @@
+## 3.4.3
+* Removing the Rent Fetch version number when loading Google Maps scripts, e.g. https://maps.googleapis.com/maps/api/js?key={KEY}&ver=3.4.1 becomes https://maps.googleapis.com/maps/api/js?key={KEY}
+
+## 3.4.2
+* Adding a new piece of meta information for "floorplan description"
+* Adding that to the floorplan block
+* Adding that to the floorplan display on single-properties template
+* Adding that within Admin Columns Pro
+
 ## 3.4.1
 * Adding the Rent Fetch logo and new menu to the WordPress sidebar
 * Adding the ability to add credentials and info for RealPage to pull

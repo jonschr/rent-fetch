@@ -123,7 +123,7 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
     $title = get_the_title( $post_id );
     $available_units = get_field( 'available_units', $post_id );
     $number_of_baths = get_field( 'baths', $post_id );
-    $number_of_beds = get_field( 'beds', $post_id ); 
+    $number_of_beds = get_field( 'beds', $post_id );
         
     //* Set up the classes
     $floorplanclass = get_post_class( $post_id );
@@ -156,8 +156,10 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
             
                 if ( $title )
                     printf( '<h3 class="floorplangrid__title">%s</h3>', $title );
-                    
+                                    
                 do_action( 'rentfetch_do_each_floorplan_availability' );
+                
+                do_action( 'rentfetch_do_each_floorplan_description' );
                     
                 echo '<p class="floorplangrid__info">';
                 

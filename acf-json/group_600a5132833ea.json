@@ -30,6 +30,25 @@
             "mime_types": ""
         },
         {
+            "key": "field_61e0862111d74",
+            "label": "Floorplan Description",
+            "name": "floorplan_description",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": 3,
+            "new_lines": ""
+        },
+        {
             "key": "field_600a5138d7e0b",
             "label": "Availability URL",
             "name": "availability_url",
@@ -399,5 +418,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1633030035
+    "modified": 1642104389
 }

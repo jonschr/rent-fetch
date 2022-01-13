@@ -5,7 +5,7 @@ return array (
   'title' => 'Manual entry',
   'type' => 'floorplans',
   'id' => '60490ab529970',
-  'updated' => 1634265618,
+  'updated' => 1642104471,
   'columns' => 
   array (
     '6168d783f43958' => 
@@ -53,6 +53,23 @@ return array (
       'bulk_edit' => 'on',
       'search' => 'on',
       'name' => 'title',
+    ),
+    '61e0866a8ac084' => 
+    array (
+      'type' => 'column-acf_field',
+      'label' => 'Description',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'field_61e0862111d74',
+      'excerpt_length' => '4',
+      'export' => 'off',
+      'sort' => 'on',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '61e0866a8ac084',
     ),
     '6168d75a6872b0' => 
     array (

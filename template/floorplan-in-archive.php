@@ -42,6 +42,8 @@ function rentfetch_floorplan_in_archive( $post_id ) {
                     printf( '<h3 class="floorplan-title">%s</h3>', $title );
                                         
                 do_action( 'rentfetch_do_each_floorplan_availability' );
+                
+                do_action( 'rentfetch_do_each_floorplan_description' );
                     
                 echo '<p class="info">';
                 
@@ -80,6 +82,19 @@ function rentfetch_floorplan_in_archive( $post_id ) {
           echo '</div>'; // .floorplan-inner  
         
     echo '</div>';
+    
+}
+
+add_action( 'rentfetch_do_each_floorplan_description', 'rentfetch_each_floorplan_description' );
+function rentfetch_each_floorplan_description() {
+    
+    $post_id = get_the_ID();
+    
+    $floorplan_description = get_field( 'floorplan_description', $post_id );
+    
+    if ( $floorplan_description )
+        printf( '<p class="floorplan-description">%s</p>', $floorplan_description );
+    
     
 }
 
