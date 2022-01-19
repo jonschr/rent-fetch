@@ -44,7 +44,9 @@ function rentfetch_floorplan_in_archive( $post_id ) {
                 do_action( 'rentfetch_do_each_floorplan_availability' );
                 
                 do_action( 'rentfetch_do_each_floorplan_description' );
-                    
+                
+                do_action( 'rentfetch_floorplan_in_archive_do_show_specials' );
+                                    
                 echo '<p class="info">';
                 
                     do_action( 'rentfetch_do_each_floorplan_beds' );
@@ -465,9 +467,7 @@ function rentfetch_each_floorplan_images() {
         $floorplan_image = RENTFETCH_PATH . 'images/fallback-property.svg';
         
         echo '<div class="floorplan-images-wrap">';
-        
-            do_action( 'rentfetch_floorplan_in_archive_do_show_specials' );
-            
+                    
             echo '<div class="floorplan-slider">';
                     echo '<div class="floorplan-slide">';
                         printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $floorplan_image, $page_title, $page_title );
@@ -478,9 +478,7 @@ function rentfetch_each_floorplan_images() {
     } else {
         
         echo '<div class="floorplan-images-wrap">';
-        
-            do_action( 'rentfetch_floorplan_in_archive_do_show_specials' );
-            
+                    
             echo '<div class="floorplan-slider">';
                         
                 foreach( $floorplan_images as $floorplan_image ) {
@@ -555,7 +553,7 @@ function rentfetch_floorplan_in_archive_show_specials() {
         
     $text = null; // set $text to null, since we're not passing anything in
     $specials_text = apply_filters( 'rentfetch_has_specials_text', $text );    
-    printf( '<div class="has-specials-floorplan">%s</div>', $specials_text );
+    printf( '<div class="has-specials-floorplan-wrap"><div class="has-specials-floorplan">%s</div></div>', $specials_text );
 }
 
 add_filter( 'rentfetch_has_specials_text', 'rentfetch_default_specials_text', 10, 1 );

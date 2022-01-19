@@ -1,7 +1,10 @@
 .has-specials-property {
-    position: absolute;
-    left: 24px;
-    top: 24px;
+    margin-top: 10px;
+    position: relative;
+    display: inline-block;
+    // position: absolute;
+    // left: 24px;
+    // top: 24px;
     background-color: #FFEBB1;
     z-index: 20;
     font-size: 14px;

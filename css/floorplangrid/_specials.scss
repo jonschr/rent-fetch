@@ -1,13 +1,13 @@
 .has-specials-floorplan {
-    position: absolute;
-    left: 24px;
-    top: 24px;
+    position: relative;
     background-color: #FFEBB1;
     z-index: 20;
     font-size: 14px;
     line-height: 1em;
     padding: 8px 10px 8px 30px;
     border-radius: 3px;
+    display: inline-block;
+    margin-bottom: 10px;
 
     &:before {
         content: "";

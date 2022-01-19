@@ -160,6 +160,8 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
                 do_action( 'rentfetch_do_each_floorplan_availability' );
                 
                 do_action( 'rentfetch_do_each_floorplan_description' );
+                
+                do_action( 'rentfetch_floorplan_in_archive_do_show_specials' );
                     
                 echo '<p class="floorplangrid__info">';
                 

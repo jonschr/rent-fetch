@@ -1,3 +1,6 @@
+## 3.4.4
+* Moving the specials label on both properties and floorplans, minor style updates to accommodate this
+
 ## 3.4.3
 * Removing the Rent Fetch version number when loading Google Maps scripts, e.g. https://maps.googleapis.com/maps/api/js?key={KEY}&ver=3.4.1 becomes https://maps.googleapis.com/maps/api/js?key={KEY}
 
