@@ -1,5 +1,5 @@
 ## 3.4.5
-* Pulling the specials markup off into a separat action for more portability
+* Pulling the specials markup off into a separate action for more portability
 
 ## 3.4.4
 * Moving the specials label on both properties and floorplans, minor style updates to accommodate this
