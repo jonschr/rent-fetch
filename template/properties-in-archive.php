@@ -106,8 +106,8 @@ function rentfetch_each_property( $id, $floorplan ) {
 }
 
 //* add the specials markup
-add_action( 'rentfetch_do_each_property_specials', 'rentfetch_do_each_property_specials', 10, 1 );
-function rentfetch_do_each_property_specials( $floorplan ) {
+add_action( 'rentfetch_do_each_property_specials', 'rentfetch_each_property_specials', 10, 1 );
+function rentfetch_each_property_specials( $floorplan ) {
     
     $has_specials = $floorplan['property_has_specials'];
     

@@ -1,3 +1,6 @@
+## 3.4.6
+* Fixing a duplicate action
+
 ## 3.4.5
 * Pulling the specials markup off into a separate action for more portability
 
