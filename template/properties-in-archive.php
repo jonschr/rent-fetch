@@ -27,7 +27,7 @@ function rentfetch_each_property( $id, $floorplan ) {
     $bathsrange = $floorplan['bathsrange'];    
     $rentrange = $floorplan['rentrange'];
     $sqftrange = $floorplan['sqftrange'];
-    $has_specials = $floorplan['property_has_specials'];
+    
     $permalink = get_the_permalink( $id );    
     
     // class
@@ -71,11 +71,7 @@ function rentfetch_each_property( $id, $floorplan ) {
                              
                 do_action( 'rentfetch_do_each_properties_rent_range', $floorplan );
                 
-                if ( $has_specials == true ) {
-                    $specials_text = 'Specials available';
-                    $specials_text = apply_filters( 'rentfetch_has_specials_text', $specials_text );
-                    printf( '<div class="has-specials-property">%s</div>', $specials_text );
-                }
+                do_action( 'rentfetch_do_each_property_specials', $floorplan );
                                                     
             echo '</div>';
                         
@@ -106,6 +102,20 @@ function rentfetch_each_property( $id, $floorplan ) {
         }
                                                 
     echo '</div>';
+    
+}
+
+//* add the specials markup
+add_action( 'rentfetch_do_each_property_specials', 'rentfetch_do_each_property_specials', 10, 1 );
+function rentfetch_do_each_property_specials( $floorplan ) {
+    
+    $has_specials = $floorplan['property_has_specials'];
+    
+    if ( $has_specials == true ) {
+        $specials_text = 'Specials available';
+        $specials_text = apply_filters( 'rentfetch_has_specials_text', $specials_text );
+        printf( '<div class="has-specials-property">%s</div>', $specials_text );
+    }
     
 }
 
