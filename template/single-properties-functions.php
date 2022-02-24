@@ -164,10 +164,99 @@ function rentfetch_single_property_description() {
                 printf( '<h2>Welcome home to %s</h2>', $title );
                 
             printf( '<div class="description">%s</div>', $description );
+            
+            do_action( 'rentfetch_single_property_do_lead_generation' );
         
         echo '</div>';
         
     }
+}
+
+add_action( 'rentfetch_single_property_do_lead_generation', 'rentfetch_single_property_yardi_lead_generation' );
+function rentfetch_single_property_yardi_lead_generation() {
+    
+    echo '<a class="button" data-fancybox href="#yardi-api-form-wrap">Inquire</a>';
+    
+    ?>
+    <script>
+        jQuery(document).ready(function( $ ) {
+           
+            $("#yardi-api-form").submit(function(e) {
+
+                // Stop form from submitting normally
+                e.preventDefault();
+                                                                
+                $.ajax({
+                    url: '<?php echo RENTFETCH_PATH . 'template/formproxy/yardi-form-proxy.php'; ?>',
+                    type: 'POST',
+                    data: {
+                        FirstName: $( this ).find( "input[name='FirstName']" ).val(),
+                        LastName: $( this ).find( "input[name='LastName']" ).val(),
+                        Email: $( this ).find( "input[name='Email']" ).val(),
+                        Phone: $( this ).find( "input[name='Phone']" ).val(),
+                        Message: $( this ).find( "textarea[name='Message']" ).val(),
+                        PropertyCode: $( this ).find( "input[name='PropertyCode']" ).val(),
+                    },
+                    success: function(response) {
+                        
+                        //* Hide the form
+                        $( '#yardi-api-form' ).hide();                        
+                        
+                        //* Log the success or error code response
+                        console.log( response );
+                        
+                        //* Output some text
+                        if ( response == 'Success' ) {
+                            $( '#yardi-api-response' ).html( '<p>Great, you\'re all set!</p>' );
+                        } else {
+                            $( '#yardi-api-response' ).html( '<p>Whoops! Looks like your information didn\'t submit correctly! Please try again later or reach out directly.</p>' );
+                        }
+                    }
+                });
+            });
+        });
+            
+    </script>
+    <?php
+        echo '<div id="yardi-api-form-wrap" style="display:none;">';
+            echo '<form id="yardi-api-form" class="rentfetch-api-form">';
+            echo '<ul class="form-wrap">';
+                echo '<li class="group columns-2">';
+                    echo '<div class="column">';
+                        echo '<label for="FirstName">First Name</label>';
+                        echo '<input type="text" id="FirstName" name="FirstName" value="Brindle">';
+                    echo '</div>';
+                    echo '<div class="column">';
+                        echo '<label for="LastName">Last Name</label>';
+                        echo '<input type="text" id="LastName" name="LastName" value="Digital">';
+                    echo '</div>';
+                echo '</li>';
+                echo '<li class="group columns-2">';
+                    echo '<div class="column">';
+                        echo '<label for="Email">Email</label>';
+                        echo '<input type="email" id="Email" name="Email" value="hello@brindledigital.com">';
+                    echo '</div>';
+                    echo '<div class="column">';
+                        echo '<label for="Phone">Phone</label>';
+                        echo '<input type="tel" id="Phone" name="Phone" value="999.999.9999">';
+                    echo '</div>';
+                echo '</li>';
+                echo '<li>';
+                    echo '<label for="Message">Message</label>';
+                    echo '<textarea id="Message" name="Message">This is a test.</textarea>';
+                echo '</li>';
+                echo '<li class="form-footer">';
+                
+                    //* Hidden inputs
+                    printf( '<input type="hidden" id="PropertyCode" name="PropertyCode" value="%s" />', get_post_meta( get_the_ID(), 'property_code', true ) );
+                    printf( '<input type="hidden" id="Source" name="Source" value="%s" />', home_url() );
+                    
+                    echo '<input type="submit" id="submit">';
+                echo '</li>';
+            echo '</ul>';
+        echo '</form>';
+        echo '<div id="yardi-api-response"></div>';
+    echo '</div>'; // #yardi-api-form-wrap
 }
 
 function rentfetch_single_property_floorplans() {
