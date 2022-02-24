@@ -153,7 +153,7 @@ function rentfetch_single_property_description() {
     $city = get_post_meta( $id, 'city', true );
     $description = apply_filters( 'the_content', get_post_meta( $id, 'description', true ) );
 
-    if ( $description ) {
+    if ( $description || $city ) {
         
         echo '<div class="description-wrap">';
         
@@ -223,21 +223,21 @@ function rentfetch_single_property_yardi_lead_generation() {
             echo '<ul class="form-wrap">';
                 echo '<li class="group columns-2">';
                     echo '<div class="column">';
-                        echo '<label for="FirstName">First Name</label>';
+                        echo '<label for="FirstName">First Name <span class="required">Required</span></label>';
                         echo '<input type="text" id="FirstName" name="FirstName" value="Brindle">';
                     echo '</div>';
                     echo '<div class="column">';
-                        echo '<label for="LastName">Last Name</label>';
+                        echo '<label for="LastName">Last Name  <span class="required">Required</span></label>';
                         echo '<input type="text" id="LastName" name="LastName" value="Digital">';
                     echo '</div>';
                 echo '</li>';
                 echo '<li class="group columns-2">';
                     echo '<div class="column">';
-                        echo '<label for="Email">Email</label>';
+                        echo '<label for="Email">Email  <span class="required">Required</span></label>';
                         echo '<input type="email" id="Email" name="Email" value="hello@brindledigital.com">';
                     echo '</div>';
                     echo '<div class="column">';
-                        echo '<label for="Phone">Phone</label>';
+                        echo '<label for="Phone">Phone  <span class="required">Required</span></label>';
                         echo '<input type="tel" id="Phone" name="Phone" value="999.999.9999">';
                     echo '</div>';
                 echo '</li>';

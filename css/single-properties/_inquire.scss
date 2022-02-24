@@ -30,6 +30,12 @@
 
     label {
         display: block;
+
+        span.required {
+            color: red;
+            font-size: 0.7em;
+            font-style: italic;
+        }
     }
 
     input {
