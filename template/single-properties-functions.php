@@ -175,6 +175,23 @@ function rentfetch_single_property_description() {
 add_action( 'rentfetch_single_property_do_lead_generation', 'rentfetch_single_property_yardi_lead_generation' );
 function rentfetch_single_property_yardi_lead_generation() {
     
+    //* bail if this property is not pulled automatically from Yardi
+    $property_source = get_post_meta( get_the_ID(), 'property_source', true );
+    if ( $property_source != 'yardi' )
+        return;
+        
+    //* bail if there's no username or password set for Yardi
+    $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
+        
+    $yardi_username = $yardi_integration_creds['yardi_username'];
+    if ( !$yardi_username )
+        return;
+        
+    $yardi_password = $yardi_integration_creds['yardi_password'];
+    if ( !$yardi_password )
+        return;
+        
+    //* Output the button
     echo '<a class="button" data-fancybox href="#yardi-api-form-wrap">Inquire</a>';
     
     ?>
@@ -196,6 +213,9 @@ function rentfetch_single_property_yardi_lead_generation() {
                         Phone: $( this ).find( "input[name='Phone']" ).val(),
                         Message: $( this ).find( "textarea[name='Message']" ).val(),
                         PropertyCode: $( this ).find( "input[name='PropertyCode']" ).val(),
+                        Username: '<?php echo $yardi_username; ?>',
+                        Password: '<?php echo $yardi_password; ?>',
+                        Source: '<?php echo home_url(); ?>',
                     },
                     success: function(response) {
                         
@@ -217,6 +237,7 @@ function rentfetch_single_property_yardi_lead_generation() {
         });
             
     </script>
+    
     <?php
         echo '<div id="yardi-api-form-wrap" style="display:none;">';
             echo '<form id="yardi-api-form" class="rentfetch-api-form">';
@@ -224,21 +245,21 @@ function rentfetch_single_property_yardi_lead_generation() {
                 echo '<li class="group columns-2">';
                     echo '<div class="column">';
                         echo '<label for="FirstName">First Name <span class="required">Required</span></label>';
-                        echo '<input type="text" id="FirstName" name="FirstName" value="Brindle">';
+                        echo '<input required type="text" id="FirstName" name="FirstName" value="Brindle">';
                     echo '</div>';
                     echo '<div class="column">';
                         echo '<label for="LastName">Last Name  <span class="required">Required</span></label>';
-                        echo '<input type="text" id="LastName" name="LastName" value="Digital">';
+                        echo '<input required type="text" id="LastName" name="LastName" value="Digital">';
                     echo '</div>';
                 echo '</li>';
                 echo '<li class="group columns-2">';
                     echo '<div class="column">';
                         echo '<label for="Email">Email  <span class="required">Required</span></label>';
-                        echo '<input type="email" id="Email" name="Email" value="hello@brindledigital.com">';
+                        echo '<input required type="email" id="Email" name="Email" value="hello@brindledigital.com">';
                     echo '</div>';
                     echo '<div class="column">';
                         echo '<label for="Phone">Phone  <span class="required">Required</span></label>';
-                        echo '<input type="tel" id="Phone" name="Phone" value="999.999.9999">';
+                        echo '<input required type="tel" id="Phone" name="Phone" value="999.999.9999">';
                     echo '</div>';
                 echo '</li>';
                 echo '<li>';
@@ -251,7 +272,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                     printf( '<input type="hidden" id="PropertyCode" name="PropertyCode" value="%s" />', get_post_meta( get_the_ID(), 'property_code', true ) );
                     printf( '<input type="hidden" id="Source" name="Source" value="%s" />', home_url() );
                     
-                    echo '<input type="submit" id="submit">';
+                    echo '<input type="submit" class="button" id="submit">';
                 echo '</li>';
             echo '</ul>';
         echo '</form>';

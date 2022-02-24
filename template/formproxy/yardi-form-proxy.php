@@ -22,9 +22,14 @@ if ( isset( $_POST['Message'] ) )
 if ( isset( $_POST['PropertyCode'] ) )
 	$propertycode = urlencode( htmlspecialchars( $_POST['PropertyCode'] ) );
 	
-$username = 'notifications@fourstarrealty.com';
-$password = 'Password123!';
-$source = 'http://rent-fetch.local';
+if ( isset( $_POST['Username'] ) )
+	$username = urlencode( htmlspecialchars( $_POST['Username'] ) );
+	
+if ( isset( $_POST['Password'] ) )
+	$password = urlencode( htmlspecialchars( $_POST['Password'] ) );
+	
+if ( isset( $_POST['Source'] ) )
+	$source = urlencode( htmlspecialchars( $_POST['Source'] ) );
 
 if ( $FirstName )
 	$url = $url . '&firstName=' . $FirstName;
@@ -38,8 +43,8 @@ if ( $Email )
 if ( $Phone )
 	$url = $url . '&phone=' . $Phone;
 	
-// if ( $Message )
-// 	$url = $url . '&message=' . $Message;
+if ( $Message )
+	$url = $url . '&message=' . $Message;
 	
 if ( $propertycode )
 	$url = $url . '&propertycode=' . $propertycode;
