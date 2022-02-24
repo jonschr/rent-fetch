@@ -213,8 +213,6 @@ function rentfetch_single_property_yardi_lead_generation() {
                         Phone: $( this ).find( "input[name='Phone']" ).val(),
                         Message: $( this ).find( "textarea[name='Message']" ).val(),
                         PropertyCode: $( this ).find( "input[name='PropertyCode']" ).val(),
-                        Username: '<?php echo $yardi_username; ?>',
-                        Password: '<?php echo $yardi_password; ?>',
                         Source: '<?php echo home_url(); ?>',
                     },
                     success: function(response) {
@@ -223,7 +221,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                         $( '#yardi-api-form' ).hide();                        
                         
                         //* Log the success or error code response
-                        console.log( response );
+                        console.log( 'Yardi response: ' + response );
                         
                         //* Output some text
                         if ( response == 'Success' ) {
