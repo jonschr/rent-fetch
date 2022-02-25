@@ -1,3 +1,6 @@
+## 3.5.2
+* Oops! Turning off the ability to edit fields for the Rent Fetch settings.
+
 ## 3.5.1
 * Verifying that the Yardi API submission feature is enabled (not just the settings configured) before outputting anything
 
