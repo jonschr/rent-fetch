@@ -1,3 +1,6 @@
+## 3.5.3
+* Updating the button text
+
 ## 3.5.2
 * Oops! Turning off the ability to edit fields for the Rent Fetch settings.
 
