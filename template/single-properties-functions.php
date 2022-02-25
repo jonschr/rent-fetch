@@ -181,11 +181,18 @@ function rentfetch_single_property_yardi_lead_generation() {
         
     //* bail if there's no username or password set for Yardi
     $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
+    
+    // bail if the feature is disabled
+    $enable_yardi_api_lead_generation = $yardi_integration_creds['enable_yardi_api_lead_generation'];
+    if ( $enable_yardi_api_lead_generation != true )
+        return;
         
+    // bail if there's no username
     $yardi_username = $yardi_integration_creds['yardi_username'];
     if ( !$yardi_username )
         return;
         
+    // bail if there's no password
     $yardi_password = $yardi_integration_creds['yardi_password'];
     if ( !$yardi_password )
         return;

@@ -1,3 +1,6 @@
+## 3.5.1
+* Verifying that the Yardi API submission feature is enabled (not just the settings configured) before outputting anything
+
 ## 3.5
 * Adding functionality for Yardi to automatically add an inquire button and lightbox form to product pages which submits through the API.
 
