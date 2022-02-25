@@ -9,7 +9,6 @@
             margin-bottom: 20px;
 
             &:last-child {
-                padding-top: 10px;
                 margin-bottom: 0;
             }
 
@@ -21,6 +20,15 @@
             .column {
                 width: 100%;
             }
+        }
+    }
+
+    input#yardi-api-submit {
+        transition: .3s all ease;
+
+        &[disabled] {
+            filter: grayscale(100%);
+            opacity: 0.5;
         }
     }
 

@@ -95,7 +95,6 @@ function rentfetch_single_property_basic_info() {
     $url = get_post_meta( $id, 'url', true );
     $phone = get_post_meta( $id, 'phone', true );
 
-    
     echo '<div class="basic-info">';
     
         if ( $address || $city || $state || $zipcode ) {
@@ -196,8 +195,15 @@ function rentfetch_single_property_yardi_lead_generation() {
     
     ?>
     <script>
+        function recaptchaCallback() {
+            var response = grecaptcha.getResponse();
+            if ( response ) {
+                document.getElementById('yardi-api-submit').removeAttribute('disabled');
+            }
+        };
+            
         jQuery(document).ready(function( $ ) {
-           
+                        
             $("#yardi-api-form").submit(function(e) {
 
                 // Stop form from submitting normally
@@ -227,7 +233,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                         if ( response == 'Success' ) {
                             $( '#yardi-api-response' ).html( '<p>Great, you\'re all set!</p>' );
                         } else {
-                            $( '#yardi-api-response' ).html( '<p>Whoops! Looks like your information didn\'t submit correctly! Please try again later or reach out directly.</p>' );
+                            $( '#yardi-api-response' ).html( '<p>Whoops! Something\'s wrong. Please try again later or reach out directly.</p>' );
                         }
                     }
                 });
@@ -246,17 +252,17 @@ function rentfetch_single_property_yardi_lead_generation() {
                         echo '<input required type="text" id="FirstName" name="FirstName" />';
                     echo '</div>';
                     echo '<div class="column">';
-                        echo '<label for="LastName">Last Name  <span class="required">Required</span></label>';
+                        echo '<label for="LastName">Last Name <span class="required">Required</span></label>';
                         echo '<input required type="text" id="LastName" name="LastName" />';
                     echo '</div>';
                 echo '</li>';
                 echo '<li class="group columns-2">';
                     echo '<div class="column">';
-                        echo '<label for="Email">Email  <span class="required">Required</span></label>';
+                        echo '<label for="Email">Email <span class="required">Required</span></label>';
                         echo '<input required type="email" id="Email" name="Email" />';
                     echo '</div>';
                     echo '<div class="column">';
-                        echo '<label for="Phone">Phone  <span class="required">Required</span></label>';
+                        echo '<label for="Phone">Phone <span class="required">Required</span></label>';
                         echo '<input required type="tel" id="Phone" name="Phone" />';
                     echo '</div>';
                 echo '</li>';
@@ -264,13 +270,37 @@ function rentfetch_single_property_yardi_lead_generation() {
                     echo '<label for="Message">Message</label>';
                     echo '<textarea id="Message" name="Message"></textarea>';
                 echo '</li>';
+                
+                //* Google reCAPTCHA
+                $google_recaptcha = get_field( 'google_recaptcha', 'option' );
+                $google_recaptcha_v2_site_key = $google_recaptcha['google_recaptcha_v2_site_key'];
+                $google_recaptcha_v2_secret = $google_recaptcha['google_recaptcha_v2_secret'];
+                
+                if ( $google_recaptcha_v2_site_key && $google_recaptcha_v2_secret ) {
+                    
+                    wp_enqueue_script( 'rentfetch-google-recaptcha' );
+                    
+                    ?>
+                    
+                    <script>
+                        jQuery(document).ready(function( $ ) {
+                            $('#yardi-api-submit').attr( 'disabled', 'disabled' );                            
+                        });
+                    </script>
+                    
+                    <?php
+                    echo '<li>';
+                        printf( '<div class="g-recaptcha" data-callback="recaptchaCallback" data-sitekey="%s"></div>', $google_recaptcha_v2_site_key );
+                    echo '</li>';
+                }
+                    
                 echo '<li class="form-footer">';
                 
                     //* Hidden inputs
                     printf( '<input type="hidden" id="PropertyCode" name="PropertyCode" value="%s" />', get_post_meta( get_the_ID(), 'property_code', true ) );
                     printf( '<input type="hidden" id="Source" name="Source" value="%s" />', home_url() );
                     
-                    echo '<input type="submit" class="button" id="submit">';
+                    echo '<input type="submit" name="yardi-api-submit" class="button" id="yardi-api-submit" value="Send us your inquiry!" />';
                 echo '</li>';
             echo '</ul>';
         echo '</form>';

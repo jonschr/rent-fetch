@@ -3,7 +3,26 @@
 //* Load WordPress so that we get access to those functions
 require_once(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/wp-load.php');
 
-$curl = curl_init();
+// //* Google reCAPTCHA (we're validating this on the frontend and removed for now)
+// $google_recaptcha = get_field( 'google_recaptcha', 'option' );
+// $google_recaptcha_v2_site_key = $google_recaptcha['google_recaptcha_v2_site_key'];
+// $google_recaptcha_v2_secret = $google_recaptcha['google_recaptcha_v2_secret'];
+
+// if ( isset( $_POST['captcha'] ) )
+// 	$captcha_response = $_POST['captcha'];
+	
+// $file = sprintf( 'https://www.google.com/recaptcha/api/siteverify?secret=%s&captcha_response=%s', $google_recaptcha_v2_secret, $captcha_response );
+
+// $verify = file_get_contents( $file );
+// $captcha_success = json_decode( $verify );
+
+// if ($captcha_success->success == false) {
+// 	echo 'Captcha not successful.';
+// 	echo $captcha_success->error-codes;
+// } elseif ( $captcha_success->success == true) {
+// 	echo 'Captcha successful.';
+// 	echo $captcha_success->success;
+// }
 
 //* We know the URL already
 $url = 'https://api.rentcafe.com/rentcafeapi.aspx?requestType=lead';
@@ -62,6 +81,8 @@ if ( $password )
 	
 if ( $source )
 	$url = $url . '&source=' . $source;
+	
+$curl = curl_init();
 	
 //* Set up CURL
 curl_setopt_array($curl, array(

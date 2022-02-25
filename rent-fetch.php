@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.4.6
+	Version: 3.5
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.4.6' );
+define ( 'RENTFETCH_VERSION', '3.5' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -59,7 +59,7 @@ function rentfetch_acf_settings_url( $url ) {
 }
 
 //! UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
-add_filter('acf/settings/save_json', 'rentfetch_acf_json_save_point');
+// add_filter('acf/settings/save_json', 'rentfetch_acf_json_save_point');
 function rentfetch_acf_json_save_point( $path ) {
     
     // update path
@@ -324,9 +324,13 @@ function rentfetch_enqueue_scripts_stylesheets() {
     wp_register_script( 'rentfetch-fancybox-script', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
         
     // Slick
-    wp_register_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
-    wp_register_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
-    wp_register_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
+    wp_register_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), RENTFETCH_VERSION, true );
+    wp_register_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), RENTFETCH_VERSION );
+    wp_register_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), RENTFETCH_VERSION );
+    
+    // Google reCAPTCHA
+    wp_register_script( 'rentfetch-google-recaptcha', 'https://www.google.com/recaptcha/api.js', array('jquery'), RENTFETCH_VERSION, true );
+    
     	
 }
 

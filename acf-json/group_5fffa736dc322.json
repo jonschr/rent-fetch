@@ -472,7 +472,7 @@
         },
         {
             "key": "field_5fffafe5dede1",
-            "label": "Google Maps",
+            "label": "Google Integrations",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -485,6 +485,61 @@
             },
             "placement": "top",
             "endpoint": 0
+        },
+        {
+            "key": "field_6218218481792",
+            "label": "Google reCaptcha",
+            "name": "google_recaptcha",
+            "type": "group",
+            "instructions": "Required for Rent Fetch forms to use the reCaptcha integration.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "sub_fields": [
+                {
+                    "key": "field_621822ad5b7fe",
+                    "label": "Google reCAPTCHA v2 site key",
+                    "name": "google_recaptcha_v2_site_key",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "51",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                },
+                {
+                    "key": "field_621822bf5b7ff",
+                    "label": "Google reCAPTCHA v2 secret",
+                    "name": "google_recaptcha_v2_secret",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
         },
         {
             "key": "field_6079264fd1ffe",
@@ -1602,5 +1657,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1645223065
+    "modified": 1645749044
 }
