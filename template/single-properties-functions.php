@@ -198,7 +198,7 @@ function rentfetch_single_property_yardi_lead_generation() {
         return;
         
     //* Output the button
-    echo '<a class="button" data-fancybox href="#yardi-api-form-wrap">Inquire</a>';
+    echo '<a class="button" data-fancybox href="#yardi-api-form-wrap">Contact us today</a>';
     
     ?>
     <script>
@@ -238,9 +238,9 @@ function rentfetch_single_property_yardi_lead_generation() {
                         
                         //* Output some text
                         if ( response == 'Success' ) {
-                            $( '#yardi-api-response' ).html( '<p>Great, you\'re all set!</p>' );
+                            $( '#yardi-api-response' ).html( '<p>Thanks for reaching out. Our team will be in touch soon.</p>' );
                         } else {
-                            $( '#yardi-api-response' ).html( '<p>Whoops! Something\'s wrong. Please try again later or reach out directly.</p>' );
+                            $( '#yardi-api-response' ).html( '<p>Sorry, your message was not sent. Please try again later or reach out directly.</p>' );
                         }
                     }
                 });
@@ -307,7 +307,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                     printf( '<input type="hidden" id="PropertyCode" name="PropertyCode" value="%s" />', get_post_meta( get_the_ID(), 'property_code', true ) );
                     printf( '<input type="hidden" id="Source" name="Source" value="%s" />', home_url() );
                     
-                    echo '<input type="submit" name="yardi-api-submit" class="button" id="yardi-api-submit" value="Send us your inquiry!" />';
+                    echo '<input type="submit" name="yardi-api-submit" class="button" id="yardi-api-submit" value="Get in touch" />';
                 echo '</li>';
             echo '</ul>';
         echo '</form>';
