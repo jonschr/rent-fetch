@@ -1,3 +1,6 @@
+## 3.5
+* Adding functionality for Yardi to automatically add an inquire button and lightbox form to product pages which submits through the API.
+
 ## 3.4.6
 * Fixing a duplicate action
 
