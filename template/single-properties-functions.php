@@ -217,7 +217,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                 e.preventDefault();
                                                                 
                 $.ajax({
-                    url: '<?php echo '/wp-content/plugins/rent-fetch/template/formproxy/yardi-form-proxy.php'; ?>',
+                    url: '<?php echo RENTFETCH_PATH . 'template/formproxy/yardi-form-proxy.php'; ?>',
                     type: 'POST',
                     data: {
                         FirstName: $( this ).find( "input[name='FirstName']" ).val(),
