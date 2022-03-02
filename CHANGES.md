@@ -1,3 +1,6 @@
+## 3.5.4
+* Using a local path for Yardi API form proxy file
+
 ## 3.5.3
 * Updating the button text
 
