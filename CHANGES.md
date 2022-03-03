@@ -1,3 +1,6 @@
+## 3.5.6
+* Adding mechanism to find the wp-load file when submitting Yardi API requests (to account for hosts like Flywheel which move that file)
+
 ## 3.5.5
 * Reverting
 
