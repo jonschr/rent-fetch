@@ -1,7 +1,9 @@
 <?php
 
 //* Load WordPress so that we get access to those functions
-require_once(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/wp-load.php');
+$path =  $_POST['path']; // because the yardi-form-proxy.php file doesn't have access to the wp-load.php URL (and some hosts change that), we're passing that location into this file.
+// require_once(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . '/wp-load.php');
+require_once( $path );
 
 // //* Google reCAPTCHA (we're validating this on the frontend and removed for now)
 // $google_recaptcha = get_field( 'google_recaptcha', 'option' );

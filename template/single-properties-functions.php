@@ -200,6 +200,8 @@ function rentfetch_single_property_yardi_lead_generation() {
     //* Output the button
     echo '<a class="button" data-fancybox href="#yardi-api-form-wrap">Contact us today</a>';
     
+    $wp_load_path = ABSPATH . 'wp-load.php';
+    
     ?>
     <script>
         function recaptchaCallback() {
@@ -227,6 +229,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                         Message: $( this ).find( "textarea[name='Message']" ).val(),
                         PropertyCode: $( this ).find( "input[name='PropertyCode']" ).val(),
                         Source: '<?php echo home_url(); ?>',
+                        path: '<?php echo $wp_load_path; ?>',
                     },
                     success: function(response) {
                         
