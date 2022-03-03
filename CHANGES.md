@@ -1,3 +1,6 @@
+## 3.5.7
+* Adding functionality to set availability and available date of Yardi floorplans no longer in the API to unavailable.
+
 ## 3.5.6
 * Adding mechanism to find the wp-load file when submitting Yardi API requests (to account for hosts like Flywheel which move that file)
 

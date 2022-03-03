@@ -55,8 +55,8 @@ function rentfetch_fetch_yardi_floorplans( $property ) {
         
     }
     
-    //TODO uncomment this to enable deleting orphan floorplans
-    // rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property );
+    // Enable removing availability from orphan floorplans
+    rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property );
 }
 
 /**
@@ -407,6 +407,7 @@ function rentfetch_get_availability_information( $floorplan = 'hello', $voyager_
 
 // add_action( 'init', 'rentfetch_delete_orphan_yardi_floorplans' ); // for testing only
 function rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property ) {
+// function rentfetch_delete_orphan_yardi_floorplans( $floorplans ) {
     
     // // sample data for testing
     // $property = '175wbell';
@@ -417,8 +418,6 @@ function rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property ) {
     foreach( $floorplans as $floorplan ) {
         $floorplan_ids_from_api[] = $floorplan[ 'FloorplanId' ];
     }
-    
-    // var_dump( $floorplan_ids_from_api );
     
     //* get a list of floorplans currently in WordPress
     $floorplan_query_args = array(
@@ -439,8 +438,18 @@ function rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property ) {
             ),
         ),
     );
-    
+        
     $floorplans_in_wordpress = get_posts( $floorplan_query_args );
+        
+    // //* Testing
+    // echo 'From API: <br/>';
+    // var_dump( $floorplan_ids_from_api );
+    
+    // echo 'From WordPress: <br/>';
+    // foreach( $floorplans_in_wordpress as $floorplan_in_wordpress ) {
+    //     $floorplan_id_in_wordpress = get_post_meta( $floorplan_in_wordpress->ID, 'floorplan_id', true );
+    //     echo $floorplan_id_in_wordpress . '<br/>';
+    // }
     
     //* loop through each of those in WordPress and delete any that aren't in the API
     foreach ( $floorplans_in_wordpress as $floorplan_in_wordpress ) {
@@ -448,7 +457,11 @@ function rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property ) {
         $floorplan_ids_in_wordpress[] = $floorplan_id_in_wordpress;
         
         if ( !in_array( $floorplan_id_in_wordpress, $floorplan_ids_from_api ) ) {
-            wp_delete_post( $floorplan_in_wordpress->ID, true );
+            
+            $success_floorplan_no_date = update_post_meta( $floorplan_in_wordpress->ID, 'availability_date', null );
+            $success_floorplan_no_units = update_post_meta( $floorplan_in_wordpress->ID, 'available_units', '0' );
+            
+            rentfetch_log( "Removed availability information from $floorplan_in_wordpress->ID, as it no longer appears in the Yardi API." );
         }
     }
         
