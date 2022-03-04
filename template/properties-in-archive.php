@@ -27,6 +27,7 @@ function rentfetch_each_property( $id, $floorplan ) {
     $bathsrange = $floorplan['bathsrange'];    
     $rentrange = $floorplan['rentrange'];
     $sqftrange = $floorplan['sqftrange'];
+    $has_specials = $floorplan['property_has_specials'];
     
     $permalink = get_the_permalink( $id );    
     

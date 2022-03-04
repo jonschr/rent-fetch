@@ -1,3 +1,6 @@
+## 3.5.8
+* Better logging for the orphan floorplans
+
 ## 3.5.7
 * Adding functionality to set availability and available date of Yardi floorplans no longer in the API to unavailable.
 

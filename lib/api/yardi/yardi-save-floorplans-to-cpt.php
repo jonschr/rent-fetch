@@ -461,7 +461,7 @@ function rentfetch_delete_orphan_yardi_floorplans( $floorplans, $property ) {
             $success_floorplan_no_date = update_post_meta( $floorplan_in_wordpress->ID, 'availability_date', null );
             $success_floorplan_no_units = update_post_meta( $floorplan_in_wordpress->ID, 'available_units', '0' );
             
-            rentfetch_log( "Removed availability information from $floorplan_in_wordpress->ID, as it no longer appears in the Yardi API." );
+            rentfetch_log( "Removed availability information from WordPress post ID $floorplan_in_wordpress->ID (property No. $floorplan_in_wordpress->property_id, floorplan No. $floorplan_in_wordpress->floorplan_id), as this floorplan no longer appears in the Yardi API." );
         }
     }
         

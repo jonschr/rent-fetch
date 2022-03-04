@@ -29,6 +29,10 @@ function rentfetch_set_post_term( $post_id, $value, $taxonomy ) {
         
 	}
     
+	// we're seeing an error from time to time where $term is an object of WP_Error type. Bail if there's a WP Error happening here so that we avoid a fatal error.
+	if ( !is_array( $term ) )
+		return;
+	
     $term_id = intval( $term['term_id'] );
     $post_id = intval( $post_id );
             
