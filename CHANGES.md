@@ -1,3 +1,6 @@
+## 3.5.9
+* Add wraps to the single-rpoperties template to make more layouts possible.
+
 ## 3.5.8
 * Better logging for the orphan floorplans
 
