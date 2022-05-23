@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'version' => '5.4.4',
+  'version' => '5.7.1',
   'title' => 'Floorplans',
   'type' => 'floorplans',
   'id' => '6048fca7a7894',
-  'updated' => 1619036579,
+  'updated' => 1653326798,
   'columns' => 
   array (
     'title' => 
@@ -31,8 +31,11 @@ return array (
       'field_type' => '',
       'before' => '',
       'after' => '',
+      'edit' => 'on',
+      'editable_type' => 'text',
       'export' => 'off',
       'sort' => 'on',
+      'bulk_edit' => 'on',
       'search' => 'on',
       'filter' => 'off',
       'filter_label' => '',
@@ -40,11 +43,10 @@ return array (
     ),
     '600b41d6cb7a6' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab10550e47',
       'label' => 'Property ID',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab10550e47',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -57,11 +59,10 @@ return array (
     ),
     '600b41d6cb79b' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600a5183d7e10',
       'label' => 'Floorplan ID',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600a5183d7e10',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -74,11 +75,10 @@ return array (
     ),
     '600b41d6cb794' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600a5138d7e0b',
       'label' => 'Availability URL',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600a5138d7e0b',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -91,11 +91,10 @@ return array (
     ),
     '600b41d6cb796' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600a5144d7e0c',
       'label' => '# Available',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600a5144d7e0c',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -108,11 +107,10 @@ return array (
     ),
     '607b962c381064' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_607b95db3077c',
       'label' => 'Availability date',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_607b95db3077c',
       'date_format' => 'm/d/Y',
       'export' => 'off',
       'sort' => 'on',
@@ -126,11 +124,10 @@ return array (
     ),
     '607e4575ed4fe0' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_607e4413bc855',
       'label' => 'Video or tour URL',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_607e4413bc855',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -143,11 +140,10 @@ return array (
     ),
     '600b41d6cb798' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600a5157d7e0e',
       'label' => 'Beds',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600a5157d7e0e',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -160,11 +156,10 @@ return array (
     ),
     '600b41d6cb799' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600a5151d7e0d',
       'label' => 'Baths',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600a5151d7e0d',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -177,11 +172,10 @@ return array (
     ),
     '600b41d6cb79c' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600a515fd7e0f',
       'label' => 'Has Specials',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600a515fd7e0f',
       'export' => 'off',
       'sort' => 'on',
       'edit' => 'on',
@@ -193,11 +187,10 @@ return array (
     ),
     '600b41d6cb79e' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab0d850e46',
       'label' => 'Minimum Sqft',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab0d850e46',
       'number_format' => '',
       'export' => 'off',
       'sort' => 'on',
@@ -210,11 +203,10 @@ return array (
     ),
     '600b41d6cb79f' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab0ad50e43',
       'label' => 'Maximum Sqft',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab0ad50e43',
       'number_format' => '',
       'export' => 'off',
       'sort' => 'on',
@@ -227,11 +219,10 @@ return array (
     ),
     '600b41d6cb7a1' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab0ce50e45',
       'label' => 'Minimum Rent',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab0ce50e45',
       'number_format' => '',
       'export' => 'off',
       'sort' => 'on',
@@ -244,11 +235,10 @@ return array (
     ),
     '600b41d6cb7a2' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600aafb250e42',
       'label' => 'Maximum Rent',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600aafb250e42',
       'number_format' => '',
       'export' => 'off',
       'sort' => 'on',
@@ -261,11 +251,10 @@ return array (
     ),
     '600b41d6cb7a3' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab0c050e44',
       'label' => 'Minimum Deposit',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab0c050e44',
       'number_format' => '',
       'export' => 'off',
       'sort' => 'on',
@@ -278,11 +267,10 @@ return array (
     ),
     '600b41d6cb7a5' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600aaf6750e41',
       'label' => 'Maximum Deposit',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600aaf6750e41',
       'number_format' => '',
       'export' => 'off',
       'sort' => 'on',
@@ -295,11 +283,10 @@ return array (
     ),
     '600b41d6cb7a8' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab11750e48',
       'label' => 'Property Show Specials',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab11750e48',
       'export' => 'off',
       'sort' => 'on',
       'edit' => 'on',
@@ -311,11 +298,10 @@ return array (
     ),
     '60492043ac8b44' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_60491fe331bce',
       'label' => 'External Image URL',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_60491fe331bce',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -328,11 +314,10 @@ return array (
     ),
     '600b41d6cb7a9' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_600ab12750e49',
       'label' => 'Unit Type Mapping',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_600ab12750e49',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -387,8 +372,11 @@ return array (
       'field_type' => '',
       'before' => '',
       'after' => '',
+      'edit' => 'on',
+      'editable_type' => 'text',
       'export' => 'off',
       'sort' => 'on',
+      'bulk_edit' => 'on',
       'search' => 'off',
       'filter' => 'off',
       'filter_label' => '',
@@ -408,6 +396,7 @@ return array (
     'hide_submenu' => 'off',
     'hide_search' => 'off',
     'hide_bulk_actions' => 'off',
+    'resize_columns' => 'off',
     'horizontal_scrolling' => 'on',
     'sorting' => '0',
     'sorting_order' => 'asc',

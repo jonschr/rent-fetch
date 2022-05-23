@@ -1,20 +1,19 @@
 <?php
 
 return array (
-  'version' => '5.5.3',
+  'version' => '5.7.1',
   'title' => 'Manual entry',
   'type' => 'properties',
   'id' => '615f620aeffb8',
-  'updated' => 1634612266,
+  'updated' => 1653326879,
   'columns' => 
   array (
     '615f64c42353f8' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_615f6486f5fe0',
       'label' => 'Images',
       'width' => '300',
       'width_unit' => 'px',
-      'field' => 'field_615f6486f5fe0',
       'image_size' => 'cpac-custom',
       'image_size_w' => '60',
       'image_size_h' => '60',
@@ -40,11 +39,10 @@ return array (
     ),
     '606546534353f8' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb41cac1a',
       'label' => 'Property ID',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb41cac1a',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -57,11 +55,10 @@ return array (
     ),
     '6064eb9a666668' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eae3cac10',
       'label' => 'Address',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eae3cac10',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'off',
@@ -74,11 +71,10 @@ return array (
     ),
     '6064ebb055c290' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eaebcac11',
       'label' => 'City',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eaebcac11',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -91,11 +87,10 @@ return array (
     ),
     '6064ec0be9374c' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eaf2cac12',
       'label' => 'State',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eaf2cac12',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -108,11 +103,10 @@ return array (
     ),
     '6064ec235851ec' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb00cac13',
       'label' => 'Zipcode',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb00cac13',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'on',
@@ -125,11 +119,10 @@ return array (
     ),
     '616e33f7cac084' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb2ecac18',
       'label' => 'Latitude',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb2ecac18',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'off',
@@ -142,11 +135,10 @@ return array (
     ),
     '616e3400f91688' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb37cac19',
       'label' => 'Longitude',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb37cac19',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'off',
@@ -166,10 +158,10 @@ return array (
       'taxonomy' => 'propertytypes',
       'term_link_to' => 'filter',
       'number_of_items' => '10',
-      'export' => 'off',
-      'sort' => 'on',
       'edit' => 'on',
       'enable_term_creation' => 'on',
+      'export' => 'off',
+      'sort' => 'on',
       'bulk_edit' => 'on',
       'search' => 'on',
       'filter' => 'off',
@@ -178,19 +170,16 @@ return array (
     ),
     '6064ebb939db24' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb17cac15',
       'label' => 'Description',
       'width' => '150',
       'width_unit' => 'px',
-      'field' => 'field_6064eb17cac15',
       'excerpt_length' => '20',
       'export' => 'off',
       'sort' => 'off',
       'edit' => 'on',
-      'editable_type' => 'textarea',
+      'bulk_edit' => 'on',
       'search' => 'off',
-      'filter' => 'off',
-      'filter_label' => '',
       'name' => '6064ebb939db24',
     ),
     '6074b7fc5645a0' => 
@@ -202,10 +191,10 @@ return array (
       'taxonomy' => 'amenities',
       'term_link_to' => 'filter',
       'number_of_items' => '10',
-      'export' => 'off',
-      'sort' => 'off',
       'edit' => 'on',
       'enable_term_creation' => 'off',
+      'export' => 'off',
+      'sort' => 'off',
       'bulk_edit' => 'on',
       'search' => 'on',
       'filter' => 'off',
@@ -214,11 +203,10 @@ return array (
     ),
     '6064ec16e2d0e4' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb10cac14',
       'label' => 'URL',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb10cac14',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'off',
@@ -231,11 +219,10 @@ return array (
     ),
     '6064ebcaebc6a8' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb20cac16',
       'label' => 'Email',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb20cac16',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'off',
@@ -248,11 +235,10 @@ return array (
     ),
     '6064ebf38d9168' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_6064eb25cac17',
       'label' => 'Phone',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_6064eb25cac17',
       'character_limit' => '20',
       'export' => 'off',
       'sort' => 'off',
@@ -265,11 +251,10 @@ return array (
     ),
     '607665f849374c' => 
     array (
-      'type' => 'column-acf_field',
+      'type' => 'field_60766489d1c66',
       'label' => 'Pets',
       'width' => '',
       'width_unit' => '%',
-      'field' => 'field_60766489d1c66',
       'export' => 'off',
       'sort' => 'on',
       'edit' => 'on',
@@ -293,6 +278,7 @@ return array (
     'hide_submenu' => 'off',
     'hide_search' => 'off',
     'hide_bulk_actions' => 'off',
+    'resize_columns' => 'off',
     'horizontal_scrolling' => 'on',
     'sorting' => '0',
     'sorting_order' => 'asc',
