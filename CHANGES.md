@@ -1,3 +1,7 @@
+## 3.5.11
+
+-   Adding setting for labeling numbers of bedrooms (e.g. Studio or Individual Beds or whatever)
+
 ## 3.5.10
 
 -   Updating all Admin Columns Pro fields to add support for version 5.7.1+ of ACPs

@@ -165,7 +165,6 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
                     
                 echo '<p class="floorplangrid__info">';
                 
-                    add_filter( 'rentfetch_customize_beds_text', 'rentfetch_floorplansgrid_customize_beds_text', 10, 1 );
                     do_action( 'rentfetch_do_each_floorplan_beds' );
                     
                     add_filter( 'rentfetch_customize_baths_text', 'rentfetch_floorplansgrid_customize_baths_text', 10, 1 );

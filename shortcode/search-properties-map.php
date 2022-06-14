@@ -108,10 +108,12 @@ function rentfetch_propertymap( $atts ) {
                                     if ( $bed === null )
                                         continue;
                                         
+                                    $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label, $bed );
+                                        
                                     if ( in_array( $bed, $bedsparam ) ) {
-                                        printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
+                                        printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s</span></label>', $bed, $bed, $label );
                                     } else {
-                                        printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s Bedroom</span></label>', $bed, $bed, $bed );
+                                        printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s</span></label>', $bed, $bed, $label );
                                     }
                                 }
                             echo '</div>';

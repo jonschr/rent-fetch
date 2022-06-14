@@ -139,10 +139,9 @@ function rentfetch_each_floorplan_beds() {
     $beds = floatval( $beds );
     
     // allow for hooking in
-    $beds = apply_filters( 'rentfetch_customize_beds_text', $beds );
-        
-    if ( $beds )
-        printf( '<span class="floorplan-beds">%s</span>', $beds );
+    $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label, $beds );
+            
+    printf( '<span class="floorplan-beds">%s</span>', $label );
 }
 
 add_action( 'rentfetch_do_each_floorplan_rent_range', 'rentfetch_each_floorplan_rent_range' );
