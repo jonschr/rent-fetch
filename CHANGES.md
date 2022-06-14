@@ -1,3 +1,7 @@
+## 3.5.12
+
+-   Adding the labels on the floorplan filters in the floorplan grid block
+
 ## 3.5.11
 
 -   Adding setting for labeling numbers of bedrooms (e.g. Studio or Individual Beds or whatever)
