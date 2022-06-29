@@ -748,12 +748,15 @@ function rentfetch_filter_properties(){
     $properties_maximum_per_page = null;
     $properties_maximum_per_page = apply_filters( 'rentfetch_properties_maximum', $properties_maximum_per_page );
     
+    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby );
+    $order = apply_filters( 'rentfetch_get_property_order', $order );
+    
     //* The base property query
     $propertyargs = array(
         'post_type' => 'properties',
         'posts_per_page' => $properties_maximum_per_page,
-		'orderby' => 'menu_order',
-		'order'	=> 'DESC', // ASC or DESC
+		'orderby' => $orderby,
+		'order'	=> $order, // ASC or DESC
         'no_found_rows' => true,
 	);
     

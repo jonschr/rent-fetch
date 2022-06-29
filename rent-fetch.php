@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.5.12
+	Version: 3.5.13
     Author: Brindle Digital & Elodin Design
     Author URI: https://www.brindledigital.com/
 
@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.5.12' );
+define ( 'RENTFETCH_VERSION', '3.5.13' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -138,6 +138,7 @@ require_once( 'lib/common/filter_property_urls.php' );
 require_once( 'lib/common/array_filter_over_100.php' );
 require_once( 'lib/common/set_post_terms.php' );
 require_once( 'lib/common/filter-bedroom-labels.php' );
+require_once( 'lib/common/property-order-filters.php' );
 
 //* Settings pages
 require_once( 'lib/options-pages/main-settings.php' );

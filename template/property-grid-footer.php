@@ -6,9 +6,14 @@ function rentfetch_properties_grid( $atts ) {
     
     ob_start();
     
+    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby );
+    $order = apply_filters( 'rentfetch_get_property_order', $order );
+    
     $args = shortcode_atts( array(
         'neighborhood' => null,
         'posts_per_page' => 4,
+        'orderby' => $orderby,
+        'order' => $order,
     ), $atts );
     
     do_action( 'rentfetch_property_grid_shortcode', $args );

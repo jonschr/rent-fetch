@@ -680,6 +680,57 @@
             "return_format": "value"
         },
         {
+            "key": "field_62bc8a2a62b55",
+            "label": "Order properties by",
+            "name": "property_orderby",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "menu_order": "Menu order (use this if utilizing drag\/drop reordering)",
+                "date": "Publish date",
+                "modified": "Last modified date",
+                "ID": "Post ID number",
+                "title": "Alphabetical, based on property name",
+                "name": "Alphabetical, based on property slug",
+                "rand": "Randomize"
+            },
+            "allow_null": 0,
+            "other_choice": 0,
+            "default_value": "",
+            "layout": "vertical",
+            "return_format": "value",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_62bc8ae362b56",
+            "label": "Property order direction",
+            "name": "property_order",
+            "type": "button_group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "ASC": "Ascending",
+                "DESC": "Descending"
+            },
+            "allow_null": 0,
+            "default_value": "",
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
             "key": "field_5fffb22e3a541",
             "label": "Floorplan archives",
             "name": "",
@@ -1805,5 +1856,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1655230531
+    "modified": 1656523640
 }

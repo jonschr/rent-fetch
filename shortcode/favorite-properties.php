@@ -41,12 +41,15 @@ function rentfetch_output_favorite_properties( $favorite_properties ) {
     //* Process the floorplans
     $floorplans = rentfetch_get_floorplan_info_for_properties_grid( $args );
     
+    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby );
+    $order = apply_filters( 'rentfetch_get_property_order', $order );
+    
     //* The base property query
     $propertyargs = array(
         'post_type'         => 'properties',
         'posts_per_page'    => -1,
-		'orderby'           => 'menu_order',
-		'order'	            => 'ASC', // ASC or DESC
+		'orderby'           => $orderby,
+		'order'	            => $order, // ASC or DESC
         'post__in'          => $favorite_properties,
         'no_found_rows'     => true,
 	);
