@@ -3,7 +3,8 @@
    ========================================================================== */
 
 .properties-loop {
-    .entry {
+    .entry,
+    .hentry {
         background-color: white;
         position: relative;
     }
@@ -21,7 +22,7 @@
         left: 0;
         right: 0;
         box-shadow: 0 0 0 3px $light;
-        transition: .3s all ease;
+        transition: 0.3s all ease;
         z-index: 30;
     }
 
@@ -45,7 +46,7 @@
 
         span.city {
             &:after {
-                content: ",";
+                content: ',';
             }
         }
     }
@@ -55,7 +56,6 @@
         z-index: 99;
         font-size: 14px;
     }
-
 
     .admin-data {
         padding: 10px 20px 20px;
@@ -103,7 +103,7 @@
             font-size: 16px;
 
             &:before {
-                content: "";
+                content: '';
                 width: 28px;
                 height: 28px;
                 display: block;
@@ -119,23 +119,19 @@
         span.bedsrange {
             &:before {
                 background-image: url('../images/beds-icon-gray.svg');
-
             }
         }
 
         span.bathsrange {
             &:before {
                 background-image: url('../images/baths-icon-gray.svg');
-
             }
         }
 
         span.sqftrange {
             &:before {
                 background-image: url('../images/sqft-icon-gray.svg');
-
             }
         }
-
     }
 }

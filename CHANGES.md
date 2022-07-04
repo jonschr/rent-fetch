@@ -1,3 +1,7 @@
+## 3.5.14
+
+-   Adding better filters for property URLs to allow for more customization
+
 ## 3.5.12
 
 -   Adding the labels on the floorplan filters in the floorplan grid block
