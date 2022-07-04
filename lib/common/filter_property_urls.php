@@ -24,7 +24,7 @@ function rentfetch_property_archives_filter_property_permalink( $url ) {
     $url = get_post_meta( get_the_ID(), 'url', true );
     $use_individual_properties_template = get_field( 'use_individual_properties_template', 'option' );
         
-    if ( $use_individual_properties_template === true ) {
+    if ( $use_individual_properties_template !== false ) {
         
         // just return the permalink
         return $permalink;
@@ -52,7 +52,7 @@ function rentfetch_property_archives_filter_property_permalink_target( $target )
     $url = get_post_meta( get_the_ID(), 'url', true );
     $use_individual_properties_template = get_field( 'use_individual_properties_template', 'option' );
     
-    if ( $use_individual_properties_template === true ) {
+    if ( $use_individual_properties_template !== false ) {
         
         // if we're using the permalink, then open in the same tab
         return '_self';
