@@ -28,8 +28,8 @@ function rentfetch_each_property( $id, $floorplan ) {
     $rentrange = $floorplan['rentrange'];
     $sqftrange = $floorplan['sqftrange'];
     $has_specials = $floorplan['property_has_specials'];
-    $url = apply_filters( 'rentfetch_filter_property_permalink', $url );
-    $target = apply_filters( 'rentfetch_filter_property_permalink_target', $target );
+    $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url );
+    $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target );
     
     // class
     $class = get_post_class();

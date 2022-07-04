@@ -1,3 +1,7 @@
+## 3.5.15
+
+-   Adding a setting for whether to use property URLs or no on the site
+
 ## 3.5.14
 
 -   Adding better filters for property URLs to allow for more customization
