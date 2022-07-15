@@ -3,8 +3,8 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.5.16
-    Author: Brindle Digital & Elodin Design
+	Version: 3.6
+    Author: Brindle Digital
     Author URI: https://www.brindledigital.com/
 
     This program is free software; you can redistribute it and/or modify
@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.5.16' );
+define ( 'RENTFETCH_VERSION', '3.6' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //

@@ -1,3 +1,8 @@
+## 3.6
+
+-   Updating dependencies for php 8.1 (action scheduler and ACF), fixing php notices
+-
+
 ## 3.5.15
 
 -   Adding a setting for whether to use property URLs or no on the site
