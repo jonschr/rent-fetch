@@ -40,10 +40,10 @@ function rentfetch_floorplangrid_block_enqueue() {
     wp_enqueue_script( 'rentfetch-filters', RENTFETCH_PATH . 'block/floorplangrid/js/filters.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Slick
-    wp_enqueue_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), CHILD_THEME_VERSION, true );
+    wp_enqueue_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), RENTFETCH_VERSION, true );
     wp_enqueue_script( 'rentfetch-floorplan-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-floorplan-images-slider-init.js', array( 'rentfetch-slick-main-script' ), RENTFETCH_VERSION, true );
-    wp_enqueue_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), CHILD_THEME_VERSION );
-    wp_enqueue_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), CHILD_THEME_VERSION );
+    wp_enqueue_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), RENTFETCH_VERSION );
+    wp_enqueue_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), RENTFETCH_VERSION );
         
 }
 
@@ -322,7 +322,7 @@ function rentfetch_floorplangrid_block_show_filter_bedrooms( $settings ) {
         
         foreach ( $bedroomnumbers as $bedroomnumber ) {
             
-            $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label, $bedroomnumber );
+            $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $bedroomnumber );
             printf( '<li><a data-filter="beds-%s" class="filter-select" href="#">%s</a></li>', $bedroomnumber, $label );
         }
     echo '</ul>';

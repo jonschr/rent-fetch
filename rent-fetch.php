@@ -28,7 +28,7 @@ define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
 define( 'RENTFETCH_PATH', plugin_dir_url( __FILE__ ) );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.6' );
+define ( 'RENTFETCH_VERSION', '3.6.1' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //
@@ -365,14 +365,27 @@ function console_log( $data ){
 //* Add debug logging
 function rentfetch_log($message) { 
     
+    //* bail and delete the log file if logging is not enabled
+    $enable_logging = get_field( 'enable_rentfetch_logging', 'option' );
+    if ( boolval($enable_logging) !== true ) {
+        
+        if ( file_exists( WP_CONTENT_DIR . "/apartment-sync-debug.log" ) )
+            $delete = unlink( WP_CONTENT_DIR . "/apartment-sync-debug.log" );
+            
+        if ( file_exists( WP_CONTENT_DIR . "/rentfetch-debug.log" ) )
+            $delete = unlink( WP_CONTENT_DIR . "/rentfetch-debug.log" );
+            
+        return;
+    }
+    
     if( is_array( $message ) )
         $message = json_encode($message); 
         
-    $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug.log", "a" );
+    $file = fopen( WP_CONTENT_DIR . "/rentfetch-debug.log", "a" );
     fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
     fclose($file); 
     
-    $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug-verbose.log", "a" );
+    $file = fopen( WP_CONTENT_DIR . "/rentfetch-debug-verbose.log", "a" );
     fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
     fclose($file); 
     
@@ -381,10 +394,23 @@ function rentfetch_log($message) {
 //* Add debug verbose logging
 function rentfetch_verbose_log($message) { 
     
+    //* bail and delete the log file if logging is not enabled
+    $enable_logging = get_field( 'enable_rentfetch_logging', 'option' );
+    if ( boolval($enable_logging) !== true ) {
+        
+        if ( file_exists( WP_CONTENT_DIR . "/apartment-sync-debug-verbose.log" ) )
+            $delete = unlink( WP_CONTENT_DIR . "/apartment-sync-debug-verbose.log" );
+            
+        if ( file_exists( WP_CONTENT_DIR . "/rentfetch-debug-verbose.log" ) )
+            $delete = unlink( WP_CONTENT_DIR . "/rentfetch-debug-verbose.log" );
+            
+        return;
+    }
+    
     if( is_array( $message ) )
         $message = json_encode($message); 
                 
-    $file = fopen( WP_CONTENT_DIR . "/apartment-sync-debug-verbose.log", "a" );
+    $file = fopen( WP_CONTENT_DIR . "/rentfetch-debug-verbose.log", "a" );
     fwrite($file, date('Y-m-d h:i:s') . " " . $message . "\n"); 
     fclose($file); 
     

@@ -28,8 +28,8 @@ function rentfetch_each_property( $id, $floorplan ) {
     $rentrange = $floorplan['rentrange'];
     $sqftrange = $floorplan['sqftrange'];
     $has_specials = $floorplan['property_has_specials'];
-    $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url );
-    $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target );
+    $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url = null );
+    $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target = '_blank' );
     
     // class
     $class = get_post_class();
@@ -40,7 +40,7 @@ function rentfetch_each_property( $id, $floorplan ) {
     $class = implode( ' ', $class );
     
     // markup
-    printf( '<div id="%s" class="%s" data-id="%s" data-url="%s" data-latitude="%s" data-longitude="%s">', $id, $class, $id, $permalink, $latitude, $longitude );
+    printf( '<div id="%s" class="%s" data-id="%s" data-url="%s" data-latitude="%s" data-longitude="%s">', $id, $class, $id, $url, $latitude, $longitude );
     
         if ( $url )
             printf( '<a class="overlay" target="%s" href="%s"></a>', $target, $url );

@@ -41,8 +41,8 @@ function rentfetch_output_favorite_properties( $favorite_properties ) {
     //* Process the floorplans
     $floorplans = rentfetch_get_floorplan_info_for_properties_grid( $args );
     
-    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby );
-    $order = apply_filters( 'rentfetch_get_property_order', $order );
+    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby = 'menu_order' );
+    $order = apply_filters( 'rentfetch_get_property_order', $order = 'ASC' );
     
     //* The base property query
     $propertyargs = array(

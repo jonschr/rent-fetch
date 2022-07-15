@@ -1,7 +1,11 @@
+## 3.6.1
+
+-   Fixing various php notices associates with php 8+
+-   Adding option to remove logs and to disable logging
+
 ## 3.6
 
 -   Updating dependencies for php 8.1 (action scheduler and ACF), fixing php notices
--
 
 ## 3.5.15
 

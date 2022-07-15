@@ -108,7 +108,7 @@ function rentfetch_propertymap( $atts ) {
                                     if ( $bed === null )
                                         continue;
                                         
-                                    $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label, $bed );
+                                    $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $bed );
                                         
                                     if ( in_array( $bed, $bedsparam ) ) {
                                         printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s</span></label>', $bed, $bed, $label );
@@ -748,8 +748,8 @@ function rentfetch_filter_properties(){
     $properties_maximum_per_page = null;
     $properties_maximum_per_page = apply_filters( 'rentfetch_properties_maximum', $properties_maximum_per_page );
     
-    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby );
-    $order = apply_filters( 'rentfetch_get_property_order', $order );
+    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby = 'menu_order' );
+    $order = apply_filters( 'rentfetch_get_property_order', $order = 'ASC' );
     
     //* The base property query
     $propertyargs = array(

@@ -360,7 +360,7 @@ function rentfetch_single_property_floorplans() {
         if ( $floorplans_query->have_posts() ) {
             echo '<details open>';
                 echo '<summary><h3>';                    
-                    echo apply_filters( 'rentfetch_get_bedroom_number_label', $label, $bed );
+                    echo apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $bed );
                 echo '</h3></summary>';
                 echo '<div class="floorplan-in-archive">';
                     while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 

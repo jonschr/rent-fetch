@@ -6,8 +6,8 @@ function rentfetch_properties_grid( $atts ) {
     
     ob_start();
     
-    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby );
-    $order = apply_filters( 'rentfetch_get_property_order', $order );
+    $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby = 'menu_order' );
+    $order = apply_filters( 'rentfetch_get_property_order', $order = 'ASC' );
     
     $args = shortcode_atts( array(
         'neighborhood' => null,

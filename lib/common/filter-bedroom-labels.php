@@ -8,10 +8,12 @@ function rentfetch_do_single_properties( $label, $beds ) {
         
     // get the desired labels from the settings
     $bedroom_numbers = get_field( 'bedroom_numbers', 'option' );
-    $newlabel = $bedroom_numbers[ $beds . '_bedroom' ];
+    
+    if ( isset( $bedroom_numbers[ $beds . '_bedroom' ] ) )
+        $newlabel = $bedroom_numbers[ $beds . '_bedroom' ];
         
     // if the setting is set, then update the label
-    if ( $newlabel ) {
+    if ( !empty($newlabel) ) {
         $label = $newlabel;
     } else {
         

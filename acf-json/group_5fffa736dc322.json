@@ -4,7 +4,7 @@
     "fields": [
         {
             "key": "field_5fffafb0deddf",
-            "label": "Apartment API Integrations",
+            "label": "General",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -471,6 +471,25 @@
             ]
         },
         {
+            "key": "field_62d1be0e0b86b",
+            "label": "Enable logging",
+            "name": "enable_rentfetch_logging",
+            "type": "true_false",
+            "instructions": "If enabled, this setting will start logging processes into \/wp-content\/rentfetch-debug.log and \/wp-content\/rentfetch-debug-verbose.log. When disabled, this setting will automatically delete these files, as those can become large over time.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
             "key": "field_5fffafe5dede1",
             "label": "Google Integrations",
             "name": "",
@@ -620,11 +639,11 @@
             "endpoint": 0
         },
         {
-            "key": "field_62c35fc4f6981",
-            "label": "Use individual properties template?",
-            "name": "use_individual_properties_template",
-            "type": "true_false",
-            "instructions": "If this setting is enabled, then the site will link to a single template for each Property in archive templates. If not, then links will go directly to the external property URL (if one exists), or simply not display a link otherwise.",
+            "key": "field_607f967893795",
+            "label": "Property footer grid",
+            "name": "property_footer_grid",
+            "type": "group",
+            "instructions": "By default, this shows on the individual neighborhood and properties templates when multiple properties are connected to a neighborhood. If there are less than two properties that would show, this area simply does not appear.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -632,11 +651,30 @@
                 "class": "",
                 "id": ""
             },
-            "message": "",
-            "default_value": 1,
-            "ui": 1,
-            "ui_on_text": "",
-            "ui_off_text": ""
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_607f96bc93796",
+                    "label": "Maximum properties to show",
+                    "name": "number_properties",
+                    "type": "number",
+                    "instructions": "The maximum number of properties to show. By default, this will show all (-1) properties",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": -1,
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "min": "",
+                    "max": "",
+                    "step": ""
+                }
+            ]
         },
         {
             "key": "field_61634e5949d25",
@@ -710,44 +748,6 @@
             "default_value": "",
             "layout": "horizontal",
             "return_format": "value"
-        },
-        {
-            "key": "field_607f967893795",
-            "label": "Property footer grid",
-            "name": "property_footer_grid",
-            "type": "group",
-            "instructions": "By default, this shows on the individual neighborhood and properties templates when multiple properties are connected to a neighborhood. If there are less than two properties that would show, this area simply does not appear.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "layout": "block",
-            "sub_fields": [
-                {
-                    "key": "field_607f96bc93796",
-                    "label": "Maximum properties to show",
-                    "name": "number_properties",
-                    "type": "number",
-                    "instructions": "The maximum number of properties to show. By default, this will show all (-1) properties",
-                    "required": 0,
-                    "conditional_logic": 0,
-                    "wrapper": {
-                        "width": "",
-                        "class": "",
-                        "id": ""
-                    },
-                    "default_value": -1,
-                    "placeholder": "",
-                    "prepend": "",
-                    "append": "",
-                    "min": "",
-                    "max": "",
-                    "step": ""
-                }
-            ]
         },
         {
             "key": "field_5fffb22e3a541",
@@ -1874,6 +1874,5 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "show_in_rest": 0,
-    "modified": 1656971388
+    "modified": 1657913859
 }

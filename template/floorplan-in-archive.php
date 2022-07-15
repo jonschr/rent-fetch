@@ -139,7 +139,7 @@ function rentfetch_each_floorplan_beds() {
     $beds = floatval( $beds );
     
     // allow for hooking in
-    $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label, $beds );
+    $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $beds );
             
     printf( '<span class="floorplan-beds">%s</span>', $label );
 }
