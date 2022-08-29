@@ -1,3 +1,7 @@
+## 3.6.2
+
+-   Fixing a loading issue for the floorplan grid block when the initial pageload happened with prefiltered slides. When clicking a different number of bedrooms, the sliders didn't appear to load. Added a refresh to slick affecting just the slides that needed rerendered after the click.
+
 ## 3.6.1
 
 -   Fixing various php notices associates with php 8+

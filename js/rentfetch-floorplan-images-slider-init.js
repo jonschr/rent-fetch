@@ -1,5 +1,4 @@
 (function ($) {
-
     /**
      * initializeBlock
      *
@@ -22,7 +21,7 @@
             cssEase: 'linear',
             lazyLoad: 'ondemand',
         });
-    }
+    };
 
     // Initialize each block on page load (front end).
     $(document).ready(function () {
@@ -45,7 +44,9 @@
 
     // Initialize dynamic block preview (editor).
     if (window.acf) {
-        window.acf.addAction('render_block_preview/type=floorplangrid', initializeBlock);
+        window.acf.addAction(
+            'render_block_preview/type=floorplangrid',
+            initializeBlock
+        );
     }
-
 })(jQuery);
