@@ -1,3 +1,7 @@
+## 3.6.3
+
+-   Minifying css for prod (whoops, we hadn't previously been doing this)
+
 ## 3.6.2
 
 -   Fixing a loading issue for the floorplan grid block when the initial pageload happened with prefiltered slides. When clicking a different number of bedrooms, the sliders didn't appear to load. Added a refresh to slick affecting just the slides that needed rerendered after the click.

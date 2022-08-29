@@ -1,5 +1,4 @@
 .floorplan-in-archive {
-
     .floorplan-slide {
         position: relative;
         border-radius: 3px;
@@ -45,7 +44,7 @@
             background-color: white !important;
             border-radius: 100%;
             box-shadow: 0 0 10px 0 rgba($dark, 0.3);
-            transition: .3s all ease;
+            transition: 0.3s all ease;
 
             @include desktop {
                 // opacity: 0;
@@ -53,14 +52,14 @@
 
             &:before {
                 color: $dark;
-                transition: .3s all ease;
+                transition: 0.3s all ease;
             }
 
             &.slick-prev {
                 left: 10px;
 
                 &:before {
-                    content: "\f341";
+                    content: '\f341';
                     font-family: 'dashicons';
                 }
             }
@@ -70,7 +69,7 @@
                 padding-left: 3px;
 
                 &:before {
-                    content: "\f345";
+                    content: '\f345';
                     font-family: 'dashicons';
                 }
             }
@@ -79,7 +78,7 @@
         .slick-dots {
             z-index: 50;
             bottom: 10px;
-            transition: .3s all ease;
+            transition: 0.3s all ease;
 
             @include desktop {
                 // opacity: 0;
