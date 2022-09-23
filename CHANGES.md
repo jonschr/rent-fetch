@@ -1,3 +1,8 @@
+### 3.6.5
+
+-   Adding the option to show ALL properties in search rather than just available ones
+-   Adding functionality when ALL is selected to ignore pricing fields unless they've been manually set
+
 ### 3.6.4
 
 -   Updating bundled ACF to 6.0

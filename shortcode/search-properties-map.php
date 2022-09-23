@@ -562,13 +562,16 @@ function rentfetch_filter_properties(){
         } else {
                         
             // if the date is anything else, then we need to only pick up floorplans that have more than 0 units available
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'available_units',
-                    'value' => 0,
-                    'compare' => '>'
-                )
-            );
+            $property_availability_display = $price_settings = get_field( 'property_availability_display', 'options' );
+            if ( $property_availability_display != 'all' ) {
+                $floorplans_args['meta_query'][] = array(
+                    array(
+                        'key' => 'available_units',
+                        'value' => 0,
+                        'compare' => '>'
+                    )
+                );
+            }            
             
         }
         
@@ -578,11 +581,11 @@ function rentfetch_filter_properties(){
     if ( isset( $_POST['pricesmall'] ) && isset( $_POST['pricebig'] ) ) {
         
         $defaultpricesmall = 100;
-        $defaultpricebig = 12000;
+        $defaultpricebig = 5000;
         
         // get the small value
         if ( isset( $_POST['pricesmall'] ) )
-            $pricesmall = sanitize_text_field( $_POST['pricesmall'] );
+            $pricesmall = intval( sanitize_text_field( $_POST['pricesmall'] ) );
             
         // if it's not a good value, then change it to something sensible
         if ( $pricesmall < 100 )
@@ -590,31 +593,47 @@ function rentfetch_filter_properties(){
         
         // get the big value
         if ( isset( $_POST['pricebig'] ) )
-            $pricebig = sanitize_text_field( $_POST['pricebig'] );
+            $pricebig = intval( sanitize_text_field( $_POST['pricebig'] ) );
             
         // if there's isn't one, then use the default instead
         if ( empty( $pricebig ) )
             $pricebig = $defaultpricebig;
                 
-        $floorplans_args['meta_query'][] = array(
-            array(
-                'key' => 'minimum_rent',
-                'value' => array( $pricesmall, $pricebig ),
-                'type' => 'numeric',
-                'compare' => 'BETWEEN',
-            )
-        );
+        
+        // if we're showing all properties, then by default we need to ignore pricing
+        $property_availability_display = $price_settings = get_field( 'property_availability_display', 'options' );
+        if ( $property_availability_display == 'all' ) {
+            
+            // but if pricing parameters are actually being manually set, then we need that search to work
+            if ( $pricesmall > 100 || $pricebig < 5000 ) {
+                                    
+                $floorplans_args['meta_query'][] = array(
+                    array(
+                        'key' => 'minimum_rent',
+                        'value' => array( $pricesmall, $pricebig ),
+                        'type' => 'numeric',
+                        'compare' => 'BETWEEN',
+                    )
+                );
+            }            
+        } else {
+            // if this is an availability search, then always take pricing into account
+            $floorplans_args['meta_query'][] = array(
+                    array(
+                        'key' => 'minimum_rent',
+                        'value' => array( $pricesmall, $pricebig ),
+                        'type' => 'numeric',
+                        'compare' => 'BETWEEN',
+                    )
+                );
+        }
     }
      
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $floorplans_args );
-    // echo '</pre>';
+    // var_dump( $floorplans_args );
     
 	$floorplans_query = new WP_Query( $floorplans_args );
-
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $floorplans_query->post );
-    // echo '</pre>';
+    
+    // var_dump( $floorplans_query->post );
     
     // reset the floorplans array
     $floorplans = array();

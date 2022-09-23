@@ -1276,6 +1276,28 @@
             "step": ""
         },
         {
+            "key": "field_632e1dfba3e97",
+            "label": "Property availability display",
+            "name": "property_availability_display",
+            "type": "button_group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "available": "Availability",
+                "all": "All ignoring availability"
+            },
+            "default_value": "availability",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
             "key": "field_6166445f3ef59",
             "label": "Starter search components",
             "name": "starter_search_components",
@@ -1874,5 +1896,6 @@
     "hide_on_screen": "",
     "active": true,
     "description": "",
-    "modified": 1657913859
+    "show_in_rest": 0,
+    "modified": 1663967388
 }
