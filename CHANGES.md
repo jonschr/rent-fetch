@@ -1,3 +1,7 @@
+### 3.6.4
+
+-   Updating bundled ACF to 6.0
+
 ## 3.6.3
 
 -   Minifying css for prod (whoops, we hadn't previously been doing this)
