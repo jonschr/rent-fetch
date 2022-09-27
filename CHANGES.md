@@ -1,3 +1,7 @@
+### 3.6.6
+
+-   Make data source available for properties for editing
+
 ### 3.6.5
 
 -   Adding the option to show ALL properties in search rather than just available ones

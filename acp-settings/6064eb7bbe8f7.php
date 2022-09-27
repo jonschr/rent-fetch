@@ -1,11 +1,11 @@
 <?php
 
 return array (
-  'version' => '5.7.1',
+  'version' => '5.7.4',
   'title' => 'Properties',
   'type' => 'properties',
   'id' => '6064eb7bbe8f7',
-  'updated' => 1653326862,
+  'updated' => 1664258475,
   'columns' => 
   array (
     '606e669ec9fbe8' => 
@@ -297,6 +297,26 @@ return array (
       'filter_label' => '',
       'name' => '607665f849374c',
     ),
+    '63329195f58108' => 
+    array (
+      'type' => 'column-meta',
+      'label' => 'Data source',
+      'width' => '',
+      'width_unit' => '%',
+      'field' => 'property_source',
+      'field_type' => '',
+      'before' => '',
+      'after' => '',
+      'edit' => 'on',
+      'editable_type' => 'text',
+      'export' => 'off',
+      'sort' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '63329195f58108',
+    ),
   ),
   'settings' => 
   array (
@@ -312,6 +332,7 @@ return array (
     'hide_search' => 'off',
     'hide_bulk_actions' => 'off',
     'resize_columns' => 'off',
+    'hide_row_actions' => 'off',
     'horizontal_scrolling' => 'on',
     'sorting' => '0',
     'sorting_order' => 'asc',
