@@ -33,7 +33,7 @@ function rentfetch_single_property_title() {
     if ( !$city && $state )
         $location = sprintf( '<span class="city-state">in %s</span>', $state );
     
-    echo '<div class="wrap-single-properties-entry-header"><div class="single-properties-entry-header">';
+    echo '<div class="wrap-single-properties-entry-header single-properties-section"><div class="single-properties-entry-header">';
 
         if ( $title && $location )
             printf( '<h1>%s %s</h1>', $title, $location );
@@ -61,7 +61,7 @@ function rentfetch_single_property_title() {
 
 function rentfetch_single_property_images() {
     
-    echo '<div class="wrap-images"><div class="images">';
+    echo '<div class="wrap-images single-properties-section"><div class="images single-properties-section-wrap">';
     
         global $post;
         $id = get_the_ID();
@@ -95,7 +95,7 @@ function rentfetch_single_property_basic_info() {
     $url = get_post_meta( $id, 'url', true );
     $phone = get_post_meta( $id, 'phone', true );
 
-    echo '<div class="wrap-basic-info"><div class="basic-info">';
+    echo '<div class="wrap-basic-info single-properties-section"><div class="basic-info single-properties-section-wrap">';
     
         if ( $address || $city || $state || $zipcode ) {
             echo '<div class="location">';
@@ -154,7 +154,7 @@ function rentfetch_single_property_description() {
 
     if ( $description || $city ) {
         
-        echo '<div class="wrap-description"><div class="description-wrap">';
+        echo '<div class="wrap-description single-properties-section"><div class="description-wrap single-properties-section-wrap">';
         
             if ( $city )
                 printf( '<h4 class="city">%s</h4>', $city );
@@ -332,7 +332,7 @@ function rentfetch_single_property_floorplans() {
     $beds = array_unique( $beds );
     asort( $beds );
     
-    echo '<div class="wrap-floorplans"><div class="floorplans-wrap" id="floorplans">';
+    echo '<div class="wrap-floorplans single-properties-section"><div class="floorplans-wrap single-properties-section-wrap" id="floorplans">';
     
     // loop through each of the possible values, so that we can do markup around that
     foreach( $beds as $bed ) {
@@ -384,7 +384,7 @@ function rentfetch_single_property_amenities() {
     
     $terms = get_the_terms( get_the_ID(), 'amenities' );
     if ( $terms ) {
-        echo '<div class="wrap-amenities"><div class="amenities-wrap">';
+        echo '<div class="wrap-amenities single-properties-section"><div class="amenities-wrap single-properties-section-wrap">';
             echo '<h2 id="amenities">Amenities</h2>';
             echo '<ul class="amenities">';
                 foreach( $terms as $term ) {                
@@ -403,7 +403,7 @@ function rentfetch_single_property_lease_details() {
     if ( !empty( $content_area ) ) {
         $content_area = apply_filters( 'the_content', $content_area );
         
-        echo '<div class="wrap-content-area"><div class="content-area-wrap">';
+        echo '<div class="wrap-content-area"><div class="content-area-wrap single-properties-section-wrap">';
             echo $content_area;
         echo '</div></div>';
     }
@@ -431,7 +431,7 @@ function rentfetch_single_property_neighborhood() {
         $title = get_the_title( $neighborhood_id );
         $excerpt = apply_filters( 'the_content', get_the_excerpt( $neighborhood_id ) );
         
-        echo '<div class="wrap-neighborhoods"><div class="neighborhoods-wrap">';
+        echo '<div class="wrap-neighborhoods single-properties-section"><div class="neighborhoods-wrap">';
         
             printf( '<div class="neighborhood-photo-wrap"><a href="%s" class="neighborhood-photo" style="background-image:url(%s);"></a></div>', $permalink, $thumb );
             

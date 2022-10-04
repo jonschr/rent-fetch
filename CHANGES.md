@@ -1,3 +1,7 @@
+### 3.6.7
+
+-   Standarizing section names for the single-properties template
+
 ### 3.6.6
 
 -   Make data source available for properties for editing
