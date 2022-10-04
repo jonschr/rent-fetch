@@ -33,7 +33,7 @@ function rentfetch_single_property_title() {
     if ( !$city && $state )
         $location = sprintf( '<span class="city-state">in %s</span>', $state );
     
-    echo '<div class="wrap-single-properties-entry-header single-properties-section"><div class="single-properties-entry-header">';
+    echo '<div class="wrap-single-properties-entry-header single-properties-section"><div class="single-properties-entry-header single-properties-section-wrap">';
 
         if ( $title && $location )
             printf( '<h1>%s %s</h1>', $title, $location );
