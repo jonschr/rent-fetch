@@ -1,3 +1,7 @@
+### 3.6.9
+
+-   Enqueue dashicons, since we use those on the frontend
+
 ### 3.6.7
 
 -   Standarizing section names for the single-properties template
