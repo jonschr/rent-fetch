@@ -12,9 +12,14 @@ add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_neighbo
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_nearby_properties', 100 );
 
 function rentfetch_single_property_title() {
-        
+    
     global $post;
     
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_property_title'] === false )
+        return;
+            
     $id = get_the_ID();
     $title = get_the_title();
     $city = get_post_meta( $id, 'city', true );
@@ -61,18 +66,27 @@ function rentfetch_single_property_title() {
 
 function rentfetch_single_property_images() {
     
-    echo '<div class="wrap-images single-properties-section"><div class="images single-properties-section-wrap">';
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_property_images'] === false )
+        return;
     
-        global $post;
-        $id = get_the_ID();
-        
-        // manually-added images
-        $property_images_manual = get_post_meta( $id, 'images', true );
-                
-        // these are images pulled from an API and stored as a JSON array
-        $property_images_yardi = get_post_meta( $id, 'property_images', true );
-        $property_images_yardi = json_decode( $property_images_yardi );
-                       
+    global $post;
+    $id = get_the_ID();
+    
+    // manually-added images
+    $property_images_manual = get_post_meta( $id, 'images', true );
+            
+    // these are images pulled from an API and stored as a JSON array
+    $property_images_yardi = get_post_meta( $id, 'property_images', true );
+    $property_images_yardi = json_decode( $property_images_yardi );
+    
+    // bail if there aren't any images to display
+    if ( !$property_images_yardi && !$property_images_manual )
+        return;
+    
+    echo '<div class="wrap-images single-properties-section"><div class="images single-properties-section-wrap">';
+                    
         if ( $property_images_manual ) {
             do_action( 'rentfetch_do_single_property_images_manual' );
         } elseif ( $property_images_yardi ) {
@@ -83,7 +97,23 @@ function rentfetch_single_property_images() {
     
 }
 
+function rentfetch_section_navigation() {
+    
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_section_navigation'] === false )
+        return;
+        
+    // silence is golden
+    
+}
+
 function rentfetch_single_property_basic_info() {
+    
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_basic_info_display'] === false )
+        return;
     
     global $post;
     $id = get_the_ID();
@@ -144,6 +174,11 @@ function rentfetch_single_property_basic_info() {
 }
 
 function rentfetch_single_property_description() {
+    
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_property_description'] === false )
+        return;
     
     global $post;
     $id = get_the_ID();
@@ -320,6 +355,11 @@ function rentfetch_single_property_yardi_lead_generation() {
 
 function rentfetch_single_property_floorplans() {
     
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_floorplans_display'] === false )
+        return;
+    
     global $post;
     $id = get_the_ID();
     $property_id = get_post_meta( $id, 'property_id', true );
@@ -380,6 +420,11 @@ function rentfetch_single_property_floorplans() {
 
 function rentfetch_single_property_amenities() {
     
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_amenities_display'] === false )
+        return;
+    
     global $post;
     
     $terms = get_the_terms( get_the_ID(), 'amenities' );
@@ -397,6 +442,11 @@ function rentfetch_single_property_amenities() {
 
 function rentfetch_single_property_lease_details() {
     
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_lease_details_display'] === false )
+        return;
+    
     global $post;
     
     $content_area = get_post_meta( get_the_ID(), 'content_area', true );
@@ -407,6 +457,51 @@ function rentfetch_single_property_lease_details() {
             echo $content_area;
         echo '</div></div>';
     }
+}
+
+function rentfetch_single_property_map() {
+    
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_property_map'] === false )
+        return;
+    
+    global $post;
+    $id = get_the_ID();
+
+    $latitude = floatval( get_post_meta( $id, 'latitude', true ) );
+    $longitude = floatval( get_post_meta( $id, 'longitude', true ) );
+    
+    //* bail if there's not a lat or longitude
+    if ( empty( $latitude ) || empty( $longitude) )
+        return;
+        
+    $title = get_the_title( $id );
+    $address = get_post_meta( $id, 'address', true );
+    $city = get_post_meta( $id, 'city', true );
+    $state = get_post_meta( $id, 'state', true );
+    $zipcode = get_post_meta( $id, 'zipcode', true );
+    $phone = get_post_meta( $id, 'phone', true );
+    
+    $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zipcode, $phone );
+
+    // the map itself
+    $key = get_field( 'google_maps_api_key', 'option' );
+    wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
+
+    // Localize the google maps script, then enqueue that
+    $maps_options = array(
+        'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
+        'marker_url' => get_field( 'google_map_marker', 'option' ),
+        'latitude' => $latitude,
+        'longitude' => $longitude,
+        'location' => $location,
+    );
+    wp_localize_script( 'rentfetch-single-property-map', 'options', $maps_options );
+    wp_enqueue_script( 'rentfetch-single-property-map');
+    
+    echo '<div class="map" id="map"></div>';
+        
 }
 
 function rentfetch_single_property_neighborhood() {
@@ -452,49 +547,13 @@ function rentfetch_single_property_neighborhood() {
 
 function rentfetch_single_property_nearby_properties() {
     
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_nearby_properties'] === false )
+        return;
+    
     global $post;
     
     do_action( 'rentfetch_single_properties_nearby_properties' );
     
-}
-
-
-function rentfetch_single_property_map() {
-    
-    global $post;
-    $id = get_the_ID();
-
-    $latitude = floatval( get_post_meta( $id, 'latitude', true ) );
-    $longitude = floatval( get_post_meta( $id, 'longitude', true ) );
-    
-    //* bail if there's not a lat or longitude
-    if ( empty( $latitude ) || empty( $longitude) )
-        return;
-        
-    $title = get_the_title( $id );
-    $address = get_post_meta( $id, 'address', true );
-    $city = get_post_meta( $id, 'city', true );
-    $state = get_post_meta( $id, 'state', true );
-    $zipcode = get_post_meta( $id, 'zipcode', true );
-    $phone = get_post_meta( $id, 'phone', true );
-    
-    $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zipcode, $phone );
-
-    // the map itself
-    $key = get_field( 'google_maps_api_key', 'option' );
-    wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
-
-    // Localize the google maps script, then enqueue that
-    $maps_options = array(
-        'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
-        'marker_url' => get_field( 'google_map_marker', 'option' ),
-        'latitude' => $latitude,
-        'longitude' => $longitude,
-        'location' => $location,
-    );
-    wp_localize_script( 'rentfetch-single-property-map', 'options', $maps_options );
-    wp_enqueue_script( 'rentfetch-single-property-map');
-    
-    echo '<div class="map" id="map"></div>';
-        
 }

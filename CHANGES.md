@@ -1,3 +1,7 @@
+### 3.7
+
+-   Add settings for each of the sections of the single-properties template (show or don't show each of those)
+
 ### 3.6.9
 
 -   Enqueue dashicons, since we use those on the frontend
