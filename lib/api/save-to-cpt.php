@@ -20,6 +20,7 @@ function rentfetch_run_chron() {
     foreach ( $enabled_integrations as $enabled_integration ) {
         
         // action to get the floorplans and put them in a transient
+        do_action( 'rentfetch_do_save_' . $enabled_integration . '_properties_to_cpt' );
         do_action( 'rentfetch_do_save_' . $enabled_integration . '_floorplans_to_cpt' );
         
     }

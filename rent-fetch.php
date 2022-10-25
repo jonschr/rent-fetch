@@ -59,7 +59,7 @@ function rentfetch_acf_settings_url( $url ) {
 }
 
 //! UNCOMMENT THIS FILTER TO SAVE ACF FIELDS TO PLUGIN
-// add_filter('acf/settings/save_json', 'rentfetch_acf_json_save_point');
+add_filter('acf/settings/save_json', 'rentfetch_acf_json_save_point');
 function rentfetch_acf_json_save_point( $path ) {
     
     // update path
@@ -161,23 +161,10 @@ require_once( 'lib/api/pull-from-apis.php' ); // kick off the sync process
 require_once( 'lib/api/save-to-cpt.php' ); // kick off chron processes for converting transients into posts
 require_once( 'lib/api/delete-all.php' ); // adds functionality to delete all from the backend
 
-// yardi
-require_once( 'lib/api/yardi/yardi-check-credentials.php' );
-require_once( 'lib/api/yardi/yardi-get-properties.php' );
-require_once( 'lib/api/yardi/yardi-pull-floorplans-from-api.php' );
-require_once( 'lib/api/yardi/yardi-save-floorplans-to-cpt.php' );
-require_once( 'lib/api/yardi/yardi-remove-old-floorplans.php' );
-
-// entrata
-require_once( 'lib/api/entrata/entrata-sync.php' );
-require_once( 'lib/api/entrata/entrata-check-credentials.php' );
-
-// realpage
-require_once( 'lib/api/realpage/realpage-check-credentials.php' );
-require_once( 'lib/api/realpage/realpage-get-floorplans.php' );
-require_once( 'lib/api/realpage/realpage-get-properties.php' );
-require_once( 'lib/api/realpage/realpage-remove-old-floorplans.php' );
-require_once( 'lib/api/realpage/realpage-remove-old-properties.php' );
+//* Include everything in /lib/api
+foreach ( glob( RENTFETCH_DIR . "/lib/api/*/*.php", GLOB_NOSORT ) as $filename ){
+    require_once $filename;
+}
 
 //* Gutenberg blocks
 require_once( 'block/floorplangrid/floorplangrid.php' );

@@ -142,13 +142,14 @@
             "choices": {
                 "yardi": "Yardi\/RentCafe",
                 "realpage": "RealPage",
-                "entrata": "Entrata"
+                "entrata": "Entrata",
+                "appfolio": "AppFolio"
             },
-            "allow_custom": 0,
             "default_value": [],
+            "return_format": "value",
+            "allow_custom": 0,
             "layout": "vertical",
             "toggle": 0,
-            "return_format": "value",
             "save_custom": 0
         },
         {
@@ -471,6 +472,107 @@
             ]
         },
         {
+            "key": "field_63574d69ae9ec",
+            "label": "AppFolio",
+            "name": "appfolio_integration_creds",
+            "type": "group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_600a285dca256",
+                        "operator": "==",
+                        "value": "appfolio"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "sub_fields": [
+                {
+                    "key": "field_63575034e9081",
+                    "label": "AppFolio database name",
+                    "name": "appfolio_database_name",
+                    "type": "text",
+                    "instructions": "Typically this is xxxxxxxxxxx.appfolio.com",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_63574d69ae9ed",
+                    "label": "AppFolio Client ID",
+                    "name": "appfolio_client_id",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_63574d69ae9ee",
+                    "label": "AppFolio Client Secret",
+                    "name": "appfolio_client_secret",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_63574dcbae9f1",
+                    "label": "AppFolio Property IDs",
+                    "name": "appfolio_property_ids",
+                    "type": "text",
+                    "instructions": "For AppFolio, this is an optional field. If left blank, Rent Fetch will simply fetch all of the properties in the account, which may or not be your preference. Please note that if property IDs are present here, all *other* synced properties through AppFolio will be deleted when the site next syncs.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "100,101,102 ...",
+                    "prepend": "",
+                    "append": ""
+                }
+            ]
+        },
+        {
             "key": "field_62d1be0e0b86b",
             "label": "Enable logging",
             "name": "enable_rentfetch_logging",
@@ -491,7 +593,7 @@
         },
         {
             "key": "field_5fffafe5dede1",
-            "label": "Google Integrations",
+            "label": "Google",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -624,7 +726,7 @@
         },
         {
             "key": "field_6344f22fa769b",
-            "label": "Property search settings",
+            "label": "Property search",
             "name": "",
             "type": "tab",
             "instructions": "",
@@ -664,7 +766,7 @@
             "label": "Property availability display",
             "name": "property_availability_display",
             "type": "button_group",
-            "instructions": "",
+            "instructions": "Even if this is set to ignore availability, properties still must have associated floorplans in order to display (since a significant portion of what we show in property archives comes from a property's associated floorplans).",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -2120,5 +2222,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1665467769
+    "modified": 1666675204
 }
