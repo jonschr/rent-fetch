@@ -1,9 +1,8 @@
 jQuery(document).ready(function ($) {
-
     //* Vars from localization
     var maximumBeds = parseInt(searchoptions.maximum_bedrooms_to_search);
 
-    console.log('max beds: ' + maximumBeds);
+    // console.log('max beds: ' + maximumBeds);
 
     //* Other vars
     var bedsInputs = $('.input-wrap-beds input');
@@ -19,7 +18,7 @@ jQuery(document).ready(function ($) {
     // when a dropdown toggle is clicked, toggle the dropdown menu next to it
     $('.dropdown button').click(function () {
         $('.dropdown-menu').removeClass('show');
-        $(this).siblings('.dropdown-menu').toggleClass('show')
+        $(this).siblings('.dropdown-menu').toggleClass('show');
     });
 
     // if the target of the click isn't the container nor a descendant of the container
@@ -38,22 +37,20 @@ jQuery(document).ready(function ($) {
 
     //* if there's a maximum number of bedrooms, hide all the ones above that
     function hideEachBedrooms() {
-
-        if (!maximumBeds)
-            return;
+        if (!maximumBeds) return;
 
         var currentNumber = $(this).attr('data-beds');
 
         // if the one we're looking at is higher than the max...
         if (currentNumber > maximumBeds) {
-
             // hide the parent element (including both the input and the parent label)
             $(this).parent().hide();
-
         }
 
         if (currentNumber == maximumBeds) {
-            $(this).siblings('span').text(currentNumber + '+ Bedroom');
+            $(this)
+                .siblings('span')
+                .text(currentNumber + '+ Bedroom');
         }
     }
 
@@ -63,23 +60,21 @@ jQuery(document).ready(function ($) {
 
         // if the one we're looking at is higher than the max...
         if (currentNumber > maximumBeds) {
-
             // hide the parent element (including both the input and the parent label)
             // $(this).parent().hide();
             if (maximumBedsChecked == true) {
-                $(this).prop("checked", true);
+                $(this).prop('checked', true);
             } else {
-                $(this).prop("checked", false);
+                $(this).prop('checked', false);
             }
-
         }
-
     }
 
     //* detect checked bedrooms
     function detectCheckedBeds() {
-
-        maximumBedsChecked = $('input[data-beds=' + maximumBeds + ']:checked').length;
+        maximumBedsChecked = $(
+            'input[data-beds=' + maximumBeds + ']:checked'
+        ).length;
 
         if (maximumBedsChecked == 0) {
             maximumBedsChecked = false;
@@ -92,7 +87,6 @@ jQuery(document).ready(function ($) {
 
     //* text for baths button
     function importBathsToButton() {
-
         var inputs = $('.input-wrap-baths input');
         var button = $('.input-wrap-baths button');
         var bathsArray = [];
@@ -118,7 +112,6 @@ jQuery(document).ready(function ($) {
 
     //* text for beds button
     function importBedsToButton() {
-
         var inputs = $('.input-wrap-beds input');
         var button = $('.input-wrap-beds button');
         var bedsArray = [];
@@ -144,7 +137,6 @@ jQuery(document).ready(function ($) {
 
     //* text for propertytypes button
     function importPropertyTypes() {
-
         var inputs = $('.input-wrap-propertytypes input');
         var button = $('.input-wrap-propertytypes button');
         var propertyTypeNames = [];
@@ -169,7 +161,6 @@ jQuery(document).ready(function ($) {
 
     //* text for amenities button
     function importAmenities() {
-
         var inputs = $('.input-wrap-amenities input');
         var button = $('.input-wrap-amenities button');
         var AmenityNames = [];
@@ -194,7 +185,6 @@ jQuery(document).ready(function ($) {
 
     //* text for neighborhoods button
     function importNeighborhoods() {
-
         var inputs = $('.input-wrap-neighborhoods input');
         var button = $('.input-wrap-neighborhoods button');
         var NeighborhoodNames = [];
@@ -219,8 +209,10 @@ jQuery(document).ready(function ($) {
 
     //* text for pets button
     function importPetsToButton() {
-        var selectedPetPolicy = $('.input-wrap-pets input:checked').attr('data-pets-name');
-        console.log(selectedPetPolicy);
+        var selectedPetPolicy = $('.input-wrap-pets input:checked').attr(
+            'data-pets-name'
+        );
+        // console.log(selectedPetPolicy);
 
         $('.input-wrap-pets button').addClass('active');
         $('.input-wrap-pets button').text(selectedPetPolicy);
@@ -236,8 +228,14 @@ jQuery(document).ready(function ($) {
     }
 
     function clearDropdown() {
-        $(this).closest('.dropdown-menu').find('input[type="checkbox"]').prop("checked", false);
-        $(this).closest('.dropdown-menu').find('input[type="radio"]').prop("checked", false);
+        $(this)
+            .closest('.dropdown-menu')
+            .find('input[type="checkbox"]')
+            .prop('checked', false);
+        $(this)
+            .closest('.dropdown-menu')
+            .find('input[type="radio"]')
+            .prop('checked', false);
         var button = $(this).closest('.input-wrap').find('button');
         var text = button.attr('data-reset');
         button.text(text);
@@ -245,7 +243,10 @@ jQuery(document).ready(function ($) {
     }
 
     function showSearch() {
-        $('form.property-search-filters, form.property-search-starter').css('opacity', '1');
+        $('form.property-search-filters, form.property-search-starter').css(
+            'opacity',
+            '1'
+        );
     }
 
     // on load, do these functions
@@ -264,5 +265,4 @@ jQuery(document).ready(function ($) {
     $('.input-wrap-neighborhoods input').on('change', importNeighborhoods);
     $('.clear').on('click', clearDropdown);
     $('input[type="text"]').on('change', textInputActive);
-
 });

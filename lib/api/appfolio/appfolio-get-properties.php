@@ -66,17 +66,19 @@ function rentfetch_get_properties_appfolio() {
     
     $responseArray = json_decode( $response, true );
     
-    if ( !$appfolio_property_ids ) {
+    set_transient( 'appfolio_properties', $responseArray, HOUR_IN_SECONDS );
+    
+    // if ( !$appfolio_property_ids ) {
         
-        // if there's no property ID set, the API returns the results inside [results]
-        set_transient( 'appfolio_properties', $responseArray['results'], HOUR_IN_SECONDS );
+    //     // if there's no property ID set, the API returns the results inside [results]
+    //     set_transient( 'appfolio_properties', $responseArray, HOUR_IN_SECONDS );
         
-    } else {
+    // } else {
         
-        // if there's property IDs set, the API returns the results without other information
-        set_transient( 'appfolio_properties', $responseArray, HOUR_IN_SECONDS );
+    //     // if there's property IDs set, the API returns the results without other information
+    //     set_transient( 'appfolio_properties', $responseArray, HOUR_IN_SECONDS );
         
-    }
+    // }
     
 }
 
