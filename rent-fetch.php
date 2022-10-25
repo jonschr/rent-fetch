@@ -195,12 +195,18 @@ function rentfetch_start_sync() {
             
     if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {       
          
+        // yardi
         as_unschedule_action( 'rentfetch_do_get_yardi_property_from_api' );
         as_unschedule_all_actions( 'rentfetch_do_get_yardi_property_from_api' );
         as_unschedule_action( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
         as_unschedule_all_actions( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
         as_unschedule_action( 'rentfetch_do_fetch_yardi_floorplans' );
         as_unschedule_all_actions( 'rentfetch_do_fetch_yardi_floorplans' );
+        
+        // appfolio
+        as_unschedule_action( 'rentfetch_appfolio_do_process_and_save_floorplans' );
+        as_unschedule_all_actions( 'rentfetch_appfolio_do_process_and_save_floorplans' );
+        
         
     } else {
         

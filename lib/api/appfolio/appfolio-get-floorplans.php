@@ -136,6 +136,9 @@ add_action( 'rentfetch_do_save_appfolio_floorplans_to_cpt', 'rentfetch_check_app
 // add_action( 'admin_footer', 'rentfetch_check_appfolio_floorplans_for_saving_or_syncing' );
 function rentfetch_check_appfolio_floorplans_for_saving_or_syncing() {
     
+    $sync_term = get_field( 'sync_term', 'option' );
+    $data_sync = get_field( 'data_sync', 'option' );
+    
     $units = get_transient( 'appfolio_units' );
     // console_log( $units );
     
