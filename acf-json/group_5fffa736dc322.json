@@ -667,7 +667,7 @@
             "label": "Google Maps API key",
             "name": "google_maps_api_key",
             "type": "text",
-            "instructions": "Required for the map to function",
+            "instructions": "Required for the map to function. This API key needs access to the Maps Javascript API, and can be restricted by referrer to only allow your website to use it.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -676,10 +676,29 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": "",
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
+        },
+        {
+            "key": "field_6358d42903b11",
+            "label": "Google Geocoding API key",
+            "name": "google_geocoding_api_key",
+            "type": "text",
+            "instructions": "Required for geocoding to function. This API key needs access to the Geocoding API, and CANNOT be restricted by referrer. We'd recommend either only adding this when you're actually needing it (most sites don't), or restricting it by IP address instead.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
         },
         {
             "key": "field_609b3c225274f",
@@ -2222,5 +2241,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1666675204
+    "modified": 1666765998
 }
