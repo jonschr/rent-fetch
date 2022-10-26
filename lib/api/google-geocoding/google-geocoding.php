@@ -3,7 +3,7 @@
 /**
  * Check if there's anything needing geocoded
  */
-// add_action( 'init', 'rentfetch_geocode' );
+add_action( 'init', 'rentfetch_geocode' );
 function rentfetch_geocode() {
     
     $google_geocoding_api_key = get_field( 'google_geocoding_api_key', 'option' );
@@ -37,7 +37,7 @@ function rentfetch_geocode() {
     
     foreach( $posts as $post_id ) {
         if ( as_has_scheduled_action( 'rentfetch_geocoding_get_lat_long', array( $post_id ), 'rentfetch_geocoding' ) == false )
-            as_enqueue_async_action( 'rentfetch_geocoding_get_lat_long', array( $post_id ), 'rentfetch_geocoding' );
+            as_enqueue_async_action( 'rentfetch_geocoding_do_get_lat_long', array( $post_id ), 'rentfetch_geocoding' );
     }
     
 }
@@ -48,6 +48,7 @@ function test_geocoding() {
     rentfetch_geocoding_get_lat_long( $post_id );
 }
 
+add_action( 'rentfetch_geocoding_do_get_lat_long', 'rentfetch_geocoding_get_lat_long' );
 function rentfetch_geocoding_get_lat_long( $post_id ) {
         
     $google_geocoding_api_key = get_field( 'google_geocoding_api_key', 'option' );
