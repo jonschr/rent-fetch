@@ -110,8 +110,13 @@ function rentfetch_geocoding_get_lat_long( $post_id ) {
     }
   
     else{
-        echo "<strong>ERROR: {$resp['status']}</strong>";
-        return false;
+        
+        $location_data = array( 
+            'error geocoding, delete this to try again',
+            'error geocoding, delete this to try again',
+        );
+        
+       rentfetch_geocoding_save_lat_long( $post_id, $location_data );
     }
 }
 
