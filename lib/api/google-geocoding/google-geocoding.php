@@ -112,8 +112,8 @@ function rentfetch_geocoding_get_lat_long( $post_id ) {
     else{
         
         $location_data = array( 
-            'error geocoding, delete this to try again',
-            'error geocoding, delete this to try again',
+            'error geocoding, delete latitude and longitude to automatically try again',
+            'error geocoding, delete latitude and longitude to automatically try again',
         );
         
        rentfetch_geocoding_save_lat_long( $post_id, $location_data );
