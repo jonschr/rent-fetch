@@ -1,3 +1,8 @@
+### 3.8
+
+-   Added a basic version of the AppFolio API
+-   TODO: Add cleanup tasks for removing properties and floorplans when/if they become defunct
+
 ### 3.7
 
 -   Add settings for each of the sections of the single-properties template (show or don't show each of those)
