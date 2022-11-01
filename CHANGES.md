@@ -1,3 +1,7 @@
+### 3.8.2
+
+-   Added a filter for customizing the search text
+
 ### 3.8.1
 
 -   Added geocoding capability with basic rate-limiting setup (if it fails, it adds an error instead)

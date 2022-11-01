@@ -73,9 +73,11 @@ function rentfetch_propertysearch( $atts ) {
         $enable_text_based_search = $starter_search_components['text_based_search'];
         if ( $enable_text_based_search == true ) {
             
+            $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
+            
             //* Build the text search
             echo '<div class="input-wrap input-wrap-text-search">';
-                echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
+                printf( '<input type="text" name="textsearch" placeholder="%s" />', $placeholder );
             echo '</div>';
             
         }

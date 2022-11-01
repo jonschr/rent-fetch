@@ -61,13 +61,15 @@ function rentfetch_propertymap( $atts ) {
             $map_search_components = get_field( 'map_search_components', 'option' );
             $enable_text_based_search = $map_search_components['text_based_search'];
             if ( $enable_text_based_search == true ) {
+                                
+                $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
                 
                 //* build the text-based search
                 echo '<div class="input-wrap input-wrap-text-search">';
                     if ( $searchtext ) {
-                        printf( '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." class="active" value="%s" />', $searchtext );
+                        printf( '<input type="text" name="textsearch" placeholder="%s" class="active" value="%s" />', $placeholder, $searchtext );
                     } else {
-                        echo '<input type="text" name="textsearch" placeholder="Search city or zipcode ..." />';
+                        printf( '<input type="text" name="textsearch" placeholder="%s" />', $placeholder );
                     }
                 echo '</div>';
                 
