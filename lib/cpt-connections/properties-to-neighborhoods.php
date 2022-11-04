@@ -1,6 +1,10 @@
 <?php
 
-add_action( 'mb_relationships_init', function() {
+// connect properties and neighborhoods
+// require_once( RENTFETCH_DIR . 'lib/cpt-connections/properties-to-neighborhoods.php' );
+add_action( 'mb_relationships_init', 'rentfetch_connect_properties_to_neighborhoods' );
+function rentfetch_connect_properties_to_neighborhoods() {
+        
     MB_Relationships_API::register( [
         'id'   => 'properties_to_neighborhoods',
         'to'   => array(
@@ -14,4 +18,4 @@ add_action( 'mb_relationships_init', function() {
             'admin_column' => true,  // THIS!
         ),
     ] );
-} );
+}

@@ -247,6 +247,7 @@ function rentfetch_appfolio_flatten_floorplan_data( $floorplans ) {
         
         $rent = [];
         $sqrft = [];
+        $AvailableUnitsCount = 0;
         
         foreach( $floorplan as $detail ) {
             if ( $detail['AdvertisedRent'] > 100 )
@@ -257,6 +258,9 @@ function rentfetch_appfolio_flatten_floorplan_data( $floorplans ) {
                 
             if ( $detail['ReadyForShowingOn'] )
                 $date[] = $detail['ReadyForShowingOn'];
+                
+            if ( $detail['PostedToWebsite'] == 'Yes' )
+                $AvailableUnitsCount++;
                 
             // echo $detail['RentReady'];
         }
@@ -286,6 +290,7 @@ function rentfetch_appfolio_flatten_floorplan_data( $floorplans ) {
             'MinRent' => $min_rent,
             'MaxSqrft' => $max_sqrft,
             'MinSqrft' => $min_sqrft,
+            'AvailableUnitsCount' => $AvailableUnitsCount,
         );        
         
         $floorplans_flattened[] = $floorplan;
@@ -328,6 +333,7 @@ function rentfetch_appfolio_update_or_create( $floorplans ) {
                 )
             )
         );
+        
         $matchingposts = get_posts( $args );
         $count = count( $matchingposts );
         
@@ -353,7 +359,7 @@ function rentfetch_appfolio_insert_floorplan( $floorplan ) {
     
     // all of the available variables
     // $AvailabilityURL = $floorplan['AvailabilityURL'];
-    // $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
+    $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
     $Baths = floatval( $floorplan['Bathrooms'] );
     $Beds = floatval( $floorplan['Bedrooms'] );
     // $FloorplanHasSpecials = $floorplan['FloorplanHasSpecials'];
@@ -380,7 +386,7 @@ function rentfetch_appfolio_insert_floorplan( $floorplan ) {
         'post_type'     => 'floorplans',
         'meta_input'    => array(
             // 'availability_url'          => $AvailabilityURL,
-            // 'available_units'           => $AvailableUnitsCount,
+            'available_units'           => $AvailableUnitsCount,
             'baths'                     => $Baths,
             'beds'                      => $Beds,
             // 'has_specials'              => $FloorplanHasSpecials,
@@ -410,7 +416,7 @@ function rentfetch_appfolio_update_floorplan( $floorplan ) {
     
     // all of the available variables
     // $AvailabilityURL = $floorplan['AvailabilityURL'];
-    // $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
+    $AvailableUnitsCount = $floorplan['AvailableUnitsCount'];
     $Baths = floatval( $floorplan['Bathrooms'] );
     $Beds = floatval( $floorplan['Bedrooms'] );
     // $FloorplanHasSpecials = $floorplan['FloorplanHasSpecials'];
@@ -437,7 +443,7 @@ function rentfetch_appfolio_update_floorplan( $floorplan ) {
         'post_type'     => 'floorplans',
         'meta_input'    => array(
             // 'availability_url'          => $AvailabilityURL,
-            // 'available_units'           => $AvailableUnitsCount,
+            'available_units'           => $AvailableUnitsCount,
             'baths'                     => $Baths,
             'beds'                      => $Beds,
             // 'has_specials'              => $FloorplanHasSpecials,
@@ -478,7 +484,7 @@ function rentfetch_appfolio_update_floorplan( $floorplan ) {
             // update post meta (NOTE: update_post_meta returns false if it doesn't update, true if it does)
             // $success_availability_url = update_post_meta( $post_id, 'availability_url', $AvailabilityURL );
             
-            // $success_available_units = update_post_meta( $post_id, 'available_units', $AvailableUnitsCount );
+            $success_available_units = update_post_meta( $post_id, 'available_units', $AvailableUnitsCount );
             
             $success_baths = update_post_meta( $post_id, 'baths', $Baths );
             

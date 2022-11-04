@@ -3,7 +3,7 @@
 /**
  * Check if there's anything needing geocoded
  */
-add_action( 'init', 'rentfetch_geocode' );
+add_action( 'rentfetch_do_geocode', 'rentfetch_geocode' );
 function rentfetch_geocode() {
     
     $google_geocoding_api_key = get_field( 'google_geocoding_api_key', 'option' );

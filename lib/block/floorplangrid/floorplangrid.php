@@ -37,7 +37,7 @@ function rentfetch_floorplangrid_block_enqueue() {
     
     // Specific scripts and styles
     wp_enqueue_style( 'rentfetch-floorplangrid-style', RENTFETCH_PATH . 'css/floorplangrid.css', array(), RENTFETCH_VERSION, 'screen' );
-    wp_enqueue_script( 'rentfetch-filters', RENTFETCH_PATH . 'block/floorplangrid/js/filters.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    wp_enqueue_script( 'rentfetch-filters', RENTFETCH_PATH . 'lib/block/floorplangrid/js/filters.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Slick
     wp_enqueue_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), RENTFETCH_VERSION, true );
