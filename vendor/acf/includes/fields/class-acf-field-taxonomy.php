@@ -779,17 +779,7 @@ if ( ! class_exists( 'acf_field_taxonomy' ) ) :
 					),
 				)
 			);
-		}
 
-		/**
-		 * Renders the field settings used in the "Validation" tab.
-		 *
-		 * @since 6.0
-		 *
-		 * @param array $field The field settings array.
-		 * @return void
-		 */
-		function render_field_validation_settings( $field ) {
 			acf_render_field_setting(
 				$field,
 				array(
@@ -822,6 +812,11 @@ if ( ! class_exists( 'acf_field_taxonomy' ) ) :
 
 		function ajax_add_term() {
 
+			// verify nonce
+			if ( ! acf_verify_ajax() ) {
+				die();
+			}
+
 			// vars
 			$args = wp_parse_args(
 				$_POST,
@@ -832,11 +827,6 @@ if ( ! class_exists( 'acf_field_taxonomy' ) ) :
 					'term_parent' => '',
 				)
 			);
-
-			// verify nonce
-			if ( ! acf_verify_ajax() ) {
-				die();
-			}
 
 			// load field
 			$field = acf_get_field( $args['field_key'] );
