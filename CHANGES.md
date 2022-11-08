@@ -4,6 +4,7 @@
 -   Adding commas as psuedoelements in the map layout, the search, and fixing the spacing on the single properties template
 -   Better loading for geocoding, as it was duplicating some actions if pages were loaded too quickly
 -   Pausing syncing now disables geocoding
+-   Update bundled ACF
 
 ### 3.8.2
 
