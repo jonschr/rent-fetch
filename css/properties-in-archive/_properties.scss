@@ -40,13 +40,16 @@
         line-height: 1.2em;
 
         span {
-            margin-right: 0.2em;
+            &:after {
+                content: '\00a0';
+            }
             display: inline-block;
         }
 
-        span.city {
+        span.city,
+        span.address {
             &:after {
-                content: ',';
+                content: ',\00a0';
             }
         }
     }

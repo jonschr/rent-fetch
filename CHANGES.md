@@ -1,3 +1,10 @@
+## 3.9
+
+-   Code refactor, adding basic autoloading of php files throughout and moving most items out of the main rent-fetch.php file
+-   Adding commas as psuedoelements in the map layout, the search, and fixing the spacing on the single properties template
+-   Better loading for geocoding, as it was duplicating some actions if pages were loaded too quickly
+-   Pausing syncing now disables geocoding
+
 ### 3.8.2
 
 -   Added a filter for customizing the search text

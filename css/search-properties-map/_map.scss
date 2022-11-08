@@ -31,7 +31,6 @@
                 width: 100%;
                 object-fit: cover;
             }
-
         }
 
         a.overlay {
@@ -50,7 +49,6 @@
                 max-width: 100%;
             }
 
-
             h3 {
                 font-size: 20px;
                 margin-bottom: 3px;
@@ -63,21 +61,22 @@
                 }
             }
 
-
-
             .the-address {
                 margin-bottom: 7px;
                 font-size: 14px;
                 line-height: 1.2em;
 
                 span {
-                    margin-right: 0.2em;
-                    display: inline;
+                    &:after {
+                        content: '\00a0';
+                    }
+                    display: inline-block;
                 }
 
-                span.city {
+                span.city,
+                span.address {
                     &:after {
-                        content: ",";
+                        content: ',\00a0';
                     }
                 }
             }
@@ -111,7 +110,7 @@
                 font-size: 16px;
 
                 &:before {
-                    content: "";
+                    content: '';
                     width: 28px;
                     height: 28px;
                     display: block;
@@ -127,21 +126,18 @@
             span.bedsrange {
                 &:before {
                     background-image: url('../images/beds-icon-gray.svg');
-
                 }
             }
 
             span.bathsrange {
                 &:before {
                     background-image: url('../images/baths-icon-gray.svg');
-
                 }
             }
 
             span.sqftrange {
                 &:before {
                     background-image: url('../images/sqft-icon-gray.svg');
-
                 }
             }
         }

@@ -17,7 +17,7 @@
             margin-bottom: 0;
         }
 
-        >div {
+        > div {
             display: block;
             padding: 30px 0;
 
@@ -28,9 +28,9 @@
     }
 
     .location {
-        .the-location>span {
+        .the-location > span {
             &:after {
-                content: ", ";
+                content: ',\00a0';
             }
 
             &:last-child {
@@ -46,7 +46,6 @@
     }
 
     .call {
-
         .calltoday,
         .phone {
             display: block;
