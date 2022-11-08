@@ -11,7 +11,7 @@
 
 ### 3.8.1
 
--   Added geocoding capability with basic rate-limiting setup (if it fails, it adds an error instead)
+-   Added geocoding capability with basic rate-limiting setup (if it fails, it adds an error message in the content instead)
 
 ### 3.8
 
