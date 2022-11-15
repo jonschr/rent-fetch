@@ -1,3 +1,7 @@
+## 3.9.1
+
+-   Bugfix: if floorplan sliders are hidden, then shown, reinitialze the slider (we're just doing this on any click)
+
 ## 3.9
 
 -   Code refactor, adding basic autoloading of php files throughout and moving most items out of the main rent-fetch.php file
