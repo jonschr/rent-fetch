@@ -13,7 +13,12 @@ function apartmentsync_register_floorplans_cpt() {
 	$slug = 'floorplans';
 	$icon = 'table-col-before'; //* https://developer.wordpress.org/resource/dashicons/
 	$supports = array( 'title' );
-
+	$menu_icon = RENTFETCH_PATH . 'images/admin-icon-floorplans-2-colored.svg';
+	$menu_icon = file_get_contents( $menu_icon );
+	$menu_icon = base64_encode( $menu_icon );
+	
+	console_log( $menu_icon );
+	
 	$labels = array(
 		'name' => $name_plural,
 		'singular_name' => $name_singular,
@@ -42,7 +47,8 @@ function apartmentsync_register_floorplans_cpt() {
 		'has_archive' => false,
 		'hierarchical' => false,
 		'menu_position' => null,
-		'menu_icon' => 'dashicons-' . $icon,
+		"menu_icon" => 'data:image/svg+xml;base64,' . $menu_icon,
+		// "menu_icon" => RENTFETCH_PATH . '/images/admin-icon-floorplans-2-colored.svg',
 		'show_in_rest' => true,
 		'supports' => $supports,
 	);

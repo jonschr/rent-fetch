@@ -42,7 +42,7 @@ function rentfetch_register_neighborhoods_cpt() {
 		'has_archive' => false,
 		'hierarchical' => false,
 		'menu_position' => 30,
-		'menu_icon' => 'dashicons-' . $icon,
+		"menu_icon" => RENTFETCH_PATH . '/images/admin-icon-floorplans-2-grayscale.svg',
 		'show_in_rest' => true,
 		'supports' => $supports,
 	);
