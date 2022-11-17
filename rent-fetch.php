@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.9.1
+	Version: 3.9.2
     Author: Brindle Digital
     Author URI: https://www.brindledigital.com/
 
@@ -32,7 +32,7 @@ define( 'RENTFETCH_ACF_PATH', plugin_dir_path( __FILE__ ) . 'vendor/acf/' );
 define( 'RENTFETCH_ACF_URL', plugin_dir_url( __FILE__ ) . 'vendor/acf/' );
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.9.1' );
+define ( 'RENTFETCH_VERSION', '3.9.2' );
 
 //////////////////////////////
 // INCLUDE ACTION SCHEDULER //

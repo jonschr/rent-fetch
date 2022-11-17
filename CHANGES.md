@@ -1,3 +1,7 @@
+## 3.9.2
+
+-   Update the admin icons for each content type
+
 ## 3.9.1
 
 -   Bugfix: if floorplan sliders are hidden, then shown, reinitialze the slider (we're just doing this on any click)
