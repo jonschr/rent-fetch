@@ -11,8 +11,10 @@ function rentfetch_register_neighborhoods_cpt() {
 	$name_singular = 'Neighborhood';
 	$post_type = 'neighborhoods';
 	$slug = 'neighborhoods';
-	$icon = 'admin-multisite'; //* https://developer.wordpress.org/resource/dashicons/
 	$supports = array( 'title', 'editor', 'thumbnail', 'excerpt' );
+	$menu_icon = RENTFETCH_PATH . 'images/admin-icon-grayscale-neighborhoods.svg';
+	$menu_icon = file_get_contents( $menu_icon );
+	$menu_icon = base64_encode( $menu_icon );
 
 	$labels = array(
 		'name' => $name_plural,
@@ -42,7 +44,7 @@ function rentfetch_register_neighborhoods_cpt() {
 		'has_archive' => false,
 		'hierarchical' => false,
 		'menu_position' => 30,
-		'menu_icon' => 'dashicons-' . $icon,
+		"menu_icon" => 'data:image/svg+xml;base64,' . $menu_icon,
 		'show_in_rest' => true,
 		'supports' => $supports,
 	);
