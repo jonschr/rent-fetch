@@ -11,8 +11,10 @@ function rentfetch_register_properties_cpt() {
 	$name_singular = 'Property';
 	$post_type = 'properties';
 	$slug = 'properties';
-	$icon = 'admin-home'; //* https://developer.wordpress.org/resource/dashicons/
 	$supports = array( 'title', 'page-attributes' );
+	$menu_icon = RENTFETCH_PATH . 'images/admin-icon-grayscale-properties.svg';
+	$menu_icon = file_get_contents( $menu_icon );
+	$menu_icon = base64_encode( $menu_icon );
 
 	$labels = array(
 		'name' => $name_plural,
@@ -42,7 +44,7 @@ function rentfetch_register_properties_cpt() {
 		'has_archive' => false,
 		'hierarchical' => false,
 		'menu_position' => null,
-		"menu_icon" => RENTFETCH_PATH . '/images/admin-icon-floorplans-2-grayscale.svg',
+		"menu_icon" => 'data:image/svg+xml;base64,' . $menu_icon,
 		'show_in_rest' => true,
 		'supports' => $supports,
 	);
