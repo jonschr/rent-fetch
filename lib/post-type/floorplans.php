@@ -13,7 +13,15 @@ function apartmentsync_register_floorplans_cpt() {
 	$slug = 'floorplans';
 	$supports = array( 'title' );
 	$menu_icon = RENTFETCH_PATH . 'images/admin-icon-grayscale-floorplans.svg';
-	$menu_icon = file_get_contents( $menu_icon );
+	
+	$arrContextOptions=array(
+      "ssl"=>array(
+            "verify_peer"=>false,
+            "verify_peer_name"=>false,
+        ),
+    );  
+	
+	$menu_icon = file_get_contents( $menu_icon, false, stream_context_create($arrContextOptions));
 	$menu_icon = base64_encode( $menu_icon );
 		
 	$labels = array(

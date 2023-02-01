@@ -1,3 +1,9 @@
+## 3.9.3
+
+-   Update ACP for 6.0+ version of their columns (thiis was already working, but wanted to make sure it was up to date)
+-   Adding Appfolio capability to delete unused properties and floorplans
+-   Fixing the icons when loading over SSL
+
 ## 3.9.2
 
 -   Update the admin icons for each content type

@@ -13,7 +13,15 @@ function rentfetch_register_neighborhoods_cpt() {
 	$slug = 'neighborhoods';
 	$supports = array( 'title', 'editor', 'thumbnail', 'excerpt' );
 	$menu_icon = RENTFETCH_PATH . 'images/admin-icon-grayscale-neighborhoods.svg';
-	$menu_icon = file_get_contents( $menu_icon );
+	
+	$arrContextOptions=array(
+      "ssl"=>array(
+            "verify_peer"=>false,
+            "verify_peer_name"=>false,
+        ),
+    );  
+	
+	$menu_icon = file_get_contents( $menu_icon, false, stream_context_create($arrContextOptions));
 	$menu_icon = base64_encode( $menu_icon );
 
 	$labels = array(
