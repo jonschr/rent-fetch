@@ -66,7 +66,7 @@ function rentfetch_get_properties_appfolio() {
     
     $responseArray = json_decode( $response, true );
     
-    set_transient( 'appfolio_properties', $responseArray, HOUR_IN_SECONDS );
+    set_transient( 'appfolio_properties', $responseArray, 900 );
     
     // if ( !$appfolio_property_ids ) {
         

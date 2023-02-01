@@ -66,7 +66,7 @@ function rentfetch_get_floorplans_appfolio() {
     
     $responseArray = json_decode( $response, true );
     
-    set_transient( 'appfolio_units', $responseArray, HOUR_IN_SECONDS );
+    set_transient( 'appfolio_units', $responseArray, 900 );
     
 }
 
