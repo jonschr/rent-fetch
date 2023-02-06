@@ -1,3 +1,7 @@
+## 3.9.6
+
+-   Updates to geocoding for reliability
+
 ## 3.9.3
 
 -   Update ACP for 6.0+ version of their columns (thiis was already working, but wanted to make sure it was up to date)
