@@ -20,12 +20,12 @@ function rentfetch_single_property_title() {
     if ( $single_property_components['enable_property_title'] === false )
         return;
             
-    $id = get_the_ID();
-    $title = get_the_title();
-    $city = get_post_meta( $id, 'city', true );
-    $state = get_post_meta( $id, 'state', true );
-    $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
-    $property_id = get_post_meta( $id, 'property_id', true );
+    $id = esc_attr( get_the_ID() );
+    $title = esc_attr( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
+    $city = esc_attr( get_post_meta( $id, 'city', true ) );
+    $state = esc_attr( get_post_meta( $id, 'state', true ) );
+    $voyager_property_code = esc_attr( get_post_meta( $id, 'voyager_property_code', true ) );
+    $property_id = esc_attr( get_post_meta( $id, 'property_id', true ) );
     $location = null;
     
     // prepare the location
@@ -72,7 +72,7 @@ function rentfetch_single_property_images() {
         return;
     
     global $post;
-    $id = get_the_ID();
+    $id = esc_html( get_the_ID() );
     
     // manually-added images
     $property_images_manual = get_post_meta( $id, 'images', true );
@@ -116,14 +116,14 @@ function rentfetch_single_property_basic_info() {
         return;
     
     global $post;
-    $id = get_the_ID();
+    $id = esc_attr( get_the_ID() );
     
-    $address = get_post_meta( $id, 'address', true );
-    $city = get_post_meta( $id, 'city', true );
-    $state = get_post_meta( $id, 'state', true );
-    $zipcode = get_post_meta( $id, 'zipcode', true );
-    $url = get_post_meta( $id, 'url', true );
-    $phone = get_post_meta( $id, 'phone', true );
+    $address = esc_attr( get_post_meta( $id, 'address', true ) );
+    $city = esc_attr( get_post_meta( $id, 'city', true ) );
+    $state = esc_attr( get_post_meta( $id, 'state', true ) );
+    $zipcode = esc_attr( get_post_meta( $id, 'zipcode', true ) );
+    $url = esc_url( get_post_meta( $id, 'url', true ) );
+    $phone = esc_attr( get_post_meta( $id, 'phone', true ) );
 
     echo '<div class="wrap-basic-info single-properties-section"><div class="basic-info single-properties-section-wrap">';
     
@@ -181,10 +181,10 @@ function rentfetch_single_property_description() {
         return;
     
     global $post;
-    $id = get_the_ID();
+    $id = esc_attr( get_the_ID() );
     
-    $title = get_the_title();
-    $city = get_post_meta( $id, 'city', true );
+    $title = esc_attr( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
+    $city = esc_attr( get_post_meta( $id, 'city', true ) );
     $description = apply_filters( 'the_content', get_post_meta( $id, 'description', true ) );
 
     if ( $description || $city ) {
@@ -361,8 +361,8 @@ function rentfetch_single_property_floorplans() {
         return;
     
     global $post;
-    $id = get_the_ID();
-    $property_id = get_post_meta( $id, 'property_id', true );
+    $id = esc_attr( get_the_ID() );
+    $property_id = esc_attr( get_post_meta( $id, 'property_id', true ) );
     
     // grab the gravity forms lightbox, if enabled on this page
     do_action( 'rentfetch_do_gform_lightbox' );
@@ -433,7 +433,7 @@ function rentfetch_single_property_amenities() {
             echo '<h2 id="amenities">Amenities</h2>';
             echo '<ul class="amenities">';
                 foreach( $terms as $term ) {                
-                    printf( '<li>%s</li>', $term->name );
+                    printf( '<li>%s</li>', esc_attr( $term->name ) );
                 }
             echo '</ul>';
         echo '</div></div>';
@@ -467,7 +467,7 @@ function rentfetch_single_property_map() {
         return;
     
     global $post;
-    $id = get_the_ID();
+    $id = esc_attr( get_the_ID() );
 
     $latitude = floatval( get_post_meta( $id, 'latitude', true ) );
     $longitude = floatval( get_post_meta( $id, 'longitude', true ) );
@@ -476,12 +476,12 @@ function rentfetch_single_property_map() {
     if ( empty( $latitude ) || empty( $longitude) )
         return;
         
-    $title = get_the_title( $id );
-    $address = get_post_meta( $id, 'address', true );
-    $city = get_post_meta( $id, 'city', true );
-    $state = get_post_meta( $id, 'state', true );
-    $zipcode = get_post_meta( $id, 'zipcode', true );
-    $phone = get_post_meta( $id, 'phone', true );
+    $title = esc_attr( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
+    $address = esc_attr( get_post_meta( $id, 'address', true ) );
+    $city = esc_attr( get_post_meta( $id, 'city', true ) );
+    $state = esc_attr( get_post_meta( $id, 'state', true ) );
+    $zipcode = esc_attr( get_post_meta( $id, 'zipcode', true ) );
+    $phone = esc_attr( get_post_meta( $id, 'phone', true ) );
     
     $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zipcode, $phone );
 
@@ -521,9 +521,9 @@ function rentfetch_single_property_neighborhood() {
         
         $neighborhood = $neighborhoods[0];   
         $neighborhood_id = $neighborhood->ID;
-        $permalink = get_the_permalink( $neighborhood_id );
-        $thumb = get_the_post_thumbnail_url( $neighborhood_id, 'large' );
-        $title = get_the_title( $neighborhood_id );
+        $permalink = esc_url( get_the_permalink( $neighborhood_id ) );
+        $thumb = esc_url( get_the_post_thumbnail_url( $neighborhood_id, 'large' ) );
+        $title = esc_attr( get_the_title( $neighborhood_id ) );
         $excerpt = apply_filters( 'the_content', get_the_excerpt( $neighborhood_id ) );
         
         echo '<div class="wrap-neighborhoods single-properties-section"><div class="neighborhoods-wrap">';

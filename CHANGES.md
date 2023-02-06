@@ -1,3 +1,8 @@
+## 3.9.7
+
+-   Going through templates and fixing a few places where we weren't properly escaping values
+-   Adding a new filter for rentfetch_property_title to allow for themes to modify the title of a property
+
 ## 3.9.6
 
 -   Updates to geocoding for reliability

@@ -13,21 +13,21 @@ function rentfetch_each_property( $id, $floorplan ) {
     wp_enqueue_style( 'rentfetch-slick-main-theme' );
     
     // vars
-    $title = get_the_title( $id );
+    $title = esc_html( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
     
-    $property_id = get_post_meta( $id, 'property_id', true );
-    $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
-    $address = get_post_meta( $id, 'address', true );
-    $city = get_post_meta( $id, 'city', true );
-    $state = get_post_meta( $id, 'state', true );
-    $zipcode = get_post_meta( $id, 'zipcode', true );
-    $latitude = get_post_meta( $id, 'latitude', true );
-    $longitude = get_post_meta( $id, 'longitude', true );
-    $bedsrange = $floorplan['bedsrange'];
-    $bathsrange = $floorplan['bathsrange'];    
-    $rentrange = $floorplan['rentrange'];
-    $sqftrange = $floorplan['sqftrange'];
-    $has_specials = $floorplan['property_has_specials'];
+    $property_id = esc_attr( get_post_meta( $id, 'property_id', true ) );
+    $voyager_property_code = esc_attr( get_post_meta( $id, 'voyager_property_code', true ) );
+    $address = esc_attr( get_post_meta( $id, 'address', true ) );
+    $city = esc_attr( get_post_meta( $id, 'city', true ) );
+    $state = esc_attr( get_post_meta( $id, 'state', true ) );
+    $zipcode = esc_attr( get_post_meta( $id, 'zipcode', true ) );
+    $latitude = esc_attr( get_post_meta( $id, 'latitude', true ) );
+    $longitude = esc_attr( get_post_meta( $id, 'longitude', true ) );
+    $bedsrange = esc_attr( $floorplan['bedsrange'] );
+    $bathsrange = esc_attr( $floorplan['bathsrange'] );
+    $rentrange = esc_attr( $floorplan['rentrange'] );
+    $sqftrange = esc_attr( $floorplan['sqftrange'] );
+    $has_specials = esc_attr( $floorplan['property_has_specials'] );
     $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url = null );
     $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target = '_blank' );
     
@@ -170,9 +170,9 @@ function rentfetch_each_property_images_manual( $post_id ) {
                             
                 foreach( $property_images as $property_image ) {
                             
-                    $url = wp_get_attachment_image_url( $property_image, 'large' );
-                    $alt = get_post_meta($property_image, '_wp_attachment_image_alt', TRUE);
-                    $title = get_the_title($property_image);
+                    $url = esc_url( wp_get_attachment_image_url( $property_image, 'large' ) );
+                    $alt = esc_attr( get_post_meta($property_image, '_wp_attachment_image_alt', TRUE) );
+                    $title = esc_attr( get_the_title($property_image) );
                                         
                     echo '<div class="property-slide">';
                         printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
@@ -233,11 +233,11 @@ function rentfetch_each_property_images_yardi( $post_id ) {
                             
                     $title = null;
                     if ( isset( $property_image->Title ) )
-                        $title = $property_image->Title;
+                        $title = esc_attr( $property_image->Title );
                     
                     $url = null;
                     if ( isset( $property_image->ImageURL ) )
-                        $url = $property_image->ImageURL;
+                        $url = esc_url( $property_image->ImageURL );
                         
                     // if we don't have an image, use a placeholder
                     if ( empty( $url ) )
@@ -245,7 +245,7 @@ function rentfetch_each_property_images_yardi( $post_id ) {
                                             
                     $alt = null;
                     if ( isset( $property_image->AltText ) )
-                        $alt = $property_image->AltText;
+                        $alt = esc_attr( $property_image->AltText );
                         
                     // bail if there is no image src
                     if ( $url == null )
@@ -333,5 +333,5 @@ function rentfetch_each_properties_rent_range_display_as_minimum( $floorplan ) {
     $rent = min( $rents );
     
     if ( $rent > 100 )
-        printf( '<span class="rentrange">From $%s</span>', $rent );
+        printf( '<span class="rentrange">From $%s</span>', esc_attr( $rent ) );
 }
