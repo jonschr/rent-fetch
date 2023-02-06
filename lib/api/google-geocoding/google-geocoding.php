@@ -20,11 +20,13 @@ function rentfetch_geocode() {
             'relation' => 'AND',
             array(
                 'key' => 'latitude',
-                'compare' => 'NOT EXISTS',
+                'compare' => '<',
+                'value' => '1',
             ),
             array(
                 'key' => 'longitude',
-                'compare' => 'NOT EXISTS',
+                'compare' => '<',
+                'value' => '1',
             ),
         ),
     );
@@ -104,7 +106,13 @@ function rentfetch_geocoding_get_lat_long( $post_id ) {
             rentfetch_geocoding_save_lat_long( $post_id, $location_data );
                           
         }else{
-            return false;
+            
+            $location_data = array( 
+                'error geocoding (failed to find the address), delete latitude and longitude to automatically try again',
+                'error geocoding (failed to find the address), delete latitude and longitude to automatically try again',
+            );
+            
+            rentfetch_geocoding_save_lat_long( $post_id, $location_data );
         }
           
     }
@@ -112,8 +120,8 @@ function rentfetch_geocoding_get_lat_long( $post_id ) {
     else{
         
         $location_data = array( 
-            'error geocoding, delete latitude and longitude to automatically try again',
-            'error geocoding, delete latitude and longitude to automatically try again',
+            'error geocoding (likely API key invalid), delete latitude and longitude to automatically try again',
+            'error geocoding (likely API key invalid), delete latitude and longitude to automatically try again',
         );
         
        rentfetch_geocoding_save_lat_long( $post_id, $location_data );
