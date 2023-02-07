@@ -1,3 +1,9 @@
+## 3.9.8
+
+-   Adding nav capabilities to the single-properties template
+-   Adding nearby properties to the single-properties template
+-   Adding tour capabilities to the single-properties template
+
 ## 3.9.7
 
 -   Going through templates and fixing a few places where we weren't properly escaping values

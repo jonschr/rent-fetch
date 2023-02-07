@@ -2,8 +2,10 @@
 
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_title', 10 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_images', 20 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_section_navigation', 25 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_basic_info', 30 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_description', 40 );
+add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_tour', 45 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_floorplans', 50 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_amenities', 60 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_lease_details', 70 );
@@ -97,15 +99,76 @@ function rentfetch_single_property_images() {
     
 }
 
-function rentfetch_section_navigation() {
+function rentfetch_single_property_section_navigation() {
     
     // bail if this section isn't set to display
     $single_property_components = get_field( 'single_property_components', 'option' );
     if ( $single_property_components['enable_section_navigation'] === false )
         return;
-        
-    // silence is golden
+                
+    if ( $single_property_components['enable_property_description'] === false )
+        $hide_description = true;
     
+    if ( $single_property_components['enable_virtual_tour'] === false )
+        $hide_tour = true;
+        
+    if ( $single_property_components['enable_floorplans_display'] === false )
+        $hide_floorplans = true;
+        
+    if ( $single_property_components['enable_amenities_display'] === false )
+        $hide_amenities = true;
+        
+    if ( $single_property_components['enable_nearby_properties'] === false )
+        $hide_nearby_properties = true;
+        
+    $description = apply_filters( 'the_content', get_post_meta( get_the_ID(), 'description', true ) );
+    $amenities = get_the_terms( get_the_ID(), 'amenities' );
+    
+    $property_id = esc_attr( get_post_meta( get_the_ID(), 'property_id', true ) );
+    
+    $args = array(
+            'post_type' => 'floorplans',
+            'posts_per_page' => -1,
+            'order' => 'ASC',
+            'meta_query' => array(
+                array(
+                    'key'   => 'property_id',
+                    'value' => $property_id,
+                ),
+            ),
+        );
+        
+    $floorplans = get_posts( $args );
+    
+    $matterport = get_post_meta( get_the_ID(), 'matterport', true );
+    $video = get_post_meta( get_the_ID(), 'video', true );
+                    
+    echo '<div class="wrap-section-navigation single-properties-section">';
+        echo '<div class="section-navigation single-properties-section-wrap">';
+            echo '<div class="property-nav">';
+                echo '<div class="wrap">';
+                    echo '<ul>';
+                    
+                        if ( $description && !$hide_description )
+                            printf( '<li><a href="%s">Overview</a></li>', '#description' );
+                            
+                        if ( $floorplans && !$hide_floorplans )
+                            printf( '<li><a href="%s">Floor Plans</a></li>', '#floorplans' );
+                            
+                        if ( ( $matterport || $video ) && !$hide_tour )
+                            printf( '<li><a href="%s">Virtual tour</a></li>', '#tour' );
+                        
+                        if ( $amenities && !$hide_amenities )
+                            printf( '<li><a href="%s">Amenities</a></li>', '#amenities' );
+                            
+                        if ( rentfetch_get_single_property_nearby_properties() && !$hide_nearby_properties )
+                            printf( '<li><a href="%s">Nearby Properties</a></li>', '#nearby' );
+                            
+                    echo '</ul>';
+                echo '</div>';
+            echo '</div>';
+        echo '</div>';
+    echo '</div>';
 }
 
 function rentfetch_single_property_basic_info() {
@@ -353,6 +416,34 @@ function rentfetch_single_property_yardi_lead_generation() {
     echo '</div>'; // #yardi-api-form-wrap
 }
 
+function rentfetch_single_property_tour() {
+    
+    // bail if this section isn't set to display
+    $single_property_components = get_field( 'single_property_components', 'option' );
+    if ( $single_property_components['enable_virtual_tour'] === false )
+        return;
+    
+    $matterport = get_post_meta( get_the_ID(), 'matterport', true );
+    $video = get_post_meta( get_the_ID(), 'video', true );
+        
+    if ( !$matterport && !$video )
+        return;
+        
+    echo '<div id="tour" class="wrap-tour single-properties-section">';
+        echo '<div class="tour-wrap single-properties-section-wrap">';
+        
+            echo '<h2>Virtual Tour</h2>';
+    
+            if ( $matterport )
+                printf( '<div class="matterport-tour tour">%s</div>', $matterport );
+                
+            if ( $video )
+                printf( '<div class="video-tour tour">%s</div>', wp_oembed_get( $video ) );
+        
+        echo '</div>';
+    echo '</div>';
+}
+
 function rentfetch_single_property_floorplans() {
     
     // bail if this section isn't set to display
@@ -504,6 +595,7 @@ function rentfetch_single_property_map() {
         
 }
 
+
 function rentfetch_single_property_neighborhood() {
     
     // bail if we dont have metabox's relationships plugin installed
@@ -554,6 +646,96 @@ function rentfetch_single_property_nearby_properties() {
     
     global $post;
     
-    do_action( 'rentfetch_single_properties_nearby_properties' );
+    $properties = rentfetch_get_single_property_nearby_properties();
+                        
+    $countposts = count( $properties );
     
+    // bail if there aren't at least two other properties to show
+    if ( $countposts < 2 )
+        return;
+            
+    if ( $properties ) {
+        
+        echo '<div id="nearby" class="wrap-nearby-properties single-properties-section">';
+            echo '<div class="nearby-properties-wrap single-properties-section-wrap">';
+                
+                echo '<h2>Nearby Properties</h2>';
+            
+                echo '<div class="properties-loop">';
+                
+                    foreach ( $properties as $property ) {
+                        
+                        // var_dump( $property->ID );
+                        $property_id = get_post_meta( $property->ID, 'property_id', true );
+                        $floorplan = $floorplans[$property_id ];
+                        
+                        do_action( 'rentfetch_do_each_property', $property->ID, $floorplan );
+                    }
+                    
+                echo '</div>';
+                
+            echo '</div>';
+        echo '</div>';
+    }
+                
+}
+
+function rentfetch_get_single_property_nearby_properties() {
+    global $post;
+    
+    //* get the floorplans
+    $floorplans_args = array(
+        'post_type' => 'floorplans',
+        'posts_per_page' => -1,
+        'orderby' => 'date', // we will sort posts by date
+        'order'	=> 'ASC', // ASC or DESC
+    );
+        
+    $property_availability_display = get_field( 'property_availability_display', 'options' );
+    if ( $property_availability_display != 'all' ) {
+        
+        //* Add all of our property IDs into the property search
+        $floorplans_args['meta_query'] = array(
+            array(
+                'key' => 'available_units',
+                'value' => 1,
+                'type' => 'numeric',
+                'compare' => '>=',
+            )
+        );
+        
+    }
+        
+    //* Process the floorplans
+    $floorplans = rentfetch_get_floorplan_info_for_properties_grid( $floorplans_args );
+                
+    $property_ids = array_keys( $floorplans );
+    if ( empty( $property_ids ) )
+    $property_ids = array( '1' ); // if there aren't any properties, we shouldn't find anything – empty array will let us find everything, so let's pass nonsense to make the search find nothing
+                
+    $number_properties = '3';
+    
+    $property_footer_settings = get_field( 'property_footer_grid', 'options' );
+    if ( isset( $property_footer_settings['number_properties'] ) )
+        $number_properties = $property_footer_settings['number_properties'];
+        
+    //* The base property query
+    $propertyargs = array(
+        'post_type' => 'properties',
+        'posts_per_page' => $number_properties,
+        'orderby' => 'rand',
+        'order'	=> 'ASC', // ASC or DESC
+        'no_found_rows' => true,
+    );
+    
+    //* Add all of our property IDs into the property search
+    $propertyargs['meta_query'] = array(
+        array(
+            'key' => 'property_id',
+            'value' => $property_ids,
+        ),
+    );
+    
+    $properties = get_posts( $propertyargs );
+    return $properties;
 }

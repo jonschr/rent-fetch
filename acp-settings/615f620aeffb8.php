@@ -5,7 +5,7 @@ return array (
   'title' => 'Manual entry',
   'type' => 'properties',
   'id' => '615f620aeffb8',
-  'updated' => 1675222340,
+  'updated' => 1675743819,
   'columns' => 
   array (
     '615f64c42353f8' => 
@@ -250,6 +250,38 @@ return array (
       'filter' => 'off',
       'filter_label' => '',
       'name' => '6064ebf38d9168',
+    ),
+    '63e1d1d733b644' => 
+    array (
+      'type' => 'field_63e1c6c923c32',
+      'label' => 'Matterport code',
+      'width' => '',
+      'width_unit' => '%',
+      'excerpt_length' => '20',
+      'export' => 'off',
+      'sort' => 'off',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '63e1d1d733b644',
+    ),
+    '63e1d1ecbef9dc' => 
+    array (
+      'type' => 'field_63e1c6af23c31',
+      'label' => 'Video oembed link',
+      'width' => '',
+      'width_unit' => '%',
+      'oembed' => '',
+      'export' => 'off',
+      'sort' => 'off',
+      'edit' => 'on',
+      'bulk_edit' => 'on',
+      'search' => 'on',
+      'filter' => 'off',
+      'filter_label' => '',
+      'name' => '63e1d1ecbef9dc',
     ),
     '607665f849374c' => 
     array (
