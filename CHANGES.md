@@ -1,3 +1,7 @@
+## 3.9.9
+
+-   Adding function_exists wrapper on console_log, which is used for debugging and which might have already been declared
+
 ## 3.9.8
 
 -   Adding nav capabilities to the single-properties template

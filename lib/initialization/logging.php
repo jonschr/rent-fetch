@@ -4,11 +4,13 @@
 // LOGGING //
 /////////////
 
-//* Allows for console_logging data (into the javascript logs)
-function console_log( $data ){
-    echo '<script>';
-        echo 'console.log('. json_encode( $data ) .')';
-    echo '</script>';
+// used for debugging
+if ( !function_exists( 'console_log' ) ) {
+	function console_log( $data ){
+		echo '<script>';
+		echo 'console.log('. json_encode( $data ) .')';
+		echo '</script>';
+	}
 }
 
 //* Add debug logging
