@@ -732,7 +732,7 @@ function rentfetch_filter_properties(){
         }
         
         if ( $min < 100 || $max < 100 )
-            $floorplans[$key]['rentrange'] = 'Pricing unavailable';
+            $floorplans[$key]['rentrange'] = apply_filters( 'rentfetch_floorplan_pricing_unavailable_text', 'Pricing unavailable' );
         
         $max = max( $floorplan['maximum_sqft'] );
         $min = min( $floorplan['minimum_sqft'] );

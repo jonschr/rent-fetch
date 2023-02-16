@@ -177,7 +177,7 @@ function rentfetch_each_floorplan_rent_range_display_as_range() {
     }
     
     if ( $minimum_rent < 100 || $maximum_rent < 100 )
-        $rent_range = 'Pricing unavailable';
+        $rent_range = apply_filters( 'rentfetch_floorplan_pricing_unavailable_text', 'Pricing unavailable' );
             
             
     if ( $minimum_rent && !$maximum_rent ) $rent_range = sprintf( '<span class="dollars">$</span><span class="amount">%s</span>', $minimum_rent );
@@ -210,7 +210,8 @@ function rentfetch_each_floorplan_rent_range_display_as_minimum() {
     if ( $rent > 100 ) {
         printf( '<p class="rent_range">From <span class="dollars">$</span><span class="amount">%s</span></p>', $rent );
     } else {
-        printf( '<p class="rent_range">Pricing unavailable</p>', $rent );
+        $pricing_unavailable_label = apply_filters( 'rentfetch_floorplan_pricing_unavailable_text', 'Pricing unavailable' );
+        printf( '<p class="rent_range">%s</p>', $pricing_unavailable_label );
     }
         
 }

@@ -167,7 +167,7 @@ function rentfetch_floorplangrid_render_each_floorplan( $post_id ) {
                 
                     do_action( 'rentfetch_do_each_floorplan_beds' );
                     
-                    add_filter( 'rentfetch_customize_baths_text', 'rentfetch_floorplansgrid_customize_baths_text', 10, 1 );
+                    
                     do_action( 'rentfetch_do_each_floorplan_baths' ); 
                     
                     do_action( 'rentfetch_do_each_floorplan_squarefoot_range' );
@@ -250,10 +250,6 @@ function rentfetch_floorplansgrid_customize_beds_text( $beds ) {
         return '1 Bedroom';
         
     return $beds . ' Bedrooms';
-}
-
-function rentfetch_floorplansgrid_customize_baths_text( $baths ) {
-    return $baths . ' Baths';
 }
 
 //* Output the gravity form if needed
