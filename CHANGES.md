@@ -1,3 +1,9 @@
+## 3.9.10
+
+-   Adding class to the properties archives for whether properties are available
+-   Adding several new filters to the plugin for various bits of text
+-   Fixing php notices
+
 ## 3.9.9
 
 -   Adding function_exists wrapper on console_log, which is used for debugging and which might have already been declared
