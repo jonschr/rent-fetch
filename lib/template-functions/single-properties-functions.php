@@ -577,7 +577,7 @@ function rentfetch_single_property_map() {
     $location = sprintf( '<p class="single-property-map-title">%s</p><p class="single-property-map-address"><span class="address">%s<br/>%s, %s %s</span><span class="phone">%s</span></p>', $title, $address, $city, $state, $zipcode, $phone );
 
     // the map itself
-    $key = get_field( 'google_maps_api_key', 'option' );
+    $key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
     wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
 
     // Localize the google maps script, then enqueue that

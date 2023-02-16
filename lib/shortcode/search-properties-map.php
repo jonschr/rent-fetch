@@ -33,7 +33,7 @@ function rentfetch_propertymap( $atts ) {
     wp_enqueue_script( 'rentfetch-property-favorites' );
     
     // the map itself
-    $key = get_field( 'google_maps_api_key', 'option' );
+    $key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
     wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
     
     // Localize the google maps script, then enqueue that
