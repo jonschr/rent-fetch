@@ -100,26 +100,41 @@ function rentfetch_single_property_images() {
 }
 
 function rentfetch_single_property_section_navigation() {
-    
+        
     // bail if this section isn't set to display
     $single_property_components = get_field( 'single_property_components', 'option' );
     if ( $single_property_components['enable_section_navigation'] === false )
         return;
                 
-    if ( $single_property_components['enable_property_description'] === false )
+    if ( $single_property_components['enable_property_description'] === false ) {
         $hide_description = true;
+    } else {
+        $hide_description = false;
+    }
     
-    if ( $single_property_components['enable_virtual_tour'] === false )
+    if ( $single_property_components['enable_virtual_tour'] === false ) {
         $hide_tour = true;
+    } else {
+        $hide_tour = false;
+    }
         
-    if ( $single_property_components['enable_floorplans_display'] === false )
+    if ( $single_property_components['enable_floorplans_display'] === false ) {
         $hide_floorplans = true;
+    } else {
+        $hide_floorplans = false;
+    }
         
-    if ( $single_property_components['enable_amenities_display'] === false )
+    if ( $single_property_components['enable_amenities_display'] === false ) {
         $hide_amenities = true;
+    } else {
+        $hide_amenities = false;
+    }
         
-    if ( $single_property_components['enable_nearby_properties'] === false )
+    if ( $single_property_components['enable_nearby_properties'] === false ) {
         $hide_nearby_properties = true;
+    } else {
+        $hide_nearby_properties = false;
+    }
         
     $description = apply_filters( 'the_content', get_post_meta( get_the_ID(), 'description', true ) );
     $amenities = get_the_terms( get_the_ID(), 'amenities' );
@@ -667,7 +682,11 @@ function rentfetch_single_property_nearby_properties() {
                         
                         // var_dump( $property->ID );
                         $property_id = get_post_meta( $property->ID, 'property_id', true );
-                        $floorplan = $floorplans[$property_id ];
+                        if ( isset( $floorplans[$property_id] ) ) {
+                            $floorplan = $floorplans[$property_id ];
+                        } else {
+                            $floorplan = null;
+                        }
                         
                         do_action( 'rentfetch_do_each_property', $property->ID, $floorplan );
                     }

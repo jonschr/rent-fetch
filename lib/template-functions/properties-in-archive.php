@@ -12,36 +12,75 @@ function rentfetch_each_property( $id, $floorplan ) {
     wp_enqueue_style( 'rentfetch-slick-main-styles' );
     wp_enqueue_style( 'rentfetch-slick-main-theme' );
     
-    // vars
+    // vars    
     $title = esc_html( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
+    $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
+    $address = get_post_meta( $id, 'address', true );
+    $city = get_post_meta( $id, 'city', true );
+    $state = get_post_meta( $id, 'state', true );
+    $zipcode = get_post_meta( $id, 'zipcode', true );
+    $latitude = get_post_meta( $id, 'latitude', true );
+    $longitude = get_post_meta( $id, 'longitude', true );
     
-    $property_id = esc_attr( get_post_meta( $id, 'property_id', true ) );
-    $voyager_property_code = esc_attr( get_post_meta( $id, 'voyager_property_code', true ) );
-    $address = esc_attr( get_post_meta( $id, 'address', true ) );
-    $city = esc_attr( get_post_meta( $id, 'city', true ) );
-    $state = esc_attr( get_post_meta( $id, 'state', true ) );
-    $zipcode = esc_attr( get_post_meta( $id, 'zipcode', true ) );
-    $latitude = esc_attr( get_post_meta( $id, 'latitude', true ) );
-    $longitude = esc_attr( get_post_meta( $id, 'longitude', true ) );
-    $bedsrange = esc_attr( $floorplan['bedsrange'] );
-    $bathsrange = esc_attr( $floorplan['bathsrange'] );
-    $rentrange = esc_attr( $floorplan['rentrange'] );
-    $sqftrange = esc_attr( $floorplan['sqftrange'] );
-    $has_specials = esc_attr( $floorplan['property_has_specials'] );
+    if ( isset( $floorplan['bedsrange'] ) ) {
+        $bedsrange = $floorplan['bedsrange'];
+    } else {
+        $bedsrange = null;
+    }
+         
+    if ( isset( $floorplan['bathsrange'] ) ) {
+        $bathsrange = $floorplan['bathsrange'];  
+    } else {
+        $bathsrange = null;
+    }
+        
+    if ( isset( $floorplan['rentrange'] ) ) {
+        $rentrange = $floorplan['rentrange'];
+    } else {
+        $rentrange = null;
+    }
+        
+    if ( isset( $floorplan['sqftrange'] ) ) {
+        $sqftrange = $floorplan['sqftrange'];
+    } else {
+        $sqftrange = null;
+    }
+        
+    if ( isset( $floorplan['property_has_specials'] ) ) {
+        $has_specials = $floorplan['property_has_specials'];
+    } else {
+        $has_specials = null;
+    }
+        
     $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url = null );
     $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target = '_blank' );
     
+    $total_available = 0;
+    
+    if ( isset( $floorplan['available_units'] ) ) {
+        $available_arr = $floorplan['available_units'];
+        foreach( $available_arr as $available_floorplan_number ) {
+            $total_available = $total_available + $available_floorplan_number;
+        }
+    }
+        
     // class
     $class = get_post_class();
         
     if ( $has_specials == true )
         $class[] = 'has-specials';
+        
+    if ( $total_available > 0 ) {
+        $class[] = 'units-available';
+    } else {
+        $class[] = 'no-units-available';
+    }
                 
     $class = implode( ' ', $class );
     
     // markup
     printf( '<div id="%s" class="%s" data-id="%s" data-url="%s" data-latitude="%s" data-longitude="%s">', $id, $class, $id, $url, $latitude, $longitude );
-    
+        
         if ( $url )
             printf( '<a class="overlay" target="%s" href="%s"></a>', $target, $url );
                                 
@@ -50,7 +89,7 @@ function rentfetch_each_property( $id, $floorplan ) {
         echo '<div class="property-content">';
         
             echo '<div class="property-info">';
-    
+                
                 if ( $title )
                     printf( '<h3>%s</h3>', $title );
                                                                                                 
