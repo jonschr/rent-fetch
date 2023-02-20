@@ -1,3 +1,7 @@
+## 3.9.11
+
+-   Simplify the removal process for Yardi properties and floorplans (appears it was not triggering)
+
 ## 3.9.10
 
 -   Adding class to the properties archives for whether properties are available

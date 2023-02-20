@@ -7,28 +7,13 @@ function rentfetch_do_remove_floorplans_from_orphan_yardi_properties() {
     $data_sync = get_field( 'data_sync', 'option' );
     
     // if syncing is paused or data dync is off, then then bail, as we won't be restarting anything
-    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
-        as_unschedule_action( 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' );
-        as_unschedule_all_actions( 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' );
-        as_unschedule_action( 'rentfetch_do_remove_orphan_yardi_properties', array(), 'yardi' );
-        as_unschedule_all_actions( 'rentfetch_do_remove_orphan_yardi_properties', array(), 'yardi' );
+    if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' )
         return;
-    }
     
-    if ( as_next_scheduled_action( 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' ) == false ) {
-        rentfetch_verbose_log( "Scheduling regular task to remove floorplans from properties that are no longer set to sync." );
-        as_schedule_recurring_action( time(), rentfetch_get_sync_term_in_seconds(), 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific', array(), 'yardi' );
-    }
-    
-    if ( as_next_scheduled_action( 'rentfetch_do_remove_orphan_yardi_properties', array(), 'yardi' ) == false ) {
-        rentfetch_verbose_log( "Scheduling regular task to remove properties that are no longer set to sync." );
-        as_schedule_recurring_action( time(), rentfetch_get_sync_term_in_seconds(), 'rentfetch_do_remove_orphan_yardi_properties', array(), 'yardi' );
-    }
+    do_action( 'rentfetch_do_remove_orphan_yardi_properties' );
+    do_action( 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific' );
  
 }
-
-// //* Temp activation of the script to delete properties
-// add_action( 'init', 'rentfetch_remove_orphan_yardi_properties' );
 
 add_action( 'rentfetch_do_remove_orphan_yardi_properties', 'rentfetch_remove_orphan_yardi_properties' );
 function rentfetch_remove_orphan_yardi_properties() {
@@ -54,12 +39,17 @@ function rentfetch_remove_orphan_yardi_properties() {
     // echo 'In setting: ' . count( $properties_in_setting ) . '<br/>';
     // var_dump( $properties_in_setting );
     
+    console_log( $property_ids_attached_to_properties );
+    console_log( $properties_in_setting );
+    
     // get the ones that are in the database, but that aren't in the setting
     $properties = array_diff( $property_ids_attached_to_properties, $properties_in_setting );
     
+    console_log( $properties );
+    
     // var_dump( $properties );
     // echo 'Diff: ' . count( $properties );
-    // var_dump( $properties );
+    
     
     // bail if there's nothing to delete
     if ( empty( $properties )) {
@@ -99,9 +89,6 @@ function rentfetch_remove_orphan_yardi_properties() {
         }
     }
 }
-
-// //* TEMP activation of the function to delete floorplans
-// add_action( 'init', 'rentfetch_remove_floorplans_from_orphan_yardi_properties_specific' );
 
 add_action( 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific', 'rentfetch_remove_floorplans_from_orphan_yardi_properties_specific' );
 function rentfetch_remove_floorplans_from_orphan_yardi_properties_specific() {
