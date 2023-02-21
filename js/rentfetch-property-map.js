@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
     var map;
     var locationsArray = [];
     var markers = [];
@@ -8,13 +7,19 @@ jQuery(document).ready(function ($) {
     // grab the marker image from localization
     var markerImage = options.marker_url;
 
+    var google_maps_default_longitude = options.google_maps_default_longitude;
+    var google_maps_default_latitude = options.google_maps_default_latitude;
+
     // grab the styles from localization and convert the php array to json
     var mapStyle = options.json_style;
     mapsStyle = JSON.stringify(mapStyle);
 
     function renderMap() {
+        var myLatlng = new google.maps.LatLng(
+            google_maps_default_latitude,
+            google_maps_default_longitude
+        );
 
-        var myLatlng = new google.maps.LatLng(39.8484006327939, -104.99522076837074);
         var mapOptions = {
             zoom: 10,
             center: myLatlng,
@@ -26,12 +31,11 @@ jQuery(document).ready(function ($) {
                 position: google.maps.ControlPosition.RIGHT_TOP,
             },
             fullscreenControl: false,
-        }
-        map = new google.maps.Map(document.getElementById("map"), mapOptions);
+        };
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
 
     function getLocations() {
-
         // reset the array
         locationsArray = [];
 
@@ -41,20 +45,19 @@ jQuery(document).ready(function ($) {
             long = $(this).attr('data-longitude');
             title = $(this).find('h3').text();
             content = $(this).find('.property-content').html();
-            image = $(this).find('.property-images-wrap').attr('data-image-url');
+            image = $(this)
+                .find('.property-images-wrap')
+                .attr('data-image-url');
             url = $(this).attr('data-url');
             id = $(this).attr('data-id');
             locationsArray.push([lat, long, title, content, image, url, id]);
         });
-
     }
 
     function addMarkers() {
-
         var bounds = new google.maps.LatLngBounds();
 
         for (let i = 0; i < locationsArray.length; i++) {
-
             var latitude = locationsArray[i][0];
             var longitude = locationsArray[i][1];
             var title = locationsArray[i][2];
@@ -66,7 +69,6 @@ jQuery(document).ready(function ($) {
             var theposition = new google.maps.LatLng(latitude, longitude);
 
             if (typeof markerImage !== 'undefined') {
-
                 // if there's a custom marker set, use that
                 var marker = new google.maps.Marker({
                     position: theposition,
@@ -74,39 +76,43 @@ jQuery(document).ready(function ($) {
                     title: title,
                     icon: markerImage,
                 });
-
             } else {
-
                 // if there's no custom icon, just use the google default
                 var marker = new google.maps.Marker({
                     position: theposition,
                     map: map,
                     title: title,
                 });
-
             }
 
             bounds.extend(theposition);
             map.fitBounds(bounds);
 
             marker['infowindow'] = new google.maps.InfoWindow({
-                content: '<div class="map-property-popup" id="overlay-' + id + '"><a class="overlay" href="' + url + '"></a><a href="' + url + '" class="image"><img src="' + imageurl + '"/></a>' + content + '</div>',
+                content:
+                    '<div class="map-property-popup" id="overlay-' +
+                    id +
+                    '"><a class="overlay" href="' +
+                    url +
+                    '"></a><a href="' +
+                    url +
+                    '" class="image"><img src="' +
+                    imageurl +
+                    '"/></a>' +
+                    content +
+                    '</div>',
             });
 
             google.maps.event.addListener(marker, 'click', function () {
-
                 for (let i = 0; i < markers.length; i++) {
                     markers[i]['infowindow'].close(map, this);
                 }
 
                 this['infowindow'].open(map, this);
-
             });
 
             markers.push(marker);
-
         }
-
     }
 
     function resetMap() {
@@ -117,5 +123,4 @@ jQuery(document).ready(function ($) {
 
     $(document).on('ajaxComplete', resetMap);
     $('.toggle').on('click', resetMap);
-
 });

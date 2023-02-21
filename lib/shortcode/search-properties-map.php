@@ -35,11 +35,13 @@ function rentfetch_propertymap( $atts ) {
     // the map itself
     $key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
     wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
-    
+            
     // Localize the google maps script, then enqueue that
     $maps_options = array(
         'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
         'marker_url' => get_field( 'google_map_marker', 'option' ),
+        'google_maps_default_latitude' => get_field( 'google_maps_default_latitude', 'option' ),
+        'google_maps_default_longitude' => get_field( 'google_maps_default_longitude', 'option' ),
     );
     wp_localize_script( 'rentfetch-property-map', 'options', $maps_options );
     wp_enqueue_script( 'rentfetch-property-map');
