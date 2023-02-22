@@ -1,3 +1,7 @@
+## 3.9.13
+
+-   Added the "Floorplans" heading on single-properties
+
 ## 3.9.11
 
 -   Simplify the removal process for Yardi properties and floorplans (appears it was not triggering)

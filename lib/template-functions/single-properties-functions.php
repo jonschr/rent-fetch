@@ -480,45 +480,47 @@ function rentfetch_single_property_floorplans() {
     
     echo '<div class="wrap-floorplans single-properties-section"><div class="floorplans-wrap single-properties-section-wrap" id="floorplans">';
     
-    // loop through each of the possible values, so that we can do markup around that
-    foreach( $beds as $bed ) {
-        
-        $args = array(
-            'post_type' => 'floorplans',
-            'posts_per_page' => -1,
-            'orderby' => 'meta_value_num',
-            'meta_key' => 'beds',
-            'order' => 'ASC',
-            'meta_query' => array(
-                array(
-                    'key'   => 'property_id',
-                    'value' => $property_id,
-                ),
-                array(
-                    'key' => 'beds',
-                    'value' => $bed,
-                ),
-            ),
-        );
-        
-        $floorplans_query = new WP_Query( $args );
+        echo '<h2>Floorplans</h2>';
+    
+        // loop through each of the possible values, so that we can do markup around that
+        foreach( $beds as $bed ) {
             
-        if ( $floorplans_query->have_posts() ) {
-            echo '<details open>';
-                echo '<summary><h3>';                    
-                    echo apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $bed );
-                echo '</h3></summary>';
-                echo '<div class="floorplan-in-archive">';
-                    while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
-                        do_action( 'rentfetch_do_floorplan_in_archive', $post->ID );                    
-                    endwhile;
-                echo '</div>'; // .floorplans
-            echo '</details>';
+            $args = array(
+                'post_type' => 'floorplans',
+                'posts_per_page' => -1,
+                'orderby' => 'meta_value_num',
+                'meta_key' => 'beds',
+                'order' => 'ASC',
+                'meta_query' => array(
+                    array(
+                        'key'   => 'property_id',
+                        'value' => $property_id,
+                    ),
+                    array(
+                        'key' => 'beds',
+                        'value' => $bed,
+                    ),
+                ),
+            );
             
+            $floorplans_query = new WP_Query( $args );
+                
+            if ( $floorplans_query->have_posts() ) {
+                echo '<details open>';
+                    echo '<summary><h3>';                    
+                        echo apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $bed );
+                    echo '</h3></summary>';
+                    echo '<div class="floorplan-in-archive">';
+                        while ( $floorplans_query->have_posts() ) : $floorplans_query->the_post(); 
+                            do_action( 'rentfetch_do_floorplan_in_archive', $post->ID );                    
+                        endwhile;
+                    echo '</div>'; // .floorplans
+                echo '</details>';
+                
+            }
+            
+            wp_reset_postdata();
         }
-        
-        wp_reset_postdata();
-    }
     
     echo '</div></div>';
     
