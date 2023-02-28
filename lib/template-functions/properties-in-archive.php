@@ -15,6 +15,7 @@ function rentfetch_each_property( $id, $floorplan ) {
     // vars    
     $title = esc_html( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
     $voyager_property_code = get_post_meta( $id, 'voyager_property_code', true );
+    $property_id = get_post_meta( $id, 'property_id', true );
     $address = get_post_meta( $id, 'address', true );
     $city = get_post_meta( $id, 'city', true );
     $state = get_post_meta( $id, 'state', true );

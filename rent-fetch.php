@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.9.13
+	Version: 3.9.14
     Author: Brindle Digital
     Author URI: https://www.brindledigital.com/
 
@@ -24,7 +24,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.9.13' );
+define ( 'RENTFETCH_VERSION', '3.9.14' );
 
 // Plugin directory
 define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
@@ -44,59 +44,16 @@ require_once( plugin_dir_path( __FILE__ ) . 'vendor/action-scheduler/action-sche
 // FILE INCLUDES //
 ///////////////////
 
-//* Logging
-foreach ( glob( RENTFETCH_DIR . "lib/initialization/*.php", GLOB_NOSORT ) as $filename ){
+//* require_once each file in lib
+foreach ( glob( RENTFETCH_DIR . "lib/*.php", GLOB_NOSORT ) as $filename ){
     require_once $filename;
 }
 
-//* CPTs
-foreach ( glob( RENTFETCH_DIR . "lib/post-type/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Common functions
-foreach ( glob( RENTFETCH_DIR . "lib/common/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Taxonomies
-foreach ( glob( RENTFETCH_DIR . "lib/tax/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* CPT connections
-foreach ( glob( RENTFETCH_DIR . "lib/cpt-connections/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Settings pages
-foreach ( glob( RENTFETCH_DIR . "lib/options-pages/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Templates
-foreach ( glob( RENTFETCH_DIR . "lib/template-functions/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Shortcodes
-foreach ( glob( RENTFETCH_DIR . "lib/shortcode/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Process requires
-foreach ( glob( RENTFETCH_DIR . "lib/api/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Include everything in /lib/api
-foreach ( glob( RENTFETCH_DIR . "lib/api/*/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
-}
-
-//* Gutenberg blocks
-foreach ( glob( RENTFETCH_DIR . "lib/block/*/*.php", GLOB_NOSORT ) as $filename ){
-    require_once $filename;
+//* require_once each file in each subdirectory of lib
+foreach ( glob( RENTFETCH_DIR . "lib/*", GLOB_ONLYDIR ) as $dir ){
+    foreach ( glob( $dir . "/*.php", GLOB_NOSORT ) as $filename ){
+        require_once $filename;
+    }
 }
 
 //////////////////////

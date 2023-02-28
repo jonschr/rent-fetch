@@ -1,3 +1,7 @@
+## 3.9.14
+
+-   Loading everything automatically
+
 ## 3.9.13
 
 -   Added the "Floorplans" heading on single-properties
