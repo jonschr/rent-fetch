@@ -1,3 +1,7 @@
+## 3.9.15
+
+-   Make sure to load the third-level directories
+
 ## 3.9.14
 
 -   Loading everything automatically

@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.9.14
+	Version: 3.9.15
     Author: Brindle Digital
     Author URI: https://www.brindledigital.com/
 
@@ -24,7 +24,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.9.14' );
+define ( 'RENTFETCH_VERSION', '3.9.15' );
 
 // Plugin directory
 define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
@@ -49,10 +49,19 @@ foreach ( glob( RENTFETCH_DIR . "lib/*.php", GLOB_NOSORT ) as $filename ){
     require_once $filename;
 }
 
-//* require_once each file in each subdirectory of lib
+// //* require_once each file in each subdirectory of lib
 foreach ( glob( RENTFETCH_DIR . "lib/*", GLOB_ONLYDIR ) as $dir ){
     foreach ( glob( $dir . "/*.php", GLOB_NOSORT ) as $filename ){
         require_once $filename;
+    }
+}
+
+//* require_once each file in lib and in all subdirectories of lib
+foreach ( glob( RENTFETCH_DIR . "lib/*", GLOB_ONLYDIR ) as $dir ){
+    foreach ( glob( $dir . "/*", GLOB_ONLYDIR ) as $subdir ){
+        foreach ( glob( $subdir . "/*.php", GLOB_NOSORT ) as $filename ){
+            require_once $filename;
+        }
     }
 }
 
