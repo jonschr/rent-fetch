@@ -31,7 +31,7 @@ function rentfetch_acf_json_save_point( $path ) {
     
 }
 
-add_filter( 'acf/settings/load_json', 'rentfetch_acf_json_load_point' );
+// add_filter( 'acf/settings/load_json', 'rentfetch_acf_json_load_point' );
 function rentfetch_acf_json_load_point( $paths ) {
     
     // remove original path (optional)

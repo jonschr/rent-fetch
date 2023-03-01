@@ -42,6 +42,7 @@ function rf_register_properties_details_metabox() {
 }
 
 function rf_properties_identifiers_metabox_callback( $post ) {
+    wp_nonce_field( 'rf_properties_metabox_nonce', 'rf_properties_metabox_nonce' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
                             
@@ -50,7 +51,7 @@ function rf_properties_identifiers_metabox_callback( $post ) {
             <div class="column">
                 <label for="property_id">Property ID</label>
             </div>
-            <div class="column">                
+            <div class="column">
                 <input type="text" id="property_id" name="property_id" value="<?php echo esc_attr( $property_id ); ?>">
                 <p class="description">The Property ID should match the Property ID on each associated floorplan, and every property should have a property ID at minimum.</p>
             </div>
@@ -61,7 +62,7 @@ function rf_properties_identifiers_metabox_callback( $post ) {
             <div class="column">
                 <label for="property_code">Property Code</label>
             </div>
-            <div class="column">                
+            <div class="column">
                 <input type="text" id="property_code" name="property_code" value="<?php echo esc_attr( $property_code ); ?>">
                 <p class="description">In Yardi, properties also have a property code, so if this property is synced with Yardi, that may show below as well (if this is not a Yardi property, you can probably ignore this).</p>
             </div>
@@ -82,7 +83,7 @@ function rf_properties_location_metabox_callback( $post ) {
                 <div class="column">
                     <label for="address">Address</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="address" name="address" value="<?php echo esc_attr( $address ); ?>">
                 </div>
             </div>
@@ -92,7 +93,7 @@ function rf_properties_location_metabox_callback( $post ) {
                 <div class="column">
                     <label for="city">City</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="city" name="city" value="<?php echo esc_attr( $city ); ?>">
                 </div>
             </div>
@@ -102,7 +103,7 @@ function rf_properties_location_metabox_callback( $post ) {
                 <div class="column">
                     <label for="state">State</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="state" name="state" value="<?php echo esc_attr( $state ); ?>">
                 </div>
             </div>
@@ -112,7 +113,7 @@ function rf_properties_location_metabox_callback( $post ) {
                 <div class="column">
                     <label for="zipcode">Zipcode</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="zipcode" name="zipcode" value="<?php echo esc_attr( $zipcode ); ?>">
                 </div>
             </div>
@@ -126,7 +127,7 @@ function rf_properties_location_metabox_callback( $post ) {
                 <div class="column">
                     <label for="latitude">Latitude</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="latitude" name="latitude" value="<?php echo esc_attr( $latitude ); ?>">
                 </div>
             </div>
@@ -136,7 +137,7 @@ function rf_properties_location_metabox_callback( $post ) {
                 <div class="column">
                     <label for="longitude">Longitude</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="longitude" name="longitude" value="<?php echo esc_attr( $longitude ); ?>">
                 </div>
             </div>
@@ -158,7 +159,7 @@ function rf_properties_contact_metabox_callback( $post ) {
                 <div class="column">
                     <label for="email">Email</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="email" name="email" value="<?php echo esc_attr( $email ); ?>">
                 </div>
             </div>
@@ -168,7 +169,7 @@ function rf_properties_contact_metabox_callback( $post ) {
                 <div class="column">
                     <label for="phone">Phone</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="phone" name="phone" value="<?php echo esc_attr( $phone ); ?>">
                 </div>
             </div>
@@ -178,7 +179,7 @@ function rf_properties_contact_metabox_callback( $post ) {
                 <div class="column">
                     <label for="url">URL</label>
                 </div>
-                <div class="column">                
+                <div class="column">
                     <input type="text" id="url" name="url" value="<?php echo esc_attr( $url ); ?>">
                 </div>
             </div>
@@ -190,7 +191,6 @@ function rf_properties_contact_metabox_callback( $post ) {
 }
 
 function rf_properties_display_information_metabox_callback( $post ) {
-    wp_nonce_field( 'rf_properties_metabox_nonce_action', 'rf_properties_metabox_nonce_field' );
     
     ?>
     <div class="rf-metabox rf-metabox-properties">
@@ -304,14 +304,14 @@ function rf_properties_display_information_metabox_callback( $post ) {
                     ';
                 }
 
-                echo '<input type="text" id="images" name="images" value="' . esc_attr( $images ) . '">';
+                echo '<input type="hidden" id="images" name="images" value="' . esc_attr( $images ) . '">';
                 echo '<div id="gallery-container">' . $image_url . '</div>';
                 echo '<input type="button" id="images_button" class="button" value="Add Images">';
                 ?>
                 
             </div>
         </div>        
-                        
+                 
         <?php $description = get_post_meta( $post->ID, 'description', true ); ?>
         <div class="field">
             <div class="column">
@@ -328,7 +328,7 @@ function rf_properties_display_information_metabox_callback( $post ) {
             <div class="column">
                 <label for="matterport">Tour Matterport embed code</label>
             </div>
-            <div class="column">                
+            <div class="column">
                 <input type="text" id="matterport" name="matterport" value="<?php echo esc_attr( $matterport ); ?>">
             </div>
         </div>
@@ -336,10 +336,11 @@ function rf_properties_display_information_metabox_callback( $post ) {
         <?php $video = get_post_meta( $post->ID, 'video', true ); ?>
         <div class="field">
             <div class="column">
-                <label for="video">Tour video</label>
+                <label for="video">Tour video oembed link</label>
             </div>
-            <div class="column">                
+            <div class="column">
                 <input type="text" id="video" name="video" value="<?php echo esc_attr( $video ); ?>">
+                <p class="description">Just a Youtube link (e.g. <a href="https://www.youtube.com/watch?v=C0DPdy98e4c" target="_blank">https://www.youtube.com/watch?v=C0DPdy98e4c</a>) or Vimeo link (e.g. <a href="https://vimeo.com/226053498" target="_blank">https://vimeo.com/226053498</a>.</p>
             </div>
         </div>
                 
@@ -348,7 +349,7 @@ function rf_properties_display_information_metabox_callback( $post ) {
             <div class="column">
                 <label for="pets">Pets</label>
             </div>
-            <div class="column">                
+            <div class="column">
                 <input type="text" id="pets" name="pets" value="<?php echo esc_attr( $pets ); ?>">
             </div>
         </div>
@@ -359,7 +360,7 @@ function rf_properties_display_information_metabox_callback( $post ) {
                 <label for="content_area">Content area</label>
                 <p class="description">The content area is always unsynced, so if you have more to say, you can say it here.</p>
             </div>
-            <div class="column">                
+            <div class="column">
                 <textarea rows="3" id="content_area" name="content_area"><?php echo esc_attr( $content_area ); ?></textarea>
                 <p class="description">It's always recommended to start this section with a heading level 2. If this is empty, the content area section of the single-properties template will not be displayed (there won't be a blank space). By default, if there's something to say here, this section will display below the amenities.</p>
             </div>
@@ -372,21 +373,64 @@ function rf_properties_display_information_metabox_callback( $post ) {
 
 add_action( 'save_post', 'rf_save_properties_metaboxes' );
 function rf_save_properties_metaboxes( $post_id ) {
-    // if ( ! isset( $_POST['rf_properties_metabox'] ) ) {
-    //     return;
-    // }
 
-    // if ( ! wp_verify_nonce( $_POST['rf_properties_metabox'], 'rf_properties_metabox' ) ) {
-    //     return;
-    // }
-
-    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+    if ( ! wp_verify_nonce( $_POST['rf_properties_metabox_nonce'], 'rf_properties_metabox_nonce' ) )
         return;
-    }
-
-    if ( isset( $_POST['images'] ) ) {
+    
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+        return;
+    
+    if ( isset( $_POST['property_id'] ) )
+        update_post_meta( $post_id, 'property_id', sanitize_text_field( $_POST['property_id'] ) );
+        
+    if ( isset( $_POST['property_code'] ) )
+        update_post_meta( $post_id, 'property_code', sanitize_text_field( $_POST['property_code'] ) );
+        
+    if ( isset( $_POST['address'] ) )
+        update_post_meta( $post_id, 'address', sanitize_text_field( $_POST['address'] ) );
+        
+    if ( isset( $_POST['city'] ) )
+        update_post_meta( $post_id, 'city', sanitize_text_field( $_POST['city'] ) );
+        
+    if ( isset( $_POST['state'] ) )
+        update_post_meta( $post_id, 'state', sanitize_text_field( $_POST['state'] ) );
+        
+    if ( isset( $_POST['zipcode'] ) )
+        update_post_meta( $post_id, 'zipcode', sanitize_text_field( $_POST['zipcode'] ) );
+        
+    if ( isset( $_POST['latitude'] ) )
+        update_post_meta( $post_id, 'latitude', sanitize_text_field( $_POST['latitude'] ) );
+        
+    if ( isset( $_POST['longitude'] ) )
+        update_post_meta( $post_id, 'longitude', sanitize_text_field( $_POST['longitude'] ) );
+        
+    if ( isset( $_POST['email'] ) )
+        update_post_meta( $post_id, 'email', sanitize_text_field( $_POST['email'] ) );
+        
+    if ( isset( $_POST['phone'] ) )
+        update_post_meta( $post_id, 'phone', sanitize_text_field( $_POST['phone'] ) );
+        
+    if ( isset( $_POST['url'] ) )
+        update_post_meta( $post_id, 'url', sanitize_text_field( $_POST['url'] ) );
+        
+    if ( isset( $_POST['images'] ) )
         update_post_meta( $post_id, 'images', $_POST['images'] );
-    }
+        
+    if ( isset( $_POST['description'] ) )
+        update_post_meta( $post_id, 'description', sanitize_text_field( $_POST['description'] ) );
+        
+    if ( isset( $_POST['matterport'] ) )
+        update_post_meta( $post_id, 'matterport', sanitize_text_field( $_POST['matterport'] ) );
+        
+    if ( isset( $_POST['video'] ) )
+        update_post_meta( $post_id, 'video', sanitize_text_field( $_POST['video'] ) );
+        
+    if ( isset( $_POST['pets'] ) )
+        update_post_meta( $post_id, 'pets', sanitize_text_field( $_POST['pets'] ) );
+        
+    if ( isset( $_POST['content_area'] ) )
+        update_post_meta( $post_id, 'content_area', sanitize_text_field( $_POST['content_area'] ) );
+
 }
 
 // add_action( 'admin_enqueue_scripts', 'rf_properties_metabox_scripts' );
@@ -396,7 +440,7 @@ function rf_save_properties_metaboxes( $post_id ) {
 //     wp_enqueue_script( 'custom_metabox' );
 // }
 
+add_action( 'admin_enqueue_scripts', 'rf_properties_metabox_scripts' );
 function rf_properties_metabox_scripts() {
     wp_enqueue_media();
 }
-add_action( 'admin_enqueue_scripts', 'rf_properties_metabox_scripts' );
