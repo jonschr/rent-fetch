@@ -435,8 +435,11 @@ function rentfetch_single_property_tour() {
     
     // bail if this section isn't set to display
     $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_virtual_tour'] === false )
-        return;
+    
+    if ( isset( $single_property_components['enable_virtual_tour'] ) ) {
+        if ( $single_property_components['enable_virtual_tour'] === false )
+            return;
+    }
     
     $matterport = get_post_meta( get_the_ID(), 'matterport', true );
     $video = get_post_meta( get_the_ID(), 'video', true );
