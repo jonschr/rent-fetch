@@ -45,29 +45,54 @@ function rf_properties_identifiers_metabox_callback( $post ) {
     wp_nonce_field( 'rf_properties_metabox_nonce', 'rf_properties_metabox_nonce' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
-                            
-        <?php $property_id = get_post_meta( $post->ID, 'property_id', true ); ?>
-        <div class="field">
-            <div class="column">
-                <label for="property_id">Property ID</label>
-            </div>
-            <div class="column">
-                <input type="text" id="property_id" name="property_id" value="<?php echo esc_attr( $property_id ); ?>">
-                <p class="description">The Property ID should match the Property ID on each associated floorplan, and every property should have a property ID at minimum.</p>
-            </div>
-        </div>
         
-        <?php $property_code = get_post_meta( $post->ID, 'property_code', true ); ?>
-        <div class="field">
-            <div class="column">
-                <label for="property_code">Property Code</label>
-            </div>
-            <div class="column">
-                <input type="text" id="property_code" name="property_code" value="<?php echo esc_attr( $property_code ); ?>">
-                <p class="description">In Yardi, properties also have a property code, so if this property is synced with Yardi, that may show below as well (if this is not a Yardi property, you can probably ignore this).</p>
-            </div>
-        </div>
+        <div class="columns columns-3">
         
+            <?php 
+            //* Property Source
+            $property_source = get_post_meta( $post->ID, 'property_source', true ); 
+            if ( !$property_source )
+                $property_source = 'Manually managed';
+            ?>
+            
+            <div class="field">
+                <div class="column">
+                    <label for="property_source">Property Source</label>
+                </div>
+                <div class="column">
+                    <input disabled type="text" id="property_source" name="property_source" value="<?php echo esc_attr( $property_source ); ?>">
+                    <p class="description">This isn't a field meant to be edited; it's here to show you how this property is currently being managed (whether it syncs from a data source or it's manually managed).</p>
+                </div>
+            </div>
+                                
+            
+            <?php 
+            //* Property ID
+            $property_id = get_post_meta( $post->ID, 'property_id', true ); ?>
+            <div class="field">
+                <div class="column">
+                    <label for="property_id">Property ID</label>
+                </div>
+                <div class="column">
+                    <input type="text" id="property_id" name="property_id" value="<?php echo esc_attr( $property_id ); ?>">
+                    <p class="description">The Property ID should match the Property ID on each associated floorplan, and every property should have a property ID at minimum.</p>
+                </div>
+            </div>
+            
+            <?php 
+            //* Property Code
+            $property_code = get_post_meta( $post->ID, 'property_code', true ); ?>
+            <div class="field">
+                <div class="column">
+                    <label for="property_code">Property Code</label>
+                </div>
+                <div class="column">
+                    <input type="text" id="property_code" name="property_code" value="<?php echo esc_attr( $property_code ); ?>">
+                    <p class="description">In Yardi, properties also have a property code, so if this property is synced with Yardi, that may show below as well (if this is not a Yardi property, you can probably ignore this).</p>
+                </div>
+            </div>
+            
+        </div>
     </div>
     <?php
 }
@@ -78,7 +103,9 @@ function rf_properties_location_metabox_callback( $post ) {
         
         <div class="columns columns-4">
         
-            <?php $address = get_post_meta( $post->ID, 'address', true ); ?>
+            <?php 
+            //* Property Address
+            $address = get_post_meta( $post->ID, 'address', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="address">Address</label>
@@ -88,7 +115,9 @@ function rf_properties_location_metabox_callback( $post ) {
                 </div>
             </div>
             
-            <?php $city = get_post_meta( $post->ID, 'city', true ); ?>
+            <?php 
+            //* Property City
+            $city = get_post_meta( $post->ID, 'city', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="city">City</label>
@@ -98,7 +127,9 @@ function rf_properties_location_metabox_callback( $post ) {
                 </div>
             </div>
             
-            <?php $state = get_post_meta( $post->ID, 'state', true ); ?>
+            <?php 
+            //* Property State
+            $state = get_post_meta( $post->ID, 'state', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="state">State</label>
@@ -108,7 +139,9 @@ function rf_properties_location_metabox_callback( $post ) {
                 </div>
             </div>
             
-            <?php $zipcode = get_post_meta( $post->ID, 'zipcode', true ); ?>
+            <?php 
+            //* Property Zipcode
+            $zipcode = get_post_meta( $post->ID, 'zipcode', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="zipcode">Zipcode</label>
@@ -122,7 +155,9 @@ function rf_properties_location_metabox_callback( $post ) {
         
         <div class="columns columns-2">
         
-            <?php $latitude = get_post_meta( $post->ID, 'latitude', true ); ?>
+            <?php 
+            //* Property Latitude
+            $latitude = get_post_meta( $post->ID, 'latitude', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="latitude">Latitude</label>
@@ -132,7 +167,9 @@ function rf_properties_location_metabox_callback( $post ) {
                 </div>
             </div>
             
-            <?php $longitude = get_post_meta( $post->ID, 'longitude', true ); ?>
+            <?php 
+            //* Property Longitude
+            $longitude = get_post_meta( $post->ID, 'longitude', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="longitude">Longitude</label>
@@ -154,7 +191,9 @@ function rf_properties_contact_metabox_callback( $post ) {
         
         <div class="columns columns-3">
             
-            <?php $email = get_post_meta( $post->ID, 'email', true ); ?>
+            <?php 
+            //* Property Email
+            $email = get_post_meta( $post->ID, 'email', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="email">Email</label>
@@ -164,7 +203,9 @@ function rf_properties_contact_metabox_callback( $post ) {
                 </div>
             </div>
             
-            <?php $phone = get_post_meta( $post->ID, 'phone', true ); ?>
+            <?php 
+            //* Property Phone
+            $phone = get_post_meta( $post->ID, 'phone', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="phone">Phone</label>
@@ -174,7 +215,9 @@ function rf_properties_contact_metabox_callback( $post ) {
                 </div>
             </div>
             
-            <?php $url = get_post_meta( $post->ID, 'url', true ); ?>
+            <?php 
+            //* Property URL
+            $url = get_post_meta( $post->ID, 'url', true ); ?>
             <div class="field">
                 <div class="column">
                     <label for="url">URL</label>
@@ -263,88 +306,190 @@ function rf_properties_display_information_metabox_callback( $post ) {
                     selectedImageIds.splice(selectedImageIds.indexOf(imageId), 1);
                     galleryIdsField.val(selectedImageIds.join(','));
                     imageDiv.remove();
-                });
-                
-                // Prepopulate the gallery container with existing images
-                if (galleryIdsField.val()) {
-                    var galleryIds = galleryIdsField.val().split(',');
-                    
-                    for (var i = 0; i < galleryIds.length; i++) {
-                        var imageId = parseInt(galleryIds[i], 10);
-                        
-                        if (imageId && selectedImageIds.indexOf(imageId) === -1) {
-                            selectedImageIds.push(imageId);
-                            galleryContainer.append('<div class="gallery-image" data-id="' + imageId + '"><img src="' + wp.media.attachment(imageId).get('sizes')['thumbnail']['url'] + '"/><button class="remove-image">Remove</button></div>');
-                        }
-                    }
-                }
+                });                
             });
         </script>
       
+      
+        <?php //* Property Images ?>
         <div class="field">
             <div class="column">
-                <label for="images">Images</label>
+                <label for="images">Custom Images</label>
             </div>
             <div class="column"> 
                 <p class="description">These are custom images added to the site, and are never synced. Any image here will override any synced images.</p>               
                 <?php
                 
                 $images = get_post_meta( $post->ID, 'images', true );
-                $images_ids = get_post_meta( $post->ID, 'images', true );
-                $images_ids = explode( ',', $images_ids );
+                
+                // convert to string
+                if ( is_array( $images ) )
+                    $images = implode( ',', $images );
+                                    
+                $images_ids_array = explode( ',', $images );
                 $image_url = '';
-        
-                foreach( $images_ids as $image_id ) {
-                    $attachment_url = wp_get_attachment_image_src( $image_id, 'thumbnail' );
-                    $image_url .= '
-                        <div class="gallery-image" data-id="' . $image_id . '">
-                            <img src="' . $attachment_url[0] . '">
-                            <button class="remove-image">Remove</button>
-                        </div>
-                    ';
-                }
-
+                
                 echo '<input type="hidden" id="images" name="images" value="' . esc_attr( $images ) . '">';
-                echo '<div id="gallery-container">' . $image_url . '</div>';
+                
+                if ( $images ) {
+                    echo '<div id="gallery-container">';
+                        foreach( $images_ids_array as $image_id ) {
+                            $attachment_url = wp_get_attachment_image_src( $image_id, 'thumbnail' );
+                            printf( '<div class="gallery-image" data-id="%s"><img src="%s"><button class="remove-image">Remove</button></div>', $image_id, $attachment_url[0] );
+                        }
+                    echo '</div>';
+                }
+                
+                echo '<div id="gallery-container">' . $image_url . '</div>';                
                 echo '<input type="button" id="images_button" class="button" value="Add Images">';
+        
                 ?>
                 
             </div>
-        </div>        
-                 
-        <?php $description = get_post_meta( $post->ID, 'description', true ); ?>
+        </div>
+        
+        <?php
+        
+        $property_source = get_post_meta($post->ID, 'property_source', true );
+        if ( $property_source == 'yardi' ) {
+            
+            //* Property Images from Yardi
+            $property_images = get_post_meta( $post->ID, 'property_images', true );
+            $property_images = json_decode( $property_images );
+            ?>
+             
+            <div class="field">
+                <div class="column">
+                    <label for="property_images">Yardi Property Images</label>
+                    <p class="description">These images are not editable, because they're from Yardi. This is merely a preview so that you can see the images being provided. Feel free to click 'download' on any of these so that you can easily grab any that you want if you're adding more.</p>
+                </div>
+                <div class="column">                
+                    <?php
+                    if ( $property_images ) {
+                        echo '<div class="property_images">';
+                        foreach ( $property_images as $property_image ) {
+                            printf( '<div class="property-image"><img src="%s"/><a href="%s" target="_blank" class="download" download>Download</a></div>', $property_image->ImageURL, $property_image->ImageURL );                
+                        }
+                        echo '</div>';
+                    } else {
+                        echo '<p class="description">No images available</p>';
+                    }
+                    ?>
+                    
+                </div>
+            </div>
+            <?php
+        }
+        ?>
+             
+        <?php 
+        //* Property Description
+        $description = get_post_meta( $post->ID, 'description', true ); ?>
         <div class="field">
             <div class="column">
                 <label for="description">Description</label>
             </div>
             <div class="column">                
-                <input type="text" id="description" name="description" value="<?php echo esc_attr( $description ); ?>">
+                <textarea rows="3" id="description" name="description"><?php echo esc_attr( $description ); ?></textarea>
                 <p class="description">The description is synced from most APIs, but if yours is not, this is the main place to put general information about this property.</p>
             </div>
         </div>
         
-        <?php $matterport = get_post_meta( $post->ID, 'matterport', true ); ?>
+        <script>
+            jQuery(document).ready(function( $ ) {
+	
+                // Get the URL input field and add an event listener for when the input changes
+                $('input#matterport').on('input', function() {
+                // Get the oembed container element
+                const oembedContainer = $('#matterport-preview');
+
+                // Remove any existing oembed content
+                oembedContainer.empty();
+
+                // Get the Matterport iframe code from the input field
+                const iframeCode = this.value;
+
+                // Create a new HTML element for the iframe code
+                const iframeContent = $('<div></div>').html(iframeCode);
+
+                // Add the iframe content to the container element
+                oembedContainer.append(iframeContent);
+                });
+
+                
+            });
+        </script>
+        
+        <?php 
+        //* Matterport
+        $matterport = get_post_meta( $post->ID, 'matterport', true ); ?>
         <div class="field">
             <div class="column">
                 <label for="matterport">Tour Matterport embed code</label>
             </div>
             <div class="column">
                 <input type="text" id="matterport" name="matterport" value="<?php echo esc_attr( $matterport ); ?>">
+                <?php 
+                $iframeCode = '<iframe src="https://my.matterport.com/showcase-beta?m=VBHn8iJQ1h4" width="640" height="480" frameborder="0" allowfullscreen allow="vr"></iframe>';
+                $escapedIframeCode = htmlspecialchars($iframeCode);
+                ?>
+
+                <p class="description">Paste in a Matterport iframe code. This code will look something like this: <?php echo $escapedIframeCode; ?></p>
+                <div id="matterport-preview"></div>
             </div>
         </div>
         
-        <?php $video = get_post_meta( $post->ID, 'video', true ); ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function( $ ) {
+	
+                // Get the URL input field and add an event listener for when the input changes
+                $('input#video').on('input', function() {
+                // Get the oembed container element
+                const oembedContainer = $('#video-container');
+
+                // Remove any existing oembed content
+                oembedContainer.empty();
+
+                // Get the video ID from the YouTube URL
+                const videoID = this.value.split('v=')[1];
+
+                // Create an oembed URL for the video
+                const oembedUrl = `https://www.youtube.com/oembed?url=${this.value}`;
+
+                // Fetch the oembed data from the API
+                $.getJSON(oembedUrl)
+                    .done(function(data) {
+                    // Create a new HTML element for the oembed content
+                    const oembedContent = $('<div></div>').html(data.html);
+
+                    // Add the oembed content to the container element
+                    oembedContainer.append(oembedContent);
+                    })
+                    .fail(function(error) {
+                    console.error(error);
+                    });
+                });
+
+            });
+        </script>
+        
+        <?php 
+        //* Tour video
+        $video = get_post_meta( $post->ID, 'video', true ); ?>
         <div class="field">
             <div class="column">
                 <label for="video">Tour video oembed link</label>
             </div>
             <div class="column">
                 <input type="text" id="video" name="video" value="<?php echo esc_attr( $video ); ?>">
-                <p class="description">Just a Youtube link (e.g. <a href="https://www.youtube.com/watch?v=C0DPdy98e4c" target="_blank">https://www.youtube.com/watch?v=C0DPdy98e4c</a>) or Vimeo link (e.g. <a href="https://vimeo.com/226053498" target="_blank">https://vimeo.com/226053498</a>.</p>
+                <p class="description">Just a Youtube link (e.g. <a href="https://www.youtube.com/watch?v=C0DPdy98e4c" target="_blank">https://www.youtube.com/watch?v=C0DPdy98e4c</a>). Vimeo videos will <em>usually</em> work as well, but be sure to test these on the frontend.</p>
+                <div id="video-container" style="width:100%; max-width: 300px;"></div> <!-- a container to hold the video -->
             </div>
         </div>
                 
-        <?php $pets = get_post_meta( $post->ID, 'pets', true ); ?>
+        <?php 
+        //* Property Pets
+        $pets = get_post_meta( $post->ID, 'pets', true ); ?>
         <div class="field">
             <div class="column">
                 <label for="pets">Pets</label>
@@ -354,14 +499,24 @@ function rf_properties_display_information_metabox_callback( $post ) {
             </div>
         </div>
         
-        <?php $content_area = get_post_meta( $post->ID, 'content_area', true ); ?>
+        <?php 
+        //* Property Content Area
+        $content_area = get_post_meta( $post->ID, 'content_area', true ); ?>
         <div class="field">
             <div class="column">
                 <label for="content_area">Content area</label>
                 <p class="description">The content area is always unsynced, so if you have more to say, you can say it here.</p>
             </div>
             <div class="column">
-                <textarea rows="3" id="content_area" name="content_area"><?php echo esc_attr( $content_area ); ?></textarea>
+                <?php
+                wp_editor( $content_area, 'content_area', array(
+                    'textarea_name' => 'content_area',
+                    'media_buttons' => false,
+                    'textarea_rows' => 10,
+                    'teeny' => false,
+                    'tinymce' => true,
+                ) );
+                ?>
                 <p class="description">It's always recommended to start this section with a heading level 2. If this is empty, the content area section of the single-properties template will not be displayed (there won't be a blank space). By default, if there's something to say here, this section will display below the amenities.</p>
             </div>
         </div>
@@ -413,14 +568,34 @@ function rf_save_properties_metaboxes( $post_id ) {
     if ( isset( $_POST['url'] ) )
         update_post_meta( $post_id, 'url', sanitize_text_field( $_POST['url'] ) );
         
-    if ( isset( $_POST['images'] ) )
-        update_post_meta( $post_id, 'images', $_POST['images'] );
+    if ( isset( $_POST['images'] ) ) {
+        $property_images = sanitize_text_field( $_POST['images'] );
+        $property_images = trim($property_images, ",");
+        $property_images = explode(",", $property_images);
+        $property_images = array_unique( $property_images );
+        
+        update_post_meta( $post_id, 'images', $property_images );
+    }
         
     if ( isset( $_POST['description'] ) )
         update_post_meta( $post_id, 'description', sanitize_text_field( $_POST['description'] ) );
         
-    if ( isset( $_POST['matterport'] ) )
-        update_post_meta( $post_id, 'matterport', sanitize_text_field( $_POST['matterport'] ) );
+    if ( isset( $_POST['matterport'] ) ) {
+        
+        $allowed_tags = array(
+            'iframe' => [
+                'src' => [],
+                'width' => [],
+                'height' => [],
+                'frameborder' => [],
+                'allowfullscreen' => [],
+                'allow' => [],
+            ],
+        );
+        
+        update_post_meta( $post_id, 'matterport', wp_kses( $_POST['matterport'], $allowed_tags ) );
+        
+    }
         
     if ( isset( $_POST['video'] ) )
         update_post_meta( $post_id, 'video', sanitize_text_field( $_POST['video'] ) );
@@ -428,8 +603,26 @@ function rf_save_properties_metaboxes( $post_id ) {
     if ( isset( $_POST['pets'] ) )
         update_post_meta( $post_id, 'pets', sanitize_text_field( $_POST['pets'] ) );
         
-    if ( isset( $_POST['content_area'] ) )
-        update_post_meta( $post_id, 'content_area', sanitize_text_field( $_POST['content_area'] ) );
+    if ( isset( $_POST['content_area'] ) ) {
+        $allowed_tags = array(
+            'h2' => [],
+            'h3' => [],
+            'p' => [],
+            'ul' => [],
+            'ol' => [],
+            'li' => [],
+            'a' => [
+                'href' => [],
+                'title' => [],
+                'target' => [],
+            ],
+            'br' => [],
+            'em' => [],
+            'strong' => [],
+        );
+                
+        update_post_meta( $post_id, 'content_area', wp_kses( $_POST['content_area'], $allowed_tags ) );
+    }
 
 }
 

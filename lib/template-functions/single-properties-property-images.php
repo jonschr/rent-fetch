@@ -93,6 +93,11 @@ function rentfetch_single_property_images_manual() {
     wp_enqueue_style( 'rentfetch-fancybox-style' );
     wp_enqueue_script( 'rentfetch-fancybox-script' );
                 
+    if ( !is_array( $property_images ) ) {
+        // remove comma at beginning and end of string, just in case
+        $property_images = explode( ',', $property_images );
+    }
+        
     $number_of_images = count( $property_images );
         
     if ( $number_of_images < 5 ) {
