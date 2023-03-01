@@ -62,3 +62,14 @@ function rentfetch_enqueue_scripts_stylesheets() {
     
     	
 }
+
+add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_in_admin' );
+function rentfetch_enqueue_in_admin() {
+    
+    wp_enqueue_style( 
+        'rentfetch-admin-metaboxes', 
+        RENTFETCH_PATH . 'css/metaboxes.css',
+        array(), 
+        RENTFETCH_VERSION
+    );
+}
