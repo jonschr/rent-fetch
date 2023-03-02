@@ -93,4 +93,11 @@ function rentfetch_enqueue_in_admin_metabox_properties() {
         array( 'jquery' ),
         RENTFETCH_VERSION
     );
+    
+    wp_register_script( 
+        'rentfetch-metabox-floorplans-images', 
+        RENTFETCH_PATH . 'js/metabox-floorplans-images.js', 
+        array( 'jquery' ),
+        RENTFETCH_VERSION
+    );
 }

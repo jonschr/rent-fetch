@@ -87,11 +87,11 @@ function rf_properties_identifiers_metabox_callback( $post ) {
             $property_code = get_post_meta( $post->ID, 'property_code', true ); ?>
             <div class="field">
                 <div class="column">
-                    <label for="property_code">Property Code</label>
+                    <label for="property_code">Voyager Property Code</label>
                 </div>
                 <div class="column">
                     <input type="text" id="property_code" name="property_code" value="<?php echo esc_attr( $property_code ); ?>">
-                    <p class="description">In Yardi, properties also have a property code, so if this property is synced with Yardi, that may show below as well (if this is not a Yardi property, you can probably ignore this).</p>
+                    <p class="description">In Yardi, properties also have a Voyager property code, so if this property is synced with Yardi, that may show below as well (if this is not a Yardi property, you can probably ignore this).</p>
                 </div>
             </div>
             
@@ -264,7 +264,7 @@ function rf_properties_display_information_metabox_callback( $post ) {
                 $images_ids_array = explode( ',', $images );
                 $image_url = '';
                 
-                echo '<input type="text" id="images" name="images" value="' . esc_attr( $images ) . '">';
+                echo '<input type="hidden" id="images" name="images" value="' . esc_attr( $images ) . '">';
                 
                 if ( $images ) {
                     echo '<div id="gallery-container">';

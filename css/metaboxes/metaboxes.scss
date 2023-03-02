@@ -147,7 +147,8 @@
     }
 }
 
-.property_images {
+.property_images,
+.floorplan_images {
     display: grid;
     grid-gap: 5px;
 
@@ -159,7 +160,8 @@
         grid-template-columns: repeat(auto-fit, 100px);
     }
 
-    .property-image {
+    .property-image,
+    .floorplan-image {
         position: relative;
         display: inline-block;
         height: 82px;
