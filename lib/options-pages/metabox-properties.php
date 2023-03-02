@@ -404,6 +404,9 @@ function rf_properties_display_information_metabox_callback( $post ) {
 
 add_action( 'save_post', 'rf_save_properties_metaboxes' );
 function rf_save_properties_metaboxes( $post_id ) {
+    
+    if ( !isset( $_POST['rf_properties_metabox_nonce'] ) )
+        return;
 
     if ( ! wp_verify_nonce( $_POST['rf_properties_metabox_nonce'], 'rf_properties_metabox_nonce' ) )
         return;
