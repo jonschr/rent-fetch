@@ -8,10 +8,10 @@ jQuery(document).ready(function ($) {
         oembedContainer.empty();
 
         // Get the video ID from the YouTube URL
-        const videoID = this.value.split('v=')[1];
+        const videoID = this.value;
 
         // Create an oembed URL for the video
-        const oembedUrl = `https://www.youtube.com/oembed?url=${this.value}`;
+        const oembedUrl = `https://www.youtube.com/oembed?url=${videoID}`;
 
         // Fetch the oembed data from the API
         $.getJSON(oembedUrl)
@@ -23,7 +23,12 @@ jQuery(document).ready(function ($) {
                 oembedContainer.append(oembedContent);
             })
             .fail(function (error) {
-                console.error(error);
+                oembedContainer.append(
+                    'There was an error fetching the video.'
+                );
             });
     });
+
+    // on page load, trigger the input event to load the video
+    $('input#video').trigger('input');
 });

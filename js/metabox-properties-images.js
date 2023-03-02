@@ -19,24 +19,13 @@ jQuery(document).ready(function ($) {
     imagesButton.click(function (e) {
         e.preventDefault();
 
+        //* If the frame already exists, open it
         if (galleryFrame) {
             galleryFrame.open();
             return;
         }
 
-        // // var selection = galleryFrame.state().get('selection');
-        // var selectedImageIds = $('#images').val();
-
-        // if (selectedImageIds.length > 0) {
-        //     var ids = selectedImageIds.split(',');
-
-        //     ids.forEach(function (id) {
-        //         attachment = wp.media.attachment(id);
-        //         attachment.fetch();
-        //         selection.add(attachment ? [attachment] : []);
-        //     });
-        // }
-
+        //* Create the media frame
         galleryFrame = wp.media({
             title: 'Select Images',
             button: {
@@ -48,21 +37,42 @@ jQuery(document).ready(function ($) {
             },
         });
 
-        // console_log(galleryFrame);
+        //* When the frame is opened, restore the selection
+        galleryFrame.on('open', function () {
+            var selection = galleryFrame.state().get('selection');
+            var selecteds = galleryIdsField.val(); // the id of the image
+
+            // remove commas at the start of the string
+            selecteds = selecteds.replace(/^,/, '');
+
+            // convert the string to an array
+            selecteds = selecteds.split(',');
+
+            // for each id in the array
+            for (let i = 0; i < selecteds.length; i++) {
+                // add the image to the selection
+                selection.add(wp.media.attachment(selecteds[i]));
+            }
+        });
 
         //* Handle the selection when confirmed
         galleryFrame.on('select', function () {
+            // Get the selection
             var selection = galleryFrame.state().get('selection');
-            galleryIdsField = $('#images');
 
             selection.map(function (attachment) {
+                // Convert the attachment to a JSON object
                 attachment = attachment.toJSON();
 
+                // Check if the image is already in the gallery
                 if (
                     attachment.id &&
                     selectedImageIds.indexOf(attachment.id) === -1
                 ) {
+                    // Add the image to the gallery
                     selectedImageIds.push(attachment.id);
+
+                    // Add the image to the gallery container
                     galleryContainer.append(
                         '<div class="gallery-image" data-id="' +
                             attachment.id +
@@ -70,40 +80,33 @@ jQuery(document).ready(function ($) {
                             attachment.sizes.thumbnail.url +
                             '"><button class="remove-image">Remove</button></div>'
                     );
+
+                    // check the data-id of all divs in the gallery container, and remove any with duplicate data-id
+                    var ids = [];
+                    galleryContainer.find('div').each(function () {
+                        var id = $(this).data('id');
+                        if (ids.indexOf(id) !== -1) {
+                            $(this).remove();
+                        } else {
+                            ids.push(id);
+                        }
+                    });
+
+                    // Update the hidden input field
+                    galleryIdsField.val(selectedImageIds.join(','));
                 }
             });
-
-            galleryIdsField.val(selectedImageIds.join(','));
         });
 
         galleryFrame.open();
     });
-
-    //* When the gallery frame opens, get the IDs of the images that are already selected
-    // galleryFrame.on('open', function () {
-    //     console.log('hello world');
-    //     var selection = galleryFrame.state().get('selection');
-    //     var ids_value = jQuery('#images').val();
-
-    //     if (ids_value.length > 0) {
-    //         var ids = ids_value.split(',');
-
-    //         ids.forEach(function (id) {
-    //             attachment = wp.media.attachment(id);
-    //             attachment.fetch();
-    //             selection.add(attachment ? [attachment] : []);
-    //         });
-    //     }
-    // });
 
     //* Handle the "Remove" button click event
     galleryContainer.on('click', '.remove-image', function () {
         var imageDiv = $(this).closest('.gallery-image');
         var imageId = imageDiv.data('id');
 
-        selectedImageIds = $('#images').val().split(',');
-
-        // console.log(selectedImageIds);
+        selectedImageIds = galleryIdsField.val().split(',');
 
         selectedImageIds.splice(selectedImageIds.indexOf(imageId), 1);
         galleryIdsField.val(selectedImageIds.join(','));
