@@ -99,8 +99,11 @@ function rf_floorplans_identifiers_metabox_callback( $post ) {
                             $query->the_post();
                             $property_title = get_the_title();
                             $property_link = get_the_permalink();
-                            echo '<p class="description">This floorplan is associated with the property <a target="_blank" href="' . $property_link . '">' . $property_title . '</a></p>';
+                            $property_id = get_post_meta( $post->ID, 'property_id', true );
+                            printf( '<p class="description">Property %s: <a target="_blank" href="%s">%s</a></p>', $property_id, $property_link, $property_title );
                         }
+                    } else {
+                        echo '<p class="description">When this is filled out, just save and refresh the page to see a link to the associated property.</p>';
                     }
                     ?>
                     
