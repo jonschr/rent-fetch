@@ -4,6 +4,7 @@ add_filter( 'manage_properties_posts_columns', 'rentfetch_default_properties_adm
 function rentfetch_default_properties_admin_columns( $columns ) {
     
     $columns = array(
+        'cb' =>              '<input type="checkbox" />',
         'title' =>           __( 'Title', 'rentfetch' ),
         'property_id' =>     __( 'Property ID', 'rentfetch' ),
         'property_code' =>   __( 'Property Code', 'rentfetch' ),

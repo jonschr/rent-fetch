@@ -167,7 +167,7 @@ function rf_floorplans_display_metabox_callback( $post ) {
                 $images_ids_array = explode( ',', $images );
                 $image_url = '';
                 
-                echo '<input type="hidden" id="images" name="images" value="' . esc_attr( $images ) . '">';
+                echo '<input type="text" id="images" name="images" value="' . esc_attr( $images ) . '">';
                 
                 if ( $images ) {
                     echo '<div id="gallery-container">';
@@ -443,3 +443,84 @@ function rf_floorplans_availability_metabox_callback( $post ) {
     <?php
 }
 
+add_action( 'save_post', 'rf_save_floorplans_metaboxes' );
+function rf_save_floorplans_metaboxes( $post_id ) {
+    
+    if ( !isset( $_POST['rf_floorplans_metabox_nonce'] ) )
+        return;
+
+    if ( ! wp_verify_nonce( $_POST['rf_floorplans_metabox_nonce'], 'rf_floorplans_metabox_nonce' ) )
+        return;
+    
+    if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+        return;
+    
+    if ( isset( $_POST['property_id'] ) )
+        update_post_meta( $post_id, 'property_id', sanitize_text_field( $_POST['property_id'] ) );
+        
+    if ( isset( $_POST['floorplan_source'] ) )
+        update_post_meta( $post_id, 'floorplan_source', sanitize_text_field( $_POST['floorplan_source'] ) );
+        
+    if ( isset( $_POST['floorplan_id'] ) )
+        update_post_meta( $post_id, 'floorplan_id', sanitize_text_field( $_POST['floorplan_id'] ) );
+        
+    if ( isset( $_POST['unit_type_mapping'] ) )
+        update_post_meta( $post_id, 'unit_type_mapping', sanitize_text_field( $_POST['unit_type_mapping'] ) );
+        
+    if ( isset( $_POST['floorplan_image_url'] ) )
+        update_post_meta( $post_id, 'floorplan_image_url', sanitize_text_field( $_POST['floorplan_image_url'] ) );
+        
+    if ( isset( $_POST['floorplan_description'] ) )
+        update_post_meta( $post_id, 'floorplan_description', sanitize_text_field( $_POST['floorplan_description'] ) );
+        
+    if ( isset( $_POST['floorplan_video_or_tour'] ) )
+        update_post_meta( $post_id, 'floorplan_video_or_tour', sanitize_text_field( $_POST['floorplan_video_or_tour'] ) );
+        
+    if ( isset( $_POST['beds'] ) )
+        update_post_meta( $post_id, 'beds', sanitize_text_field( $_POST['beds'] ) );
+        
+    if ( isset( $_POST['baths'] ) )
+        update_post_meta( $post_id, 'baths', sanitize_text_field( $_POST['baths'] ) );
+        
+    if ( isset( $_POST['minimum_deposit'] ) )
+        update_post_meta( $post_id, 'minimum_deposit', sanitize_text_field( $_POST['minimum_deposit'] ) );
+        
+    if ( isset( $_POST['maximum_deposit'] ) )
+        update_post_meta( $post_id, 'maximum_deposit', sanitize_text_field( $_POST['maximum_deposit'] ) );
+        
+    if ( isset( $_POST['minimum_rent'] ) )
+        update_post_meta( $post_id, 'minimum_rent', sanitize_text_field( $_POST['minimum_rent'] ) );
+        
+    if ( isset( $_POST['maximum_rent'] ) )
+        update_post_meta( $post_id, 'maximum_rent', sanitize_text_field( $_POST['maximum_rent'] ) );
+        
+    if ( isset( $_POST['minimum_sqft'] ) )
+        update_post_meta( $post_id, 'minimum_sqft', sanitize_text_field( $_POST['minimum_sqft'] ) );
+        
+    if ( isset( $_POST['maximum_sqft'] ) )
+        update_post_meta( $post_id, 'maximum_sqft', sanitize_text_field( $_POST['maximum_sqft'] ) );
+        
+    if ( isset( $_POST['availability_date'] ) )
+        update_post_meta( $post_id, 'availability_date', sanitize_text_field( $_POST['availability_date'] ) );
+        
+    if ( isset( $_POST['property_show_specials'] ) )
+        update_post_meta( $post_id, 'property_show_specials', sanitize_text_field( $_POST['property_show_specials'] ) );
+        
+    if ( isset( $_POST['has_specials'] ) )
+        update_post_meta( $post_id, 'has_specials', sanitize_text_field( $_POST['has_specials'] ) );
+        
+    if ( isset( $_POST['availability_url'] ) )
+        update_post_meta( $post_id, 'availability_url', sanitize_text_field( $_POST['availability_url'] ) );
+        
+    if ( isset( $_POST['available_units'] ) )
+        update_post_meta( $post_id, 'available_units', sanitize_text_field( $_POST['available_units'] ) );
+        
+    if ( isset( $_POST['images'] ) ) {
+        $property_images = sanitize_text_field( $_POST['images'] );
+        $property_images = trim($property_images, ",");
+        $property_images = explode(",", $property_images);
+        $property_images = array_unique( $property_images );
+        
+        update_post_meta( $post_id, 'manual_images', $property_images );
+    }
+}
