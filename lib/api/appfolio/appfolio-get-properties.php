@@ -20,11 +20,11 @@ function rentfetch_get_properties_appfolio() {
         return;
         
     // get all of the credentials
-    $appfolio_integration_creds = get_field( 'appfolio_integration_creds', 'option' );
-    $appfolio_database_name = $appfolio_integration_creds['appfolio_database_name'];
-    $appfolio_client_id = $appfolio_integration_creds['appfolio_client_id'];
-    $appfolio_client_secret = $appfolio_integration_creds['appfolio_client_secret'];
-    $appfolio_property_ids = $appfolio_integration_creds['appfolio_property_ids'];
+    $appfolio_integration_creds = get_option( 'options_appfolio_integration_creds' );
+    $appfolio_database_name = get_option( 'options_appfolio_integration_creds_appfolio_database_name' );
+    $appfolio_client_id = get_option( 'options_appfolio_integration_creds_appfolio_client_id' );
+    $appfolio_client_secret = get_option( 'options_appfolio_integration_creds_appfolio_client_secret' );
+    $appfolio_property_ids = get_option( 'options_appfolio_integration_creds_appfolio_property_ids' );
     
     // remove all whitespace from $appfolio_property_ids
     $appfolio_property_ids = preg_replace('/\s+/', '', $appfolio_property_ids);

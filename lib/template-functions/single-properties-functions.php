@@ -18,8 +18,7 @@ function rentfetch_single_property_title() {
     global $post;
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_property_title'] === false )
+    if ( get_option( 'options_single_property_components_enable_property_title' ) === false )
         return;
             
     $id = esc_attr( get_the_ID() );
@@ -69,8 +68,7 @@ function rentfetch_single_property_title() {
 function rentfetch_single_property_images() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_property_images'] === false )
+    if ( get_option( 'options_single_property_components_enable_property_images' ) === false )
         return;
     
     global $post;
@@ -102,35 +100,34 @@ function rentfetch_single_property_images() {
 function rentfetch_single_property_section_navigation() {
         
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_section_navigation'] === false )
+    if ( get_option( 'options_single_property_components_enable_section_navigation') === false )
         return;
                 
-    if ( $single_property_components['enable_property_description'] === false ) {
+    if ( get_option( 'options_single_property_components_enable_property_description' ) === false ) {
         $hide_description = true;
     } else {
         $hide_description = false;
     }
     
-    if ( $single_property_components['enable_virtual_tour'] === false ) {
+    if ( get_option( 'options_single_property_components_enable_virtual_tour' ) === false ) {
         $hide_tour = true;
     } else {
         $hide_tour = false;
     }
         
-    if ( $single_property_components['enable_floorplans_display'] === false ) {
+    if ( get_option( 'options_single_property_components_enable_floorplans_display' ) === false ) {
         $hide_floorplans = true;
     } else {
         $hide_floorplans = false;
     }
         
-    if ( $single_property_components['enable_amenities_display'] === false ) {
+    if ( get_option( 'options_single_property_components_enable_amenities_display' ) === false ) {
         $hide_amenities = true;
     } else {
         $hide_amenities = false;
     }
         
-    if ( $single_property_components['enable_nearby_properties'] === false ) {
+    if ( get_option( 'options_single_property_components_enable_nearby_properties' ) === false ) {
         $hide_nearby_properties = true;
     } else {
         $hide_nearby_properties = false;
@@ -189,8 +186,7 @@ function rentfetch_single_property_section_navigation() {
 function rentfetch_single_property_basic_info() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_basic_info_display'] === false )
+    if ( get_option( 'options_single_property_components_enable_basic_info_display' ) === false )
         return;
     
     global $post;
@@ -254,8 +250,7 @@ function rentfetch_single_property_basic_info() {
 function rentfetch_single_property_description() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_property_description'] === false )
+    if ( get_option( 'options_single_property_components_enable_property_description' ) === false )
         return;
     
     global $post;
@@ -293,20 +288,20 @@ function rentfetch_single_property_yardi_lead_generation() {
         return;
         
     //* bail if there's no username or password set for Yardi
-    $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
+    $yardi_integration_creds = get_option( 'options_yardi_integration_creds' );
     
     // bail if the feature is disabled
-    $enable_yardi_api_lead_generation = $yardi_integration_creds['enable_yardi_api_lead_generation'];
+    $enable_yardi_api_lead_generation = get_option( 'options_yardi_integration_creds_enable_yardi_api_lead_generation' );
     if ( $enable_yardi_api_lead_generation != true )
         return;
         
     // bail if there's no username
-    $yardi_username = $yardi_integration_creds['yardi_username'];
+    $yardi_username = get_option( 'options_yardi_integration_creds_yardi_username' );
     if ( !$yardi_username )
         return;
         
     // bail if there's no password
-    $yardi_password = $yardi_integration_creds['yardi_password'];
+    $yardi_password = get_option( 'options_yardi_integration_creds_yardi_password' );
     if ( !$yardi_password )
         return;
         
@@ -395,7 +390,7 @@ function rentfetch_single_property_yardi_lead_generation() {
                 echo '</li>';
                 
                 //* Google reCAPTCHA
-                $google_recaptcha = get_field( 'google_recaptcha', 'option' );
+                $google_recaptcha = get_option( 'options_google_recaptcha' );
                 $google_recaptcha_v2_site_key = $google_recaptcha['google_recaptcha_v2_site_key'];
                 $google_recaptcha_v2_secret = $google_recaptcha['google_recaptcha_v2_secret'];
                 
@@ -434,7 +429,7 @@ function rentfetch_single_property_yardi_lead_generation() {
 function rentfetch_single_property_tour() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
+    $single_property_components = get_option( 'options_single_property_components' );
     
     if ( isset( $single_property_components['enable_virtual_tour'] ) ) {
         if ( $single_property_components['enable_virtual_tour'] === false )
@@ -465,8 +460,7 @@ function rentfetch_single_property_tour() {
 function rentfetch_single_property_floorplans() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_floorplans_display'] === false )
+    if ( get_option( 'options_single_property_components_enable_floorplans_display' ) === false )
         return;
     
     global $post;
@@ -532,8 +526,7 @@ function rentfetch_single_property_floorplans() {
 function rentfetch_single_property_amenities() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_amenities_display'] === false )
+    if ( get_option( 'options_single_property_components_enable_amenities_display' ) === false )
         return;
     
     global $post;
@@ -554,8 +547,7 @@ function rentfetch_single_property_amenities() {
 function rentfetch_single_property_lease_details() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_lease_details_display'] === false )
+    if ( get_option( 'options_single_property_components_enable_lease_details_display' ) === false )
         return;
     
     global $post;
@@ -573,8 +565,7 @@ function rentfetch_single_property_lease_details() {
 function rentfetch_single_property_map() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_property_map'] === false )
+    if ( get_option( 'options_single_property_components_enable_property_map' ) === false )
         return;
     
     global $post;
@@ -602,8 +593,8 @@ function rentfetch_single_property_map() {
 
     // Localize the google maps script, then enqueue that
     $maps_options = array(
-        'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
-        'marker_url' => get_field( 'google_map_marker', 'option' ),
+        'json_style' => json_decode( get_option( 'options_google_maps_styles' ) ),
+        'marker_url' => get_option( 'options_google_map_marker' ),
         'latitude' => $latitude,
         'longitude' => $longitude,
         'location' => $location,
@@ -660,8 +651,7 @@ function rentfetch_single_property_neighborhood() {
 function rentfetch_single_property_nearby_properties() {
     
     // bail if this section isn't set to display
-    $single_property_components = get_field( 'single_property_components', 'option' );
-    if ( $single_property_components['enable_nearby_properties'] === false )
+    if ( get_option( 'options_single_property_components_enable_nearby_properties' ) === false )
         return;
     
     global $post;
@@ -715,7 +705,7 @@ function rentfetch_get_single_property_nearby_properties() {
         'order'	=> 'ASC', // ASC or DESC
     );
         
-    $property_availability_display = get_field( 'property_availability_display', 'options' );
+    $property_availability_display = get_option( 'options_property_availability_display', 'options' );
     if ( $property_availability_display != 'all' ) {
         
         //* Add all of our property IDs into the property search
@@ -739,7 +729,7 @@ function rentfetch_get_single_property_nearby_properties() {
                 
     $number_properties = '3';
     
-    $property_footer_settings = get_field( 'property_footer_grid', 'options' );
+    $property_footer_settings = get_option( 'options_property_footer_grid', 'options' );
     if ( isset( $property_footer_settings['number_properties'] ) )
         $number_properties = $property_footer_settings['number_properties'];
         

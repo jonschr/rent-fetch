@@ -20,11 +20,11 @@ function rentfetch_get_floorplans_appfolio() {
         return;
         
     // get all of the credentials
-    $appfolio_integration_creds = get_field( 'appfolio_integration_creds', 'option' );
-    $appfolio_database_name = $appfolio_integration_creds['appfolio_database_name'];
-    $appfolio_client_id = $appfolio_integration_creds['appfolio_client_id'];
-    $appfolio_client_secret = $appfolio_integration_creds['appfolio_client_secret'];
-    $appfolio_property_ids = $appfolio_integration_creds['appfolio_property_ids'];
+    $appfolio_integration_creds = get_option( 'options_appfolio_integration_creds' );
+    $appfolio_database_name = get_option( 'options_appfolio_integration_creds_appfolio_database_name' );
+    $appfolio_client_id = get_option( 'options_appfolio_integration_creds_appfolio_client_id' );
+    $appfolio_client_secret = get_option( 'options_appfolio_integration_creds_appfolio_client_secret' );
+    $appfolio_property_ids = get_option( 'options_appfolio_integration_creds_appfolio_property_ids' );
     
     // remove all whitespace from $appfolio_property_ids
     $appfolio_property_ids = preg_replace('/\s+/', '', $appfolio_property_ids);
@@ -136,8 +136,8 @@ add_action( 'rentfetch_do_save_appfolio_floorplans_to_cpt', 'rentfetch_check_app
 // add_action( 'admin_footer', 'rentfetch_check_appfolio_floorplans_for_saving_or_syncing' );
 function rentfetch_check_appfolio_floorplans_for_saving_or_syncing() {
     
-    $sync_term = get_field( 'sync_term', 'option' );
-    $data_sync = get_field( 'data_sync', 'option' );
+    $sync_term = get_option( 'options_sync_term' );
+    $data_sync = get_option( 'options_data_sync' );
     
     $units = get_transient( 'appfolio_units' );
     // console_log( $units );

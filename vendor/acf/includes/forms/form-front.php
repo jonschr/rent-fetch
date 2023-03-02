@@ -503,14 +503,14 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 
 			// Append post_title field.
 			if ( $args['post_title'] ) {
-				$_post_title          = acf_get_field( '_post_title' );
+				$_post_title          = acf_get_option( 'options__post_title' );
 				$_post_title['value'] = $post_id ? get_post_field( 'post_title', $post_id ) : '';
 				$fields[]             = $_post_title;
 			}
 
 			// Append post_content field.
 			if ( $args['post_content'] ) {
-				$_post_content          = acf_get_field( '_post_content' );
+				$_post_content          = acf_get_option( 'options__post_content' );
 				$_post_content['value'] = $post_id ? get_post_field( 'post_content', $post_id ) : '';
 				$fields[]               = $_post_content;
 			}
@@ -556,7 +556,7 @@ if ( ! class_exists( 'acf_form_front' ) ) :
 
 			// Add honeypot field.
 			if ( $args['honeypot'] ) {
-				$fields[] = acf_get_field( '_validate_email' );
+				$fields[] = acf_get_option( 'options__validate_email' );
 			}
 
 			// Display updated_message

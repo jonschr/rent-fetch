@@ -4,7 +4,7 @@
  * Get the sync term and return it in seconds
  */
 function rentfetch_get_sync_term_in_seconds() {
-    $sync_term = get_field( 'sync_term', 'option' );
+    $sync_term = get_option( 'options_sync_term' );
     
     if ( empty( $sync_term ) )
         $sync_term = 'paused';
@@ -34,7 +34,7 @@ function rentfetch_check_if_sync_settings_have_changed() {
      */
     
     // sync term: this is continuous, hourly, daily, paused
-    $current_sync_term = get_field( 'sync_term', 'option' );
+    $current_sync_term = get_option( 'options_sync_term' );
     $old_sync_term = get_transient( 'rentfetch_sync_term' );
     
     if ( empty( $old_sync_term ) )
@@ -48,7 +48,7 @@ function rentfetch_check_if_sync_settings_have_changed() {
     }
     
     // data sync: this is nosync, updatesync, delete
-    $current_data_sync = get_field( 'data_sync', 'option' );
+    $current_data_sync = get_option( 'options_data_sync' );
     $old_data_sync = get_transient( 'rentfetch_data_sync' );
         
     if ( empty( $old_data_sync ) )

@@ -86,8 +86,8 @@ function rentfetch_start_sync() {
     // as_unschedule_action( 'do_fetch_yardi_floorplans' );
     as_unschedule_all_actions( 'do_fetch_yardi_floorplans' );
     
-    $sync_term = get_field( 'sync_term', 'option' );
-    $data_sync = get_field( 'data_sync', 'option' );
+    $sync_term = get_option( 'options_sync_term' );
+    $data_sync = get_option( 'options_data_sync' );
             
     if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {       
          

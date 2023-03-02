@@ -150,6 +150,10 @@ function rentfetch_each_property( $id, $floorplan ) {
 add_action( 'rentfetch_do_each_property_specials', 'rentfetch_each_property_specials', 10, 1 );
 function rentfetch_each_property_specials( $floorplan ) {
     
+    // bail if there's no data
+    if ( !isset( $floorplan['property_has_specials'] ) )
+        return;
+    
     $has_specials = $floorplan['property_has_specials'];
     
     if ( $has_specials == true ) {
@@ -340,7 +344,7 @@ function rentfetch_favorite_property_link() {
 add_action( 'rentfetch_do_each_properties_rent_range', 'rentfetch_each_properties_rent_range', 10, 1 );
 function rentfetch_each_properties_rent_range( $floorplan ) {
     
-    $rent_range_display_type = get_field( 'property_pricing_display', 'option' );
+    $rent_range_display_type = get_option( 'options_property_pricing_display' );
     
     if ( $rent_range_display_type == 'range' || ( !$rent_range_display_type ) ) {
         // if there's no option set or if it's set to range...
@@ -354,6 +358,10 @@ function rentfetch_each_properties_rent_range( $floorplan ) {
 //* rent range (displaying as range)
 add_action( 'rentfetch_do_each_properties_rent_range_display_as_range', 'rentfetch_each_properties_rent_range_display_as_range' );
 function rentfetch_each_properties_rent_range_display_as_range( $floorplan ) {
+    
+    // bail if there's no rent range
+    if ( !isset( $floorplan['rentrange'] ) )
+        return;
     
     $rentrange = $floorplan['rentrange'];
     

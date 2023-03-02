@@ -15,7 +15,7 @@ function rentfetch_propertysearch( $atts ) {
     
     // Localize the search filters general script, then enqueue that
     $search_options = array(
-        'maximum_bedrooms_to_search' => intval( get_field( 'maximum_bedrooms_to_search', 'option' ) ),
+        'maximum_bedrooms_to_search' => intval( get_option( 'options_maximum_bedrooms_to_search' ) ),
     );
     wp_localize_script( 'rentfetch-search-filters-general', 'searchoptions', $search_options );
     wp_enqueue_script( 'rentfetch-search-filters-general' );
@@ -69,8 +69,9 @@ function rentfetch_propertysearch( $atts ) {
     printf( '<form class="property-search-starter" onsubmit="return false" id="filter" style="opacity:0;">' );
     
         //* check whether the text search is enabled
-        $starter_search_components = get_field( 'starter_search_components', 'option' );
-        $enable_text_based_search = $starter_search_components['text_based_search'];
+        $starter_search_components = get_option( 'options_starter_search_components' );
+        $enable_text_based_search = get_option( 'options_starter_search_components_text_based_search' );
+        
         if ( $enable_text_based_search == true ) {
             
             $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
@@ -83,8 +84,8 @@ function rentfetch_propertysearch( $atts ) {
         }
         
         //* check whether the beds search is enabled
-        $starter_search_components = get_field( 'starter_search_components', 'option' );
-        $enable_beds_search = $starter_search_components['beds_search'];
+        $starter_search_components = get_option( 'options_starter_search_components' );
+        $enable_beds_search = get_option( 'options_starter_search_components_beds_search' );
         if ( $enable_beds_search == true ) {
         
             //* Build the beds filter
@@ -120,8 +121,8 @@ function rentfetch_propertysearch( $atts ) {
         }
         
         //* check whether the baths search is enabled
-        $starter_search_components = get_field( 'starter_search_components', 'option' );
-        $enable_baths_search = $starter_search_components['baths_search'];
+        $starter_search_components = get_option( 'options_starter_search_components' );
+        $enable_baths_search = get_option( 'options_starter_search_components_baths_search' );
         if ( $enable_baths_search == true ) {
         
             //* Build the baths filter
@@ -149,8 +150,8 @@ function rentfetch_propertysearch( $atts ) {
         }
         
         //* check whether type-based search is enabled
-        $starter_search_components = get_field( 'starter_search_components', 'option' );
-        $enable_type_search = $starter_search_components['type_search'];
+        $starter_search_components = get_option( 'options_starter_search_components' );
+        $enable_type_search = get_option( 'options_starter_search_components_type_search' );
         if ( $enable_type_search == true ) {
         
             //* Property types

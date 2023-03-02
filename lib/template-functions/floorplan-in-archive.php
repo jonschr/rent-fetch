@@ -17,7 +17,7 @@ function rentfetch_floorplan_in_archive( $post_id ) {
         
     //* Grab the data
     $title = get_the_title( $post_id );
-    $available_units = get_field( 'available_units', $post_id );    
+    $available_units = get_post_meta( $post_id, 'available_units', true );    
         
     //* Set up the classes
     $floorplanclass = get_post_class( $post_id );
@@ -92,7 +92,7 @@ function rentfetch_each_floorplan_description() {
     
     $post_id = get_the_ID();
     
-    $floorplan_description = get_field( 'floorplan_description', $post_id );
+    $floorplan_description = get_post_meta( $post_id, 'floorplan_description', true );
     
     if ( $floorplan_description )
         printf( '<p class="floorplan-description">%s</p>', $floorplan_description );
@@ -119,7 +119,7 @@ function rentfetch_each_floorplan_baths() {
     
     $post_id = get_the_ID();
         
-    $baths = get_field( 'baths', $post_id );
+    $baths = get_post_meta( $post_id, 'baths', true );
     $baths = floatval( $baths );
     
     // allow for hooking in
@@ -135,7 +135,7 @@ function rentfetch_each_floorplan_beds() {
     
     $post_id = get_the_ID();
         
-    $beds = get_field( 'beds', $post_id );
+    $beds = get_post_meta( $post_id, 'beds', true );
     $beds = floatval( $beds );
     
     // allow for hooking in
@@ -147,7 +147,7 @@ function rentfetch_each_floorplan_beds() {
 add_action( 'rentfetch_do_each_floorplan_rent_range', 'rentfetch_each_floorplan_rent_range' );
 function rentfetch_each_floorplan_rent_range() {
     
-    $rent_range_display_type = get_field( 'floorplan_pricing_display', 'option' );
+    $rent_range_display_type = get_option( 'options_floorplan_pricing_display' );
     
     if ( $rent_range_display_type == 'range' || ( !$rent_range_display_type ) ) {
         // if there's no option set or if it's set to range...
@@ -162,8 +162,8 @@ add_action( 'rentfetch_do_each_floorplan_rent_range_display_as_range', 'rentfetc
 function rentfetch_each_floorplan_rent_range_display_as_range() {
     
     $post_id = get_the_ID();
-    $minimum_rent = get_field( 'minimum_rent', $post_id );
-    $maximum_rent = get_field( 'maximum_rent', $post_id );
+    $minimum_rent = get_post_meta( $post_id, 'minimum_rent', true );
+    $maximum_rent = get_post_meta( $post_id, 'maximum_rent', true );
             
     $rent_range = null;
     if ( $minimum_rent && $maximum_rent ) {
@@ -191,8 +191,8 @@ add_action( 'rentfetch_do_each_floorplan_rent_range_display_as_minimum', 'rentfe
 function rentfetch_each_floorplan_rent_range_display_as_minimum() {
     
     $post_id = get_the_ID();
-    $minimum_rent = get_field( 'minimum_rent', $post_id );
-    $maximum_rent = get_field( 'maximum_rent', $post_id );
+    $minimum_rent = get_post_meta( $post_id, 'minimum_rent', true );
+    $maximum_rent = get_post_meta( $post_id, 'maximum_rent', true );
     
     $rent = null;
     
@@ -224,13 +224,11 @@ function rentfetch_gform_lightbox() {
     wp_enqueue_script( 'rentfetch-fancybox-script' );
     
     // get the options
-    $contact_button = get_field( 'contact_button', 'options' ); 
+    $contact_button = get_option( 'options_contact_button' ); 
             
-    if ( isset( $contact_button['enabled'] ) )
-        $enabled = $contact_button['enabled'];
+    $enabled = get_option( 'options_contact_button_enabled' );
         
-    if ( isset( $contact_button['gravity_form_id'] ) )
-        $gravity_form_id = $contact_button['gravity_form_id'];
+    $gravity_form_id = get_option( 'options_contact_button_gravity_form_id' );
         
     //* bail if this button isn't enabled
     if ( $enabled !== true )
@@ -252,8 +250,8 @@ function rentfetch_each_floorplan_buttons() {
     wp_enqueue_style( 'rentfetch-fancybox-style' );
     wp_enqueue_script( 'rentfetch-fancybox-script' );
     
-    $contact_button = get_field( 'contact_button', 'options' );
-    $availability_button = get_field( 'availability_button', 'options' );
+    $contact_button = get_option( 'options_contact_button' );
+    $availability_button = get_option( 'options_availability_button' );
     
     echo '<div class="floorplan-buttons">';
     
@@ -267,10 +265,8 @@ add_action( 'rentfetch_do_floorplan_each_button', 'rentfetch_default_tour_button
 function rentfetch_default_tour_button() {
     
     // get the options
-    $tour_button = get_field( 'tour_button', 'options' ); 
-                
-    if ( isset( $tour_button['enabled'] ) )
-        $enabled = $tour_button['enabled'];
+    $tour_button = get_option( 'options_tour_button' ); 
+    $enabled = get_option( 'options_tour_button_enabled' );
         
     //* bail if this button isn't enabled
     if ( $enabled !== true )
@@ -308,23 +304,19 @@ function rentfetch_default_availability_button() {
     $post_id = get_the_ID();
     
     // get the options
-    $availability_button = get_field( 'availability_button', 'options' ); 
+    $availability_button = get_option( 'options_availability_button', 'options' ); 
             
-    if ( isset( $availability_button['enabled'] ) )
-        $enabled = $availability_button['enabled'];
+    $enabled = get_option( 'options_availability_button_enabled' );
         
     //* bail if this button isn't enabled
     if ( $enabled !== true )
         return;
         
-    if ( isset( $availability_button['button_label'] ) )
-        $button_label = $availability_button['button_label'];
-        
-    if ( isset( $availability_button['button_behavior'] ) )
-        $button_behavior = $availability_button['button_behavior'];
-        
-    if ( isset( $availability_button['link'] ) )
-        $link = $availability_button['link'];
+    $button_label = get_option( 'options_availability_button_button_label' );
+    
+    $button_behavior = get_option( 'options_availability_button_button_behavior' );
+    
+    $link = get_option( 'options_availability_button_link' );
         
     $availability_url = get_post_meta( $post_id, 'availability_url', true );    
     $available_units = get_post_meta( $post_id, 'available_units', true );
@@ -349,29 +341,23 @@ function rentfetch_default_contact_button() {
     // ob_start();
         
     // get the options
-    $contact_button = get_field( 'contact_button', 'options' ); 
+    $contact_button = get_option( 'options_contact_button' ); 
         
-    if ( isset( $contact_button['enabled'] ) )
-        $enabled = $contact_button['enabled'];
+    $enabled = get_option( 'options_contact_button_enabled' );
         
     //* bail if this button isn't enabled
     if ( $enabled !== true )
         return;
     
-    if ( isset( $contact_button['button_type'] ) )
-        $button_type = $contact_button['button_type'];
-        
-    if ( isset( $contact_button['link'] ) )
-        $link = $contact_button['link'];
+    $button_type = get_option( 'options_contact_button_button_type' );
     
-    if ( isset( $contact_button['link_target'] ) )
-        $link_target = $contact_button['link_target'];
-    
-    if ( isset( $contact_button['gravity_form_id'] ) )
-        $gravity_form_id = $contact_button['gravity_form_id'];
-    
-    if ( isset( $contact_button['button_label'] ) )
-        $button_label = $contact_button['button_label'];
+    $link = get_option( 'options_contact_button_link' );
+
+    $link_target = get_option( 'options_contact_button_link_target' );
+
+    $gravity_form_id = get_option( 'options_contact_button_gravity_form_id' );
+
+    $button_label = get_option( 'options_contact_button_button_label' );
     
     if ( $button_type === 'link' && !empty( $link ) && !empty( $link_target ) && !empty( $button_label ) )
         printf( '<a href="%s" target="%s" class="button contact-button">%s</a>', $link, $link_target, $button_label );
@@ -387,10 +373,9 @@ add_action( 'rentfetch_do_floorplan_each_button', 'rentfetch_default_single_butt
 function rentfetch_default_single_button() {
     
     // get the options
-    $single_button = get_field( 'single_button', 'options' ); 
+    $single_button = get_option( 'options_single_button' ); 
         
-    if ( isset( $single_button['enabled'] ) )
-        $enabled = $single_button['enabled'];
+    $enabled = get_option( 'options_single_button_enabled' );
         
     //* bail if this button isn't enabled
     if ( $enabled !== true )
@@ -399,8 +384,7 @@ function rentfetch_default_single_button() {
     $post_id = get_the_ID();
     $permalink = get_the_permalink( $post_id );
             
-    if ( isset( $single_button['button_label'] ) )
-        $button_label = $single_button['button_label'];
+    $button_label = get_option( 'options_single_button_button_label' );
     
     if ( $permalink )
         printf( '<a href="%s" class="button single-button">%s</a>', $permalink, $button_label );
@@ -412,8 +396,8 @@ function rentfetch_each_floorplan_squarefoot_range() {
     
     $post_id = get_the_ID();
     
-    $maximum_sqft = get_field( 'maximum_sqft', $post_id );
-    $minimum_sqft = get_field( 'minimum_sqft', $post_id );
+    $maximum_sqft = get_option( 'options_maximum_sqft', $post_id );
+    $minimum_sqft = get_option( 'options_minimum_sqft', $post_id );
     
     $sqft_range = null;
     
@@ -514,19 +498,24 @@ function floorplan_get_image_urls() {
     $floorplan_image_urls = array();
     
     //* Try for manual images first
-    $manual_images = get_field( 'manual_images', $post_id );
+    $manual_images = get_post_meta( $post_id, 'manual_images', true );
+    
+    
             
-    if ( $manual_images !== null && $manual_images !== false ) {
+    if ( $manual_images ) {
+        
+        if ( !is_array( $manual_images ) )
+            $manual_images = explode( ',', $manual_images );
         
         foreach ( $manual_images as $manual_image ) {
-            $floorplan_image_urls[] = $manual_image['sizes']['large'];
+            $floorplan_image_urls[] = wp_get_attachment_image_url($manual_image, 'large' );
         }
         
         return $floorplan_image_urls;
     }
       
     //* Try for Yardi images next
-    $yardi_image_urls = get_field( 'floorplan_image_url', $post_id );
+    $yardi_image_urls = get_post_meta( $post_id, 'floorplan_image_url', true );
         
     if ( $yardi_image_urls ) {
         

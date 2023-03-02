@@ -16,7 +16,7 @@ function rentfetch_google_maps_api_key( $key ) {
         return RENTFETCH_GOOGLE_MAPS_API_KEY;
     
     // otherwise, just get the field the normal way
-    $key = get_field( 'google_maps_api_key', 'option' );
+    $key = get_option( 'options_google_maps_api_key' );
     if ( $key )
         return $key;
         

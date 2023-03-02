@@ -10,7 +10,7 @@ function rentfetch_propertymap( $atts ) {
     
     // Localize the search filters general script, then enqueue that
     $search_options = array(
-        'maximum_bedrooms_to_search' => intval( get_field( 'maximum_bedrooms_to_search', 'option' ) ),
+        'maximum_bedrooms_to_search' => intval( get_option( 'options_maximum_bedrooms_to_search' ) ),
     );
     wp_localize_script( 'rentfetch-search-filters-general', 'searchoptions', $search_options );
     wp_enqueue_script( 'rentfetch-search-filters-general' );
@@ -38,10 +38,10 @@ function rentfetch_propertymap( $atts ) {
             
     // Localize the google maps script, then enqueue that
     $maps_options = array(
-        'json_style' => json_decode( get_field( 'google_maps_styles', 'option' ) ),
-        'marker_url' => get_field( 'google_map_marker', 'option' ),
-        'google_maps_default_latitude' => get_field( 'google_maps_default_latitude', 'option' ),
-        'google_maps_default_longitude' => get_field( 'google_maps_default_longitude', 'option' ),
+        'json_style' => json_decode( get_option( 'options_google_maps_styles' ) ),
+        'marker_url' => get_option( 'options_google_map_marker' ),
+        'google_maps_default_latitude' => get_option( 'options_google_maps_default_latitude' ),
+        'google_maps_default_longitude' => get_option( 'options_google_maps_default_longitude' ),
     );
     wp_localize_script( 'rentfetch-property-map', 'options', $maps_options );
     wp_enqueue_script( 'rentfetch-property-map');
@@ -60,8 +60,8 @@ function rentfetch_propertymap( $atts ) {
             }
         
             //* check whether text-based search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_text_based_search = $map_search_components['text_based_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_text_based_search = get_option( 'options_map_search_components_text_based_search' );
             if ( $enable_text_based_search == true ) {
                                 
                 $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
@@ -90,8 +90,8 @@ function rentfetch_propertymap( $atts ) {
             }
             
             //* check whether beds search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_beds_search = $map_search_components['beds_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_beds_search = get_option( 'options_map_search_components_beds_search' );
             if ( $enable_beds_search == true ) {
                 
                 //* get info about beds from the database
@@ -141,8 +141,8 @@ function rentfetch_propertymap( $atts ) {
             }
                 
             //* check whether beds search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_baths_search = $map_search_components['baths_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_baths_search = get_option( 'options_map_search_components_baths_search' );
             if ( $enable_baths_search == true ) {
                 
                 //* get information about baths from the database
@@ -186,8 +186,8 @@ function rentfetch_propertymap( $atts ) {
             }
             
             //* check whether neighborhoods search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_neighborhoods_search = $map_search_components['neighborhoods_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_neighborhoods_search = get_option( 'options_map_search_components_neighborhoods_search' );
             if ( $enable_neighborhoods_search == true ) {
                 
                 //* get information about neighborhoods from the database
@@ -257,8 +257,8 @@ function rentfetch_propertymap( $atts ) {
             }   
             
             //* check whether type search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_type_search = $map_search_components['type_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_type_search = get_option( 'options_map_search_components_type_search' );
             if ( $enable_type_search == true ) {
                 
                 //* get information about types from the database
@@ -298,8 +298,8 @@ function rentfetch_propertymap( $atts ) {
             }
         
             //* check whether date-based search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_date_search = $map_search_components['date_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_date_search = get_option( 'options_map_search_components_date_search' );
             if ( $enable_date_search == true ) {
                 
                 //* enqueue date picker scripts
@@ -319,12 +319,12 @@ function rentfetch_propertymap( $atts ) {
             }
             
             //* check whether price search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_price_search = $map_search_components['price_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_price_search = get_option( 'options_map_search_components_price_search' );
             if ( $enable_price_search == true ) {
                 
                 //* figure out our min/max values
-                $price_settings = get_field( 'price_filter', 'options' );
+                $price_settings = get_option( 'options_price_filter' );
                 $valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
                 $valueBig = isset( $price_settings['maximum'] ) ? $price_settings['maximum'] : 5000;
                 $step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
@@ -364,12 +364,12 @@ function rentfetch_propertymap( $atts ) {
             }
             
             //* check whether amenities search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_amenities_search = $map_search_components['amenities_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_amenities_search = get_option( 'options_map_search_components_amenities_search' );
             if ( $enable_amenities_search == true ) {
                 
                 //* figure out how many amenities to show
-                $number_of_amenities_to_show = get_field( 'number_of_amenities_to_show', 'option' );
+                $number_of_amenities_to_show = get_option( 'options_number_of_amenities_to_show' );
                 if ( empty( $number_of_amenities_to_show ) )
                     $number_of_amenities_to_show = 10;
                 
@@ -409,8 +409,8 @@ function rentfetch_propertymap( $atts ) {
             }
                     
             //* check whether pets search is enabled
-            $map_search_components = get_field( 'map_search_components', 'option' );
-            $enable_pets_search = $map_search_components['pets_search'];
+            $map_search_components = get_option( 'options_map_search_components' );
+            $enable_pets_search = get_option( 'options_map_search_components_pets_search' );
             if ( $enable_pets_search == true ) {
                 
                 //* get information about pets from the database
@@ -566,7 +566,7 @@ function rentfetch_filter_properties(){
         } else {
                         
             // if the date is anything else, then we need to only pick up floorplans that have more than 0 units available
-            $property_availability_display = $price_settings = get_field( 'property_availability_display', 'options' );
+            $property_availability_display = $price_settings = get_option( 'options_property_availability_display', 'options' );
             if ( $property_availability_display != 'all' ) {
                 $floorplans_args['meta_query'][] = array(
                     array(
@@ -605,7 +605,7 @@ function rentfetch_filter_properties(){
                 
         
         // if we're showing all properties, then by default we need to ignore pricing
-        $property_availability_display = $price_settings = get_field( 'property_availability_display', 'options' );
+        $property_availability_display = $price_settings = get_option( 'options_property_availability_display', 'options' );
         if ( $property_availability_display == 'all' ) {
             
             // but if pricing parameters are actually being manually set, then we need that search to work
@@ -850,7 +850,7 @@ function rentfetch_filter_properties(){
     }
     
     //* amenities taxonomy
-    $number_of_amenities_to_show = get_field( 'number_of_amenities_to_show', 'option' );
+    $number_of_amenities_to_show = get_option( 'options_number_of_amenities_to_show' );
     if ( empty( $number_of_amenities_to_show ) )
         $number_of_amenities_to_show = 10;
     
@@ -932,7 +932,7 @@ function rentfetch_filter_properties(){
 add_filter( 'rentfetch_properties_maximum', 'rentfetch_properties_maximum_setting', 10, 1 );
 function rentfetch_properties_maximum_setting( $properties_maximum_per_page ) {
     
-    $properties_maximum_per_page = get_field( 'maximum_number_of_properties_to_show', 'option' );
+    $properties_maximum_per_page = get_option( 'options_maximum_number_of_properties_to_show' );
     
     if ( $properties_maximum_per_page )
         return $properties_maximum_per_page;

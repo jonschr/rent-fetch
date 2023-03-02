@@ -22,7 +22,7 @@ function rentfetch_property_archives_filter_property_permalink( $url ) {
     
     $permalink = get_the_permalink( get_the_ID() );
     $url = get_post_meta( get_the_ID(), 'url', true );
-    $use_individual_properties_template = get_field( 'use_individual_properties_template', 'option' );
+    $use_individual_properties_template = get_option( 'options_use_individual_properties_template', null );
         
     if ( $use_individual_properties_template !== false ) {
         
@@ -50,7 +50,9 @@ function rentfetch_property_archives_filter_property_permalink_target( $target )
     global $post;
     
     $url = get_post_meta( get_the_ID(), 'url', true );
-    $use_individual_properties_template = get_field( 'use_individual_properties_template', 'option' );
+    $use_individual_properties_template = get_option( 'options_use_individual_properties_template', null );
+    
+    console_log( $use_individual_properties_template );
     
     if ( $use_individual_properties_template !== false ) {
         

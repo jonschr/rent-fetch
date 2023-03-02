@@ -98,7 +98,7 @@ function rentfetch_add_properties_to_neighborhood_and_property_footer( $args ) {
     
     $number_properties = '-1';
     
-    $property_footer_settings = get_field( 'property_footer_grid', 'options' );
+    $property_footer_settings = get_option( 'options_property_footer_grid', 'options' );
     if ( isset( $property_footer_settings['number_properties'] ) )
         $number_properties = $property_footer_settings['number_properties'];
         

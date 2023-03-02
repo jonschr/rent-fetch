@@ -9,13 +9,13 @@ function rentfetch_get_floorplans_yardi() {
         return;
     }
     
-    $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
-    $properties = $yardi_integration_creds['yardi_property_code'];  
+    $yardi_integration_creds = get_option( 'options_yardi_integration_creds' );
+    $properties = get_option( 'options_yardi_integration_creds_yardi_property_code' );
     $properties = preg_replace('/\s+/', '', $properties);    
     $properties = explode( ',', $properties );
-    $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
-    $sync_term = get_field( 'sync_term', 'option' );
-    $data_sync = get_field( 'data_sync', 'option' );
+    $yardi_api_key = get_option( 'options_yardi_integration_creds_yardi_api_key' );
+    $sync_term = get_option( 'options_sync_term' );
+    $data_sync = get_option( 'options_data_sync' );
         
     foreach( $properties as $property ) {
             
