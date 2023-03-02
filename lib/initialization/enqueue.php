@@ -63,13 +63,34 @@ function rentfetch_enqueue_scripts_stylesheets() {
     	
 }
 
-add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_in_admin' );
-function rentfetch_enqueue_in_admin() {
-    
-    wp_enqueue_style( 
+add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_in_admin_metabox_properties' );
+function rentfetch_enqueue_in_admin_metabox_properties() {
+        
+    wp_register_style( 
         'rentfetch-admin-metaboxes', 
         RENTFETCH_PATH . 'css/metaboxes.css',
         array(), 
+        RENTFETCH_VERSION
+    );
+    
+    wp_register_script( 
+        'rentfetch-metabox-properties-images', 
+        RENTFETCH_PATH . 'js/metabox-properties-images.js', 
+        array( 'jquery' ),
+        RENTFETCH_VERSION
+    );
+    
+    wp_register_script( 
+        'rentfetch-metabox-properties-matterport', 
+        RENTFETCH_PATH . 'js/metabox-properties-matterport.js', 
+        array( 'jquery' ),
+        RENTFETCH_VERSION
+    );
+    
+    wp_register_script( 
+        'rentfetch-metabox-properties-video', 
+        RENTFETCH_PATH . 'js/metabox-properties-video.js', 
+        array( 'jquery' ),
         RENTFETCH_VERSION
     );
 }

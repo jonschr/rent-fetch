@@ -2,7 +2,7 @@
 
 add_action( 'add_meta_boxes', 'rf_register_properties_details_metabox' );
 function rf_register_properties_details_metabox() {
-    
+        
     add_meta_box(
         'rf_properties_identifiers', // ID of the metabox
         'Property Identifiers', // Title of the metabox
@@ -43,6 +43,9 @@ function rf_register_properties_details_metabox() {
 
 function rf_properties_identifiers_metabox_callback( $post ) {
     wp_nonce_field( 'rf_properties_metabox_nonce', 'rf_properties_metabox_nonce' );
+    
+    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
+    
     ?>
     <div class="rf-metabox rf-metabox-properties">
         
@@ -98,6 +101,7 @@ function rf_properties_identifiers_metabox_callback( $post ) {
 }
 
 function rf_properties_location_metabox_callback( $post ) {
+    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
         
@@ -186,6 +190,7 @@ function rf_properties_location_metabox_callback( $post ) {
 }
 
 function rf_properties_contact_metabox_callback( $post ) {
+    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
         
@@ -234,83 +239,13 @@ function rf_properties_contact_metabox_callback( $post ) {
 }
 
 function rf_properties_display_information_metabox_callback( $post ) {
-    
+    wp_enqueue_media();
+    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
+    wp_enqueue_script( 'rentfetch-metabox-properties-images' );
+    wp_enqueue_script( 'rentfetch-metabox-properties-matterport' );
+    wp_enqueue_script( 'rentfetch-metabox-properties-video' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
-        
-        <script type="text/javascript">
-            jQuery(document).ready(function( $ ) {
-                                
-                // Get the container for the gallery images
-                var galleryContainer = $('#gallery-container');
-                
-                // Get the hidden input field for the gallery IDs
-                var galleryIdsField = $('#images');
-                
-                // Get the "Select Images" button
-                var imagesButton = $('#images_button');
-                
-                // convert gallleryIdsField value to an array
-                var selectedImageIds = galleryIdsField.val().split(',');
-                
-                // Handle the "Select Images" button click event
-                imagesButton.click(function(e) {
-                    e.preventDefault();
-                    
-                    var galleryFrame;
-                    
-                    if (galleryFrame) {
-                        galleryFrame.open();
-                        return;
-                    }
-                    
-                    galleryFrame = wp.media({
-                        title: 'Select Images',
-                        button: {
-                            text: 'Add to Gallery'
-                        },
-                        multiple: true,
-                        library: {
-                            type: 'image'
-                        }
-                    });
-                    
-                    galleryFrame.on('select', function() {
-                        var selection = galleryFrame.state().get('selection');
-                        galleryIdsField = $('#images');
-                        
-                        selection.map(function(attachment) {
-                            attachment = attachment.toJSON();
-                            
-                            if (attachment.id && selectedImageIds.indexOf(attachment.id) === -1) {
-                                selectedImageIds.push(attachment.id);
-                                galleryContainer.append('<div class="gallery-image" data-id="' + attachment.id + '"><img src="' + attachment.sizes.thumbnail.url + '"><button class="remove-image">Remove</button></div>');
-                            }
-                        });
-                        
-                        galleryIdsField.val(selectedImageIds.join(','));
-                    });
-                    
-                    galleryFrame.open();
-                });
-                
-                // Handle the "Remove" button click event
-                galleryContainer.on('click', '.remove-image', function() {
-                    var imageDiv = $(this).closest('.gallery-image');
-                    var imageId = imageDiv.data('id');
-                    
-                    selectedImageIds = $( '#images').val().split(',');
-                    
-                    console.log( selectedImageIds );
-                    
-                    selectedImageIds.splice(selectedImageIds.indexOf(imageId), 1);
-                    galleryIdsField.val(selectedImageIds.join(','));
-                    imageDiv.remove();
-                });                
-            });
-        </script>
-      
-      
         <?php //* Property Images ?>
         <div class="field">
             <div class="column">
@@ -394,32 +329,7 @@ function rf_properties_display_information_metabox_callback( $post ) {
                 <p class="description">The description is synced from most APIs, but if yours is not, this is the main place to put general information about this property.</p>
             </div>
         </div>
-        
-        <script>
-            jQuery(document).ready(function( $ ) {
-	
-                // Get the URL input field and add an event listener for when the input changes
-                $('input#matterport').on('input', function() {
-                // Get the oembed container element
-                const oembedContainer = $('#matterport-preview');
 
-                // Remove any existing oembed content
-                oembedContainer.empty();
-
-                // Get the Matterport iframe code from the input field
-                const iframeCode = this.value;
-
-                // Create a new HTML element for the iframe code
-                const iframeContent = $('<div></div>').html(iframeCode);
-
-                // Add the iframe content to the container element
-                oembedContainer.append(iframeContent);
-                });
-
-                
-            });
-        </script>
-        
         <?php 
         //* Matterport
         $matterport = get_post_meta( $post->ID, 'matterport', true ); ?>
@@ -438,41 +348,7 @@ function rf_properties_display_information_metabox_callback( $post ) {
                 <div id="matterport-preview"></div>
             </div>
         </div>
-        
-        <script type="text/javascript">
-            jQuery(document).ready(function( $ ) {
-	
-                // Get the URL input field and add an event listener for when the input changes
-                $('input#video').on('input', function() {
-                // Get the oembed container element
-                const oembedContainer = $('#video-container');
-
-                // Remove any existing oembed content
-                oembedContainer.empty();
-
-                // Get the video ID from the YouTube URL
-                const videoID = this.value.split('v=')[1];
-
-                // Create an oembed URL for the video
-                const oembedUrl = `https://www.youtube.com/oembed?url=${this.value}`;
-
-                // Fetch the oembed data from the API
-                $.getJSON(oembedUrl)
-                    .done(function(data) {
-                    // Create a new HTML element for the oembed content
-                    const oembedContent = $('<div></div>').html(data.html);
-
-                    // Add the oembed content to the container element
-                    oembedContainer.append(oembedContent);
-                    })
-                    .fail(function(error) {
-                    console.error(error);
-                    });
-                });
-
-            });
-        </script>
-        
+                
         <?php 
         //* Tour video
         $video = get_post_meta( $post->ID, 'video', true ); ?>
@@ -624,16 +500,4 @@ function rf_save_properties_metaboxes( $post_id ) {
         update_post_meta( $post_id, 'content_area', wp_kses( $_POST['content_area'], $allowed_tags ) );
     }
 
-}
-
-// add_action( 'admin_enqueue_scripts', 'rf_properties_metabox_scripts' );
-// function rf_properties_metabox_scripts() {
-//     wp_enqueue_media();
-//     wp_register_script( 'custom_metabox', get_template_directory_uri() . '/custom_metabox.js', array( 'jquery' ) );
-//     wp_enqueue_script( 'custom_metabox' );
-// }
-
-add_action( 'admin_enqueue_scripts', 'rf_properties_metabox_scripts' );
-function rf_properties_metabox_scripts() {
-    wp_enqueue_media();
 }
