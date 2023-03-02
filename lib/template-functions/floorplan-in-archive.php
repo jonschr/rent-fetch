@@ -396,8 +396,8 @@ function rentfetch_each_floorplan_squarefoot_range() {
     
     $post_id = get_the_ID();
     
-    $maximum_sqft = get_option( 'options_maximum_sqft', $post_id );
-    $minimum_sqft = get_option( 'options_minimum_sqft', $post_id );
+    $maximum_sqft = get_post_meta( $post_id, 'maximum_sqft', true );
+    $minimum_sqft = get_post_meta( $post_id, 'minimum_sqft', true );
     
     $sqft_range = null;
     
