@@ -39,13 +39,13 @@ function rentfetch_remove_orphan_yardi_properties() {
     // echo 'In setting: ' . count( $properties_in_setting ) . '<br/>';
     // var_dump( $properties_in_setting );
     
-    console_log( $property_ids_attached_to_properties );
-    console_log( $properties_in_setting );
+    // console_log( $property_ids_attached_to_properties );
+    // console_log( $properties_in_setting );
     
     // get the ones that are in the database, but that aren't in the setting
     $properties = array_diff( $property_ids_attached_to_properties, $properties_in_setting );
     
-    console_log( $properties );
+    // console_log( $properties );
     
     // var_dump( $properties );
     // echo 'Diff: ' . count( $properties );

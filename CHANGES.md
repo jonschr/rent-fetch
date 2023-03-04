@@ -1,3 +1,7 @@
+## 3.9.16
+
+-   Removing a few places where we log to the console by accident (inserted for testing and neglected to remove)
+
 ## 3.9.15
 
 -   Make sure to load the third-level directories
