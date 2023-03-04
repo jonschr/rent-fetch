@@ -80,7 +80,7 @@ function rentfetch_appfolio_units_small_array() {
     if ( !$units )
         return;
         
-    console_log( $units );
+    // console_log( $units );
     
     $units_processed = [];
     
@@ -101,7 +101,7 @@ function rentfetch_appfolio_units_small_array() {
         $units_processed[] = $unit_processed;
     }
     
-    console_log( $units_processed );
+    // console_log( $units_processed );
     
 }
 
