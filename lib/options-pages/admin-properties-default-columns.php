@@ -3,38 +3,8 @@
 add_filter( 'manage_properties_posts_columns', 'rentfetch_default_properties_admin_columns' );
 function rentfetch_default_properties_admin_columns( $columns ) {
     
-    $columns = array(
-        'cb' =>              '<input type="checkbox" />',
-        'title' =>           __( 'Title', 'rentfetch' ),
-        'property_id' =>     __( 'Property ID', 'rentfetch' ),
-        'property_code' =>   __( 'Property Code', 'rentfetch' ),
-        'address' =>         __( 'Address', 'rentfetch' ),
-        'city' =>            __( 'City', 'rentfetch' ),
-        'state' =>           __( 'State', 'rentfetch' ),
-        'zipcode' =>         __( 'Zipcode', 'rentfetch' ),
-        'latitude' =>        __( 'Latitude', 'rentfetch' ),
-        'longitude' =>       __( 'Longitude', 'rentfetch' ),
-        'email' =>           __( 'Email', 'rentfetch' ),
-        'phone' =>           __( 'Phone', 'rentfetch' ),
-        'url' =>             __( 'URL', 'rentfetch' ),
-        'images' =>          __( 'Images', 'rentfetch' ),
-        'property_source' => __( 'Property Source', 'rentfetch' ),
-        'description' =>     __( 'Description', 'rentfetch' ),
-        'matterport' =>      __( 'Matterport', 'rentfetch' ),
-        'video' =>           __( 'Video', 'rentfetch' ),
-        'pets' =>            __( 'Pets', 'rentfetch' ),
-        'content_area' =>    __( 'Content Area', 'rentfetch' ),
-        'property_images' => __( 'Yardi Property Images', 'rentfetch' ),
-    );
-    
-    return $columns;
-    
-}
-
-add_action( 'manage_properties_posts_custom_column', 'rentfetch_properties_default_column_content', 10, 2);
-function rentfetch_properties_default_column_content( $column, $post_id ) {
-    
     ?>
+    
     <style>
         
             .wrap {
@@ -44,7 +14,7 @@ function rentfetch_properties_default_column_content( $column, $post_id ) {
             
             .wp-list-table {
                 position: relative;
-                /* min-width: 3000px; */
+                min-width: 2000px !important; 
             }
             
             td {
@@ -55,6 +25,7 @@ function rentfetch_properties_default_column_content( $column, $post_id ) {
             
             th {
                 width: 100px;
+                min-width: 70px !important;
             }
             
             th#title {
@@ -138,8 +109,40 @@ function rentfetch_properties_default_column_content( $column, $post_id ) {
             }
         
         </style>
-    <?php
+        
+        <?php
     
+    $columns = array(
+        'cb' =>              '<input type="checkbox" />',
+        'title' =>           __( 'Title', 'rentfetch' ),
+        'property_id' =>     __( 'Property ID', 'rentfetch' ),
+        'property_code' =>   __( 'Property Code', 'rentfetch' ),
+        'address' =>         __( 'Address', 'rentfetch' ),
+        'city' =>            __( 'City', 'rentfetch' ),
+        'state' =>           __( 'State', 'rentfetch' ),
+        'zipcode' =>         __( 'Zipcode', 'rentfetch' ),
+        'latitude' =>        __( 'Latitude', 'rentfetch' ),
+        'longitude' =>       __( 'Longitude', 'rentfetch' ),
+        'email' =>           __( 'Email', 'rentfetch' ),
+        'phone' =>           __( 'Phone', 'rentfetch' ),
+        'url' =>             __( 'URL', 'rentfetch' ),
+        'images' =>          __( 'Images', 'rentfetch' ),
+        'property_source' => __( 'Property Source', 'rentfetch' ),
+        'description' =>     __( 'Description', 'rentfetch' ),
+        'matterport' =>      __( 'Matterport', 'rentfetch' ),
+        'video' =>           __( 'Video', 'rentfetch' ),
+        'pets' =>            __( 'Pets', 'rentfetch' ),
+        'content_area' =>    __( 'Content Area', 'rentfetch' ),
+        'property_images' => __( 'Yardi Property Images', 'rentfetch' ),
+    );
+    
+    return $columns;
+    
+}
+
+add_action( 'manage_properties_posts_custom_column', 'rentfetch_properties_default_column_content', 10, 2);
+function rentfetch_properties_default_column_content( $column, $post_id ) {
+        
     if ( 'title' === $column )
         echo esc_attr( get_the_title( $post_id ) );
         
