@@ -100,4 +100,6 @@ function rentfetch_enqueue_in_admin_metabox_properties() {
         array( 'jquery' ),
         RENTFETCH_VERSION
     );
+    
+    wp_register_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
 }

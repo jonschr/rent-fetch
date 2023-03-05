@@ -50,7 +50,7 @@ function rf_floorplans_identifiers_metabox_callback( $post ) {
         <div class="columns columns-4">
         
             <?php 
-            //* Property Source
+            //* Floorplan Source
             $floorplan_source = get_post_meta( $post->ID, 'floorplan_source', true ); 
             if ( !$floorplan_source )
                 $floorplan_source = 'Manually managed';
@@ -381,7 +381,20 @@ function rf_floorplans_availability_metabox_callback( $post ) {
     
         <?php 
         //* Availability Date
+        
+        // enqueue jquery-ui datepicker so that this can be a datepicker
+        wp_enqueue_script( 'jquery-ui-datepicker' );
+        wp_enqueue_style( 'jquery-style' );
+                
         $availability_date = get_post_meta( $post->ID, 'availability_date', true ); ?>
+        
+        <script>
+            jQuery(document).ready(function($) {
+                $('#availability_date').datepicker({
+                    dateFormat : 'yy-mm-dd'
+                });
+            });
+        </script>
         <div class="field">
             <div class="column">
                 <label for="availability_date">Availability Date</label>
@@ -399,10 +412,10 @@ function rf_floorplans_availability_metabox_callback( $post ) {
                 <label for="property_show_specials">Property Show Specials</label>
             </div>
             <div class="column">
-                <input type="text" id="property_show_specials" name="property_show_specials" value="<?php echo esc_attr( $property_show_specials ); ?>">
+                <input type="checkbox" id="property_show_specials" name="property_show_specials" <?php checked( $property_show_specials, '1' ); ?>>
             </div>
         </div>
-        
+                        
         <?php 
         //* Has Specials
         $has_specials = get_post_meta( $post->ID, 'has_specials', true ); ?>
@@ -411,7 +424,7 @@ function rf_floorplans_availability_metabox_callback( $post ) {
                 <label for="has_specials">Has Specials</label>
             </div>
             <div class="column">
-                <input type="text" id="has_specials" name="has_specials" value="<?php echo esc_attr( $has_specials ); ?>">
+                <input type="checkbox" id="has_specials" name="has_specials" <?php checked( $has_specials, '1' ); ?>>
             </div>
         </div>
         
@@ -503,12 +516,18 @@ function rf_save_floorplans_metaboxes( $post_id ) {
     if ( isset( $_POST['availability_date'] ) )
         update_post_meta( $post_id, 'availability_date', sanitize_text_field( $_POST['availability_date'] ) );
         
-    if ( isset( $_POST['property_show_specials'] ) )
-        update_post_meta( $post_id, 'property_show_specials', sanitize_text_field( $_POST['property_show_specials'] ) );
-        
-    if ( isset( $_POST['has_specials'] ) )
-        update_post_meta( $post_id, 'has_specials', sanitize_text_field( $_POST['has_specials'] ) );
-        
+    if ( isset( $_POST['property_show_specials'] ) ) {
+        update_post_meta( $post_id, 'property_show_specials', '1' );
+    } else {
+        delete_post_meta( $post_id, 'property_show_specials' );
+    }
+    
+    if ( isset( $_POST['has_specials'] ) ) {
+        update_post_meta( $post_id, 'has_specials', '1' );
+    } else {
+        delete_post_meta( $post_id, 'has_specials' );
+    }
+                
     if ( isset( $_POST['availability_url'] ) )
         update_post_meta( $post_id, 'availability_url', sanitize_text_field( $_POST['availability_url'] ) );
         
