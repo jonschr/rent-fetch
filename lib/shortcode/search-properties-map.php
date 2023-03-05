@@ -259,7 +259,7 @@ function rentfetch_propertymap( $atts ) {
             //* check whether type search is enabled
             $map_search_components = get_option( 'options_map_search_components' );
             $enable_type_search = get_option( 'options_map_search_components_type_search' );
-            if ( $enable_type_search == true ) {
+            if ( $enable_type_search == true && taxonomy_exists( 'propertytypes' ) ) {
                 
                 //* get information about types from the database
                 $propertytypes = get_terms( 
@@ -268,9 +268,9 @@ function rentfetch_propertymap( $atts ) {
                         'hide_empty' => true,
                     ),
                 );
-                
+                                
                 //* build types search
-                if ( !empty( $propertytypes ) ) {
+                if ( !empty( $propertytypes && taxonomy_exists( 'propertytypes' ) ) ) {
                     echo '<div class="input-wrap input-wrap-propertytypes">';
                         echo '<div class="dropdown">';
                             echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
@@ -385,7 +385,7 @@ function rentfetch_propertymap( $atts ) {
                 );
                     
                 //* build amenities search
-                if ( !empty( $amenities ) ) {
+                if ( !empty( $amenities ) && taxonomy_exists( 'amenities' ) ) {
                     echo '<div class="input-wrap input-wrap-amenities">';
                         echo '<div class="dropdown">';
                             echo '<button type="button" class="dropdown-toggle" data-reset="Amenities">Amenities</button>';
@@ -817,72 +817,76 @@ function rentfetch_filter_properties(){
         );
     }
     
-    //* Add the tax queries
-    $propertyargs['tax_query'] = array();
-    
-    //* propertytype taxonomy
-    $propertytypes = get_terms( 
-        array(
-            'taxonomy' => 'propertytypes',
-            'hide_empty' => true,
-        ),
-    );
-    
-    // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
-    foreach ( $propertytypes as $propertytype ) {
-        $name = $propertytype->name;
-        $propertytype_term_id = $propertytype->term_id;
+    if ( taxonomy_exists( 'propertytypes' ) ) {
         
-        if ( isset( $_POST['propertytypes-' . $propertytype_term_id ] ) && $_POST['propertytypes-' . $propertytype_term_id ] == 'on' ) {
-            $propertytype_term_id = sanitize_text_field( $propertytype_term_id );
-            $propertytypeids[] = $propertytype_term_id;
-        }
-    }
+        //* Add the tax queries
+        $propertyargs['tax_query'] = array();
         
-    // add the meta query array to our $args
-    if ( isset( $propertytypeids ) ) {
-        $propertyargs['tax_query'][] = array(
+        //* propertytype taxonomy
+        $propertytypes = get_terms( 
             array(
                 'taxonomy' => 'propertytypes',
-                'terms' => $propertytypeids,
-            )
+                'hide_empty' => true,
+            ),
         );
-    }
-    
-    //* amenities taxonomy
-    $number_of_amenities_to_show = get_option( 'options_number_of_amenities_to_show' );
-    if ( empty( $number_of_amenities_to_show ) )
-        $number_of_amenities_to_show = 10;
-    
-    $amenities = get_terms( 
-        array(
-            'taxonomy'      => 'amenities',
-            'hide_empty'    => true,
-            'number'        => $number_of_amenities_to_show,
-            'orderby'       => 'count',
-            'order'         => 'DESC',
-        ),
-    );
-    
-    // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
-    foreach ( $amenities as $amenity ) {
-        $name = $amenity->name;
-        $amenity_term_id = $amenity->term_id;
         
-        if ( isset( $_POST['amenities-' . $amenity_term_id ] ) && $_POST['amenities-' . $amenity_term_id ] == 'on' ) {
-            $amenity_term_id = sanitize_text_field( $amenity_term_id );
-
-            // this is an "AND" query, unlike property types, because here we only want things showing up where ALL of the conditions are met
+        // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
+        foreach ( $propertytypes as $propertytype ) {
+            $name = $propertytype->name;
+            $propertytype_term_id = $propertytype->term_id;
+            
+            if ( isset( $_POST['propertytypes-' . $propertytype_term_id ] ) && $_POST['propertytypes-' . $propertytype_term_id ] == 'on' ) {
+                $propertytype_term_id = sanitize_text_field( $propertytype_term_id );
+                $propertytypeids[] = $propertytype_term_id;
+            }
+        }
+            
+        // add the meta query array to our $args
+        if ( isset( $propertytypeids ) ) {
             $propertyargs['tax_query'][] = array(
-                'relation' => 'AND',
                 array(
-                    'taxonomy' => 'amenities',
-                    'terms' => $amenity_term_id,
+                    'taxonomy' => 'propertytypes',
+                    'terms' => $propertytypeids,
                 )
             );
         }
-    } 
-    
+        
+        //* amenities taxonomy
+        $number_of_amenities_to_show = get_option( 'options_number_of_amenities_to_show' );
+        if ( empty( $number_of_amenities_to_show ) )
+            $number_of_amenities_to_show = 10;
+        
+        $amenities = get_terms( 
+            array(
+                'taxonomy'      => 'amenities',
+                'hide_empty'    => true,
+                'number'        => $number_of_amenities_to_show,
+                'orderby'       => 'count',
+                'order'         => 'DESC',
+            ),
+        );
+        
+        // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
+        foreach ( $amenities as $amenity ) {
+            $name = $amenity->name;
+            $amenity_term_id = $amenity->term_id;
+            
+            if ( isset( $_POST['amenities-' . $amenity_term_id ] ) && $_POST['amenities-' . $amenity_term_id ] == 'on' ) {
+                $amenity_term_id = sanitize_text_field( $amenity_term_id );
+
+                // this is an "AND" query, unlike property types, because here we only want things showing up where ALL of the conditions are met
+                $propertyargs['tax_query'][] = array(
+                    'relation' => 'AND',
+                    array(
+                        'taxonomy' => 'amenities',
+                        'terms' => $amenity_term_id,
+                    )
+                );
+            }
+        } 
+        
+    }
+        
     // get the list of properties connected to the selected properties
     $properties_connected_to_selected_neighborhoods = rentfetch_get_connected_properties_from_selected_neighborhoods();
     if ( $properties_connected_to_selected_neighborhoods ) {
