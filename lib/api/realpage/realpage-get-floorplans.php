@@ -1,15 +1,14 @@
 <?php
 
-add_action( 'rentfetch_do_get_floorplans_realpage', 'rentfetch_get_floorplans_realpage' );
-// add_action( 'wp_footer', 'rentfetch_get_floorplans_realpage' );
-// add_action( 'admin_footer', 'rentfetch_get_floorplans_realpage' );
+// add_action( 'rentfetch_do_get_floorplans_realpage', 'rentfetch_get_floorplans_realpage' );
+add_action( 'wp_footer', 'rentfetch_get_floorplans_realpage' );
+add_action( 'admin_footer', 'rentfetch_get_floorplans_realpage' );
 function rentfetch_get_floorplans_realpage() {
         
     // bail if credentials haven't been completed fully
     if ( rentfetch_check_creds_realpage() == false )
         return;
             
-    $realpage_integration_creds = get_option( 'options_realpage_integration_creds' );
     $realpage_user = get_option( 'options_realpage_integration_creds_realpage_user' );
     $realpage_pass = get_option( 'options_realpage_integration_creds_realpage_pass' );
     $realpage_pmc_id = get_option( 'options_realpage_integration_creds_realpage_pmc_id' );
@@ -45,9 +44,11 @@ function rentfetch_save_transient_realpage_floorplans( $realpage_site_id ) {
         return;
     
     $realpage_integration_creds = get_option( 'options_realpage_integration_creds' );
-    $realpage_user = $realpage_integration_creds['realpage_user'];
-    $realpage_pass = $realpage_integration_creds['realpage_pass'];
-    $realpage_pmc_id = $realpage_integration_creds['realpage_pmc_id'];
+    
+    
+    $realpage_user = get_option( 'options_realpage_integration_creds_realpage_user' );
+    $realpage_pass = get_option( 'options_realpage_integration_creds_realpage_pass' );
+    $realpage_pmc_id = get_option( 'options_realpage_integration_creds_realpage_pmc_id' );
             
     $curl = curl_init();
     
