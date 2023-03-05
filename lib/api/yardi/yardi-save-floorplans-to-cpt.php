@@ -3,7 +3,6 @@
 add_action( 'rentfetch_do_save_yardi_floorplans_to_cpt', 'rentfetch_save_yardi_floorplans_to_cpt' );
 function rentfetch_save_yardi_floorplans_to_cpt() {
             
-    $yardi_integration_creds = get_option( 'options_yardi_integration_creds' );
     $properties = get_option( 'options_yardi_integration_creds_yardi_property_code' );
     $properties = preg_replace('/\s+/', '', $properties);
     $properties = explode( ',', $properties );

@@ -20,7 +20,6 @@ function rentfetch_get_floorplans_appfolio() {
         return;
         
     // get all of the credentials
-    $appfolio_integration_creds = get_option( 'options_appfolio_integration_creds' );
     $appfolio_database_name = get_option( 'options_appfolio_integration_creds_appfolio_database_name' );
     $appfolio_client_id = get_option( 'options_appfolio_integration_creds_appfolio_client_id' );
     $appfolio_client_secret = get_option( 'options_appfolio_integration_creds_appfolio_client_secret' );

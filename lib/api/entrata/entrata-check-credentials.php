@@ -3,7 +3,6 @@
 add_action( 'rentfetch_do_check_creds_entrata', 'rentfetch_check_creds_entrata' );
 function rentfetch_check_creds_entrata() {
     
-    $entrata_integration_creds = get_option( 'options_entrata_integration_creds' );
     $entrata_user = get_option( 'options_entrata_integration_creds_entrata_user' );
     $entrata_pass = get_option( 'options_entrata_integration_creds_entrata_pass' );
     

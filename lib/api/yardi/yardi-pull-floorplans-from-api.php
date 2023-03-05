@@ -9,7 +9,6 @@ function rentfetch_get_floorplans_yardi() {
         return;
     }
     
-    $yardi_integration_creds = get_option( 'options_yardi_integration_creds' );
     $properties = get_option( 'options_yardi_integration_creds_yardi_property_code' );
     $properties = preg_replace('/\s+/', '', $properties);    
     $properties = explode( ',', $properties );
