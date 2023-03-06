@@ -36,10 +36,16 @@ function rent_fetch_options_page_html() {
             
             if ( !isset($_GET['tab']) || $_GET['tab'] === 'general') {
                 do_action( 'rent_fetch_do_settings_general' );
+            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'google') {
+                do_action( 'rent_fetch_do_settings_google' );
             } elseif (isset($_GET['tab']) && $_GET['tab'] === 'property_search') {
                 do_action( 'rent_fetch_do_settings_property_search' );
             } elseif (isset($_GET['tab']) && $_GET['tab'] === 'property_archives') {
                 do_action( 'rent_fetch_do_settings_property_archives' );
+            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'single_property_template') {
+                do_action( 'rent_fetch_do_settings_single_property_template' );
+            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'floorplan_archives') {
+                do_action( 'rent_fetch_do_settings_floorplan_archives' );
             } else {
 
             }
@@ -92,21 +98,6 @@ function rent_fetch_settings_general() {
     <p>
         <label for="my_setting_2">Setting 2:</label>
         <input type="text" name="my_setting_2" id="my_setting_2" value="<?php echo esc_attr( get_option( 'my_setting_2' ) ); ?>">
-    </p>
-    <?php
-}
-
-add_action( 'rent_fetch_do_settings_property_search', 'rent_fetch_settings_property_search' );
-function rent_fetch_settings_property_search() {
-    ?>
-    <h2>Property Search</h2>
-    <p>
-        <label for="my_setting_3">Setting 3:</label>
-        <input type="text" name="my_setting_3" id="my_setting_3" value="<?php echo esc_attr( get_option( 'my_setting_3' ) ); ?>">
-    </p>
-    <p>
-        <label for="my_setting_4">Setting 4:</label>
-        <input type="text" name="my_setting_4" id="my_setting_4" value="<?php echo esc_attr( get_option( 'my_setting_4' ) ); ?>">
     </p>
     <?php
 }
