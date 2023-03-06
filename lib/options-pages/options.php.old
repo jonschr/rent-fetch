@@ -1,0 +1,114 @@
+<?php
+
+add_action('admin_menu', 'rent_fetch_options_page');
+function rent_fetch_options_page() {
+    add_menu_page(
+        'Rent Fetch Options',
+        'Rent Fetch',
+        'manage_options',
+        'rent_fetch_options',
+        'rent_fetch_options_page_html'
+    );
+}
+
+
+function rent_fetch_options_page_html() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    ?>
+    <div class="wrap">
+        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
+        <nav class="nav-tab-wrapper">
+            <a href="?page=rent_fetch_options" class="nav-tab<?php if (!isset($_GET['tab']) || $_GET['tab'] === 'general') { echo ' nav-tab-active'; } ?>">General</a>
+            <a href="?page=rent_fetch_options&tab=google" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'google') { echo ' nav-tab-active'; } ?>">Google</a>
+            <a href="?page=rent_fetch_options&tab=property_search" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'property_search') { echo ' nav-tab-active'; } ?>">Property Search</a>
+            <a href="?page=rent_fetch_options&tab=property_archives" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'property_archives') { echo ' nav-tab-active'; } ?>">Property Archives</a>
+        </nav>
+        <form action="options.php" method="post">
+            <?php
+            if (isset($_GET['tab']) && $_GET['tab'] === 'google') {
+                settings_fields('rent_fetch_options_google');
+                do_settings_sections('rent_fetch_options_google');
+            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'property_search') {
+                settings_fields('rent_fetch_options_property_search');
+                do_settings_sections('rent_fetch_options_property_search');
+            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'property_archives') {
+                settings_fields('rent_fetch_options_property_archives');
+                do_settings_sections('rent_fetch_options_property_archives');
+            } else {
+                settings_fields('rent_fetch_options');
+                do_settings_sections('rent_fetch_options');
+            }
+            submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
+
+add_action('admin_init', 'rent_fetch_settings');
+function rent_fetch_settings() {    
+    
+    // Add sections
+    add_settings_section('rent_fetch_section_general', 'General', 'rent_fetch_section_general_callback', 'rent_fetch_options');
+    add_settings_section('rent_fetch_section_google', 'Google', 'rent_fetch_section_google_callback', 'rent_fetch_options_google');
+    add_settings_section('rent_fetch_section_property_search', 'Property Search', 'rent_fetch_section_property_search_callback', 'rent_fetch_options_property_search');
+    add_settings_section('rent_fetch_section_property_archives', 'Property Archives', 'rent_fetch_section_property_archives_callback', 'rent_fetch_options_property_archives');
+    
+    // Register options and settings
+    register_setting('rent_fetch_options', 'options_rent_fetch_api_key');
+    add_settings_field('options_rent_fetch_api_key', 'Rent Fetch API Key', 'options_rent_fetch_api_key_callback', 'rent_fetch_options', 'rent_fetch_section_general', array( 'label' => false, 'class' => 'my-custom-class') );
+    
+    register_setting('rent_fetch_options', 'rent_fetch_option_2');
+    add_settings_field('rent_fetch_option_2', 'Option 2', 'rent_fetch_option_2_callback', 'rent_fetch_options', 'rent_fetch_section_general');
+    
+    // register_setting('rent_fetch_options_google', 'rent_fetch_option_3');
+    // add_settings_field('rent_fetch_option_3', 'Option 3', 'rent_fetch_option_3_callback', 'rent_fetch_options_google', 'rent_fetch_section_google');
+    
+    // register_setting('rent_fetch_options_google', 'rent_fetch_option_4');
+    // add_settings_field('rent_fetch_option_4', 'Option 4', 'rent_fetch_option_4_callback', 'rent_fetch_options_google', 'rent_fetch_section_google');
+    
+}
+
+
+
+// Section callbacks
+function rent_fetch_section_general_callback() {
+    echo 'This is the general section.';
+}
+
+function rent_fetch_section_google_callback() {
+    echo 'This is the google section.';
+}
+
+function rent_fetch_section_property_search_callback() {
+    echo 'This is the prroperty search section.';
+}
+
+function rent_fetch_section_property_archives_callback() {
+    echo 'This is the prroperty search section.';
+}
+
+// Field callbacks
+function options_rent_fetch_api_key_callback() {
+    $option = get_option('options_rent_fetch_api_key');
+    echo '<input type="text" name="options_rent_fetch_api_key" value="' . esc_attr($option) . '" />';
+    echo '<p class="description">Enter your Rent Fetch API key.</p>';
+}
+
+function rent_fetch_option_2_callback() {
+    $option = get_option('rent_fetch_option_2');
+    echo '<input type="text" name="rent_fetch_option_2" value="' . esc_attr($option) . '" />';
+}
+
+// function rent_fetch_option_3_callback() {
+//     $option = get_option('rent_fetch_option_3');
+//     echo '<input type="text" name="rent_fetch_option_3" value="' . esc_attr($option) . '" />';
+// }
+
+// function rent_fetch_option_4_callback() {
+//     $option = get_option('rent_fetch_option_4');
+//     echo '<input type="text" name="rent_fetch_option_4" value="' . esc_attr($option) . '" />';
+// }
+
