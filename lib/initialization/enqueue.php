@@ -66,12 +66,7 @@ function rentfetch_enqueue_scripts_stylesheets() {
 add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_in_admin_metabox_properties' );
 function rentfetch_enqueue_in_admin_metabox_properties() {
         
-    wp_register_style( 
-        'rentfetch-admin-metaboxes', 
-        RENTFETCH_PATH . 'css/metaboxes.css',
-        array(), 
-        RENTFETCH_VERSION
-    );
+    
     
     wp_register_script( 
         'rentfetch-metabox-properties-images', 
@@ -101,5 +96,23 @@ function rentfetch_enqueue_in_admin_metabox_properties() {
         RENTFETCH_VERSION
     );
     
+    wp_enqueue_style( 
+        'rentfetch-admin', 
+        RENTFETCH_PATH . 'css/admin.css',
+        array(), 
+        RENTFETCH_VERSION
+    );
+    
     wp_register_style('jquery-style', 'https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css');
+    
+    // // enqueue an admin style for just admin.php?page=rent_fetch_options
+    // if ( isset( $_GET['page'] ) && $_GET['page'] == 'rent_fetch_options' ) {
+    //     wp_enqueue_style( 'rentfetch-admin' );
+    // }
+    
+    // // enqueue admin admin style for the post type properties and the post type floorplans 
+    // if ( isset( $_GET['post_type'] ) && ( $_GET['post_type'] == 'properties' || $_GET['post_type'] == 'floorplans' ) ) {
+    //     wp_enqueue_style( 'rentfetch-admin' );
+    // }
+    
 }

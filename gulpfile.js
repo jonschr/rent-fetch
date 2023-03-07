@@ -102,9 +102,9 @@ gulp.task('properties-in-archive-prod', function () {
         .pipe(gulp.dest('css/'));
 });
 
-gulp.task('metaboxes', function () {
+gulp.task('admin', function () {
     return gulp
-        .src('css/metaboxes.scss')
+        .src('css/admin.scss')
         .pipe(sassGlob())
         .pipe(sass().on('error', sass.logError))
         .pipe(cleanCSS({ compatibility: 'ie8' }))
@@ -121,7 +121,7 @@ gulp.task('watch', function () {
             'floorplan-in-archive',
             'search-properties-map',
             'properties-in-archive',
-            'metaboxes',
+            'admin',
         ])
     );
 });
@@ -135,7 +135,7 @@ gulp.task('prod', function () {
             'floorplan-in-archive-prod',
             'search-properties-map-prod',
             'properties-in-archive-prod',
-            'metaboxes',
+            'admin',
         ])
     );
 });

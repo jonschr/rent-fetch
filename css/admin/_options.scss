@@ -1,0 +1,74 @@
+/* ==========================================================================
+   Subnavigation
+   ========================================================================== */
+
+ul.rent-fetch-options-submenu {
+    border-bottom: 1px solid #c3c4c7;
+    padding-bottom: 6px;
+    margin-bottom: 30px;
+
+    li {
+        list-style: none;
+        display: inline-block;
+
+        a {
+            display: block;
+            padding: 8px;
+            line-height: 1;
+
+            &:first-child {
+                // padding-left: 0;
+            }
+
+            &.tab-active {
+                font-weight: bold;
+                color: inherit;
+                text-decoration: none;
+            }
+        }
+    }
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
+.header-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    p.submit {
+        margin: 0;
+        padding: 9px 0 4px;
+        text-align: right;
+    }
+}
+
+/* ==========================================================================
+   Base rows
+   ========================================================================== */
+
+form.rent-fetch-options {
+    .row {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+
+        .column:first-child {
+            padding: 20px 0;
+        }
+
+        .column:last-child {
+            padding: 15px 0;
+        }
+    }
+
+    label {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    input[type='text'],
+    select {
+        width: 400px;
+    }
+}

@@ -1,11 +1,3 @@
-/* ==========================================================================
-   Only when it's on the side
-   ========================================================================== */
-
-/* ==========================================================================
-   All of the time
-   ========================================================================== */
-
 .rf-metabox {
     padding: 15px 10px;
 
@@ -133,63 +125,67 @@
    Galleries container
    ========================================================================== */
 
-#gallery-container {
-    .gallery-image {
-        position: relative;
-        display: inline-block;
-        margin: 0 5px 5px 0;
+.rf-metabox {
+    #gallery-container {
+        .gallery-image {
+            position: relative;
+            display: inline-block;
+            margin: 0 5px 5px 0;
 
-        button.remove-image {
-            position: absolute;
-            top: 5px;
-            right: 5px;
+            button.remove-image {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+            }
         }
     }
 }
 
-.property_images,
-.floorplan_images {
-    display: grid;
-    grid-gap: 5px;
+.rf-metabox {
+    .property_images,
+    .floorplan_images {
+        display: grid;
+        grid-gap: 5px;
 
-    @include notmobile {
-        grid-template-columns: repeat(auto-fit, 150px);
-    }
-
-    @include mobile {
-        grid-template-columns: repeat(auto-fit, 100px);
-    }
-
-    .property-image,
-    .floorplan-image {
-        position: relative;
-        display: inline-block;
-        height: 82px;
-
-        a.download {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: #efefef;
-            border: 1px solid #767676;
-            color: black;
-            z-index: 5;
-            text-decoration: none;
-            border-radius: 2px;
-            padding: 4px 6px;
-            line-height: 1;
-
-            &:hover {
-                background-color: #dcdcdc;
-                border-color: black;
-            }
+        @include notmobile {
+            grid-template-columns: repeat(auto-fit, 150px);
         }
 
-        img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
+        @include mobile {
+            grid-template-columns: repeat(auto-fit, 100px);
+        }
+
+        .property-image,
+        .floorplan-image {
+            position: relative;
+            display: inline-block;
+            height: 82px;
+
+            a.download {
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                background-color: #efefef;
+                border: 1px solid #767676;
+                color: black;
+                z-index: 5;
+                text-decoration: none;
+                border-radius: 2px;
+                padding: 4px 6px;
+                line-height: 1;
+
+                &:hover {
+                    background-color: #dcdcdc;
+                    border-color: black;
+                }
+            }
+
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                position: absolute;
+            }
         }
     }
 }

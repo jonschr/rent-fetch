@@ -43,7 +43,6 @@ function rf_register_floorplans_details_metabox() {
 
 function rf_floorplans_identifiers_metabox_callback( $post ) {
     wp_nonce_field( 'rf_floorplans_metabox_nonce', 'rf_floorplans_metabox_nonce' );
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     
     <div class="rf-metabox rf-metabox-floorplans">
@@ -143,7 +142,6 @@ function rf_floorplans_identifiers_metabox_callback( $post ) {
 
 function rf_floorplans_display_metabox_callback( $post ) {
     wp_enqueue_media();
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     wp_enqueue_script( 'rentfetch-metabox-floorplans-images' );
     ?>
     
@@ -252,7 +250,6 @@ function rf_floorplans_display_metabox_callback( $post ) {
 }
 
 function rf_floorplans_info_metabox_callback( $post ) {
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     
     <div class="rf-metabox rf-metabox-floorplans">
@@ -374,7 +371,6 @@ function rf_floorplans_info_metabox_callback( $post ) {
 }
 
 function rf_floorplans_availability_metabox_callback( $post ) {
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     
     <div class="rf-metabox rf-metabox-floorplans">

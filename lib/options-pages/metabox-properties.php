@@ -44,7 +44,6 @@ function rf_register_properties_details_metabox() {
 function rf_properties_identifiers_metabox_callback( $post ) {
     wp_nonce_field( 'rf_properties_metabox_nonce', 'rf_properties_metabox_nonce' );
     
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     
     ?>
     <div class="rf-metabox rf-metabox-properties">
@@ -101,7 +100,6 @@ function rf_properties_identifiers_metabox_callback( $post ) {
 }
 
 function rf_properties_location_metabox_callback( $post ) {
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
         
@@ -190,7 +188,6 @@ function rf_properties_location_metabox_callback( $post ) {
 }
 
 function rf_properties_contact_metabox_callback( $post ) {
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     ?>
     <div class="rf-metabox rf-metabox-properties">
         
@@ -240,7 +237,6 @@ function rf_properties_contact_metabox_callback( $post ) {
 
 function rf_properties_display_information_metabox_callback( $post ) {
     wp_enqueue_media();
-    wp_enqueue_style( 'rentfetch-admin-metaboxes' );
     wp_enqueue_script( 'rentfetch-metabox-properties-images' );
     wp_enqueue_script( 'rentfetch-metabox-properties-matterport' );
     wp_enqueue_script( 'rentfetch-metabox-properties-video' );
