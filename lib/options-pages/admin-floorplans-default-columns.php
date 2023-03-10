@@ -7,14 +7,26 @@ function rentfetch_default_floorplans_admin_columns( $columns ) {
     
     <style>
         
-            .wrap {
+            /* .wrap {
                 overflow-x: scroll;
                 max-width: 98%;
+            } */
+            
+            .row-actions {
+                opacity: 1;
+                /* left: auto; */
             }
             
             .wp-list-table {
+                display: inline-block;
+                width: auto;
+                margin-bottom: -4px !important;
+                max-width: 100%;
+                overflow: -moz-scrollbars-none;
+                -ms-overflow-style: none;
+                overflow-x: auto;
                 position: relative;
-                min-width: 2000px !important; 
+                box-sizing: border-box;
             }
             
             td {
@@ -25,35 +37,67 @@ function rentfetch_default_floorplans_admin_columns( $columns ) {
             
             th {
                 width: 100px;
-                min-width: 70px !important;
+                min-width: 100px !important;
+            }
+            
+            td#cb,
+            th.check-column {
+                width: 30px !important;
+                min-width: 30px !important;
             }
             
             th#title {
-                width: 300px !important;
+                min-width: 300px !important;
             }
             
             th#property_id {
-                width: 80px !important;
+                min-width: 80px !important;
             }
             
             th#floorplan_source {
-                width: 120px !important;
+                min-width: 120px !important;
             }
             
             th#manual_images {
-                width: 150px !important;
+                min-width: 150px !important;
             }
             
             th#floorplan_images {
-                width: 150px !important;
+                min-width: 150px !important;
             }
             
             th#floorplan_description {
-                width: 150px !important;
+                min-width: 150px !important;
+            }
+            
+            th#minimum_deposit {
+                min-width: 150px !important;
+            }
+            
+            th#maximum_deposit {
+                min-width: 150px !important;
             }
             
             th#availability_date {
-                width: 150px !important;
+                min-width: 150px !important;
+            }
+            
+            th#show_specials {
+                min-width: 150px !important;
+            }
+            
+            th#has_specials {
+                min-width: 150px !important;
+            }
+            
+            th#floorplan_id {
+                min-width: 100px !important;
+            }
+            
+            th#availability_url,
+            td.availability_url
+             {
+                max-width: 150px !important;
             }
                     
         </style>
