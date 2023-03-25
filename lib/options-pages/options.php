@@ -159,9 +159,16 @@ function rent_fetch_process_form_data() {
         update_option( 'options_yardi_integration_creds_yardi_api_key', $options_yardi_integration_creds_yardi_api_key );
     }
     
-    // Text field
+    // Textarea field
     if ( isset( $_POST['options_yardi_integration_creds_yardi_property_code'] ) ) {
         $options_yardi_integration_creds_yardi_property_code = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_property_code'] );
+        
+        // Remove all whitespace
+        $options_yardi_integration_creds_yardi_property_code = preg_replace('/\s+/', '', $options_yardi_integration_creds_yardi_property_code);
+        
+        // Add a space after each comma
+        $options_yardi_integration_creds_yardi_property_code = preg_replace('/,/', ', ', $options_yardi_integration_creds_yardi_property_code);
+        
         update_option( 'options_yardi_integration_creds_yardi_property_code', $options_yardi_integration_creds_yardi_property_code );
     }
     
@@ -186,6 +193,97 @@ function rent_fetch_process_form_data() {
         update_option( 'options_yardi_integration_creds_yardi_password', $options_yardi_integration_creds_yardi_password );
     }
     
+    // Text field
+    if ( isset( $_POST['options_entrata_integration_creds_entrata_user'] ) ) {
+        $options_entrata_integration_creds_entrata_user = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_user'] );
+        update_option( 'options_entrata_integration_creds_entrata_user', $options_entrata_integration_creds_entrata_user );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_entrata_integration_creds_entrata_pass'] ) ) {
+        $options_entrata_integration_creds_entrata_pass = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_pass'] );
+        update_option( 'options_entrata_integration_creds_entrata_pass', $options_entrata_integration_creds_entrata_pass );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_entrata_integration_creds_entrata_property_ids'] ) ) {
+        $options_entrata_integration_creds_entrata_property_ids = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_property_ids'] );
+        
+        // Remove all whitespace
+        $options_entrata_integration_creds_entrata_property_ids = preg_replace('/\s+/', '', $options_entrata_integration_creds_entrata_property_ids);
+        
+        // Add a space after each comma
+        $options_entrata_integration_creds_entrata_property_ids = preg_replace('/,/', ', ', $options_entrata_integration_creds_entrata_property_ids);
+        
+        update_option( 'options_entrata_integration_creds_entrata_property_ids', $options_entrata_integration_creds_entrata_property_ids );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_user'] ) ) {
+        $options_realpage_integration_creds_realpage_user = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_user'] );
+        update_option( 'options_realpage_integration_creds_realpage_user', $options_realpage_integration_creds_realpage_user );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_pass'] ) ) {
+        $options_realpage_integration_creds_realpage_pass = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_pass'] );
+        update_option( 'options_realpage_integration_creds_realpage_pass', $options_realpage_integration_creds_realpage_pass );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_pmc_id'] ) ) {
+        $options_realpage_integration_creds_realpage_pmc_id = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_pmc_id'] );
+        update_option( 'options_realpage_integration_creds_realpage_pmc_id', $options_realpage_integration_creds_realpage_pmc_id );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_site_ids'] ) ) {
+        $options_realpage_integration_creds_realpage_site_ids = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_site_ids'] );
+        
+        // Remove all whitespace
+        $options_realpage_integration_creds_realpage_site_ids = preg_replace('/\s+/', '', $options_realpage_integration_creds_realpage_site_ids);
+        
+        // Add a space after each comma
+        $options_realpage_integration_creds_realpage_site_ids = preg_replace('/,/', ', ', $options_realpage_integration_creds_realpage_site_ids);
+        
+        update_option( 'options_realpage_integration_creds_realpage_site_ids', $options_realpage_integration_creds_realpage_site_ids );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_database_name'] ) ) {
+        $options_appfolio_integration_creds_appfolio_database_name = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_database_name'] );
+        
+        // Remove .appfolio.com from the end of the database name
+        $options_appfolio_integration_creds_appfolio_database_name = preg_replace('/.appfolio.com/', '', $options_appfolio_integration_creds_appfolio_database_name);
+        
+        update_option( 'options_appfolio_integration_creds_appfolio_database_name', $options_appfolio_integration_creds_appfolio_database_name );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_client_id'] ) ) {
+        $options_appfolio_integration_creds_appfolio_client_id = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_client_id'] );
+        update_option( 'options_appfolio_integration_creds_appfolio_client_id', $options_appfolio_integration_creds_appfolio_client_id );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_client_secret'] ) ) {
+        $options_appfolio_integration_creds_appfolio_client_secret = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_client_secret'] );
+        update_option( 'options_appfolio_integration_creds_appfolio_client_secret', $options_appfolio_integration_creds_appfolio_client_secret );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_property_ids'] ) ) {
+        $options_appfolio_integration_creds_appfolio_property_ids = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_property_ids'] );
+        
+        // Remove all whitespace
+        $options_appfolio_integration_creds_appfolio_property_ids = preg_replace('/\s+/', '', $options_appfolio_integration_creds_appfolio_property_ids);
+        
+        // Add a space after each comma
+        $options_appfolio_integration_creds_appfolio_property_ids = preg_replace('/,/', ', ', $options_appfolio_integration_creds_appfolio_property_ids);
+        
+        update_option( 'options_appfolio_integration_creds_appfolio_property_ids', $options_appfolio_integration_creds_appfolio_property_ids );
+    }
+    
     // Redirect back to the form page with a success message
     wp_redirect( add_query_arg( 'rent_fetch_message', 'success', 'admin.php?page=rent_fetch_options' ) );
     exit;
@@ -196,10 +294,6 @@ add_action( 'rent_fetch_do_settings_general', 'rent_fetch_settings_general' );
 function rent_fetch_settings_general() {
     ?>
     <h2>General</h2>
-    entrata_integration_creds<br/>
-    realpage_integration_creds<br/>
-    appfolio_integration_creds<br/>
-    enable_rentfetch_logging<br/>
     <div class="row">
         <div class="column">
             <label for="options_rent_fetch_api_key">Rent Fetch API Key</label>
@@ -276,14 +370,14 @@ function rent_fetch_settings_general() {
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_enabled_integrations[]" value="realpage" <?php checked( in_array( 'realpage', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
-                        RealPage
+                        <input type="checkbox" name="options_enabled_integrations[]" value="entrata" <?php checked( in_array( 'entrata', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
+                        Entrata
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_enabled_integrations[]" value="entrata" <?php checked( in_array( 'entrata', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
-                        Entrata
+                        <input type="checkbox" name="options_enabled_integrations[]" value="realpage" <?php checked( in_array( 'realpage', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
+                        RealPage
                     </label>
                 </li>
                 <li>
@@ -308,13 +402,14 @@ function rent_fetch_settings_general() {
             <div class="white-box">
                 <label for="options_yardi_integration_creds_yardi_property_code">Yardi Property Codes</label>
                 <textarea rows="10" style="width: 100%;" name="options_yardi_integration_creds_yardi_property_code" id="options_yardi_integration_creds_yardi_property_code"><?php echo esc_attr( get_option( 'options_yardi_integration_creds_yardi_property_code' ) ); ?></textarea>
+                <p class="description">Multiple property codes should be entered separated by commas</p>
             </div>
             <div class="white-box">
                 <label for="options_yardi_integration_creds_enable_yardi_api_lead_generation">
                     <input type="checkbox" name="options_yardi_integration_creds_enable_yardi_api_lead_generation" id="options_yardi_integration_creds_enable_yardi_api_lead_generation" <?php checked( get_option( 'options_yardi_integration_creds_enable_yardi_api_lead_generation' ), true ); ?>>
                     Enable Yardi API Lead Generation
                 </label>
-
+                <p class="description">Adds a lightbox form on the single properties template which can send leads directly to the Yardi API.</p>
             </div>
             <div class="white-box">
                 <label for="options_yardi_integration_creds_yardi_username">Yardi Username</label>
@@ -323,6 +418,78 @@ function rent_fetch_settings_general() {
             <div class="white-box">
                 <label for="options_yardi_integration_creds_yardi_password">Yardi Password</label>
                 <input type="text" name="options_yardi_integration_creds_yardi_password" id="options_yardi_integration_creds_yardi_password" value="<?php echo esc_attr( get_option( 'options_yardi_integration_creds_yardi_password' ) ); ?>">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label>Entrata</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_entrata_integration_creds_entrata_user">Entrata Username</label>
+                <input type="text" name="options_entrata_integration_creds_entrata_user" id="options_entrata_integration_creds_entrata_user" value="<?php echo esc_attr( get_option( 'options_entrata_integration_creds_entrata_user' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_entrata_integration_creds_entrata_pass">Entrata Username</label>
+                <input type="text" name="options_entrata_integration_creds_entrata_pass" id="options_entrata_integration_creds_entrata_pass" value="<?php echo esc_attr( get_option( 'options_entrata_integration_creds_entrata_pass' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_entrata_integration_creds_entrata_property_ids">Entrata Property IDs</label>
+                <textarea rows="10" style="width: 100%;" name="options_entrata_integration_creds_entrata_property_ids" id="options_entrata_integration_creds_entrata_property_ids"><?php echo esc_attr( get_option( 'options_entrata_integration_creds_entrata_property_ids' ) ); ?></textarea>
+                <p class="description">If there are multiple properties to be pulled in, enter those separated by commas</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label>RealPage</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_realpage_integration_creds_realpage_user">RealPage Username</label>
+                <input type="text" name="options_realpage_integration_creds_realpage_user" id="options_realpage_integration_creds_realpage_user" value="<?php echo esc_attr( get_option( 'options_realpage_integration_creds_realpage_user' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_realpage_integration_creds_realpage_pass">RealPage Password</label>
+                <input type="text" name="options_realpage_integration_creds_realpage_pass" id="options_realpage_integration_creds_realpage_pass" value="<?php echo esc_attr( get_option( 'options_realpage_integration_creds_realpage_pass' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_realpage_integration_creds_realpage_pmc_id">RealPage PMC ID</label>
+                <input type="text" name="options_realpage_integration_creds_realpage_pmc_id" id="options_realpage_integration_creds_realpage_pmc_id" value="<?php echo esc_attr( get_option( 'options_realpage_integration_creds_realpage_pmc_id' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_realpage_integration_creds_realpage_site_ids">RealPage Site IDs</label>
+                <textarea rows="10" style="width: 100%;" name="options_realpage_integration_creds_realpage_site_ids" id="options_realpage_integration_creds_realpage_site_ids"><?php echo esc_attr( get_option( 'options_realpage_integration_creds_realpage_site_ids' ) ); ?></textarea>
+                <p class="description">If there are multiple properties to be pulled in, enter those separated by commas</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label>AppFolio</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_appfolio_integration_creds_appfolio_database_name">Appfolio Database Name</label>
+                <input type="text" name="options_appfolio_integration_creds_appfolio_database_name" id="options_appfolio_integration_creds_appfolio_database_name" value="<?php echo esc_attr( get_option( 'options_appfolio_integration_creds_appfolio_database_name' ) ); ?>">
+                <p class="description">Typically this is xxxxxxxxxxx.appfolio.com</p>
+            </div>
+            <div class="white-box">
+                <label for="options_appfolio_integration_creds_appfolio_client_id">Appfolio Client ID</label>
+                <input type="text" name="options_appfolio_integration_creds_appfolio_client_id" id="options_appfolio_integration_creds_appfolio_client_id" value="<?php echo esc_attr( get_option( 'options_appfolio_integration_creds_appfolio_client_id' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_appfolio_integration_creds_appfolio_client_secret">Appfolio Client Secret</label>
+                <input type="text" name="options_appfolio_integration_creds_appfolio_client_secret" id="options_appfolio_integration_creds_appfolio_client_secret" value="<?php echo esc_attr( get_option( 'options_appfolio_integration_creds_appfolio_client_secret' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_appfolio_integration_creds_appfolio_property_ids">Appfolio Property IDs</label>
+                <textarea rows="10" style="width: 100%;" name="options_appfolio_integration_creds_appfolio_property_ids" id="options_appfolio_integration_creds_appfolio_property_ids"><?php echo esc_attr( get_option( 'options_appfolio_integration_creds_appfolio_property_ids' ) ); ?></textarea>
+                <p class="description">For AppFolio, this is an optional field. If left blank, Rent Fetch will simply fetch all of the properties in the account, which may or not be your preference. Please note that if property IDs are present here, all *other* synced properties through AppFolio will be deleted when the site next syncs.</p>
             </div>
         </div>
     </div>

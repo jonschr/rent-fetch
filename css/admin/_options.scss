@@ -77,13 +77,25 @@ form.rent-fetch-options {
 
     .white-box {
         padding: 15px;
-        border: 1px solid #ccd0d4;
+        border: 1px solid #e7eaed;
         background-color: white;
         margin-bottom: -1px;
 
         label {
             font-weight: normal;
+            // font-size: 13px;
+            margin-bottom: 4px;
             display: block;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        p.description {
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 
