@@ -67,6 +67,26 @@ form.rent-fetch-options {
         font-size: 14px;
     }
 
+    ul.radio,
+    ul.checkboxes {
+        label {
+            font-size: 13px;
+            font-weight: normal;
+        }
+    }
+
+    .white-box {
+        padding: 15px;
+        border: 1px solid #ccd0d4;
+        background-color: white;
+        margin-bottom: -1px;
+
+        label {
+            font-weight: normal;
+            display: block;
+        }
+    }
+
     input[type='text'],
     select {
         width: 400px;

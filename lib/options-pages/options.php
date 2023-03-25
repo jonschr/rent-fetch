@@ -1,37 +1,42 @@
 <?php
 
-add_action('admin_menu', 'rent_fetch_options_page');
+/**
+ * Adds Rent Fetch options page to the admin menu.
+ */
+add_action( 'admin_menu', 'rent_fetch_options_page' );
 function rent_fetch_options_page() {
-    
+    // Get the contents of the Rent Fetch dashboard icon.
     $menu_icon = file_get_contents( RENTFETCH_DIR . 'images/rentfetch-dashboard-icon.svg' );
     
+    // Add Rent Fetch options page to the admin menu.
     add_menu_page(
-        'Rent Fetch Options',
-        'Rent Fetch',
-        'manage_options',
-        'rent_fetch_options',
-        'rent_fetch_options_page_html',
-        'data:image/svg+xml;base64,' . base64_encode( $menu_icon ),
-        58.99,
+        'Rent Fetch Options', // Page title.
+        'Rent Fetch', // Menu title.
+        'manage_options', // Capability required to access the menu.
+        'rent_fetch_options', // Menu slug.
+        'rent_fetch_options_page_html', // Callback function to render the page.
+        'data:image/svg+xml;base64,' . base64_encode( $menu_icon ), // Menu icon.
+        58.99 // Menu position.
     );
     
+    // Add Rent Fetch options sub-menu page to the admin menu.
     add_submenu_page(
-        'rent_fetch_options',
-        'Settings',
-        'Settings',
-        'manage_options',
-        'rent_fetch_options',
-        'rent_fetch_options_page_html',
+        'rent_fetch_options', // Parent menu slug.
+        'Settings', // Page title.
+        'Settings', // Menu title.
+        'manage_options', // Capability required to access the menu.
+        'rent_fetch_options', // Menu slug.
+        'rent_fetch_options_page_html' // Callback function to render the page.
     );
         
-    // add a submenu page which links to a third-party url
+    // Add Documentation sub-menu page to the admin menu, linking to a third-party URL.
     add_submenu_page(
-        'rent_fetch_options',
-        'Documentation',
-        'Documentation',
-        'manage_options',
-        'rent_fetch_documentation',
-        'rent_fetch_documentation_page_html',
+        'rent_fetch_options', // Parent menu slug.
+        'Documentation', // Page title.
+        'Documentation', // Menu title.
+        'manage_options', // Capability required to access the menu.
+        'rent_fetch_documentation', // Menu slug.
+        'rent_fetch_documentation_page_html' // Callback function to render the page.
     );
 }
 
@@ -109,24 +114,78 @@ function rent_fetch_options_page_html() {
 add_action( 'admin_post_rent_fetch_process_form', 'rent_fetch_process_form_data' );
 function rent_fetch_process_form_data() {
     
-    // var_dump( $_POST );
-
-    // Verify the nonce
+    //* Verify the nonce
     if ( ! wp_verify_nonce( $_POST['rent_fetch_form_nonce'], 'rent_fetch_nonce' ) ) {
         die( 'Security check failed' );
     }
 
-    // Get the submitted form data
+    //* Get the submitted form data
+    
+    // Text field
     if ( isset( $_POST['options_rent_fetch_api_key']) ) {
         $options_rent_fetch_api_key = sanitize_text_field( $_POST['options_rent_fetch_api_key'] );
         update_option( 'options_rent_fetch_api_key', $options_rent_fetch_api_key );
     }
     
+    // Select field
     if ( isset( $_POST['options_apartment_site_type']) ) {
         $options_apartment_site_type = sanitize_text_field( $_POST['options_apartment_site_type'] );
         update_option( 'options_apartment_site_type', $options_apartment_site_type );
     }
+    
+    // Radio field
+    if ( isset( $_POST['options_data_sync'] ) ) {
+        $options_data_sync = sanitize_text_field( $_POST['options_data_sync'] );
+        update_option( 'options_data_sync', $options_data_sync );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_sync_term'] ) ) {
+        $options_sync_term = sanitize_text_field( $_POST['options_sync_term'] );
+        update_option( 'options_sync_term', $options_sync_term );
+    }
+    
+    // Checkboxes field
+    if (isset($_POST['options_enabled_integrations'])) {
+        $enabled_integrations = array_map('sanitize_text_field', $_POST['options_enabled_integrations']);
+    } else {
+        $enabled_integrations = array();
+    }
+    update_option('options_enabled_integrations', $enabled_integrations);
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_api_key'] ) ) {
+        $options_yardi_integration_creds_yardi_api_key = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_api_key'] );
+        update_option( 'options_yardi_integration_creds_yardi_api_key', $options_yardi_integration_creds_yardi_api_key );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_property_code'] ) ) {
+        $options_yardi_integration_creds_yardi_property_code = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_property_code'] );
+        update_option( 'options_yardi_integration_creds_yardi_property_code', $options_yardi_integration_creds_yardi_property_code );
+    }
+    
+    // Single checkbox field
+    if ( isset( $_POST['options_yardi_integration_creds_enable_yardi_api_lead_generation'] ) ) {
+        $options_yardi_integration_creds_enable_yardi_api_lead_generation = true;
+    } else {
+        $options_yardi_integration_creds_enable_yardi_api_lead_generation = false;
+    }
+    update_option( 'options_yardi_integration_creds_enable_yardi_api_lead_generation', $options_yardi_integration_creds_enable_yardi_api_lead_generation );
 
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_username'] ) ) {
+        $options_yardi_integration_creds_yardi_username = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_username'] );
+        update_option( 'options_yardi_integration_creds_yardi_username', $options_yardi_integration_creds_yardi_username );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_password'] ) ) {
+        $options_yardi_integration_creds_yardi_password = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_password'] );
+        update_option( 'options_yardi_integration_creds_yardi_password', $options_yardi_integration_creds_yardi_password );
+    }
+    
     // Redirect back to the form page with a success message
     wp_redirect( add_query_arg( 'rent_fetch_message', 'success', 'admin.php?page=rent_fetch_options' ) );
     exit;
@@ -137,8 +196,6 @@ add_action( 'rent_fetch_do_settings_general', 'rent_fetch_settings_general' );
 function rent_fetch_settings_general() {
     ?>
     <h2>General</h2>
-    enabled_integrations<br/>
-    yardi_integration_creds<br/>
     entrata_integration_creds<br/>
     realpage_integration_creds<br/>
     appfolio_integration_creds<br/>
@@ -159,8 +216,8 @@ function rent_fetch_settings_general() {
         </div>
         <div class="column">
             <select name="options_apartment_site_type" id="options_apartment_site_type" value="<?php echo esc_attr( get_option( 'options_apartment_site_type' ) ); ?>">
-                <option value="single">This site is for a single property</option>
-                <option value="multiple">This site is for multiple properties</option>
+                <option value="single" <?php selected( get_option( 'options_apartment_site_type' ), 'single' ); ?>>This site is for a single property</option>
+                <option value="multiple" <?php selected( get_option( 'options_apartment_site_type' ), 'multiple' ); ?>>This site is for multiple properties</option>
             </select>
         </div>
     </div>
@@ -170,7 +227,26 @@ function rent_fetch_settings_general() {
             <label for="options_data_sync">Data Sync</label>
         </div>
         <div class="column">
-            <input type="text" name="options_data_sync" id="options_data_sync" value="<?php echo esc_attr( get_option( 'options_data_sync' ) ); ?>">
+            <ul class="radio">
+                <li>
+                    <label>
+                        <input type="radio" name="options_data_sync" id="options_data_sync" value="nosync" <?php checked( get_option( 'options_data_sync' ), 'nosync' ); ?>>
+                        Do not automatically sync any API data into this site
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_data_sync" id="options_data_sync" value="updatesync" <?php checked( get_option( 'options_data_sync' ), 'updatesync' ); ?>>
+                        Update data on this site with data from the API. Try not to delete posts added manually or data in manually-added custom fields which can supplement the API
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_data_sync" id="options_data_sync" value="delete" <?php checked( get_option( 'options_data_sync' ), 'delete' ); ?>>
+                        Delete all data that's been pulled from a third-party API
+                    </label>
+                </li>
+            </ul>
         </div>
     </div>
     
@@ -179,7 +255,10 @@ function rent_fetch_settings_general() {
             <label for="options_sync_term">Sync Term</label>
         </div>
         <div class="column">
-            <input type="text" name="options_sync_term" id="options_sync_term" value="<?php echo esc_attr( get_option( 'options_sync_term' ) ); ?>">
+            <select name="options_sync_term" id="options_sync_term" value="<?php echo esc_attr( get_option( 'options_sync_term' ) ); ?>">
+                <option value="paused" <?php selected( get_option( 'options_sync_term' ), 'paused' ); ?>>Paused</option>
+                <option value="hourly" <?php selected( get_option( 'options_sync_term' ), 'hourly' ); ?>>Hourly</option>
+            </select>
         </div>
     </div>
     
@@ -188,29 +267,67 @@ function rent_fetch_settings_general() {
             <label for="options_enabled_integrations">Enabled Integrations</label>
         </div>
         <div class="column">
-            <input type="text" name="options_enabled_integrations" id="options_enabled_integrations" value="<?php echo esc_attr( get_option( 'options_enabled_integrations' ) ); ?>">
-            
-            
+            <ul class="checkboxes">
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_enabled_integrations[]" value="yardi" <?php checked( in_array( 'yardi', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
+                        Yardi/RentCafe
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_enabled_integrations[]" value="realpage" <?php checked( in_array( 'realpage', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
+                        RealPage
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_enabled_integrations[]" value="entrata" <?php checked( in_array( 'entrata', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
+                        Entrata
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_enabled_integrations[]" value="appfolio" <?php checked( in_array( 'appfolio', get_option( 'options_enabled_integrations', array() ) ) ); ?>>
+                        Appfolio
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label>Yardi/RentCafe</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_yardi_integration_creds_yardi_api_key">Yardi API Key</label>
+                <input type="text" name="options_yardi_integration_creds_yardi_api_key" id="options_yardi_integration_creds_yardi_api_key" value="<?php echo esc_attr( get_option( 'options_yardi_integration_creds_yardi_api_key' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_yardi_integration_creds_yardi_property_code">Yardi Property Codes</label>
+                <textarea rows="10" style="width: 100%;" name="options_yardi_integration_creds_yardi_property_code" id="options_yardi_integration_creds_yardi_property_code"><?php echo esc_attr( get_option( 'options_yardi_integration_creds_yardi_property_code' ) ); ?></textarea>
+            </div>
+            <div class="white-box">
+                <label for="options_yardi_integration_creds_enable_yardi_api_lead_generation">
+                    <input type="checkbox" name="options_yardi_integration_creds_enable_yardi_api_lead_generation" id="options_yardi_integration_creds_enable_yardi_api_lead_generation" <?php checked( get_option( 'options_yardi_integration_creds_enable_yardi_api_lead_generation' ), true ); ?>>
+                    Enable Yardi API Lead Generation
+                </label>
+
+            </div>
+            <div class="white-box">
+                <label for="options_yardi_integration_creds_yardi_username">Yardi Username</label>
+                <input type="text" name="options_yardi_integration_creds_yardi_username" id="options_yardi_integration_creds_yardi_username" value="<?php echo esc_attr( get_option( 'options_yardi_integration_creds_yardi_username' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_yardi_integration_creds_yardi_password">Yardi Password</label>
+                <input type="text" name="options_yardi_integration_creds_yardi_password" id="options_yardi_integration_creds_yardi_password" value="<?php echo esc_attr( get_option( 'options_yardi_integration_creds_yardi_password' ) ); ?>">
+            </div>
         </div>
     </div>
          
-    <div class="row">
-        <div class="column">
-            <label for="options_enabled_integrations">Enabled Integrations</label>
-        </div>
-        <div class="column">
-            <input type="text" name="options_enabled_integrations" id="options_enabled_integrations" value="<?php echo esc_attr( get_option( 'options_enabled_integrations' ) ); ?>">
-        </div>
-    </div>
-         
-    <div class="row">
-        <div class="column">
-            <label for="options_enabled_integrations">Enabled Integrations</label>
-        </div>
-        <div class="column">
-            <input type="text" name="options_enabled_integrations" id="options_enabled_integrations" value="<?php echo esc_attr( get_option( 'options_enabled_integrations' ) ); ?>">
-        </div>
-    </div>
+   
          
     <?php
 }
