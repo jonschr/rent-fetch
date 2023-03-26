@@ -41,7 +41,9 @@ function rent_fetch_options_page() {
 }
 
 
-//* Force the documentation link to go offsite
+/**
+ * Force the documentation link to go to a third-party URL.
+ */
 add_action( 'admin_footer', 'rentfetch_documentation_submenu_open_new_tab' );    
 function rentfetch_documentation_submenu_open_new_tab() {
     ?>
@@ -67,7 +69,6 @@ function rent_fetch_options_page_html() {
     <div class="wrap">
         <div class="header-wrap">
             <h1>Rent Fetch Options</h1>
-            <?php submit_button(); ?>
         </div>
         <nav class="nav-tab-wrapper">
             <a href="?page=rent_fetch_options" class="nav-tab<?php if (!isset($_GET['tab']) || $_GET['tab'] === 'general') { echo ' nav-tab-active'; } ?>">General</a>
@@ -76,7 +77,6 @@ function rent_fetch_options_page_html() {
             <a href="?page=rent_fetch_options&tab=floorplan_archives" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'floorplan_archives') { echo ' nav-tab-active'; } ?>">Floorplan Archives</a>
         </nav>
         <form method="post" class="rent-fetch-options" action="<?php echo esc_url( admin_url( 'admin-post.php' ) );  ?>">
-        
             <input type="hidden" name="action" value="rent_fetch_process_form">
             <?php wp_nonce_field( 'rent_fetch_nonce', 'rent_fetch_form_nonce' ); ?>
             <?php $rent_fetch_options_nonce = wp_create_nonce( 'rent_fetch_options_nonce' );  ?>
@@ -110,7 +110,9 @@ function rent_fetch_options_page_html() {
     <?php
 }
 
-// Define a function to process the form data
+/**
+ * Process the form data for all tabs on the Rent Fetch settings page
+ */
 add_action( 'admin_post_rent_fetch_process_form', 'rent_fetch_process_form_data' );
 function rent_fetch_process_form_data() {
     
@@ -290,10 +292,12 @@ function rent_fetch_process_form_data() {
 
 }
 
+/**
+ * Adds the general settings section to the Rent Fetch settings page.
+ */
 add_action( 'rent_fetch_do_settings_general', 'rent_fetch_settings_general' );
 function rent_fetch_settings_general() {
     ?>
-    <h2>General</h2>
     <div class="row">
         <div class="column">
             <label for="options_rent_fetch_api_key">Rent Fetch API Key</label>
@@ -499,10 +503,12 @@ function rent_fetch_settings_general() {
     <?php
 }
 
+/**
+ * Adds the Google settings section to the Rent Fetch settings page
+ */
 add_action( 'rent_fetch_do_settings_google', 'rent_fetch_settings_google' );
 function rent_fetch_settings_google() {
     ?>
-    <h2>Google</h2>
     google_recaptcha<br/>
     google_maps_api_key<br/>
     google_geocoding_api_key<br/>
@@ -513,6 +519,9 @@ function rent_fetch_settings_google() {
     <?php
 }
 
+/**
+ * Adds the properties settings section to the Rent Fetch settings page
+ */
 add_action( 'rent_fetch_do_settings_properties', 'rent_fetch_settings_properties' );
 function rent_fetch_settings_properties() {    
     ?>
@@ -528,34 +537,42 @@ function rent_fetch_settings_properties() {
     }
 }
 
+/**
+ * Adds the property search settings subsection to the Rent Fetch settings page
+ */
 add_action( 'rent_fetch_do_settings_properties_property_search', 'rent_fetch_settings_properties_property_search' );
 function rent_fetch_settings_properties_property_search() {
     ?>
-    <h2>Property Search</h2>
     
     <?php
 }
 
+/**
+ * Adds the properties archives settings subsection to the Rent Fetch settings page
+ */
 add_action( 'rent_fetch_do_settings_properties_property_archives', 'rent_fetch_settings_properties_property_archives' );
 function rent_fetch_settings_properties_property_archives() {
     ?>
-    <h2>Property Archives</h2>
     
     <?php
 }
 
+/**
+ * Adds the single property template settings section to the Rent Fetch settings page
+ */
 add_action( 'rent_fetch_do_settings_single_property_template', 'rent_fetch_settings_single_property_template' );
 function rent_fetch_settings_single_property_template() {
     ?>
-    <h2>Single Property Template</h2>
     
     <?php
 }
 
+/**
+ * Adds the floorplans settings section to the Rent Fetch settings page
+ */
 add_action( 'rent_fetch_do_settings_floorplan_archives', 'rent_fetch_settings_floorplan_archives' );
 function rent_fetch_settings_floorplan_archives() {
     ?>
-    <h2>Floorplan Archives</h2>
     
     <?php
 }
