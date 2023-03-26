@@ -189,6 +189,7 @@ function rent_fetch_settings_general() {
     <div class="row">
         <div class="column">
             <label for="options_data_sync">Data Sync</label>
+            <p class="description">Setting this to delete will immediately pause all ongoing processes and start tasks to delete all properties and floorplans which were previously synced. This process is not reversible.</p>
         </div>
         <div class="column">
             <ul class="radio">
@@ -219,6 +220,7 @@ function rent_fetch_settings_general() {
             <label for="options_sync_term">Sync Term</label>
         </div>
         <div class="column">
+            <p class="description">If you're seeing repeated API failures, pausing this temporarily can often clean up zombie tasks that apply to properties no longer listed in your API settings. It can also serve to reset overdue tasks in the event that API functionality was unavailable for a period (for example, on a staging site behind basic authentication).</p>
             <select name="options_sync_term" id="options_sync_term" value="<?php echo esc_attr( get_option( 'options_sync_term' ) ); ?>">
                 <option value="paused" <?php selected( get_option( 'options_sync_term' ), 'paused' ); ?>>Paused</option>
                 <option value="hourly" <?php selected( get_option( 'options_sync_term' ), 'hourly' ); ?>>Hourly</option>
@@ -696,11 +698,14 @@ function rent_fetch_settings_properties() {
     ?>
     <ul class="rent-fetch-options-submenu">
         <li><a href="?page=rent_fetch_options&tab=properties&section=property_search" class="tab<?php if (!isset($_GET['section']) || $_GET['section'] === 'property_search') { echo ' tab-active'; } ?>">Property Search</a></li>
+        <li><a href="?page=rent_fetch_options&tab=properties&section=property_single" class="tab<?php if ( isset( $_GET['section']) && $_GET['section'] === 'property_single') { echo ' tab-active'; } ?>">Property Single Template</a></li>
         <li><a href="?page=rent_fetch_options&tab=properties&section=property_archives" class="tab<?php if ( isset( $_GET['section']) && $_GET['section'] === 'property_archives') { echo ' tab-active'; } ?>">Property Archives</a></li>
     </ul>    
     <?php
     if ( !isset($_GET['section']) || $_GET['section'] === 'property_search') {
         do_action( 'rent_fetch_do_settings_properties_property_search' );
+    } elseif (isset($_GET['section']) && $_GET['section'] === 'property_single') {
+        do_action( 'rent_fetch_do_settings_properties_property_single' );
     } elseif (isset($_GET['section']) && $_GET['section'] === 'property_archives') {
         do_action( 'rent_fetch_do_settings_properties_property_archives' );
     }
@@ -718,6 +723,7 @@ function rent_fetch_settings_properties_property_search() {
             <label for="options_maximum_number_of_properties_to_show">Maximum number of properties to show</label>
         </div>
         <div class="column">
+            <p class="description">The most properties we should attempt to show while matching a search. We recommend for performance reasons that this number is not set above ~200 properties.</p>
             <input type="text" name="options_maximum_number_of_properties_to_show" id="options_maximum_number_of_properties_to_show" value="<?php echo esc_attr( get_option( 'options_maximum_number_of_properties_to_show' ) ); ?>">
         </div>
     </div>
@@ -725,8 +731,10 @@ function rent_fetch_settings_properties_property_search() {
     <div class="row">
         <div class="column">
             <label for="options_property_availability_display">Property availability display</label>
+            
         </div>
         <div class="column">
+            <p class="description">Select whether you'd like to show properties that are available or all properties. This setting applies to the properties search and to the "nearby properties" listing on the properties single template.</p>
             <select name="options_property_availability_display" id="options_property_availability_display" value="<?php echo esc_attr( get_option( 'options_property_availability_display' ) ); ?>">
                 <option value="available" <?php selected( get_option( 'options_property_availability_display' ), 'available' ); ?>>Availability</option>
                 <option value="all" <?php selected( get_option( 'options_property_availability_display' ), 'all' ); ?>>All properties ignoring availability</option>
@@ -925,14 +933,7 @@ function rent_fetch_save_settings_property_search() {
         $property_display = sanitize_text_field( $_POST['options_property_availability_display'] );
         update_option( 'options_property_availability_display', $property_display );
     }
-    
-    // // Checkbox field
-    // if ( isset( $_POST['options_starter_search_components'] ) ) {
-    //     $starter_search_components = $_POST['options_starter_search_components'];
-    //     $starter_search_components = array_map( 'sanitize_text_field', $starter_search_components );
-    //     update_option( 'options_starter_search_components', $starter_search_components );
-    // }
-    
+        
     // Checkboxes field
     if (isset($_POST['options_starter_search_components'])) {
         $options_starter_search_components = array_map('sanitize_text_field', $_POST['options_starter_search_components']);
@@ -978,22 +979,22 @@ function rent_fetch_save_settings_property_search() {
 }
 
 /**
+ * Adds the properties single settings subsection to the Rent Fetch settings page
+ */
+add_action( 'rent_fetch_do_settings_properties_property_single', 'rent_fetch_settings_properties_property_single' );
+function rent_fetch_settings_properties_property_single() {
+    ?>
+    <h2>Property Single</h2>
+    <?php
+}
+
+/**
  * Adds the properties archives settings subsection to the Rent Fetch settings page
  */
 add_action( 'rent_fetch_do_settings_properties_property_archives', 'rent_fetch_settings_properties_property_archives' );
 function rent_fetch_settings_properties_property_archives() {
     ?>
-    
-    <?php
-}
-
-/**
- * Adds the single property template settings section to the Rent Fetch settings page
- */
-add_action( 'rent_fetch_do_settings_single_property_template', 'rent_fetch_settings_single_property_template' );
-function rent_fetch_settings_single_property_template() {
-    ?>
-    
+    <h2>Property Archives</h2>
     <?php
 }
 
