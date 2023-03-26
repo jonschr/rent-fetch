@@ -40,6 +40,20 @@ function rent_fetch_options_page() {
     );
 }
 
+/**
+ * If the rent_fetch_message parameter is set to 'success', display a success message.
+ */
+add_action( 'admin_notices', 'rent_fetch_options_page_notice' );
+function rent_fetch_options_page_notice() {
+    if ( isset( $_GET['rent_fetch_message'] ) && $_GET['rent_fetch_message'] === 'success' ) {
+        ?>
+        <div class="notice notice-success is-dismissible">
+            <p><?php _e( 'Rent Fetch settings successfully saved.', 'rent-fetch' ); ?></p>
+        </div>
+        <?php
+    }
+}
+
 
 /**
  * Force the documentation link to go to a third-party URL.
@@ -111,7 +125,7 @@ function rent_fetch_options_page_html() {
 }
 
 /**
- * Process the form data for all tabs on the Rent Fetch settings page
+ * Save the form data for ALL tabs on the Rent Fetch settings page
  */
 add_action( 'admin_post_rent_fetch_process_form', 'rent_fetch_process_form_data' );
 function rent_fetch_process_form_data() {
@@ -120,174 +134,26 @@ function rent_fetch_process_form_data() {
     if ( ! wp_verify_nonce( $_POST['rent_fetch_form_nonce'], 'rent_fetch_nonce' ) ) {
         die( 'Security check failed' );
     }
-
-    //* Get the submitted form data
     
-    // Text field
-    if ( isset( $_POST['options_rent_fetch_api_key']) ) {
-        $options_rent_fetch_api_key = sanitize_text_field( $_POST['options_rent_fetch_api_key'] );
-        update_option( 'options_rent_fetch_api_key', $options_rent_fetch_api_key );
-    }
+    //* Save the settings
+    do_action( 'rent_fetch_save_settings' );
     
-    // Select field
-    if ( isset( $_POST['options_apartment_site_type']) ) {
-        $options_apartment_site_type = sanitize_text_field( $_POST['options_apartment_site_type'] );
-        update_option( 'options_apartment_site_type', $options_apartment_site_type );
-    }
-    
-    // Radio field
-    if ( isset( $_POST['options_data_sync'] ) ) {
-        $options_data_sync = sanitize_text_field( $_POST['options_data_sync'] );
-        update_option( 'options_data_sync', $options_data_sync );
-    }
-    
-    // Select field
-    if ( isset( $_POST['options_sync_term'] ) ) {
-        $options_sync_term = sanitize_text_field( $_POST['options_sync_term'] );
-        update_option( 'options_sync_term', $options_sync_term );
-    }
-    
-    // Checkboxes field
-    if (isset($_POST['options_enabled_integrations'])) {
-        $enabled_integrations = array_map('sanitize_text_field', $_POST['options_enabled_integrations']);
-    } else {
-        $enabled_integrations = array();
-    }
-    update_option('options_enabled_integrations', $enabled_integrations);
-    
-    // Text field
-    if ( isset( $_POST['options_yardi_integration_creds_yardi_api_key'] ) ) {
-        $options_yardi_integration_creds_yardi_api_key = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_api_key'] );
-        update_option( 'options_yardi_integration_creds_yardi_api_key', $options_yardi_integration_creds_yardi_api_key );
-    }
-    
-    // Textarea field
-    if ( isset( $_POST['options_yardi_integration_creds_yardi_property_code'] ) ) {
-        $options_yardi_integration_creds_yardi_property_code = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_property_code'] );
+    //* Redirect back to the form page with a success message
+    // wp_redirect( add_query_arg( 'rent_fetch_message', 'success', 'admin.php?page=rent_fetch_options' ) );
         
-        // Remove all whitespace
-        $options_yardi_integration_creds_yardi_property_code = preg_replace('/\s+/', '', $options_yardi_integration_creds_yardi_property_code);
-        
-        // Add a space after each comma
-        $options_yardi_integration_creds_yardi_property_code = preg_replace('/,/', ', ', $options_yardi_integration_creds_yardi_property_code);
-        
-        update_option( 'options_yardi_integration_creds_yardi_property_code', $options_yardi_integration_creds_yardi_property_code );
-    }
+    //* Redirect back to the current page with a success message
+    $referrer = $_SERVER['HTTP_REFERER'];
     
-    // Single checkbox field
-    if ( isset( $_POST['options_yardi_integration_creds_enable_yardi_api_lead_generation'] ) ) {
-        $options_yardi_integration_creds_enable_yardi_api_lead_generation = true;
-    } else {
-        $options_yardi_integration_creds_enable_yardi_api_lead_generation = false;
-    }
-    update_option( 'options_yardi_integration_creds_enable_yardi_api_lead_generation', $options_yardi_integration_creds_enable_yardi_api_lead_generation );
-
+    // remove the URL from the referrer
+    $referrer = preg_replace('/https?:\/\/[^\/]+/', '', $referrer);
     
-    // Text field
-    if ( isset( $_POST['options_yardi_integration_creds_yardi_username'] ) ) {
-        $options_yardi_integration_creds_yardi_username = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_username'] );
-        update_option( 'options_yardi_integration_creds_yardi_username', $options_yardi_integration_creds_yardi_username );
-    }
+    // remove /wp-admin/ from the referrer
+    $referrer = preg_replace('/\/wp-admin\//', '', $referrer);
     
-    // Text field
-    if ( isset( $_POST['options_yardi_integration_creds_yardi_password'] ) ) {
-        $options_yardi_integration_creds_yardi_password = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_password'] );
-        update_option( 'options_yardi_integration_creds_yardi_password', $options_yardi_integration_creds_yardi_password );
-    }
+    var_dump( $referrer );
     
-    // Text field
-    if ( isset( $_POST['options_entrata_integration_creds_entrata_user'] ) ) {
-        $options_entrata_integration_creds_entrata_user = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_user'] );
-        update_option( 'options_entrata_integration_creds_entrata_user', $options_entrata_integration_creds_entrata_user );
-    }
+    wp_redirect( add_query_arg( 'rent_fetch_message', 'success', $referrer ) );
     
-    // Text field
-    if ( isset( $_POST['options_entrata_integration_creds_entrata_pass'] ) ) {
-        $options_entrata_integration_creds_entrata_pass = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_pass'] );
-        update_option( 'options_entrata_integration_creds_entrata_pass', $options_entrata_integration_creds_entrata_pass );
-    }
-    
-    // Textarea field
-    if ( isset( $_POST['options_entrata_integration_creds_entrata_property_ids'] ) ) {
-        $options_entrata_integration_creds_entrata_property_ids = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_property_ids'] );
-        
-        // Remove all whitespace
-        $options_entrata_integration_creds_entrata_property_ids = preg_replace('/\s+/', '', $options_entrata_integration_creds_entrata_property_ids);
-        
-        // Add a space after each comma
-        $options_entrata_integration_creds_entrata_property_ids = preg_replace('/,/', ', ', $options_entrata_integration_creds_entrata_property_ids);
-        
-        update_option( 'options_entrata_integration_creds_entrata_property_ids', $options_entrata_integration_creds_entrata_property_ids );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_realpage_integration_creds_realpage_user'] ) ) {
-        $options_realpage_integration_creds_realpage_user = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_user'] );
-        update_option( 'options_realpage_integration_creds_realpage_user', $options_realpage_integration_creds_realpage_user );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_realpage_integration_creds_realpage_pass'] ) ) {
-        $options_realpage_integration_creds_realpage_pass = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_pass'] );
-        update_option( 'options_realpage_integration_creds_realpage_pass', $options_realpage_integration_creds_realpage_pass );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_realpage_integration_creds_realpage_pmc_id'] ) ) {
-        $options_realpage_integration_creds_realpage_pmc_id = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_pmc_id'] );
-        update_option( 'options_realpage_integration_creds_realpage_pmc_id', $options_realpage_integration_creds_realpage_pmc_id );
-    }
-    
-    // Textarea field
-    if ( isset( $_POST['options_realpage_integration_creds_realpage_site_ids'] ) ) {
-        $options_realpage_integration_creds_realpage_site_ids = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_site_ids'] );
-        
-        // Remove all whitespace
-        $options_realpage_integration_creds_realpage_site_ids = preg_replace('/\s+/', '', $options_realpage_integration_creds_realpage_site_ids);
-        
-        // Add a space after each comma
-        $options_realpage_integration_creds_realpage_site_ids = preg_replace('/,/', ', ', $options_realpage_integration_creds_realpage_site_ids);
-        
-        update_option( 'options_realpage_integration_creds_realpage_site_ids', $options_realpage_integration_creds_realpage_site_ids );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_database_name'] ) ) {
-        $options_appfolio_integration_creds_appfolio_database_name = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_database_name'] );
-        
-        // Remove .appfolio.com from the end of the database name
-        $options_appfolio_integration_creds_appfolio_database_name = preg_replace('/.appfolio.com/', '', $options_appfolio_integration_creds_appfolio_database_name);
-        
-        update_option( 'options_appfolio_integration_creds_appfolio_database_name', $options_appfolio_integration_creds_appfolio_database_name );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_client_id'] ) ) {
-        $options_appfolio_integration_creds_appfolio_client_id = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_client_id'] );
-        update_option( 'options_appfolio_integration_creds_appfolio_client_id', $options_appfolio_integration_creds_appfolio_client_id );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_client_secret'] ) ) {
-        $options_appfolio_integration_creds_appfolio_client_secret = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_client_secret'] );
-        update_option( 'options_appfolio_integration_creds_appfolio_client_secret', $options_appfolio_integration_creds_appfolio_client_secret );
-    }
-    
-    // Textarea field
-    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_property_ids'] ) ) {
-        $options_appfolio_integration_creds_appfolio_property_ids = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_property_ids'] );
-        
-        // Remove all whitespace
-        $options_appfolio_integration_creds_appfolio_property_ids = preg_replace('/\s+/', '', $options_appfolio_integration_creds_appfolio_property_ids);
-        
-        // Add a space after each comma
-        $options_appfolio_integration_creds_appfolio_property_ids = preg_replace('/,/', ', ', $options_appfolio_integration_creds_appfolio_property_ids);
-        
-        update_option( 'options_appfolio_integration_creds_appfolio_property_ids', $options_appfolio_integration_creds_appfolio_property_ids );
-    }
-    
-    // Redirect back to the form page with a success message
-    wp_redirect( add_query_arg( 'rent_fetch_message', 'success', 'admin.php?page=rent_fetch_options' ) );
     exit;
 
 }
@@ -504,19 +370,303 @@ function rent_fetch_settings_general() {
 }
 
 /**
+ * Save the general settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_general' );
+function rent_fetch_save_settings_general() {
+    
+    // Text field
+    if ( isset( $_POST['options_rent_fetch_api_key']) ) {
+        $options_rent_fetch_api_key = sanitize_text_field( $_POST['options_rent_fetch_api_key'] );
+        update_option( 'options_rent_fetch_api_key', $options_rent_fetch_api_key );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_apartment_site_type']) ) {
+        $options_apartment_site_type = sanitize_text_field( $_POST['options_apartment_site_type'] );
+        update_option( 'options_apartment_site_type', $options_apartment_site_type );
+    }
+    
+    // Radio field
+    if ( isset( $_POST['options_data_sync'] ) ) {
+        $options_data_sync = sanitize_text_field( $_POST['options_data_sync'] );
+        update_option( 'options_data_sync', $options_data_sync );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_sync_term'] ) ) {
+        $options_sync_term = sanitize_text_field( $_POST['options_sync_term'] );
+        update_option( 'options_sync_term', $options_sync_term );
+    }
+    
+    // Checkboxes field
+    if (isset($_POST['options_enabled_integrations'])) {
+        $enabled_integrations = array_map('sanitize_text_field', $_POST['options_enabled_integrations']);
+    } else {
+        $enabled_integrations = array();
+    }
+    update_option('options_enabled_integrations', $enabled_integrations);
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_api_key'] ) ) {
+        $options_yardi_integration_creds_yardi_api_key = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_api_key'] );
+        update_option( 'options_yardi_integration_creds_yardi_api_key', $options_yardi_integration_creds_yardi_api_key );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_property_code'] ) ) {
+        $options_yardi_integration_creds_yardi_property_code = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_property_code'] );
+        
+        // Remove all whitespace
+        $options_yardi_integration_creds_yardi_property_code = preg_replace('/\s+/', '', $options_yardi_integration_creds_yardi_property_code);
+        
+        // Add a space after each comma
+        $options_yardi_integration_creds_yardi_property_code = preg_replace('/,/', ', ', $options_yardi_integration_creds_yardi_property_code);
+        
+        update_option( 'options_yardi_integration_creds_yardi_property_code', $options_yardi_integration_creds_yardi_property_code );
+    }
+    
+    // Single checkbox field
+    if ( isset( $_POST['options_yardi_integration_creds_enable_yardi_api_lead_generation'] ) ) {
+        $options_yardi_integration_creds_enable_yardi_api_lead_generation = true;
+    } else {
+        $options_yardi_integration_creds_enable_yardi_api_lead_generation = false;
+    }
+    update_option( 'options_yardi_integration_creds_enable_yardi_api_lead_generation', $options_yardi_integration_creds_enable_yardi_api_lead_generation );
+
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_username'] ) ) {
+        $options_yardi_integration_creds_yardi_username = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_username'] );
+        update_option( 'options_yardi_integration_creds_yardi_username', $options_yardi_integration_creds_yardi_username );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_yardi_integration_creds_yardi_password'] ) ) {
+        $options_yardi_integration_creds_yardi_password = sanitize_text_field( $_POST['options_yardi_integration_creds_yardi_password'] );
+        update_option( 'options_yardi_integration_creds_yardi_password', $options_yardi_integration_creds_yardi_password );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_entrata_integration_creds_entrata_user'] ) ) {
+        $options_entrata_integration_creds_entrata_user = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_user'] );
+        update_option( 'options_entrata_integration_creds_entrata_user', $options_entrata_integration_creds_entrata_user );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_entrata_integration_creds_entrata_pass'] ) ) {
+        $options_entrata_integration_creds_entrata_pass = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_pass'] );
+        update_option( 'options_entrata_integration_creds_entrata_pass', $options_entrata_integration_creds_entrata_pass );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_entrata_integration_creds_entrata_property_ids'] ) ) {
+        $options_entrata_integration_creds_entrata_property_ids = sanitize_text_field( $_POST['options_entrata_integration_creds_entrata_property_ids'] );
+        
+        // Remove all whitespace
+        $options_entrata_integration_creds_entrata_property_ids = preg_replace('/\s+/', '', $options_entrata_integration_creds_entrata_property_ids);
+        
+        // Add a space after each comma
+        $options_entrata_integration_creds_entrata_property_ids = preg_replace('/,/', ', ', $options_entrata_integration_creds_entrata_property_ids);
+        
+        update_option( 'options_entrata_integration_creds_entrata_property_ids', $options_entrata_integration_creds_entrata_property_ids );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_user'] ) ) {
+        $options_realpage_integration_creds_realpage_user = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_user'] );
+        update_option( 'options_realpage_integration_creds_realpage_user', $options_realpage_integration_creds_realpage_user );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_pass'] ) ) {
+        $options_realpage_integration_creds_realpage_pass = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_pass'] );
+        update_option( 'options_realpage_integration_creds_realpage_pass', $options_realpage_integration_creds_realpage_pass );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_pmc_id'] ) ) {
+        $options_realpage_integration_creds_realpage_pmc_id = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_pmc_id'] );
+        update_option( 'options_realpage_integration_creds_realpage_pmc_id', $options_realpage_integration_creds_realpage_pmc_id );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_realpage_integration_creds_realpage_site_ids'] ) ) {
+        $options_realpage_integration_creds_realpage_site_ids = sanitize_text_field( $_POST['options_realpage_integration_creds_realpage_site_ids'] );
+        
+        // Remove all whitespace
+        $options_realpage_integration_creds_realpage_site_ids = preg_replace('/\s+/', '', $options_realpage_integration_creds_realpage_site_ids);
+        
+        // Add a space after each comma
+        $options_realpage_integration_creds_realpage_site_ids = preg_replace('/,/', ', ', $options_realpage_integration_creds_realpage_site_ids);
+        
+        update_option( 'options_realpage_integration_creds_realpage_site_ids', $options_realpage_integration_creds_realpage_site_ids );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_database_name'] ) ) {
+        $options_appfolio_integration_creds_appfolio_database_name = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_database_name'] );
+        
+        // Remove .appfolio.com from the end of the database name
+        $options_appfolio_integration_creds_appfolio_database_name = preg_replace('/.appfolio.com/', '', $options_appfolio_integration_creds_appfolio_database_name);
+        
+        update_option( 'options_appfolio_integration_creds_appfolio_database_name', $options_appfolio_integration_creds_appfolio_database_name );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_client_id'] ) ) {
+        $options_appfolio_integration_creds_appfolio_client_id = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_client_id'] );
+        update_option( 'options_appfolio_integration_creds_appfolio_client_id', $options_appfolio_integration_creds_appfolio_client_id );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_client_secret'] ) ) {
+        $options_appfolio_integration_creds_appfolio_client_secret = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_client_secret'] );
+        update_option( 'options_appfolio_integration_creds_appfolio_client_secret', $options_appfolio_integration_creds_appfolio_client_secret );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_appfolio_integration_creds_appfolio_property_ids'] ) ) {
+        $options_appfolio_integration_creds_appfolio_property_ids = sanitize_text_field( $_POST['options_appfolio_integration_creds_appfolio_property_ids'] );
+        
+        // Remove all whitespace
+        $options_appfolio_integration_creds_appfolio_property_ids = preg_replace('/\s+/', '', $options_appfolio_integration_creds_appfolio_property_ids);
+        
+        // Add a space after each comma
+        $options_appfolio_integration_creds_appfolio_property_ids = preg_replace('/,/', ', ', $options_appfolio_integration_creds_appfolio_property_ids);
+        
+        update_option( 'options_appfolio_integration_creds_appfolio_property_ids', $options_appfolio_integration_creds_appfolio_property_ids );
+    }
+    
+}
+
+/**
  * Adds the Google settings section to the Rent Fetch settings page
  */
 add_action( 'rent_fetch_do_settings_google', 'rent_fetch_settings_google' );
 function rent_fetch_settings_google() {
     ?>
-    google_recaptcha<br/>
-    google_maps_api_key<br/>
-    google_geocoding_api_key<br/>
-    google_map_marker<br/>
-    google_maps_styles<br/>
-    google_maps_default_latitude<br/>
-    google_maps_default_longitude<br/>            
+        
+    <div class="row">
+        <div class="column">
+            <label>Google reCAPTCHA v2</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_google_recaptcha_google_recaptcha_v2_site_key">reCAPTCHA key</label>
+                <input type="text" name="options_google_recaptcha_google_recaptcha_v2_site_key" id="options_google_recaptcha_google_recaptcha_v2_site_key" value="<?php echo esc_attr( get_option( 'options_google_recaptcha_google_recaptcha_v2_site_key' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_google_recaptcha_google_recaptcha_v2_secret">reCAPTCHA key</label>
+                <input type="text" name="options_google_recaptcha_google_recaptcha_v2_secret" id="options_google_recaptcha_google_recaptcha_v2_secret" value="<?php echo esc_attr( get_option( 'options_google_recaptcha_google_recaptcha_v2_secret' ) ); ?>">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_google_maps_api_key">Google Maps API Key</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_google_maps_api_key" id="options_google_maps_api_key" value="<?php echo esc_attr( get_option( 'options_google_maps_api_key' ) ); ?>">
+            <p class="description">Required for Google Maps.</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_google_map_marker">Google Maps Marker</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_google_map_marker" id="options_google_map_marker" value="<?php echo esc_attr( get_option( 'options_google_map_marker' ) ); ?>">
+            <p class="description">URL to a custom marker image. Leave blank to use the default marker.</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_google_maps_styles">Google Maps Styles</label>
+        </div>
+        <div class="column">
+            <textarea name="options_google_maps_styles" id="options_google_maps_styles" rows="10" style="width: 100%;"><?php echo esc_attr( get_option( 'options_google_maps_styles' ) ); ?></textarea>
+            <p class="description">JSON array of Google Maps styles. See <a href="https://snazzymaps.com/" target="_blank">Snazzy Maps</a> for examples.</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label>Google Maps default location</label>
+            <p class="description">This serves as the map center in the event of a search with no results.</p>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_google_maps_default_latitude">Latitude</label>
+                <input type="text" name="options_google_maps_default_latitude" id="options_google_maps_default_latitude" value="<?php echo esc_attr( get_option( 'options_google_maps_default_latitude' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_google_maps_default_longitude">Longitude</label>
+                <input type="text" name="options_google_maps_default_longitude" id="options_google_maps_default_longitude" value="<?php echo esc_attr( get_option( 'options_google_maps_default_longitude' ) ); ?>">
+            </div>
+        </div>
+    </div>
+           
     <?php
+}
+
+/**
+ * Save the Google settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_google' );
+function rent_fetch_save_settings_google() {
+    
+    // Text field
+    if ( isset( $_POST['options_google_recaptcha_google_recaptcha_v2_site_key'] ) ) {
+        $options_google_recaptcha_google_recaptcha_v2_site_key = sanitize_text_field( $_POST['options_google_recaptcha_google_recaptcha_v2_site_key'] );
+        update_option( 'options_google_recaptcha_google_recaptcha_v2_site_key', $options_google_recaptcha_google_recaptcha_v2_site_key );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_recaptcha_google_recaptcha_v2_secret'] ) ) {
+        $options_google_recaptcha_google_recaptcha_v2_secret = sanitize_text_field( $_POST['options_google_recaptcha_google_recaptcha_v2_secret'] );
+        update_option( 'options_google_recaptcha_google_recaptcha_v2_secret', $options_google_recaptcha_google_recaptcha_v2_secret );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_maps_api_key'] ) ) {
+        $options_google_maps_api_key = sanitize_text_field( $_POST['options_google_maps_api_key'] );
+        update_option( 'options_google_maps_api_key', $options_google_maps_api_key );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_geocoding_api_key'] ) ) {
+        $options_google_geocoding_api_key = sanitize_text_field( $_POST['options_google_geocoding_api_key'] );
+        update_option( 'options_google_geocoding_api_key', $options_google_geocoding_api_key );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_map_marker'] ) ) {
+        $options_google_map_marker = sanitize_text_field( $_POST['options_google_map_marker'] );
+        update_option( 'options_google_map_marker', $options_google_map_marker );
+    }
+    
+    // Textarea field
+    if ( isset( $_POST['options_google_maps_styles'] ) ) {
+        $options_google_maps_styles = sanitize_text_field( $_POST['options_google_maps_styles'] );
+        update_option( 'options_google_maps_styles', $options_google_maps_styles );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_maps_default_latitude'] ) ) {
+        $options_google_maps_default_latitude = sanitize_text_field( $_POST['options_google_maps_default_latitude'] );
+        update_option( 'options_google_maps_default_latitude', $options_google_maps_default_latitude );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_maps_default_longitude'] ) ) {
+        $options_google_maps_default_longitude = sanitize_text_field( $_POST['options_google_maps_default_longitude'] );
+        update_option( 'options_google_maps_default_longitude', $options_google_maps_default_longitude );
+    }
+    
 }
 
 /**
