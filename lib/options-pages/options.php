@@ -231,6 +231,27 @@ function rent_fetch_settings_general() {
             <label for="options_enabled_integrations">Enabled Integrations</label>
         </div>
         <div class="column">
+            <script type="text/javascript">
+                jQuery(document).ready(function( $ ) {
+	
+                    $( '.integration' ).hide();
+                    
+                    // on load and on change of input[name="options_enabled_integrations[]"], show/hide the integration options
+                    $( 'input[name="options_enabled_integrations[]"]' ).on( 'change', function() {
+                        
+                        // hide all the integration options
+                        $( '.integration' ).hide();
+                        
+                        // show the integration options for the checked integrations
+                        $( 'input[name="options_enabled_integrations[]"]:checked' ).each( function() {
+                            $( '.integration.' + $( this ).val() ).show();
+                        });
+                        
+                    }).trigger( 'change' );
+                    
+                });
+                
+            </script>
             <ul class="checkboxes">
                 <li>
                     <label>
@@ -260,7 +281,7 @@ function rent_fetch_settings_general() {
         </div>
     </div>
     
-    <div class="row">
+    <div class="row integration yardi">
         <div class="column">
             <label>Yardi/RentCafe</label>
         </div>
@@ -292,7 +313,7 @@ function rent_fetch_settings_general() {
         </div>
     </div>
     
-    <div class="row">
+    <div class="row integration entrata">
         <div class="column">
             <label>Entrata</label>
         </div>
@@ -313,7 +334,7 @@ function rent_fetch_settings_general() {
         </div>
     </div>
     
-    <div class="row">
+    <div class="row integration realpage">
         <div class="column">
             <label>RealPage</label>
         </div>
@@ -338,7 +359,7 @@ function rent_fetch_settings_general() {
         </div>
     </div>
     
-    <div class="row">
+    <div class="row integration appfolio">
         <div class="column">
             <label>AppFolio</label>
         </div>
@@ -694,7 +715,272 @@ add_action( 'rent_fetch_do_settings_properties_property_search', 'rent_fetch_set
 function rent_fetch_settings_properties_property_search() {
     ?>
     
+     <div class="row">
+        <div class="column">
+            <label for="options_maximum_number_of_properties_to_show">Maximum number of properties to show</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_maximum_number_of_properties_to_show" id="options_maximum_number_of_properties_to_show" value="<?php echo esc_attr( get_option( 'options_maximum_number_of_properties_to_show' ) ); ?>">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_property_availability_display">Property availability display</label>
+        </div>
+        <div class="column">
+            <select name="options_property_availability_display" id="options_property_availability_display" value="<?php echo esc_attr( get_option( 'options_property_availability_display' ) ); ?>">
+                <option value="available" <?php selected( get_option( 'options_property_availability_display' ), 'available' ); ?>>Availability</option>
+                <option value="all" <?php selected( get_option( 'options_property_availability_display' ), 'all' ); ?>>All properties ignoring availability</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_starter_search_components">Starter search components</label>
+            <p class="description">Several default components can be optionally shown in the starter search box. Select the ones you'd like right here.</p>
+        </div>
+        <div class="column">
+            <?php
+            
+            // Get saved options
+            $options_starter_search_components = get_option('options_starter_search_components');
+            
+            // Define default values
+            $default_options = array(
+                'text_based_search',
+                'beds_search',
+                'type_search',
+            );
+            
+            // Make it an array just in case it isn't (for example, if it's a new install)
+            if (!is_array($options_starter_search_components)) {
+                $options_starter_search_components = $default_options;
+            }
+                        
+            ?>
+            <ul class="checkboxes">
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_starter_search_components[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_starter_search_components ) ); ?>>
+                        Text-based search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_starter_search_components[]" value="beds_search" <?php checked( in_array( 'beds_search', $options_starter_search_components ) ); ?>>
+                        Beds search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_starter_search_components[]" value="baths_search" <?php checked( in_array( 'baths_search', $options_starter_search_components ) ); ?>>
+                        Baths search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_starter_search_components[]" value="type_search" <?php checked( in_array( 'type_search', $options_starter_search_components ) ); ?>>
+                        Type search
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_map_search_components">Map search components</label>
+            <p class="description">Several default components can be optionally shown in the starter search box. Select the ones you'd like right here. Please note that if no values are available (e.g. if there's no data for Amenities), then that section of the search still won't show despite being selected.</p>
+        </div>
+        <div class="column">
+            <?php
+            
+            // Get saved options
+            $options_map_search_components = get_option('options_map_search_components');
+            
+            // Define default values
+            $default_options = array(
+                'text_based_search',
+                'beds_search',
+                'type_search',
+                'date_search',
+                'price_search',
+                'amenities_search',
+                'pets_search',
+            );
+            
+            // Make it an array just in case it isn't (for example, if it's a new install)
+            if (!is_array($options_map_search_components)) {
+                $options_map_search_components = $default_options;
+            }
+            
+            ?>
+            <ul class="checkboxes">
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_map_search_components ) ); ?>>
+                        Text-based search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="beds_search" <?php checked( in_array( 'beds_search', $options_map_search_components ) ); ?>>
+                        Beds search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="baths_search" <?php checked( in_array( 'baths_search', $options_map_search_components ) ); ?>>
+                        Baths search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="type_search" <?php checked( in_array( 'type_search', $options_map_search_components ) ); ?>>
+                        Type search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="date_search" <?php checked( in_array( 'date_search', $options_map_search_components ) ); ?>>
+                        Date search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="price_search" <?php checked( in_array( 'price_search', $options_map_search_components ) ); ?>>
+                        Price search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="amenities_search" <?php checked( in_array( 'amenities_search', $options_map_search_components ) ); ?>>
+                        Amenities search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_map_search_components[]" value="pets_search" <?php checked( in_array( 'pets_search', $options_map_search_components ) ); ?>>
+                        Pets search
+                    </label>
+                </li>                
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_maximum_bedrooms_to_search">Maximum bedrooms to search</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_maximum_bedrooms_to_search" id="options_maximum_bedrooms_to_search" value="<?php echo esc_attr( get_option( 'options_maximum_bedrooms_to_search' ) ); ?>">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_price_filter_minimum">Price filter</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_price_filter_minimum">Price filter minimum</label>
+                <input type="text" name="options_price_filter_minimum" id="options_price_filter_minimum" value="<?php echo esc_attr( get_option( 'options_price_filter_minimum' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_price_filter_maximum">Price filter maximum</label>
+                <input type="text" name="options_price_filter_maximum" id="options_price_filter_maximum" value="<?php echo esc_attr( get_option( 'options_price_filter_maximum' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_price_filter_step">Price filter step</label>
+                <input type="text" name="options_price_filter_step" id="options_price_filter_step" value="<?php echo esc_attr( get_option( 'options_price_filter_step' ) ); ?>">
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_number_of_amenities_to_show">Number of amenities to show</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_number_of_amenities_to_show" id="options_number_of_amenities_to_show" value="<?php echo esc_attr( get_option( 'options_number_of_amenities_to_show' ), 10 ); ?>">
+        </div>
+    </div>        
     <?php
+}
+
+/**
+ * Save the property search settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_property_search' );
+function rent_fetch_save_settings_property_search() {
+    
+    // Number field
+    if ( isset( $_POST['options_maximum_number_of_properties_to_show'] ) ) {
+        $max_properties = intval( $_POST['options_maximum_number_of_properties_to_show'] );
+        update_option( 'options_maximum_number_of_properties_to_show', $max_properties );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_property_availability_display'] ) ) {
+        $property_display = sanitize_text_field( $_POST['options_property_availability_display'] );
+        update_option( 'options_property_availability_display', $property_display );
+    }
+    
+    // // Checkbox field
+    // if ( isset( $_POST['options_starter_search_components'] ) ) {
+    //     $starter_search_components = $_POST['options_starter_search_components'];
+    //     $starter_search_components = array_map( 'sanitize_text_field', $starter_search_components );
+    //     update_option( 'options_starter_search_components', $starter_search_components );
+    // }
+    
+    // Checkboxes field
+    if (isset($_POST['options_starter_search_components'])) {
+        $options_starter_search_components = array_map('sanitize_text_field', $_POST['options_starter_search_components']);
+    } else {
+        $options_starter_search_components = array();
+    }
+    update_option('options_starter_search_components', $options_starter_search_components);
+    
+    // Checkboxes field
+    if (isset($_POST['options_map_search_components'])) {
+        $options_map_search_components = array_map('sanitize_text_field', $_POST['options_map_search_components']);
+    } else {
+        $options_map_search_components = array();
+    }
+    update_option('options_map_search_components', $options_map_search_components);
+    
+    // Number field
+    if ( isset( $_POST['options_maximum_bedrooms_to_search'] ) ) {
+        $max_bedrooms = intval( $_POST['options_maximum_bedrooms_to_search'] );
+        update_option( 'options_maximum_bedrooms_to_search', $max_bedrooms );
+    }
+    
+    // Number field
+    if ( isset( $_POST['options_price_filter_minimum'] ) ) {
+        $price_filter_minimum = intval( $_POST['options_price_filter_minimum'] );
+        update_option( 'options_price_filter_minimum', $price_filter_minimum );
+    }
+    
+    // Number field
+    if ( isset( $_POST['options_price_filter_maximum'] ) ) {
+        $price_filter_maximum = intval( $_POST['options_price_filter_maximum'] );
+        update_option( 'options_price_filter_maximum', $price_filter_maximum );
+    }
+    
+    // Number field
+    if ( isset( $_POST['options_price_filter_step'] ) ) {
+        $price_filter_step = intval( $_POST['options_price_filter_step'] );
+        update_option( 'options_price_filter_step', $price_filter_step );
+    }
+    
+    // Number field
+    if ( isset( $_POST['options_number_of_amenities_to_show'] ) ) {
+        $number_of_amenities_to_show = intval( $_POST['options_number_of_amenities_to_show'] );
+        update_option( 'options_number_of_amenities_to_show', $number_of_amenities_to_show );
+    }
+    
 }
 
 /**
