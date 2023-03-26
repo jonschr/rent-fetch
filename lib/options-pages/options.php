@@ -421,12 +421,10 @@ function rent_fetch_save_settings_general() {
     }
     
     // Checkboxes field
-    if (isset($_POST['options_enabled_integrations'])) {
+    if ( isset ( $_POST['options_enabled_integrations'] ) ) {
         $enabled_integrations = array_map('sanitize_text_field', $_POST['options_enabled_integrations']);
-    } else {
-        $enabled_integrations = array();
+        update_option('options_enabled_integrations', $enabled_integrations);
     }
-    update_option('options_enabled_integrations', $enabled_integrations);
     
     // Text field
     if ( isset( $_POST['options_yardi_integration_creds_yardi_api_key'] ) ) {
@@ -938,18 +936,14 @@ function rent_fetch_save_settings_property_search() {
     // Checkboxes field
     if (isset($_POST['options_starter_search_components'])) {
         $options_starter_search_components = array_map('sanitize_text_field', $_POST['options_starter_search_components']);
-    } else {
-        $options_starter_search_components = array();
+        update_option('options_starter_search_components', $options_starter_search_components);
     }
-    update_option('options_starter_search_components', $options_starter_search_components);
     
     // Checkboxes field
     if (isset($_POST['options_map_search_components'])) {
         $options_map_search_components = array_map('sanitize_text_field', $_POST['options_map_search_components']);
-    } else {
-        $options_map_search_components = array();
+        update_option('options_map_search_components', $options_map_search_components);
     }
-    update_option('options_map_search_components', $options_map_search_components);
     
     // Number field
     if ( isset( $_POST['options_maximum_bedrooms_to_search'] ) ) {
