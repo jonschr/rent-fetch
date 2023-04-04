@@ -1,3 +1,7 @@
+## 3.9.17
+
+-   On the single properties template, don't output the floorplans section at all if there aren't any floorplans to show
+
 ## 3.9.16
 
 -   Removing a few places where we log to the console by accident (inserted for testing and neglected to remove)

@@ -468,8 +468,32 @@ function rentfetch_single_property_floorplans() {
     $single_property_components = get_field( 'single_property_components', 'option' );
     if ( $single_property_components['enable_floorplans_display'] === false )
         return;
+        
+    // bail if this property doesn't have an ID
+    if ( !get_post_meta( get_the_ID(), 'property_id', true ) )
+        return;
+    
+    
+    // bail if this property doesn't have any floorplans
+    $floorplans = get_posts( array(
+        'post_type' => 'floorplans',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            array(
+                'key' => 'property_id',
+                'value' => get_post_meta( get_the_ID(), 'property_id', true ),
+                'compare' => '='
+            )
+        )
+    ) );
+    
+    if ( !$floorplans )
+        return;
+    
+    // looks like we're doing this...
     
     global $post;
+    
     $id = esc_attr( get_the_ID() );
     $property_id = esc_attr( get_post_meta( $id, 'property_id', true ) );
     
