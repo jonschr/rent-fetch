@@ -1,3 +1,7 @@
+## 3.9.18
+
+-   Add filterable lables for bathrooms. Defaults are "Bath" for 0 or 1, or "Baths" for more than that.
+
 ## 3.9.17
 
 -   On the single properties template, don't output the floorplans section at all if there aren't any floorplans to show
