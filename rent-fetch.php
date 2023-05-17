@@ -125,14 +125,52 @@ foreach ( glob( RENTFETCH_DIR . "lib/*", GLOB_ONLYDIR ) as $dir ){
 //////////////////////
 // START THE ENGINE //
 //////////////////////
-
 function rentfetch_database_tables_missing_notice() {
     echo '<div class="notice notice-error is-dismissible">';
-    echo '<p>' . __( 'The Action Scheduler tables appear to be missing. Please <a href="/wp-admin/tools.php?page=action-scheduler">go here</a> to regenerate those.', 'rentfetch' ) . '</p>';
+    echo '<p>' . __( '<strong>Rent Fetch:</strong> The Action Scheduler tables appear to be missing. Please <a href="/wp-admin/tools.php?page=action-scheduler">vist the Action Scheduler admin page</a> to regenerate those.', 'rentfetch' ) . '</p>';
     echo '</div>';
 }
 
-add_action( 'init', 'rentfetch_start_sync' );
+//! Perhaps add this in a later release. This function drops the Action Scheduler tables if they are over 500MB; however, administrative action is required to fix this.
+//! maybe consider programatically deactivating then reactivating Rent Fetch to regen the tables instead?
+// add_action( 'init', 'rentfetch_drop_large_actionscheduler_tables' );
+function rentfetch_drop_large_actionscheduler_tables() {
+    
+    global $wpdb;
+    
+    $table_list = array(
+        'actionscheduler_actions',
+        'actionscheduler_logs',
+        'actionscheduler_groups',
+        'actionscheduler_claims',
+    );
+
+    $found_tables = $wpdb->get_col( "SHOW TABLES LIKE '{$wpdb->prefix}actionscheduler%'" );
+
+    foreach ($table_list as $table_name) {
+        if (in_array($wpdb->prefix . $table_name, $found_tables)) {
+            // Get table size in bytes
+            $query = "SELECT data_length + index_length AS size FROM information_schema.TABLES WHERE table_schema = '{$wpdb->dbname}' AND table_name = '{$wpdb->prefix}{$table_name}'";
+            $result = $wpdb->get_row($query);
+            
+            // Check if the query was successful
+            if ($result !== null) {
+                $size_in_bytes = (int) $result->size;
+                
+                // Check if the table size exceeds 500MB (in bytes)
+                if ($size_in_bytes > 500 * 1024 * 1024) {
+                    // Drop the table
+                    $wpdb->query("DROP TABLE IF EXISTS {$wpdb->prefix}{$table_name}");
+                    
+                    // Output a success message
+                    echo "Table {$wpdb->prefix}{$table_name} dropped successfully.<br>";
+                }
+            }
+        }
+    }
+}
+
+add_action( 'wp_loaded', 'rentfetch_start_sync' );
 function rentfetch_start_sync() {
     
     global $wpdb;
@@ -144,13 +182,19 @@ function rentfetch_start_sync() {
         'actionscheduler_claims',
     );
         
-    $found_tables = $wpdb->get_col( "SHOW TABLES LIKE '{$wpdb->prefix}actionscheduler%'" );
-    
-    // if the tables are missing, output the notice and return
-    if ( !$found_tables ) {
-        add_action( 'admin_notices', 'rentfetch_database_tables_missing_notice' );
-        return;
+    foreach( $table_list as $table ) {
+        
+        $found_tables = $wpdb->get_col( "SHOW TABLES LIKE '{$wpdb->prefix}{$table}'" );
+        
+        // if the tables are missing, output the notice and return
+        if ( !$found_tables ) {
+            
+            add_action( 'admin_notices', 'rentfetch_database_tables_missing_notice' );
+            
+            return;
+        }
     }
+    
     
     //* REMOVE ALL ACTIONS ADDED BY OLD APARTMENTSYNC, ADDED IN 3.0, CAN BE REMOVED IN A LATER RELEASE
     // as_unschedule_action( 'apartmentsync_do_get_yardi_property_from_api' );
