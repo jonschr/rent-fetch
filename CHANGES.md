@@ -1,3 +1,9 @@
+## 3.10
+
+-   Updating Action Scheduler to 3.6
+-   Attempting to mitigate situations where the tables don't exist and avoid fatal errors
+-   Removing the need to install the Action Scheduler plugin to resolve missing tables situations
+
 ## 3.9.18
 
 -   Add filterable lables for bathrooms. Defaults are "Bath" for 0 or 1, or "Baths" for more than that.
