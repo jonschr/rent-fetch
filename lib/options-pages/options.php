@@ -1328,8 +1328,7 @@ function rent_fetch_settings_floorplan_archives() {
 add_action( 'rent_fetch_do_settings_labels', 'rent_fetch_settings_labels' );
 function rent_fetch_settings_labels() {
     ?>
-    <h2>Labels</h2>
-    
+        
     <div class="row">
         <div class="column">
             <label for="options_bedroom_numbers_0_bedroom">0 Bedroom</label>
