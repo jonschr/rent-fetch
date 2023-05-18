@@ -152,8 +152,19 @@ function rentfetch_floorplans_default_column_content( $column, $post_id ) {
     if ( 'unit_type_mapping' === $column )
         echo esc_attr( get_post_meta( $post_id, 'unit_type_mapping', true ) );        
     
-    if ( 'manual_images' === $column )
-        echo esc_attr( get_post_meta( $post_id, 'manual_images', true ) );        
+    // if ( 'manual_images' === $column )
+    //     echo esc_attr( get_post_meta( $post_id, 'manual_images', true ) );   
+        
+    if ( 'manual_images' === $column ) {
+        $images = get_post_meta( $post_id, 'manual_images', true );
+        
+        if ( is_array( $images ) ) {            
+            foreach ( $images as $image ) {
+                $image = wp_get_attachment_image_url( $image, 'thumbnail' );
+                echo '<img src="' . esc_attr( $image ) . '" style="width: 40px; height: 40px;" />';
+            }
+        }
+    }
     
     if ( 'floorplan_images' === $column )
         echo esc_attr( get_post_meta( $post_id, 'floorplan_images', true ) );        

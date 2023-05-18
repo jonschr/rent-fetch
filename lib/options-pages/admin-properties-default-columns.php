@@ -179,8 +179,16 @@ function rentfetch_properties_default_column_content( $column, $post_id ) {
     if ( 'url' === $column )
         echo esc_attr( get_post_meta( $post_id, 'url', true ) );
         
-    if ( 'images' === $column )
-        echo esc_attr( get_post_meta( $post_id, 'images', true ) );
+    if ( 'images' === $column ) {
+        $images = get_post_meta( $post_id, 'images', true );
+        
+        if ( is_array( $images ) ) {            
+            foreach ( $images as $image ) {
+                $image = wp_get_attachment_image_url( $image, 'thumbnail' );
+                echo '<img src="' . esc_attr( $image ) . '" style="width: 40px; height: 40px;" />';
+            }
+        }
+    }
         
     if ( 'property_source' === $column )
         echo esc_attr( get_post_meta( $post_id, 'property_source', true ) );
