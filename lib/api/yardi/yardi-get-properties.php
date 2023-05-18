@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'rentfetch_do_get_properties_yardi', 'rentfetch_get_properties_yardi' );
-function rentfetch_get_properties_yardi() {
+function rentfetch_get_properties_yardi() {            
     
     // notify the user, then bail if we're missing credential data
     if ( rentfetch_check_creds_yardi() == false ) {
@@ -9,18 +9,18 @@ function rentfetch_get_properties_yardi() {
         return;
     }
     
-    $yardi_integration_creds = get_field( 'yardi_integration_creds', 'option' );
-    $properties = $yardi_integration_creds['yardi_property_code'];
+    $properties = get_option( 'options_yardi_integration_creds_yardi_property_code' );
     $properties = preg_replace('/\s+/', '', $properties);      
     $properties = explode( ',', $properties );
-    $yardi_api_key = $yardi_integration_creds['yardi_api_key'];
-    $sync_term = get_field( 'sync_term', 'option' );
-    $data_sync = get_field( 'data_sync', 'option' );
+    $yardi_api_key = get_option( 'options_yardi_integration_creds_yardi_api_key' );
+    $sync_term = get_option( 'options_sync_term' );
+    $data_sync = get_option( 'options_data_sync' );
+    $site_type = get_option( 'options_apartment_site_type' );    
         
     foreach( $properties as $property ) {
             
-        // if syncing is paused or data dync is off, then bail, as we won't be restarting anything
-        if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
+        // if syncing is paused or data dync is off or this is a single property, then bail, as we won't be restarting anything
+        if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' || $site_type == 'single' ) {
             as_unschedule_action( 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
             as_unschedule_all_actions( 'rentfetch_do_get_yardi_property_from_api', array( $property, $yardi_api_key ), 'yardi' );
             rentfetch_verbose_log( "Sync term has changed for pulling property from API. Removing upcoming actions." );

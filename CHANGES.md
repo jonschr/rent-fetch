@@ -1,3 +1,7 @@
+## 3.10.1
+
+-   Adding a fix for situations where we're attempting to sync a property in Yardi while the site is set for a single property where actions were failing due to the 'amenities' taxonomy not being registered; we should no longer attempt to sync such a property.
+
 ## 3.10
 
 -   Updating Action Scheduler to 3.6
