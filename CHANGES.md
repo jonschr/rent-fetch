@@ -1,3 +1,21 @@
+## 3.10.1
+
+-   Adding a fix for situations where we're attempting to sync a property in Yardi while the site is set for a single property where actions were failing due to the 'amenities' taxonomy not being registered; we should no longer attempt to sync such a property.
+
+## 3.10
+
+-   Updating Action Scheduler to 3.6
+-   Attempting to mitigate situations where the tables don't exist and avoid fatal errors
+-   Removing the need to install the Action Scheduler plugin to resolve missing tables situations
+
+## 3.9.18
+
+-   Add filterable lables for bathrooms. Defaults are "Bath" for 0 or 1, or "Baths" for more than that.
+
+## 3.9.17
+
+-   On the single properties template, don't output the floorplans section at all if there aren't any floorplans to show
+
 ## 3.9.16
 
 -   Removing a few places where we log to the console by accident (inserted for testing and neglected to remove)

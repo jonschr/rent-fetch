@@ -123,10 +123,10 @@ function rentfetch_each_floorplan_baths() {
     $baths = floatval( $baths );
     
     // allow for hooking in
-    $baths = apply_filters( 'rentfetch_customize_baths_text', $baths );
+    $label = apply_filters( 'rentfetch_get_baths_label', $baths );
     
     if ( $baths )
-        printf( '<span class="floorplan-baths">%s</span>', $baths );
+        printf( '<span class="floorplan-baths">%s %s</span>', $baths, $label );
     
 }
 
