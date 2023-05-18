@@ -375,7 +375,7 @@ function rentfetch_each_properties_rent_range_display_as_minimum( $floorplan ) {
     
     $minimums = $floorplan['minimum_rent'];
     $maximums = $floorplan['maximum_rent'];
-        
+            
     $rents = array_merge( $minimums, $maximums );
     
     $rent = min( $rents );

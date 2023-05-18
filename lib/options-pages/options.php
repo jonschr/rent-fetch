@@ -88,7 +88,7 @@ function rent_fetch_options_page_html() {
             <a href="?page=rent_fetch_options" class="nav-tab<?php if (!isset($_GET['tab']) || $_GET['tab'] === 'general') { echo ' nav-tab-active'; } ?>">General</a>
             <a href="?page=rent_fetch_options&tab=google" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'google') { echo ' nav-tab-active'; } ?>">Google</a>
             <a href="?page=rent_fetch_options&tab=properties" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'properties') { echo ' nav-tab-active'; } ?>">Properties</a>
-            <a href="?page=rent_fetch_options&tab=floorplan_archives" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'floorplan_archives') { echo ' nav-tab-active'; } ?>">Floorplan Archives</a>
+            <a href="?page=rent_fetch_options&tab=floorplan_archives" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'floorplan_archives') { echo ' nav-tab-active'; } ?>">Floorplans</a>
             <a href="?page=rent_fetch_options&tab=labels" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'labels') { echo ' nav-tab-active'; } ?>">Labels</a>
         </nav>
         <form method="post" class="rent-fetch-options" action="<?php echo esc_url( admin_url( 'admin-post.php' ) );  ?>">
@@ -986,9 +986,7 @@ function rent_fetch_save_settings_property_search() {
  */
 add_action( 'rent_fetch_do_settings_properties_property_archives', 'rent_fetch_settings_properties_property_archives' );
 function rent_fetch_settings_properties_property_archives() {
-    //! TODO: save this data
     ?>
-    <h2>Property Archives</h2>
     
     <div class="row">
         <div class="column">
@@ -1103,13 +1101,42 @@ function rent_fetch_settings_properties_property_archives() {
 }
 
 /**
+ * Save the property archive settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_property_archives' );
+function rent_fetch_save_settings_property_archives() {
+    
+    // Number field
+    if ( isset( $_POST['options_property_footer_grid_number_properties'] ) ) {
+        $max_properties = intval( $_POST['options_property_footer_grid_number_properties'] );
+        update_option( 'options_property_footer_grid_number_properties', $max_properties );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_property_pricing_display'] ) ) {
+        $property_display = sanitize_text_field( $_POST['options_property_pricing_display'] );
+        update_option( 'options_property_pricing_display', $property_display );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_property_orderby'] ) ) {
+        $property_display = sanitize_text_field( $_POST['options_property_orderby'] );
+        update_option( 'options_property_orderby', $property_display );
+    }
+    
+    // Select field
+    if ( isset( $_POST['options_property_order'] ) ) {
+        $property_display = sanitize_text_field( $_POST['options_property_order'] );
+        update_option( 'options_property_order', $property_display );
+    }
+}
+
+/**
  * Adds the properties single settings subsection to the Rent Fetch settings page
  */
 add_action( 'rent_fetch_do_settings_properties_property_single', 'rent_fetch_settings_properties_property_single' );
 function rent_fetch_settings_properties_property_single() {
-    //! TODO: save data
     ?>
-    <h2>Property Single</h2>
     
     <div class="row">
         <div class="column">
@@ -1207,6 +1234,19 @@ function rent_fetch_settings_properties_property_single() {
         </div>
     </div>
     <?php
+}
+
+/**
+ * Save the property single settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_property_single' );
+function rent_fetch_save_settings_property_single() {
+    
+    // Checkboxes field
+    if ( isset ( $_POST['options_single_property_components'] ) ) {
+        $enabled_integrations = array_map('sanitize_text_field', $_POST['options_single_property_components']);
+        update_option('options_single_property_components', $enabled_integrations);
+    }
 }
 
 /**
