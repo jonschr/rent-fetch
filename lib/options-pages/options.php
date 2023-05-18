@@ -89,6 +89,7 @@ function rent_fetch_options_page_html() {
             <a href="?page=rent_fetch_options&tab=google" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'google') { echo ' nav-tab-active'; } ?>">Google</a>
             <a href="?page=rent_fetch_options&tab=properties" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'properties') { echo ' nav-tab-active'; } ?>">Properties</a>
             <a href="?page=rent_fetch_options&tab=floorplan_archives" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'floorplan_archives') { echo ' nav-tab-active'; } ?>">Floorplan Archives</a>
+            <a href="?page=rent_fetch_options&tab=labels" class="nav-tab<?php if (isset($_GET['tab']) && $_GET['tab'] === 'labels') { echo ' nav-tab-active'; } ?>">Labels</a>
         </nav>
         <form method="post" class="rent-fetch-options" action="<?php echo esc_url( admin_url( 'admin-post.php' ) );  ?>">
             <input type="hidden" name="action" value="rent_fetch_process_form">
@@ -111,6 +112,8 @@ function rent_fetch_options_page_html() {
                 do_action( 'rent_fetch_do_settings_single_property_template' );
             } elseif (isset($_GET['tab']) && $_GET['tab'] === 'floorplan_archives') {
                 do_action( 'rent_fetch_do_settings_floorplan_archives' );
+            } elseif (isset($_GET['tab']) && $_GET['tab'] === 'labels') {
+                do_action( 'rent_fetch_do_settings_labels' );
             } else {
 
             }
@@ -567,22 +570,6 @@ function rent_fetch_save_settings_general() {
 add_action( 'rent_fetch_do_settings_google', 'rent_fetch_settings_google' );
 function rent_fetch_settings_google() {
     ?>
-        
-    <div class="row">
-        <div class="column">
-            <label>Google reCAPTCHA v2</label>
-        </div>
-        <div class="column">
-            <div class="white-box">
-                <label for="options_google_recaptcha_google_recaptcha_v2_site_key">reCAPTCHA key</label>
-                <input type="text" name="options_google_recaptcha_google_recaptcha_v2_site_key" id="options_google_recaptcha_google_recaptcha_v2_site_key" value="<?php echo esc_attr( get_option( 'options_google_recaptcha_google_recaptcha_v2_site_key' ) ); ?>">
-            </div>
-            <div class="white-box">
-                <label for="options_google_recaptcha_google_recaptcha_v2_secret">reCAPTCHA key</label>
-                <input type="text" name="options_google_recaptcha_google_recaptcha_v2_secret" id="options_google_recaptcha_google_recaptcha_v2_secret" value="<?php echo esc_attr( get_option( 'options_google_recaptcha_google_recaptcha_v2_secret' ) ); ?>">
-            </div>
-        </div>
-    </div>
     
     <div class="row">
         <div class="column">
@@ -630,6 +617,22 @@ function rent_fetch_settings_google() {
             </div>
         </div>
     </div>
+    
+    <div class="row">
+        <div class="column">
+            <label>Google reCAPTCHA v2</label>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_google_recaptcha_google_recaptcha_v2_site_key">reCAPTCHA key</label>
+                <input type="text" name="options_google_recaptcha_google_recaptcha_v2_site_key" id="options_google_recaptcha_google_recaptcha_v2_site_key" value="<?php echo esc_attr( get_option( 'options_google_recaptcha_google_recaptcha_v2_site_key' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_google_recaptcha_google_recaptcha_v2_secret">reCAPTCHA key</label>
+                <input type="text" name="options_google_recaptcha_google_recaptcha_v2_secret" id="options_google_recaptcha_google_recaptcha_v2_secret" value="<?php echo esc_attr( get_option( 'options_google_recaptcha_google_recaptcha_v2_secret' ) ); ?>">
+            </div>
+        </div>
+    </div>
            
     <?php
 }
@@ -639,19 +642,7 @@ function rent_fetch_settings_google() {
  */
 add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_google' );
 function rent_fetch_save_settings_google() {
-    
-    // Text field
-    if ( isset( $_POST['options_google_recaptcha_google_recaptcha_v2_site_key'] ) ) {
-        $options_google_recaptcha_google_recaptcha_v2_site_key = sanitize_text_field( $_POST['options_google_recaptcha_google_recaptcha_v2_site_key'] );
-        update_option( 'options_google_recaptcha_google_recaptcha_v2_site_key', $options_google_recaptcha_google_recaptcha_v2_site_key );
-    }
-    
-    // Text field
-    if ( isset( $_POST['options_google_recaptcha_google_recaptcha_v2_secret'] ) ) {
-        $options_google_recaptcha_google_recaptcha_v2_secret = sanitize_text_field( $_POST['options_google_recaptcha_google_recaptcha_v2_secret'] );
-        update_option( 'options_google_recaptcha_google_recaptcha_v2_secret', $options_google_recaptcha_google_recaptcha_v2_secret );
-    }
-    
+        
     // Text field
     if ( isset( $_POST['options_google_maps_api_key'] ) ) {
         $options_google_maps_api_key = sanitize_text_field( $_POST['options_google_maps_api_key'] );
@@ -688,6 +679,18 @@ function rent_fetch_save_settings_google() {
         update_option( 'options_google_maps_default_longitude', $options_google_maps_default_longitude );
     }
     
+    // Text field
+    if ( isset( $_POST['options_google_recaptcha_google_recaptcha_v2_site_key'] ) ) {
+        $options_google_recaptcha_google_recaptcha_v2_site_key = sanitize_text_field( $_POST['options_google_recaptcha_google_recaptcha_v2_site_key'] );
+        update_option( 'options_google_recaptcha_google_recaptcha_v2_site_key', $options_google_recaptcha_google_recaptcha_v2_site_key );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_google_recaptcha_google_recaptcha_v2_secret'] ) ) {
+        $options_google_recaptcha_google_recaptcha_v2_secret = sanitize_text_field( $_POST['options_google_recaptcha_google_recaptcha_v2_secret'] );
+        update_option( 'options_google_recaptcha_google_recaptcha_v2_secret', $options_google_recaptcha_google_recaptcha_v2_secret );
+    }
+    
 }
 
 /**
@@ -698,16 +701,16 @@ function rent_fetch_settings_properties() {
     ?>
     <ul class="rent-fetch-options-submenu">
         <li><a href="?page=rent_fetch_options&tab=properties&section=property_search" class="tab<?php if (!isset($_GET['section']) || $_GET['section'] === 'property_search') { echo ' tab-active'; } ?>">Property Search</a></li>
-        <li><a href="?page=rent_fetch_options&tab=properties&section=property_single" class="tab<?php if ( isset( $_GET['section']) && $_GET['section'] === 'property_single') { echo ' tab-active'; } ?>">Property Single Template</a></li>
         <li><a href="?page=rent_fetch_options&tab=properties&section=property_archives" class="tab<?php if ( isset( $_GET['section']) && $_GET['section'] === 'property_archives') { echo ' tab-active'; } ?>">Property Archives</a></li>
+        <li><a href="?page=rent_fetch_options&tab=properties&section=property_single" class="tab<?php if ( isset( $_GET['section']) && $_GET['section'] === 'property_single') { echo ' tab-active'; } ?>">Property Single Template</a></li>
     </ul>    
     <?php
     if ( !isset($_GET['section']) || $_GET['section'] === 'property_search') {
         do_action( 'rent_fetch_do_settings_properties_property_search' );
-    } elseif (isset($_GET['section']) && $_GET['section'] === 'property_single') {
-        do_action( 'rent_fetch_do_settings_properties_property_single' );
     } elseif (isset($_GET['section']) && $_GET['section'] === 'property_archives') {
         do_action( 'rent_fetch_do_settings_properties_property_archives' );
+    } elseif (isset($_GET['section']) && $_GET['section'] === 'property_single') {
+        do_action( 'rent_fetch_do_settings_properties_property_single' );
     }
 }
 
@@ -979,22 +982,230 @@ function rent_fetch_save_settings_property_search() {
 }
 
 /**
- * Adds the properties single settings subsection to the Rent Fetch settings page
- */
-add_action( 'rent_fetch_do_settings_properties_property_single', 'rent_fetch_settings_properties_property_single' );
-function rent_fetch_settings_properties_property_single() {
-    ?>
-    <h2>Property Single</h2>
-    <?php
-}
-
-/**
  * Adds the properties archives settings subsection to the Rent Fetch settings page
  */
 add_action( 'rent_fetch_do_settings_properties_property_archives', 'rent_fetch_settings_properties_property_archives' );
 function rent_fetch_settings_properties_property_archives() {
+    //! TODO: save this data
     ?>
     <h2>Property Archives</h2>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_property_footer_grid_number_properties">Property Footer Grid Maximum</label>
+            <p class="description">By default, this shows on the individual properties template. If there are less than two properties that would show, this area simply does not appear.</p>
+        </div>
+        <div class="column">
+            <p class="description">The maximum number of properties to show. By default, this will show all (-1) properties</p>
+            <input type="number" name="options_property_footer_grid_number_properties" id="options_property_footer_grid_number_properties" value="<?php echo esc_attr( get_option( 'options_property_footer_grid_number_properties' ) ); ?>">
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_property_pricing_display">Property Pricing Display</label>
+            <p class="description">How should pricing be shown on property archives?</p>
+        </div>
+        <div class="column">
+            <ul class="radio">
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_pricing_display" id="options_property_pricing_display" value="range" <?php checked( get_option( 'options_property_pricing_display' ), 'range' ); ?>>
+                        Range (e.g. "$1999 to $2999")
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_pricing_display" id="options_property_pricing_display" value="minimum" <?php checked( get_option( 'options_property_pricing_display' ), 'minimum' ); ?>>
+                        Minimum (e.g. "from $1999")
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_property_orderby">Order Properties By</label>
+            <p class="description">In archives, what order would you like properties to be shown in by default?</p>
+        </div>
+        <div class="column">
+            <ul class="radio">
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="menu_order" <?php checked( get_option( 'options_property_orderby' ), 'menu_order' ); ?>>
+                        Menu order (use this if utilizing drag/drop reordering)
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="date" <?php checked( get_option( 'options_property_orderby' ), 'date' ); ?>>
+                        Publish date
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="modified" <?php checked( get_option( 'options_property_orderby' ), 'modified' ); ?>>
+                        Last modified date
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="ID" <?php checked( get_option( 'options_property_orderby' ), 'ID' ); ?>>
+                        Post ID number
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="title" <?php checked( get_option( 'options_property_orderby' ), 'title' ); ?>>
+                        Alphabetical, based on property name
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="name" <?php checked( get_option( 'options_property_orderby' ), 'name' ); ?>>
+                        Alphabetical, based on property slug
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_orderby" id="options_property_orderby" value="rand" <?php checked( get_option( 'options_property_orderby' ), 'rand' ); ?>>
+                        Randomize
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_property_order">Property order direction</label>
+        </div>
+        <div class="column">
+            <ul class="radio">
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_order" id="options_property_order" value="ASC" <?php checked( get_option( 'options_property_order' ), 'ASC' ); ?>>
+                        Ascending
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" name="options_property_order" id="options_property_order" value="DESC" <?php checked( get_option( 'options_property_order' ), 'DESC' ); ?>>
+                        Descending
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <?php
+}
+
+/**
+ * Adds the properties single settings subsection to the Rent Fetch settings page
+ */
+add_action( 'rent_fetch_do_settings_properties_property_single', 'rent_fetch_settings_properties_property_single' );
+function rent_fetch_settings_properties_property_single() {
+    //! TODO: save data
+    ?>
+    <h2>Property Single</h2>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_single_property_components">Single property components</label>
+            <p class="description">These settings control which default components of the page display. Please note that theme developers can also customize this display in several other ways. Each individual section can be replaced by removing the corresponding action, or you can simply add a single-properties.php file to the root of your theme.</p>
+            <p class="description">Please note that each individual section will only display if there's enough information to meaningfully display it. A property with no images set will not output a blank "images" section, for example.</p>
+        </div>
+        <div class="column">
+            <?php
+            
+            // Get saved options
+            $options_single_property_components = get_option('options_single_property_components');
+            
+            // Define default values
+            $default_options = array(
+                'enable_property_title',
+                'enable_property_images',
+                'enable_basic_info_display',
+                'enable_property_description',
+                'enable_floorplans_display',
+                'enable_amenities_display',
+                'enable_lease_details_display',
+                'enable_property_map',
+                'enable_nearby_properties',
+            );
+            
+            // Make it an array just in case it isn't (for example, if it's a new install)
+            if (!is_array($options_single_property_components)) {
+                $options_single_property_components = $default_options;
+            }
+                        
+            ?>
+            <ul class="checkboxes">
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_title" <?php checked( in_array( 'enable_property_title', $options_single_property_components ) ); ?>>
+                        Enable property title
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_images" <?php checked( in_array( 'enable_property_images', $options_single_property_components ) ); ?>>
+                        Enable property images
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_section_navigation" <?php checked( in_array( 'enable_section_navigation', $options_single_property_components ) ); ?>>
+                        Enable section navigation
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_basic_info_display" <?php checked( in_array( 'enable_basic_info_display', $options_single_property_components ) ); ?>>
+                        Enable basic info display
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_description" <?php checked( in_array( 'enable_property_description', $options_single_property_components ) ); ?>>
+                        Enable property description
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_floorplans_display" <?php checked( in_array( 'enable_floorplans_display', $options_single_property_components ) ); ?>>
+                        Enable floorplan display
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_amenities_display" <?php checked( in_array( 'enable_amenities_display', $options_single_property_components ) ); ?>>
+                        Enable amenities display
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_lease_details_display" <?php checked( in_array( 'enable_lease_details_display', $options_single_property_components ) ); ?>>
+                        Enable lease details display
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_map" <?php checked( in_array( 'enable_property_map', $options_single_property_components ) ); ?>>
+                        Enable property map
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_single_property_components[]" value="enable_nearby_properties" <?php checked( in_array( 'enable_nearby_properties', $options_single_property_components ) ); ?>>
+                        Enable nearby properties
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
     <?php
 }
 
@@ -1003,7 +1214,172 @@ function rent_fetch_settings_properties_property_archives() {
  */
 add_action( 'rent_fetch_do_settings_floorplan_archives', 'rent_fetch_settings_floorplan_archives' );
 function rent_fetch_settings_floorplan_archives() {
+    //! TODO: save data
     ?>
+    <h2>Floorplan Archives</h2>
+    
+    <div class="row floorplan-archive-buttons contact">
+        <div class="column">
+            <label>Contact button</label>
+            <p class="description">A button linking either to a static page on the site, to a gravity forms lightbox, or to a single third-party location. This will be the same link for every floorplan (it is not dynamic).</p>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_contact_button_enabled">
+                    <input type="checkbox" name="options_contact_button_enabled" id="options_contact_button_enabled" <?php checked( get_option( 'options_contact_button_enabled' ), true ); ?>>
+                    Enable the contact button
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row floorplan-archive-buttons availability">
+        <div class="column">
+            <label>Availability button</label>
+            <p class="description">A button which can pull in the availability link for each individual floorplan, with a single fallback link to use if no availability url is available.</p>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_availability_button_enabled">
+                    <input type="checkbox" name="options_availability_button_enabled" id="options_availability_button_enabled" <?php checked( get_option( 'options_availability_button_enabled' ), true ); ?>>
+                    Enable the availability button
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row floorplan-archive-buttons tour">
+        <div class="column">
+            <label>Tour button</label>
+            <p class="description">A button to show a lightbox with a video, or an external link (this link is always per-floorplan).</p>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_tour_button_enabled">
+                    <input type="checkbox" name="options_tour_button_enabled" id="options_tour_button_enabled" <?php checked( get_option( 'options_tour_button_enabled' ), true ); ?>>
+                    Enable the tour button
+                </label>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row floorplan-archive-buttons single">
+        <div class="column">
+            <label>Link to floorplan single template</label>
+            <p class="description">A button which simply links to the individual floorplan template.</p>
+        </div>
+        <div class="column">
+            <div class="white-box">
+                <label for="options_single_button_enabled">
+                    <input type="checkbox" name="options_single_button_enabled" id="options_single_button_enabled" <?php checked( get_option( 'options_single_button_enabled' ), true ); ?>>
+                    Enable the single floorplan template button
+                </label>
+            </div>
+        </div>
+    </div>    
+    
     
     <?php
+}
+
+/**
+ * Adds the labels settings section to the Rent Fetch settings page
+ */
+add_action( 'rent_fetch_do_settings_labels', 'rent_fetch_settings_labels' );
+function rent_fetch_settings_labels() {
+    ?>
+    <h2>Labels</h2>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_bedroom_numbers_0_bedroom">0 Bedroom</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_bedroom_numbers_0_bedroom" id="options_bedroom_numbers_0_bedroom" value="<?php echo esc_attr( get_option( 'options_bedroom_numbers_0_bedroom', 'Studio' ) ); ?>">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="options_bedroom_numbers_1_bedroom">1 Bedroom</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_bedroom_numbers_1_bedroom" id="options_bedroom_numbers_1_bedroom" value="<?php echo esc_attr( get_option( 'options_bedroom_numbers_1_bedroom', 'One Bedroom' ) ); ?>">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="options_bedroom_numbers_2_bedroom">2 Bedroom</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_bedroom_numbers_2_bedroom" id="options_bedroom_numbers_2_bedroom" value="<?php echo esc_attr( get_option( 'options_bedroom_numbers_2_bedroom', 'Two Bedroom' ) ); ?>">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="options_bedroom_numbers_3_bedroom">3 Bedroom</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_bedroom_numbers_3_bedroom" id="options_bedroom_numbers_3_bedroom" value="<?php echo esc_attr( get_option( 'options_bedroom_numbers_3_bedroom', 'Three Bedroom' ) ); ?>">            
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="options_bedroom_numbers_4_bedroom">4 Bedroom</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_bedroom_numbers_4_bedroom" id="options_bedroom_numbers_4_bedroom" value="<?php echo esc_attr( get_option( 'options_bedroom_numbers_4_bedroom', 'Four Bedroom' ) ); ?>">
+        </div>
+    </div>
+    <div class="row">
+        <div class="column">
+            <label for="options_bedroom_numbers_5_bedroom">5 Bedroom</label>
+        </div>
+        <div class="column">
+            <input type="text" name="options_bedroom_numbers_5_bedroom" id="options_bedroom_numbers_5_bedroom" value="<?php echo esc_attr( get_option( 'options_bedroom_numbers_5_bedroom', 'Five Bedroom' ) ); ?>">
+        </div>
+    </div>
+    <?php
+}
+
+/**
+ * Save the general settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_labels' );
+function rent_fetch_save_settings_labels() {
+    
+    // Text field
+    if ( isset( $_POST['options_bedroom_numbers_0_bedroom']) ) {
+        $options_bedroom_numbers_0_bedroom = sanitize_text_field( $_POST['options_bedroom_numbers_0_bedroom'] );
+        update_option( 'options_bedroom_numbers_0_bedroom', $options_bedroom_numbers_0_bedroom );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_bedroom_numbers_1_bedroom']) ) {
+        $options_bedroom_numbers_1_bedroom = sanitize_text_field( $_POST['options_bedroom_numbers_1_bedroom'] );
+        update_option( 'options_bedroom_numbers_1_bedroom', $options_bedroom_numbers_1_bedroom );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_bedroom_numbers_2_bedroom']) ) {
+        $options_bedroom_numbers_2_bedroom = sanitize_text_field( $_POST['options_bedroom_numbers_2_bedroom'] );
+        update_option( 'options_bedroom_numbers_2_bedroom', $options_bedroom_numbers_2_bedroom );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_bedroom_numbers_3_bedroom']) ) {
+        $options_bedroom_numbers_3_bedroom = sanitize_text_field( $_POST['options_bedroom_numbers_3_bedroom'] );
+        update_option( 'options_bedroom_numbers_3_bedroom', $options_bedroom_numbers_3_bedroom );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_bedroom_numbers_4_bedroom']) ) {
+        $options_bedroom_numbers_4_bedroom = sanitize_text_field( $_POST['options_bedroom_numbers_4_bedroom'] );
+        update_option( 'options_bedroom_numbers_4_bedroom', $options_bedroom_numbers_4_bedroom );
+    }
+    
+    // Text field
+    if ( isset( $_POST['options_bedroom_numbers_5_bedroom']) ) {
+        $options_bedroom_numbers_5_bedroom = sanitize_text_field( $_POST['options_bedroom_numbers_5_bedroom'] );
+        update_option( 'options_bedroom_numbers_5_bedroom', $options_bedroom_numbers_5_bedroom );
+    }
 }
