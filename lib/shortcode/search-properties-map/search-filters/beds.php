@@ -54,3 +54,32 @@ function rentfetch_search_properties_map_filters_beds() {
     echo '</div>'; // .input-wrap
         
 }
+
+add_filter( 'rentfetch_search_property_map_floorplans_query_args', 'rentfetch_search_property_map_floorplans_args_beds', 10, 1 );
+function rentfetch_search_property_map_floorplans_args_beds( $floorplans_args ) {
+    
+    //* bedrooms
+    $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
+    $beds = array_unique( $beds );
+    asort( $beds );
+    
+    // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
+    foreach ( $beds as $bed ) {
+        if ( isset( $_POST['beds-' . $bed ] ) && $_POST['beds-' . $bed ] == 'on' ) {
+            $bed = sanitize_text_field( $bed );
+            $bedsarray[] = $bed;
+        }
+    }
+    
+    // add the meta query array to our $floorplans_args
+    if ( isset( $bedsarray ) ) {
+        $floorplans_args['meta_query'][] = array(
+            array(
+                'key' => 'beds',
+                'value' => $bedsarray,
+            )
+        );
+    }
+    
+    return $floorplans_args;
+}

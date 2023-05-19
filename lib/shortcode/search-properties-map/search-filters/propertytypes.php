@@ -57,3 +57,45 @@ function rentfetch_search_properties_map_filters_property_types() {
     }
         
 }
+
+add_filter( 'rentfetch_search_property_map_properties_query_args', 'rentfetch_search_property_map_properties_args_types', 10, 1 );
+function rentfetch_search_property_map_properties_args_types( $property_args ) {
+    
+    // bail if there's no propertypes taxonomy
+    if ( !taxonomy_exists( 'propertytypes' ) )
+        return;
+        
+    //* Add the tax queries
+    $property_args['tax_query'] = array();
+    
+    //* propertytype taxonomy
+    $propertytypes = get_terms( 
+        array(
+            'taxonomy' => 'propertytypes',
+            'hide_empty' => true,
+        ),
+    );
+    
+    // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
+    foreach ( $propertytypes as $propertytype ) {
+        $name = $propertytype->name;
+        $propertytype_term_id = $propertytype->term_id;
+        
+        if ( isset( $_POST['propertytypes-' . $propertytype_term_id ] ) && $_POST['propertytypes-' . $propertytype_term_id ] == 'on' ) {
+            $propertytype_term_id = sanitize_text_field( $propertytype_term_id );
+            $propertytypeids[] = $propertytype_term_id;
+        }
+    }
+        
+    // add the meta query array to our $args
+    if ( isset( $propertytypeids ) ) {
+        $property_args['tax_query'][] = array(
+            array(
+                'taxonomy' => 'propertytypes',
+                'terms' => $propertytypeids,
+            )
+        );
+    } 
+    
+    return $property_args;
+}

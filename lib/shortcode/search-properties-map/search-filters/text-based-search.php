@@ -31,3 +31,24 @@ function rentfetch_search_properties_map_filters_text_search() {
     echo '</div>';
         
 }
+
+add_filter( 'rentfetch_search_property_map_properties_query_args', 'rentfetch_search_property_map_properties_args_text', 10, 1 );
+function rentfetch_search_property_map_properties_args_text( $property_args ) {
+    //* Add text-based search into the query
+    $search = null;
+    
+    if ( isset( $_POST['textsearch'] ) ) {
+        $search = $_POST['textsearch'];
+        $search = sanitize_text_field( $search );
+    }
+        
+    if ( $search != null ) {
+        $property_args['s'] = $search;
+        
+        // force the site to use relevanssi if it's installed
+        if ( function_exists( 'relevanssi_truncate_index_ajax_wrapper' ) )
+            $property_args['relevanssi'] = true;
+    }  
+    
+    return $property_args;
+}

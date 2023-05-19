@@ -43,3 +43,18 @@ function rentfetch_search_properties_map_filters_pets() {
         }
         
 }
+
+add_filter( 'rentfetch_search_property_map_properties_query_args', 'rentfetch_search_property_map_properties_args_pets', 10, 1 );
+function rentfetch_search_property_map_properties_args_pets( $property_args ) {
+
+    if ( isset( $_POST['pets'] ) ) {
+        $property_args['meta_query'][] = array(
+            array(
+                'key' => 'pets',
+                'value' => sanitize_text_field( $_POST['pets'] ),
+            )
+        );
+    }
+    
+    return $property_args;
+}

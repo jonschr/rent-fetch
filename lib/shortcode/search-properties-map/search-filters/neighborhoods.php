@@ -79,3 +79,14 @@ function rentfetch_search_properties_map_filters_neighborhoods() {
     
     }
 }
+
+add_filter( 'rentfetch_search_property_map_properties_query_args', 'rentfetch_search_property_map_properties_args_neighborhoods', 10, 1 );
+function rentfetch_search_property_map_properties_args_neighborhoods( $property_args ) {
+    // get the list of properties connected to the selected properties
+    $properties_connected_to_selected_neighborhoods = rentfetch_get_connected_properties_from_selected_neighborhoods();
+    if ( $properties_connected_to_selected_neighborhoods ) {
+        $property_args['post__in'] = $properties_connected_to_selected_neighborhoods;            
+    }    
+    
+    return $property_args;
+}

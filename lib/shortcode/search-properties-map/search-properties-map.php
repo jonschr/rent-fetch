@@ -17,7 +17,6 @@ function rentfetch_propertymap( $atts ) {
         
     wp_enqueue_script( 'rentfetch-search-properties-ajax' );
     wp_enqueue_script( 'rentfetch-search-properties-script' );
-    wp_enqueue_script( 'rentfetch-toggle-map' );
         
     // slick
     wp_enqueue_script( 'rentfetch-slick-main-script' );
@@ -50,10 +49,10 @@ function rentfetch_propertymap( $atts ) {
     echo '<div class="properties-search-wrap">';
         printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter" style="opacity:0;">', site_url() );
         
-            
+            // This is the hook where we add all of our actions for the search filters
             do_action( 'rentfetch_do_search_properties_map_filters' );
                     
-            //* Buttons     
+            // Buttons     
             printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
             echo '<button type="submit" style="display:none;">Search</button>';
             echo '<input type="hidden" name="action" value="propertysearch">';
@@ -63,7 +62,6 @@ function rentfetch_propertymap( $atts ) {
         //* Our container markup for the results
         echo '<div class="map-response-wrap">';
             echo '<div id="response"></div>';
-            echo '<a class="toggle"></a>';
             echo '<div id="map"></div>';
         echo '</div>';
     
@@ -82,226 +80,61 @@ function rentfetch_filter_properties(){
         'posts_per_page' => -1,
 		'orderby' => 'date', // we will sort posts by date
 		'order'	=> 'ASC', // ASC or DESC
-        // 'cache_results' => false,
-        // 'update_post_meta_cache' => false,
-        // 'update_post_term_cache' => false,
         'no_found_rows' => true,
 	);
-        
-    //* bedrooms
-    $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
-    $beds = array_unique( $beds );
-    asort( $beds );
     
-    // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
-    foreach ( $beds as $bed ) {
-        if ( isset( $_POST['beds-' . $bed ] ) && $_POST['beds-' . $bed ] == 'on' ) {
-            $bed = sanitize_text_field( $bed );
-            $bedsarray[] = $bed;
-        }
-    }
-    
-    // add the meta query array to our $floorplans_args
-    if ( isset( $bedsarray ) ) {
-        $floorplans_args['meta_query'][] = array(
-            array(
-                'key' => 'beds',
-                'value' => $bedsarray,
-            )
-        );
-    }
-    
-    //* bathrooms
-    $baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
-    $baths = array_unique( $baths );
-    asort( $baths );
-    
-    // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
-    foreach ( $baths as $bath ) {
-        if ( isset( $_POST['baths-' . $bath ] ) && $_POST['baths-' . $bath ] == 'on' ) {
-            $bath = sanitize_text_field( $bath );
-            $bathsarray[] = $bath;
-        }
-    }
-    
-    // add the meta query array to our $floorplans_args
-    if ( isset( $bathsarray ) ) {
-        $floorplans_args['meta_query'][] = array(
-            array(
-                'key' => 'baths',
-                'value' => $bathsarray,
-            )
-        );
-    }
-    
-    //* Date    
-    if ( isset( $_POST['dates'] ) ) {
-                
-        // get the dates, in a format like this: 'YYYYMMDD to YYYYMMDD'
-        $datestring = sanitize_text_field( $_POST['dates'] );
-    
-        // get the dates into an array
-        $dates = explode( ' to ', $datestring  );
-        
-        // typical use, we have two dates, a start and end
-        if ( count( $dates ) == 2 ) {
+    $floorplans_args = apply_filters( 'rentfetch_search_property_map_floorplans_query_args', $floorplans_args );
                     
-            // do a between query against the availability dates
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'availability_date',
-                    'value' => array( $dates[0], $dates[1] ),
-                    'type' => 'numeric',
-                    'compare' => 'BETWEEN',
-                )
-            );
-            
-        // or we might just have one date, which we'll treat as an end
-        } elseif ( count( $dates ) == 1 && !empty( $dates[0] ) ) {
-            
-            $yesterday = date('Ymd',strtotime("-1 days"));
-                        
-            // do a between query between yesterday and the date entered
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'availability_date',
-                    'value' => array( $yesterday, $dates[0] ),
-                    'type' => 'numeric',
-                    'compare' => 'BETWEEN',
-                )
-            );
-           
-        // no date is set, so let's not make that part of the query; fall back to available units
-        } else {
-                        
-            // if the date is anything else, then we need to only pick up floorplans that have more than 0 units available
-            $property_availability_display = $price_settings = get_option( 'options_property_availability_display', 'options' );
-            if ( $property_availability_display != 'all' ) {
-                $floorplans_args['meta_query'][] = array(
-                    array(
-                        'key' => 'available_units',
-                        'value' => 0,
-                        'compare' => '>'
-                    )
-                );
-            }            
-            
-        }
-        
-    }
-            
-    //* Add the actual rent parameters if those are set
-    if ( isset( $_POST['pricesmall'] ) && isset( $_POST['pricebig'] ) ) {
-        
-        $defaultpricesmall = 100;
-        $defaultpricebig = 5000;
-        
-        // get the small value
-        if ( isset( $_POST['pricesmall'] ) )
-            $pricesmall = intval( sanitize_text_field( $_POST['pricesmall'] ) );
-            
-        // if it's not a good value, then change it to something sensible
-        if ( $pricesmall < 100 )
-            $pricesmall = $defaultpricesmall;
-        
-        // get the big value
-        if ( isset( $_POST['pricebig'] ) )
-            $pricebig = intval( sanitize_text_field( $_POST['pricebig'] ) );
-            
-        // if there's isn't one, then use the default instead
-        if ( empty( $pricebig ) )
-            $pricebig = $defaultpricebig;
-                
-        
-        // if we're showing all properties, then by default we need to ignore pricing
-        $property_availability_display = $price_settings = get_option( 'options_property_availability_display', 'options' );
-        if ( $property_availability_display == 'all' ) {
-            
-            // but if pricing parameters are actually being manually set, then we need that search to work
-            if ( $pricesmall > 100 || $pricebig < 5000 ) {
-                                    
-                $floorplans_args['meta_query'][] = array(
-                    array(
-                        'key' => 'minimum_rent',
-                        'value' => array( $pricesmall, $pricebig ),
-                        'type' => 'numeric',
-                        'compare' => 'BETWEEN',
-                    )
-                );
-            }            
-        } else {
-            // if this is an availability search, then always take pricing into account
-            $floorplans_args['meta_query'][] = array(
-                    array(
-                        'key' => 'minimum_rent',
-                        'value' => array( $pricesmall, $pricebig ),
-                        'type' => 'numeric',
-                        'compare' => 'BETWEEN',
-                    )
-                );
-        }
-    }
-     
-    // var_dump( $floorplans_args );
-    
 	$floorplans_query = new WP_Query( $floorplans_args );
-    
-    // var_dump( $floorplans_query->post );
-    
+        
     // reset the floorplans array
     $floorplans = array();
      
 	if( $floorplans_query->have_posts() ) :
-        
-        // printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> results</h2><p>Note: Right now this is searching floorplans. Long-term, it will need to search the floorplans first, then do a secondary search of the associated properties.</p></div>', $numberofposts );
-        
-            while( $floorplans_query->have_posts() ): $floorplans_query->the_post();
+                
+        while( $floorplans_query->have_posts() ): $floorplans_query->the_post();
                         
-                $id = get_the_ID();
-                $property_id = get_post_meta( $id, 'property_id', true );
-                $beds = get_post_meta( $id, 'beds', true );
-                $baths = get_post_meta( $id, 'baths', true );
-                $minimum_rent = get_post_meta( $id, 'minimum_rent', true );
-                $maximum_rent = get_post_meta( $id, 'maximum_rent', true );
-                $minimum_sqft = get_post_meta( $id, 'minimum_sqft', true );
-                $maximum_sqft = get_post_meta( $id, 'maximum_sqft', true );
-                $available_units = get_post_meta( $id, 'available_units', true );
-                $has_specials = get_post_meta( $id, 'has_specials', true );
-                
-                if ( !isset( $floorplans[$property_id ] ) ) {
-                    $floorplans[ $property_id ] = array(
-                        'id' => array( $id ),
-                        'beds' => array( $beds ),
-                        'baths' => array( $baths ),
-                        'minimum_rent' => array( $minimum_rent ),
-                        'maximum_rent' => array( $maximum_rent ),
-                        'minimum_sqft' => array( $minimum_sqft ),
-                        'maximum_sqft' => array( $maximum_sqft ),
-                        'available_units' => array( $available_units ),
-                        'has_specials' => array( $has_specials ),
-                    );
-                } else {
-                    $floorplans[ $property_id ]['id'][] = $id;
-                    $floorplans[ $property_id ]['beds'][] = $beds;
-                    $floorplans[ $property_id ]['baths'][] = $baths;
-                    $floorplans[ $property_id ]['minimum_rent'][] = $minimum_rent;
-                    $floorplans[ $property_id ]['maximum_rent'][] = $maximum_rent;
-                    $floorplans[ $property_id ]['minimum_sqft'][] = $minimum_sqft;
-                    $floorplans[ $property_id ]['maximum_sqft'][] = $maximum_sqft;
-                    $floorplans[ $property_id ]['available_units'][] = $available_units;
-                    $floorplans[ $property_id ]['has_specials'][] = $has_specials;
-                }
-                
-            endwhile;
+            $id = get_the_ID();
+            $property_id = get_post_meta( $id, 'property_id', true );
+            $beds = get_post_meta( $id, 'beds', true );
+            $baths = get_post_meta( $id, 'baths', true );
+            $minimum_rent = get_post_meta( $id, 'minimum_rent', true );
+            $maximum_rent = get_post_meta( $id, 'maximum_rent', true );
+            $minimum_sqft = get_post_meta( $id, 'minimum_sqft', true );
+            $maximum_sqft = get_post_meta( $id, 'maximum_sqft', true );
+            $available_units = get_post_meta( $id, 'available_units', true );
+            $has_specials = get_post_meta( $id, 'has_specials', true );
+            
+            if ( !isset( $floorplans[$property_id ] ) ) {
+                $floorplans[ $property_id ] = array(
+                    'id' => array( $id ),
+                    'beds' => array( $beds ),
+                    'baths' => array( $baths ),
+                    'minimum_rent' => array( $minimum_rent ),
+                    'maximum_rent' => array( $maximum_rent ),
+                    'minimum_sqft' => array( $minimum_sqft ),
+                    'maximum_sqft' => array( $maximum_sqft ),
+                    'available_units' => array( $available_units ),
+                    'has_specials' => array( $has_specials ),
+                );
+            } else {
+                $floorplans[ $property_id ]['id'][] = $id;
+                $floorplans[ $property_id ]['beds'][] = $beds;
+                $floorplans[ $property_id ]['baths'][] = $baths;
+                $floorplans[ $property_id ]['minimum_rent'][] = $minimum_rent;
+                $floorplans[ $property_id ]['maximum_rent'][] = $maximum_rent;
+                $floorplans[ $property_id ]['minimum_sqft'][] = $minimum_sqft;
+                $floorplans[ $property_id ]['maximum_sqft'][] = $maximum_sqft;
+                $floorplans[ $property_id ]['available_units'][] = $available_units;
+                $floorplans[ $property_id ]['has_specials'][] = $has_specials;
+            }
+            
+        endwhile;
         
 		wp_reset_postdata();
         
 	endif;
-    
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $floorplans );
-    // echo '</pre>';
-    
+        
     foreach ( $floorplans as $key => $floorplan ) {
         $max = max( $floorplan['beds'] );
         $min = min( $floorplan['beds'] );
@@ -368,23 +201,15 @@ function rentfetch_filter_properties(){
     $property_ids = array_keys( $floorplans );
     if ( empty( $property_ids ) )
     $property_ids = array( '1' ); // if there aren't any properties, we shouldn't find anything – empty array will let us find everything, so let's pass nonsense to make the search find nothing
-    
-    
-    
-    
-    // echo '<pre style="font-size: 14px;">';
-    // print_r( $property_ids );
-    // echo '</pre>';
-    
+        
     // set null for $properties_posts_per_page
-    $properties_maximum_per_page = null;
-    $properties_maximum_per_page = apply_filters( 'rentfetch_properties_maximum', $properties_maximum_per_page );
+    $properties_maximum_per_page = get_option( 'options_maximum_number_of_properties_to_show', 100 );
     
     $orderby = apply_filters( 'rentfetch_get_property_orderby', $orderby = 'menu_order' );
     $order = apply_filters( 'rentfetch_get_property_order', $order = 'ASC' );
     
     //* The base property query
-    $propertyargs = array(
+    $property_args = array(
         'post_type' => 'properties',
         'posts_per_page' => $properties_maximum_per_page,
 		'orderby' => $orderby,
@@ -392,126 +217,18 @@ function rentfetch_filter_properties(){
         'no_found_rows' => true,
 	);
     
-    //* Add text-based search into the 
-    $search = null;
-    
-    if ( isset( $_POST['textsearch'] ) ) {
-        $search = $_POST['textsearch'];
-        $search = sanitize_text_field( $search );
-    }
-        
-    if ( $search != null ) {
-        $propertyargs['s'] = $search;
-        
-        // force the site to use relevanssi if it's installed
-        if ( function_exists( 'relevanssi_truncate_index_ajax_wrapper' ) )
-            $propertyargs['relevanssi'] = true;
-    }    
-    
     //* Add all of our property IDs into the property search
-    $propertyargs['meta_query'] = array(
+    $property_args['meta_query'] = array(
         array(
             'key' => 'property_id',
             'value' => $property_ids,
         ),
     );
     
-    //* Pets (this is a simple one)
-    if ( isset( $_POST['pets'] ) ) {
-        $propertyargs['meta_query'][] = array(
-            array(
-                'key' => 'pets',
-                'value' => sanitize_text_field( $_POST['pets'] ),
-            )
-        );
-    }
+    $property_args = apply_filters( 'rentfetch_search_property_map_properties_query_args', $property_args );
     
-    if ( taxonomy_exists( 'propertytypes' ) ) {
+    $propertyquery = new WP_Query( $property_args );
         
-        //* Add the tax queries
-        $propertyargs['tax_query'] = array();
-        
-        //* propertytype taxonomy
-        $propertytypes = get_terms( 
-            array(
-                'taxonomy' => 'propertytypes',
-                'hide_empty' => true,
-            ),
-        );
-        
-        // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
-        foreach ( $propertytypes as $propertytype ) {
-            $name = $propertytype->name;
-            $propertytype_term_id = $propertytype->term_id;
-            
-            if ( isset( $_POST['propertytypes-' . $propertytype_term_id ] ) && $_POST['propertytypes-' . $propertytype_term_id ] == 'on' ) {
-                $propertytype_term_id = sanitize_text_field( $propertytype_term_id );
-                $propertytypeids[] = $propertytype_term_id;
-            }
-        }
-            
-        // add the meta query array to our $args
-        if ( isset( $propertytypeids ) ) {
-            $propertyargs['tax_query'][] = array(
-                array(
-                    'taxonomy' => 'propertytypes',
-                    'terms' => $propertytypeids,
-                )
-            );
-        }
-        
-        //* amenities taxonomy
-        $number_of_amenities_to_show = get_option( 'options_number_of_amenities_to_show' );
-        if ( empty( $number_of_amenities_to_show ) )
-            $number_of_amenities_to_show = 10;
-        
-        $amenities = get_terms( 
-            array(
-                'taxonomy'      => 'amenities',
-                'hide_empty'    => true,
-                'number'        => $number_of_amenities_to_show,
-                'orderby'       => 'count',
-                'order'         => 'DESC',
-            ),
-        );
-        
-        // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
-        foreach ( $amenities as $amenity ) {
-            $name = $amenity->name;
-            $amenity_term_id = $amenity->term_id;
-            
-            if ( isset( $_POST['amenities-' . $amenity_term_id ] ) && $_POST['amenities-' . $amenity_term_id ] == 'on' ) {
-                $amenity_term_id = sanitize_text_field( $amenity_term_id );
-
-                // this is an "AND" query, unlike property types, because here we only want things showing up where ALL of the conditions are met
-                $propertyargs['tax_query'][] = array(
-                    'relation' => 'AND',
-                    array(
-                        'taxonomy' => 'amenities',
-                        'terms' => $amenity_term_id,
-                    )
-                );
-            }
-        } 
-        
-    }
-        
-    // get the list of properties connected to the selected properties
-    $properties_connected_to_selected_neighborhoods = rentfetch_get_connected_properties_from_selected_neighborhoods();
-    if ( $properties_connected_to_selected_neighborhoods ) {
-        $propertyargs['post__in'] = $properties_connected_to_selected_neighborhoods;            
-    }    
-    
-    // echo '<pre>';
-    // print_r( $propertyargs );
-    // echo '</pre>';
-    
-    $propertyquery = new WP_Query( $propertyargs );
-    
-    // echo '<pre>';
-    // print_r( $propertyquery );
-    // echo '</pre>';
-    
     if( $propertyquery->have_posts() ) :
         
         $numberofposts = $propertyquery->post_count;
@@ -539,19 +256,6 @@ function rentfetch_filter_properties(){
 	endif;
  
 	die();
-}
-
-// Add a filter for the maximum properties to show per page, setting the fallback to 100 if there's nothing set
-add_filter( 'rentfetch_properties_maximum', 'rentfetch_properties_maximum_setting', 10, 1 );
-function rentfetch_properties_maximum_setting( $properties_maximum_per_page ) {
-    
-    $properties_maximum_per_page = get_option( 'options_maximum_number_of_properties_to_show' );
-    
-    if ( $properties_maximum_per_page )
-        return $properties_maximum_per_page;
-        
-    return 100;
-    
 }
 
 function rentfetch_get_connected_properties_from_selected_neighborhoods() {

@@ -48,3 +48,62 @@ function rentfetch_search_properties_map_filters_price() {
     echo '</div>'; // .input-wrap
         
 }
+
+add_filter( 'rentfetch_search_property_map_floorplans_query_args', 'rentfetch_search_property_map_floorplans_args_price', 10, 1 );
+function rentfetch_search_property_map_floorplans_args_price( $floorplans_args ) {
+    
+    // bail if we don't have a price search
+    if ( !isset( $_POST['pricesmall'] ) && !isset( $_POST['pricebig'] ) )
+        return $floorplans_args;
+    
+    $defaultpricesmall = 100;
+    $defaultpricebig = 5000;
+    
+    // get the small value
+    if ( isset( $_POST['pricesmall'] ) )
+        $pricesmall = intval( sanitize_text_field( $_POST['pricesmall'] ) );
+        
+    // if it's not a good value, then change it to something sensible
+    if ( $pricesmall < 100 )
+        $pricesmall = $defaultpricesmall;
+    
+    // get the big value
+    if ( isset( $_POST['pricebig'] ) )
+        $pricebig = intval( sanitize_text_field( $_POST['pricebig'] ) );
+        
+    // if there's isn't one, then use the default instead
+    if ( empty( $pricebig ) )
+        $pricebig = $defaultpricebig;
+            
+    
+    // if we're showing all properties, then by default we need to ignore pricing
+    $property_availability_display = $price_settings = get_option( 'options_property_availability_display', 'options' );
+    if ( $property_availability_display == 'all' ) {
+        
+        // but if pricing parameters are actually being manually set, then we need that search to work
+        if ( $pricesmall > 100 || $pricebig < 5000 ) {
+                                
+            $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'minimum_rent',
+                    'value' => array( $pricesmall, $pricebig ),
+                    'type' => 'numeric',
+                    'compare' => 'BETWEEN',
+                )
+            );
+        }            
+    } else {
+        // if this is an availability search, then always take pricing into account
+        $floorplans_args['meta_query'][] = array(
+                array(
+                    'key' => 'minimum_rent',
+                    'value' => array( $pricesmall, $pricebig ),
+                    'type' => 'numeric',
+                    'compare' => 'BETWEEN',
+                )
+            );
+    }
+    
+    return $floorplans_args;
+    
+}
