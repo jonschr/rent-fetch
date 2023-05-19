@@ -11,7 +11,7 @@ add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_ameniti
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_lease_details', 70 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_map', 80 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_neighborhood', 90 );
-add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_nearby_properties', 100 );
+// add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_nearby_properties', 100 );
 
 function rentfetch_single_property_title() {
     
