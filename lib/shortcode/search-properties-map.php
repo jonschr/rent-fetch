@@ -418,11 +418,14 @@ function rentfetch_propertymap( $atts ) {
                 $pets = array_unique( $pets );
                 asort( $pets );
                 $pets = array_filter( $pets );
-                
-                // Get the corresponding acf 'pets' field so that we can use its labels
-                $field = get_field_object('field_60766489d1c66');
-                $pets_choices = $field['choices'];
-                        
+                                
+                $pets_choices = [
+                  1 => 'Cats allowed',
+                  2 => 'Cats and Dogs allowed',  
+                  3 => 'Pet-friendly', 
+                  4 => 'Pets not allowed',
+                ];
+                                        
                 //* build the pets search
                 if ( !empty( $pets ) ) {
                     echo '<div class="input-wrap input-wrap-pets">';

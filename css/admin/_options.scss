@@ -33,14 +33,17 @@ ul.rent-fetch-options-submenu {
    Header
    ========================================================================== */
 
-.header-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+form.rent-fetch-options {
+    position: relative;
 
-    p.submit {
-        margin: 0;
-        padding: 9px 0 4px;
-        text-align: right;
+    .top-right-submit {
+        position: absolute;
+        top: 0;
+        right: 0;
+
+        p.submit {
+            margin: 0;
+        }
     }
 }
 
