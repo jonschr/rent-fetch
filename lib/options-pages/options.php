@@ -81,8 +81,9 @@ function rent_fetch_options_page_html() {
     }
     ?>
     <div class="wrap">
+        <h1>Rent Fetch Options</h1>
         <div class="header-wrap">
-            <h1>Rent Fetch Options</h1>
+            
         </div>
         <nav class="nav-tab-wrapper">
             <a href="?page=rent_fetch_options" class="nav-tab<?php if (!isset($_GET['tab']) || $_GET['tab'] === 'general') { echo ' nav-tab-active'; } ?>">General</a>
@@ -1256,64 +1257,190 @@ add_action( 'rent_fetch_do_settings_floorplan_archives', 'rent_fetch_settings_fl
 function rent_fetch_settings_floorplan_archives() {
     //! TODO: save data
     ?>
-    <h2>Floorplan Archives</h2>
     
+    <script type="text/javascript">
+        jQuery(document).ready(function( $ ) {
+	
+            // $( '.contact .white-box:not(.always-visible)' ).hide();
+            
+            // on change of input[name="options_enabled_integrations[]"], show/hide the integration options
+            $( 'input[name="options_contact_button_enabled"]' ).on( 'change', function() {
+                
+                console.log( this );
+                                
+                if( this.checked ) {
+                    $( '.contact .white-box:not(.always-visible)' ).show();
+                } else {
+                    $( '.contact .white-box:not(.always-visible)' ).hide();
+                }
+                                                
+            }).trigger( 'change' );
+            
+        });
+    </script>
     <div class="row floorplan-archive-buttons contact">
         <div class="column">
             <label>Contact button</label>
-            <p class="description">A button linking either to a static page on the site, to a gravity forms lightbox, or to a single third-party location. This will be the same link for every floorplan (it is not dynamic).</p>
+            <p class="description">A button linking either to a static page on the site or to a single third-party location. This will be the same link for every floorplan (it is not dynamic).</p>
         </div>
         <div class="column">
-            <div class="white-box">
+            <div class="white-box always-visible">
                 <label for="options_contact_button_enabled">
                     <input type="checkbox" name="options_contact_button_enabled" id="options_contact_button_enabled" <?php checked( get_option( 'options_contact_button_enabled' ), true ); ?>>
                     Enable the contact button
                 </label>
             </div>
+            <div class="white-box">
+                <label for="options_contact_button_button_label">Button label</label>
+                <input type="text" name="options_contact_button_button_label" id="options_contact_button_button_label" value="<?php echo esc_attr( get_option( 'options_contact_button_button_label' ) ); ?>">
+                <p class="description">Required for syncing any data down from an API.</p>
+            </div>
+            <div class="white-box">
+                <label for="options_contact_button_link">Link</label>
+                <input type="text" name="options_contact_button_link" id="options_contact_button_link" value="<?php echo esc_attr( get_option( 'options_contact_button_link' ) ); ?>">
+                <label style="margin-top: 10px;" for="options_contact_button_link_target">
+                    <input type="checkbox" name="options_contact_button_link_target" id="options_contact_button_link_target" <?php checked( get_option( 'options_contact_button_link_target' ), true ); ?>>
+                    Open in new tab?
+                </label>
+            </div>
         </div>
     </div>
     
+    <script type="text/javascript">
+        jQuery(document).ready(function( $ ) {
+	
+            // $( '.contact .white-box:not(.always-visible)' ).hide();
+            
+            // on change of input[name="options_enabled_integrations[]"], show/hide the integration options
+            $( 'input[name="options_availability_button_enabled"]' ).on( 'change', function() {
+                
+                console.log( this );
+                                
+                if( this.checked ) {
+                    $( '.availability .white-box:not(.always-visible)' ).show();
+                } else {
+                    $( '.availability .white-box:not(.always-visible)' ).hide();
+                }
+                                                
+            }).trigger( 'change' );
+            
+        });
+    </script>
     <div class="row floorplan-archive-buttons availability">
         <div class="column">
             <label>Availability button</label>
             <p class="description">A button which can pull in the availability link for each individual floorplan, with a single fallback link to use if no availability url is available.</p>
         </div>
         <div class="column">
-            <div class="white-box">
+            <div class="white-box always-visible">
                 <label for="options_availability_button_enabled">
                     <input type="checkbox" name="options_availability_button_enabled" id="options_availability_button_enabled" <?php checked( get_option( 'options_availability_button_enabled' ), true ); ?>>
                     Enable the availability button
                 </label>
             </div>
+            <div class="white-box">
+                <label for="options_availability_button_button_label">Button label</label>
+                <input type="text" name="options_availability_button_button_label" id="options_availability_button_button_label" value="<?php echo esc_attr( get_option( 'options_availability_button_button_label' ) ); ?>">
+            </div>
+            <div class="white-box">
+                <label for="options_availability_button_button_behavior">Button behavior</label>
+                <p class="description">How should this button behave when this floorplan does not currently have units available?</p>
+                <ul class="radio">
+                    <li>
+                        <label>
+                            <input type="radio" name="options_availability_button_button_behavior" id="options_availability_button_button_behavior" value="hide" <?php checked( get_option( 'options_availability_button_button_behavior' ), 'hide' ); ?>>
+                            Hide this button entirely
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <input type="radio" name="options_availability_button_button_behavior" id="options_availability_button_button_behavior" value="fallback" <?php checked( get_option( 'options_availability_button_button_behavior' ), 'fallback' ); ?>>
+                            Fall back to a static link
+                        </label>
+                    </li>
+                </ul>
+            </div>
+            <div class="white-box">
+                <label for="options_availability_button_link">Fallback link</label>
+                <input type="text" name="options_availability_button_link" id="options_availability_button_link" value="<?php echo esc_attr( get_option( 'options_availability_button_link' ) ); ?>">
+            </div>
         </div>
     </div>
     
+    <script type="text/javascript">
+        jQuery(document).ready(function( $ ) {
+	
+            // $( '.contact .white-box:not(.always-visible)' ).hide();
+            
+            // on change of input[name="options_enabled_integrations[]"], show/hide the integration options
+            $( 'input[name="options_tour_button_enabled"]' ).on( 'change', function() {
+                
+                console.log( this );
+                                
+                if( this.checked ) {
+                    $( '.tour .white-box:not(.always-visible)' ).show();
+                } else {
+                    $( '.tour .white-box:not(.always-visible)' ).hide();
+                }
+                                                
+            }).trigger( 'change' );
+            
+        });
+    </script>
     <div class="row floorplan-archive-buttons tour">
         <div class="column">
             <label>Tour button</label>
             <p class="description">A button to show a lightbox with a video, or an external link (this link is always per-floorplan).</p>
         </div>
         <div class="column">
-            <div class="white-box">
+            <div class="white-box always-visible">
                 <label for="options_tour_button_enabled">
                     <input type="checkbox" name="options_tour_button_enabled" id="options_tour_button_enabled" <?php checked( get_option( 'options_tour_button_enabled' ), true ); ?>>
                     Enable the tour button
                 </label>
             </div>
+            <div class="white-box">
+                <label for="options_tour_button_button_label">Button label</label>
+                <input type="text" name="options_tour_button_button_label" id="options_tour_button_button_label" value="<?php echo esc_attr( get_option( 'options_tour_button_button_label' ) ); ?>">
+            </div>
         </div>
     </div>
     
-    <div class="row floorplan-archive-buttons single">
+    <script type="text/javascript">
+        jQuery(document).ready(function( $ ) {
+	
+            // $( '.contact .white-box:not(.always-visible)' ).hide();
+            
+            // on change of input[name="options_enabled_integrations[]"], show/hide the integration options
+            $( 'input[name="options_single_button_enabled"]' ).on( 'change', function() {
+                
+                console.log( this );
+                                
+                if( this.checked ) {
+                    $( '.floorplan-archive-button .white-box:not(.always-visible)' ).show();
+                } else {
+                    $( '.floorplan-archive-button .white-box:not(.always-visible)' ).hide();
+                }
+                                                
+            }).trigger( 'change' );
+            
+        });
+    </script>
+    <div class="row floorplan-archive-button single">
         <div class="column">
             <label>Link to floorplan single template</label>
             <p class="description">A button which simply links to the individual floorplan template.</p>
         </div>
         <div class="column">
-            <div class="white-box">
+            <div class="white-box always-visible">
                 <label for="options_single_button_enabled">
                     <input type="checkbox" name="options_single_button_enabled" id="options_single_button_enabled" <?php checked( get_option( 'options_single_button_enabled' ), true ); ?>>
                     Enable the single floorplan template button
                 </label>
+            </div>
+            <div class="white-box">
+                <label for="options_single_button_button_label">Button label</label>
+                <input type="text" name="options_single_button_button_label" id="options_single_button_button_label" value="<?php echo esc_attr( get_option( 'options_single_button_button_label' ) ); ?>">
             </div>
         </div>
     </div>    
@@ -1321,6 +1448,78 @@ function rent_fetch_settings_floorplan_archives() {
     
     <?php
 }
+
+/**
+ * Save the property single settings
+ */
+add_action( 'rent_fetch_save_settings', 'rent_fetch_save_settings_floorplan_buttons' );
+function rent_fetch_save_settings_floorplan_buttons() {
+    
+    // Checkbox field - Enable the contact button
+    $options_contact_button_enabled = isset( $_POST['options_contact_button_enabled'] ) ? '1' : '0';
+    update_option( 'options_contact_button_enabled', $options_contact_button_enabled );
+
+    // Text field - Button label
+    if ( isset( $_POST['options_contact_button_button_label'] ) ) {
+        $options_contact_button_button_label = sanitize_text_field( $_POST['options_contact_button_button_label'] );
+        update_option( 'options_contact_button_button_label', $options_contact_button_button_label );
+    }
+
+    // Text field - Link
+    if ( isset( $_POST['options_contact_button_link'] ) ) {
+        $options_contact_button_link = sanitize_text_field( $_POST['options_contact_button_link'] );
+        update_option( 'options_contact_button_link', $options_contact_button_link );
+    }
+
+    // Checkbox field - Open in new tab?
+    $options_contact_button_link_target = isset( $_POST['options_contact_button_link_target'] ) ? '1' : '0';
+    update_option( 'options_contact_button_link_target', $options_contact_button_link_target );
+
+    // Checkbox field - Enable the availability button
+    $options_availability_button_enabled = isset( $_POST['options_availability_button_enabled'] ) ? '1' : '0';
+    update_option( 'options_availability_button_enabled', $options_availability_button_enabled );
+
+    // Text field - Button label
+    if ( isset( $_POST['options_availability_button_button_label'] ) ) {
+        $options_availability_button_button_label = sanitize_text_field( $_POST['options_availability_button_button_label'] );
+        update_option( 'options_availability_button_button_label', $options_availability_button_button_label );
+    }
+
+    // Radio field - Button behavior
+    if ( isset( $_POST['options_availability_button_button_behavior'] ) ) {
+        $options_availability_button_button_behavior = sanitize_text_field( $_POST['options_availability_button_button_behavior'] );
+        update_option( 'options_availability_button_button_behavior', $options_availability_button_button_behavior );
+    }
+
+    // Text field - Fallback link
+    if ( isset( $_POST['options_availability_button_link'] ) ) {
+        $options_availability_button_link = sanitize_text_field( $_POST['options_availability_button_link'] );
+        update_option( 'options_availability_button_link', $options_availability_button_link );
+    }
+
+    // Checkbox field - Enable the tour button
+    $options_tour_button_enabled = isset( $_POST['options_tour_button_enabled'] ) ? '1' : '0';
+    update_option( 'options_tour_button_enabled', $options_tour_button_enabled );
+
+    // Text field - Tour button label
+    if ( isset( $_POST['options_tour_button_button_label'] ) ) {
+        $options_tour_button_button_label = sanitize_text_field( $_POST['options_tour_button_button_label'] );
+        update_option( 'options_tour_button_button_label', $options_tour_button_button_label );
+    }
+
+    // Checkbox field - Enable the single floorplan template button
+    $options_single_button_enabled = isset( $_POST['options_single_button_enabled'] ) ? '1' : '0';
+    update_option( 'options_single_button_enabled', $options_single_button_enabled );
+
+    // Text field - Single floorplan template button label
+    if ( isset( $_POST['options_single_button_button_label'] ) ) {
+        $options_single_button_button_label = sanitize_text_field( $_POST['options_single_button_button_label'] );
+        update_option( 'options_single_button_button_label', $options_single_button_button_label );
+    }
+
+    
+}
+
 
 /**
  * Adds the labels settings section to the Rent Fetch settings page
