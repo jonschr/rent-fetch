@@ -832,7 +832,7 @@ function rent_fetch_settings_properties_property_search() {
                 <li>
                     <label>
                         <input type="checkbox" name="options_map_search_components[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_map_search_components ) ); ?>>
-                        Text-based search
+                        Text-based search (this works best with the Relevanssi plugin enhancing your search)
                     </label>
                 </li>
                 <li>
