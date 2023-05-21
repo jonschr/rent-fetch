@@ -176,9 +176,14 @@ function rentfetch_each_property_images( $post_id ) {
     $property_images_yardi = json_decode( $property_images_yardi );
                     
     if ( $property_images_manual ) {
+        // echo '<h1>manual images</h1>';
         do_action( 'rentfetch_do_each_property_images_manual', $post_id );
     } elseif ( $property_images_yardi ) {
+        // echo '<h1>yardi</h1>';
         do_action( 'rentfetch_do_each_property_images_yardi', $post_id );
+    } else {
+        // echo '<h1>fallback</h1>';
+        do_action( 'rentfetch_do_each_property_images_fallback', $post_id );
     }
     
 }
@@ -186,7 +191,7 @@ function rentfetch_each_property_images( $post_id ) {
 //* add markup for when we're adding images from WordPress (manual entry)
 add_action( 'rentfetch_do_each_property_images_manual', 'rentfetch_each_property_images_manual', 10, 1 );
 function rentfetch_each_property_images_manual( $post_id ) {
-    
+        
     // these are images pulled from an API and stored as a JSON array
     $property_images = get_post_meta( $post_id, 'images', true );
             
@@ -319,6 +324,31 @@ function rentfetch_each_property_images_yardi( $post_id ) {
                     
             
         
+        echo '</div>';
+        
+        do_action( 'rentfetch_properties_archive_after_images' );
+                
+    echo '</div>';
+}
+
+//* add markup for when we're adding images from yardi
+add_action( 'rentfetch_do_each_property_images_fallback', 'rentfetch_each_property_images_fallback', 10, 1 );
+function rentfetch_each_property_images_fallback( $post_id ) {
+
+    $firsturl = apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
+        
+    printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
+    
+        do_action( 'rentfetch_properties_archive_before_images' );
+                
+        echo '<div class="property-slider">';                
+                
+            $property_image = RENTFETCH_PATH . 'images/fallback-property.svg';
+    
+            echo '<div class="property-slide">';
+                printf( '<img class="fallback" loading=lazy src="%s" />', $property_image );
+            echo '</div>';
+                            
         echo '</div>';
         
         do_action( 'rentfetch_properties_archive_after_images' );

@@ -1,3 +1,7 @@
+# 3.10.2
+
+-   Fix the fallback image not appearing when there's nothing in Yardi or Manual
+
 ## 3.10.1
 
 -   Adding a fix for situations where we're attempting to sync a property in Yardi while the site is set for a single property where actions were failing due to the 'amenities' taxonomy not being registered; we should no longer attempt to sync such a property.
