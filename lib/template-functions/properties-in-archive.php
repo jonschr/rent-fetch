@@ -164,36 +164,12 @@ function rentfetch_each_property_specials( $floorplan ) {
     
 }
 
-//* select our data source for images (manual images is preferred, then yardi)
+//* Do the images
 add_action( 'rentfetch_do_each_property_images', 'rentfetch_each_property_images', 10, 1 );
 function rentfetch_each_property_images( $post_id ) {
-    
-    // manually-added images
-    $property_images_manual = get_post_meta( $post_id, 'images', true );
-                
-    // these are images pulled from an API and stored as a JSON array
-    $property_images_yardi = get_post_meta( $post_id, 'property_images', true );
-    $property_images_yardi = json_decode( $property_images_yardi );
-                    
-    if ( $property_images_manual ) {
-        // echo '<h1>manual images</h1>';
-        do_action( 'rentfetch_do_each_property_images_manual', $post_id );
-    } elseif ( $property_images_yardi ) {
-        // echo '<h1>yardi</h1>';
-        do_action( 'rentfetch_do_each_property_images_yardi', $post_id );
-    } else {
-        // echo '<h1>fallback</h1>';
-        do_action( 'rentfetch_do_each_property_images_fallback', $post_id );
-    }
-    
-}
-
-//* add markup for when we're adding images from WordPress (manual entry)
-add_action( 'rentfetch_do_each_property_images_manual', 'rentfetch_each_property_images_manual', 10, 1 );
-function rentfetch_each_property_images_manual( $post_id ) {
         
-    // these are images pulled from an API and stored as a JSON array
-    $property_images = get_post_meta( $post_id, 'images', true );
+    // get the images as a predefined array, regardless of their source
+    $property_images = rentfetch_get_property_images();
             
     if ( !$property_images )
         return;
@@ -201,7 +177,7 @@ function rentfetch_each_property_images_manual( $post_id ) {
     $firsturl = null;
             
     // grab the first image url for use in the map
-    $firsturl = wp_get_attachment_image_url( $property_images[0], 'large' );
+    $firsturl = $property_images[0]['url'];
         
     if ( !$firsturl )
         $firsturl = apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
@@ -219,9 +195,9 @@ function rentfetch_each_property_images_manual( $post_id ) {
                             
                 foreach( $property_images as $property_image ) {
                             
-                    $url = esc_url( wp_get_attachment_image_url( $property_image, 'large' ) );
-                    $alt = esc_attr( get_post_meta($property_image, '_wp_attachment_image_alt', TRUE) );
-                    $title = esc_attr( get_the_title($property_image) );
+                    $url = esc_url( $property_image['url'] );
+                    $alt = esc_attr( $property_image['alt'] );
+                    $title = esc_attr( $property_image['title']);
                                         
                     echo '<div class="property-slide">';
                         printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
@@ -247,128 +223,6 @@ function rentfetch_each_property_images_manual( $post_id ) {
     echo '</div>';
     
 }
-
-//* add markup for when we're adding images from yardi
-add_action( 'rentfetch_do_each_property_images_yardi', 'rentfetch_each_property_images_yardi', 10, 1 );
-function rentfetch_each_property_images_yardi( $post_id ) {
-    
-    // these are images pulled from an API and stored as a JSON array
-    $property_images = get_post_meta( $post_id, 'property_images', true );
-    $property_images = json_decode( $property_images );
-        
-    if ( !$property_images )
-        return;
-        
-    $firsturl = null;
-        
-    // grab the first image url for use in the map
-    if ( isset( $property_images[0]->ImageURL ) )
-        $firsturl = $property_images[0]->ImageURL;
-    
-    if ( !$firsturl )
-        $firsturl = apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
-        
-    printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
-    
-        do_action( 'rentfetch_properties_archive_before_images' );
-                
-        echo '<div class="property-slider">';
-        
-            if ( $property_images ) {
-                
-                $property_images = array_slice( $property_images, 0, 3 );
-            
-                foreach( $property_images as $property_image ) {
-                            
-                    $title = null;
-                    if ( isset( $property_image->Title ) )
-                        $title = esc_attr( $property_image->Title );
-                    
-                    $url = null;
-                    if ( isset( $property_image->ImageURL ) )
-                        $url = esc_url( $property_image->ImageURL );
-                        
-                    // if we don't have an image, use a placeholder
-                    if ( empty( $url ) )
-                        $url = RENTFETCH_PATH . 'images/fallback-property.svg';
-                                            
-                    $alt = null;
-                    if ( isset( $property_image->AltText ) )
-                        $alt = esc_attr( $property_image->AltText );
-                        
-                    // bail if there is no image src
-                    if ( $url == null )
-                        break;
-                                    
-                    // detect if there are special characters
-                    $regex = preg_match('[@_!#$%^&*()<>?/|}{~:]', $url);
-                                        
-                    // bail on this slide if there are special characters in the image url
-                    if ( $regex )
-                        break;
-                                        
-                    echo '<div class="property-slide">';
-                        printf( '<img loading=lazy src="%s" alt="%s" title="%s" />', $url, $alt, $title );
-                    echo '</div>';
-                                    
-                }
-                
-            } else {
-                
-                $property_image = RENTFETCH_PATH . 'images/fallback-property.svg';
-        
-                echo '<div class="property-slide">';
-                    printf( '<img loading=lazy src="%s" />', $property_image );
-                echo '</div>';
-            }
-                    
-            
-        
-        echo '</div>';
-        
-        do_action( 'rentfetch_properties_archive_after_images' );
-                
-    echo '</div>';
-}
-
-//* add markup for when we're adding images from yardi
-add_action( 'rentfetch_do_each_property_images_fallback', 'rentfetch_each_property_images_fallback', 10, 1 );
-function rentfetch_each_property_images_fallback( $post_id ) {
-
-    $firsturl = apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' );
-        
-    printf( '<div class="property-images-wrap" data-image-url="%s">', $firsturl );
-    
-        do_action( 'rentfetch_properties_archive_before_images' );
-                
-        echo '<div class="property-slider">';                
-                
-            $property_image = RENTFETCH_PATH . 'images/fallback-property.svg';
-    
-            echo '<div class="property-slide">';
-                printf( '<img class="fallback" loading=lazy src="%s" />', $property_image );
-            echo '</div>';
-                            
-        echo '</div>';
-        
-        do_action( 'rentfetch_properties_archive_after_images' );
-                
-    echo '</div>';
-}
-
-//* favorite link
-add_action( 'rentfetch_properties_archive_before_images', 'rentfetch_favorite_property_link' );
-function rentfetch_favorite_property_link() {
-    
-    wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
-    wp_enqueue_script( 'rentfetch-property-favorites' );
-    
-    $post_id = get_the_ID();
-    
-    if ( $post_id )
-        printf( '<a href="#" class="favorite-heart" data-property-id="%s" data-favorite="1"></a>', $post_id );
-        
-} 
 
 //* rent range figuring out how to display it
 add_action( 'rentfetch_do_each_properties_rent_range', 'rentfetch_each_properties_rent_range', 10, 1 );

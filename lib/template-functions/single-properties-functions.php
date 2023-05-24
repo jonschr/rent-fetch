@@ -74,23 +74,59 @@ function rentfetch_single_property_images() {
     global $post;
     $id = esc_html( get_the_ID() );
     
-    // manually-added images
-    $property_images_manual = get_post_meta( $id, 'images', true );
-            
-    // these are images pulled from an API and stored as a JSON array
-    $property_images_yardi = get_post_meta( $id, 'property_images', true );
-    $property_images_yardi = json_decode( $property_images_yardi );
-    
-    // bail if there aren't any images to display
-    if ( !$property_images_yardi && !$property_images_manual )
+    // get the images as a predefined array, regardless of their source
+    $property_images = rentfetch_get_property_images();
+                
+    if ( !$property_images )
         return;
     
     echo '<div class="wrap-images single-properties-section"><div class="images single-properties-section-wrap">';
+
+        wp_enqueue_style( 'rentfetch-fancybox-style' );
+        wp_enqueue_script( 'rentfetch-fancybox-script' );
+                        
+        $number_of_images = count( $property_images );
+            
+        if ( $number_of_images < 5 ) {
+            
+            echo '<div class="image-single">';
+                                
+                foreach( $property_images as $property_image ) {
                     
-        if ( $property_images_manual ) {
-            do_action( 'rentfetch_do_single_property_images_manual' );
-        } elseif ( $property_images_yardi ) {
-            do_action( 'rentfetch_do_single_property_images_yardi' );
+                    $url = esc_url( $property_image['url'] );
+                    $alt = esc_attr( $property_image['alt'] );
+                    $title = esc_attr( $property_image['title']);
+                                                        
+                    printf( '<a data-fancybox="single-properties" href="%s"><img src="%s" alt="%s" title="%s" /></a>', $url, $url, $alt, $title );
+                                    
+                }
+            
+                if ( $number_of_images > 1 )
+                    printf( '<a data-fancybox-trigger="single-properties" class="viewall" href="#">View %s images</a>', $number_of_images );
+            
+            echo '</div>';
+            
+        } else {
+                    
+            echo '<div class="image-grid">';
+                
+                foreach( $property_images as $property_image ) {
+                    
+                    $url = esc_url( $property_image['url'] );
+                    $alt = esc_attr( $property_image['alt'] );
+                    $title = esc_attr( $property_image['title']);
+                    
+                    echo '<div class="image-grid-each">';
+                        printf( '<a data-fancybox="single-properties" href="%s"><img src="%s" alt="%s" title="%s" /></a>', $url, $url, $alt, $title );
+                    echo '</div>';
+                    
+                }
+                
+                if ( $number_of_images > 1 )
+                    printf( '<a data-fancybox-trigger="single-properties" class="viewall" href="#">View %s images</a>', $number_of_images );
+                
+            echo '</div>';
+            
         }
         
     echo '</div></div>';
