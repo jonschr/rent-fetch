@@ -77,7 +77,7 @@ function rf_properties_identifiers_metabox_callback( $post ) {
                 </div>
                 <div class="column">
                     <input type="text" id="property_id" name="property_id" value="<?php echo esc_attr( $property_id ); ?>">
-                    <p class="description">The Property ID should match the Property ID on each associated floorplan, and every property should have a property ID at minimum.</p>
+                    <p class="description">The Property ID should match the Property ID on each associated floorplan, and every property should always have a property ID.</p>
                 </div>
             </div>
             
@@ -285,8 +285,8 @@ function rf_properties_display_information_metabox_callback( $post ) {
         if ( $property_source == 'yardi' ) {
             
             //* Property Images from Yardi
-            $property_images = get_post_meta( $post->ID, 'property_images', true );
-            $property_images = json_decode( $property_images );
+            $property_images_json = get_post_meta( $post->ID, 'property_images', true );
+            $property_images = json_decode( $property_images_json );
             ?>
              
             <div class="field">
@@ -298,7 +298,15 @@ function rf_properties_display_information_metabox_callback( $post ) {
                     <?php
                     if ( $property_images ) {
                         echo '<div class="property_images">';
+                        
                         foreach ( $property_images as $property_image ) {
+                            
+                            if ( !property_exists( $property_image, 'ImageURL' ) ) {
+                                printf( '<p>%s <em>An error typically indicates either a failed sync or a problem with API authentication. Be sure to look up your specific error code with the owner of this API.</em></p>', $property_images_json );
+                                continue;
+                            }
+                                
+                                                        
                             printf( '<div class="property-image"><img src="%s"/><a href="%s" target="_blank" class="download" download>Download</a></div>', $property_image->ImageURL, $property_image->ImageURL );                
                         }
                         echo '</div>';

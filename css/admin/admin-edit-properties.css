@@ -1,0 +1,100 @@
+.wrap {
+    overflow-x: scroll;
+    max-width: 98%;
+}
+
+.wp-list-table {
+    position: relative;
+    min-width: 2000px !important;
+}
+
+td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+th {
+    width: 100px;
+    min-width: 70px !important;
+}
+
+th#title {
+    width: 300px !important;
+}
+
+th#property_id {
+    width: 80px !important;
+}
+
+th#property_code {
+    width: 100px !important;
+}
+
+th#address {
+    width: 150px !important;
+}
+
+th#city {
+    width: 70px !important;
+}
+
+th#state {
+    width: 50px !important;
+}
+
+th#zipcode {
+    width: 75px !important;
+}
+
+th#latitude {
+    width: 100px !important;
+}
+
+th#longitude {
+    width: 100px !important;
+}
+
+th#email {
+    width: 150px !important;
+}
+
+th#phone {
+    width: 100px !important;
+}
+
+th#url {
+    width: 150px !important;
+}
+
+th#images {
+    width: 200px !important;
+}
+
+th#property_source {
+    width: 120px !important;
+}
+
+th#description {
+    width: 200px !important;
+}
+
+th#matterport {
+    width: 80px !important;
+}
+
+th#video {
+    width: 80px !important;
+}
+
+th#pets {
+    width: 100px !important;
+}
+
+th#content_area {
+    width: 200px !important;
+}
+
+th#property_images {
+    width: 200px !important;
+}

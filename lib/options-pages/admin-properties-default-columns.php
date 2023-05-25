@@ -1,116 +1,24 @@
 <?php
 
+add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_properties_admin_style' );
+function rentfetch_enqueue_properties_admin_style() {
+    
+    // bail if admin columns pro is active, or admin columns is active, since our styles conflict with those plugins
+    if ( is_plugin_active( 'admin-columns-pro/admin-columns-pro.php' ) || is_plugin_active( 'codepress-admin-columns/codepress-admin-columns.php' ) )
+        return;
+    
+    $current_screen = get_current_screen();
+  
+    // Check if the current screen is the admin archive page of the properties content type
+    if ( $current_screen->base === 'edit' && $current_screen->post_type === 'properties' ) {
+        
+        // Enqueue your custom admin style
+        wp_enqueue_style( 'properties-edit-admin-style', RENTFETCH_PATH . 'css/admin/admin-edit-properties.css', array(), RENTFETCH_VERSION, 'screen' );
+    }
+}
+
 add_filter( 'manage_properties_posts_columns', 'rentfetch_default_properties_admin_columns' );
 function rentfetch_default_properties_admin_columns( $columns ) {
-    
-    ?>
-    
-    <style>
-        
-            .wrap {
-                overflow-x: scroll;
-                max-width: 98%;
-            }
-            
-            .wp-list-table {
-                position: relative;
-                min-width: 2000px !important; 
-            }
-            
-            td {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            
-            th {
-                width: 100px;
-                min-width: 70px !important;
-            }
-            
-            th#title {
-                width: 300px !important;
-            }
-            
-            th#property_id {
-                width: 80px !important;
-            }
-            
-            th#property_code {
-                width: 100px !important;
-            }
-            
-            th#address {
-                width: 150px !important;
-            }
-            
-            th#city {
-                width: 70px !important;
-            }
-            
-            th#state {
-                width: 50px !important;
-            }
-            
-            th#zipcode {
-                width: 75px !important;
-            }
-            
-            th#latitude {
-                width: 100px !important;
-            }
-            
-            th#longitude {
-                width: 100px !important;
-            }
-            
-            th#email {
-                width: 150px !important;
-            }
-            
-            th#phone {
-                width: 100px !important;
-            }
-            
-            th#url {
-                width: 150px !important;
-            }
-            
-            th#images {
-                width: 200px !important;
-            }
-            
-            th#property_source {
-                width: 120px !important;
-            }
-            
-            th#description {
-                width: 200px !important;
-            }
-            
-            th#matterport {
-                width: 80px !important;
-            }
-            
-            th#video {
-                width: 80px !important;
-            }
-            
-            th#pets {
-                width: 100px !important;
-            }
-            
-            th#content_area {
-                width: 200px !important;
-            }
-            
-            th#property_images {
-                width: 200px !important;
-            }
-        
-        </style>
-        
-        <?php
     
     $columns = array(
         'cb' =>              '<input type="checkbox" />',

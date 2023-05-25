@@ -1,108 +1,24 @@
 <?php
 
+add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_floorplans_admin_style' );
+function rentfetch_enqueue_floorplans_admin_style() {
+    
+    // bail if admin columns pro is active, or admin columns is active, since our styles conflict with those plugins
+    if ( is_plugin_active( 'admin-columns-pro/admin-columns-pro.php' ) || is_plugin_active( 'codepress-admin-columns/codepress-admin-columns.php' ) )
+        return;
+    
+    $current_screen = get_current_screen();
+  
+    // Check if the current screen is the admin archive page of the floorplans content type
+    if ( $current_screen->base === 'edit' && $current_screen->post_type === 'floorplans' ) {
+        
+        // Enqueue your custom admin style
+        wp_enqueue_style( 'floorplans-edit-admin-style', RENTFETCH_PATH . 'css/admin/admin-edit-floorplans.css', array(), RENTFETCH_VERSION, 'screen' );
+    }
+}
+
 add_filter( 'manage_floorplans_posts_columns', 'rentfetch_default_floorplans_admin_columns' );
 function rentfetch_default_floorplans_admin_columns( $columns ) {
-    
-    ?>
-    
-    <style>
-        
-            /* .wrap {
-                overflow-x: scroll;
-                max-width: 98%;
-            } */
-            
-            .row-actions {
-                opacity: 1;
-                /* left: auto; */
-            }
-            
-            .wp-list-table {
-                display: inline-block;
-                width: auto;
-                margin-bottom: -4px !important;
-                max-width: 100%;
-                overflow: -moz-scrollbars-none;
-                -ms-overflow-style: none;
-                overflow-x: auto;
-                position: relative;
-                box-sizing: border-box;
-            }
-            
-            td {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            
-            th {
-                width: 100px;
-                min-width: 100px !important;
-            }
-            
-            td#cb,
-            th.check-column {
-                width: 30px !important;
-                min-width: 30px !important;
-            }
-            
-            th#title {
-                min-width: 300px !important;
-            }
-            
-            th#property_id {
-                min-width: 80px !important;
-            }
-            
-            th#floorplan_source {
-                min-width: 120px !important;
-            }
-            
-            th#manual_images {
-                min-width: 150px !important;
-            }
-            
-            th#floorplan_images {
-                min-width: 150px !important;
-            }
-            
-            th#floorplan_description {
-                min-width: 150px !important;
-            }
-            
-            th#minimum_deposit {
-                min-width: 150px !important;
-            }
-            
-            th#maximum_deposit {
-                min-width: 150px !important;
-            }
-            
-            th#availability_date {
-                min-width: 150px !important;
-            }
-            
-            th#show_specials {
-                min-width: 150px !important;
-            }
-            
-            th#has_specials {
-                min-width: 150px !important;
-            }
-            
-            th#floorplan_id {
-                min-width: 100px !important;
-            }
-            
-            th#availability_url,
-            td.availability_url
-             {
-                max-width: 150px !important;
-            }
-                    
-        </style>
-        
-        <?php
     
     $columns = array(
         'cb' =>                         '<input type="checkbox" />',
