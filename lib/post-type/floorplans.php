@@ -60,4 +60,3 @@ function apartmentsync_register_floorplans_cpt() {
 	register_post_type( $post_type, $args );
 
 }
-

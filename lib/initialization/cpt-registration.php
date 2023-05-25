@@ -9,7 +9,7 @@ function rentfetch_register_content_types() {
             
     //* figure out whether this is a single 
     $apartment_site_type = get_option( 'options_apartment_site_type' );
-        
+            
     //* only register the properties and neighborhoods post types if this is a 'multiple' site
     if ( $apartment_site_type == 'multiple' ) {
         
@@ -21,10 +21,10 @@ function rentfetch_register_content_types() {
         add_action( 'init', 'rentfetch_register_propertytype_taxonomy', 20 );
         
         // neighborhoods cpt
-        add_action( 'init', 'rentfetch_register_neighborhoods_cpt', 20 );
+        // add_action( 'init', 'rentfetch_register_neighborhoods_cpt', 20 );
         
         // neighborhoods taxes
-        add_action( 'init', 'rentfetch_register_areas_taxonomy', 20 );
+        // add_action( 'init', 'rentfetch_register_areas_taxonomy', 20 );
         
     }
 }
