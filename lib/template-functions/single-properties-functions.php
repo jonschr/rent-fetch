@@ -426,9 +426,8 @@ function rentfetch_single_property_yardi_lead_generation() {
                 echo '</li>';
                 
                 //* Google reCAPTCHA
-                $google_recaptcha = get_option( 'options_google_recaptcha' );
-                $google_recaptcha_v2_site_key = $google_recaptcha['google_recaptcha_v2_site_key'];
-                $google_recaptcha_v2_secret = $google_recaptcha['google_recaptcha_v2_secret'];
+                $google_recaptcha_v2_site_key = get_option( 'options_google_recaptcha_google_recaptcha_v2_site_key' );
+                $google_recaptcha_v2_secret = get_option( 'options_google_recaptcha_google_recaptcha_v2_secret' );
                 
                 if ( $google_recaptcha_v2_site_key && $google_recaptcha_v2_secret ) {
                     

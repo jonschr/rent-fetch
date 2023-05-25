@@ -14,11 +14,11 @@
 function rentfetch_set_post_term( $post_id, $value, $taxonomy ) {
 
 	$term = term_exists( $value, $taxonomy );
-    $slug = strtolower( str_ireplace( ' ', '-', $value ) );
+	$slug = sanitize_title( $value );
 
-	// If the taxonomy doesn't exist, then we create it
+	// If the taxonomy term doesn't exist, then we create it
 	if ( 0 === $term || null === $term ) {
-        
+
 		$term = wp_insert_term(
 			$value,
 			$taxonomy,
@@ -26,19 +26,18 @@ function rentfetch_set_post_term( $post_id, $value, $taxonomy ) {
 				'slug' => $slug,
 			)
 		);
-        
+
+		// Check for WP_Error during term creation
+		if ( is_wp_error( $term ) ) {
+			return; // Bail if there's a WP_Error happening here to avoid fatal errors.
+		}
+
 	}
-    
-	// we're seeing an error from time to time where $term is an object of WP_Error type. Bail if there's a WP Error happening here so that we avoid a fatal error.
-	if ( !is_array( $term ) )
-		return;
-	
-    $term_id = intval( $term['term_id'] );
-    $post_id = intval( $post_id );
-            
-	// Then we can set the taxonomy
-	$term_taxonomy_ids = wp_set_object_terms( $post_id, $term_id, $taxonomy, true );
-    
-    // var_dump( $term_taxonomy_ids );
+
+	$term_id = intval( $term['term_id'] );
+	$post_id = intval( $post_id );
+
+	// Set the taxonomy term for the post
+	wp_set_object_terms( $post_id, $term_id, $taxonomy, true );
 
 }
