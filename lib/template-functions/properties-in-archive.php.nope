@@ -85,7 +85,7 @@ function rentfetch_each_property( $id, $floorplan ) {
         if ( $url )
             printf( '<a class="overlay" target="%s" href="%s"></a>', $target, $url );
                                 
-        do_action( 'rentfetch_do_each_property_images', $id );
+        // do_action( 'rentfetch_do_each_property_images', $id );
     
         echo '<div class="property-content">';
         

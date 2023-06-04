@@ -21,7 +21,9 @@ jQuery(document).ready(function ($) {
         );
 
         var mapOptions = {
-            zoom: 10,
+            zoom: 8,
+            minZoom: 5,
+            maxZoom: 16,
             center: myLatlng,
             styles: mapStyle,
             disableDefaultUI: true, // removes the satellite/map selection (might also remove other stuff)
@@ -44,13 +46,9 @@ jQuery(document).ready(function ($) {
             lat = $(this).attr('data-latitude');
             long = $(this).attr('data-longitude');
             title = $(this).find('h3').text();
-            content = $(this).find('.property-content').html();
-            image = $(this)
-                .find('.property-images-wrap')
-                .attr('data-image-url');
-            url = $(this).attr('data-url');
+            content = $(this).find('.property-in-map').html();
             id = $(this).attr('data-id');
-            locationsArray.push([lat, long, title, content, image, url, id]);
+            locationsArray.push([lat, long, title, content, id]);
         });
     }
 
@@ -62,15 +60,14 @@ jQuery(document).ready(function ($) {
             var longitude = locationsArray[i][1];
             var title = locationsArray[i][2];
             var content = locationsArray[i][3];
-            var imageurl = locationsArray[i][4];
-            var url = locationsArray[i][5];
-            var id = locationsArray[i][6];
+            var id = locationsArray[i][4];
             var label = title;
             var theposition = new google.maps.LatLng(latitude, longitude);
 
+            var marker;
             if (typeof markerImage !== 'undefined') {
                 // if there's a custom marker set, use that
-                var marker = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     position: theposition,
                     map: map,
                     title: title,
@@ -78,7 +75,7 @@ jQuery(document).ready(function ($) {
                 });
             } else {
                 // if there's no custom icon, just use the google default
-                var marker = new google.maps.Marker({
+                marker = new google.maps.Marker({
                     position: theposition,
                     map: map,
                     title: title,
@@ -92,13 +89,7 @@ jQuery(document).ready(function ($) {
                 content:
                     '<div class="map-property-popup" id="overlay-' +
                     id +
-                    '"><a class="overlay" href="' +
-                    url +
-                    '"></a><a href="' +
-                    url +
-                    '" class="image"><img src="' +
-                    imageurl +
-                    '"/></a>' +
+                    '">' +
                     content +
                     '</div>',
             });
@@ -109,6 +100,9 @@ jQuery(document).ready(function ($) {
                 }
 
                 this['infowindow'].open(map, this);
+
+                $('.type-properties').removeClass('active');
+                $('.type-properties[data-id=' + i + ']').addClass('active');
             });
 
             markers.push(marker);
@@ -121,6 +115,29 @@ jQuery(document).ready(function ($) {
         addMarkers();
     }
 
-    $(document).on('ajaxComplete', resetMap);
-    $('.toggle').on('click', resetMap);
+    function openMarkerOnGridClick() {
+        console.log(markers);
+
+        let markerIndex = parseInt($(this).attr('data-id')); // Parse as integer
+
+        console.log(markerIndex);
+
+        if (markerIndex >= 0 && markerIndex < markers.length) {
+            google.maps.event.trigger(markers[markerIndex], 'click');
+        }
+    }
+
+    function activeOnClick() {
+        $('.type-properties').removeClass('active');
+        $(this).addClass('active');
+    }
+
+    $(document).on(
+        'mouseenter touchstart',
+        '.type-properties',
+        openMarkerOnGridClick
+    );
+    $(document).on('mouseenter touchstart', '.type-properties', activeOnClick);
+
+    $(document).on('ajaxComplete load', resetMap);
 });

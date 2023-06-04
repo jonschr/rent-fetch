@@ -1,35 +1,35 @@
 <?php
 
 // add_action( 'wp_footer', 'test_rentfetch_get_floorplan_images' );
-function test_rentfetch_get_floorplan_images() {
+// function test_rentfetch_get_floorplan_images() {
     
-    $args = array(
-        'post_type' => 'floorplans',  // Replace 'floorplans' with the actual name of your content type
-        'posts_per_page' => 100,       // Retrieve all posts of the specified content type
-    );
+//     $args = array(
+//         'post_type' => 'floorplans',  // Replace 'floorplans' with the actual name of your content type
+//         'posts_per_page' => 100,       // Retrieve all posts of the specified content type
+//     );
 
-    $query = new WP_Query($args);
+//     $query = new WP_Query($args);
 
-    if ($query->have_posts()) {
-        while ($query->have_posts()) {
-            $query->the_post();
-            the_title('<h2>', '</h2>');  // Output the title within <h2> tags
-            $images = rentfetch_get_floorplan_images();
+//     if ($query->have_posts()) {
+//         while ($query->have_posts()) {
+//             $query->the_post();
+//             the_title('<h2>', '</h2>');  // Output the title within <h2> tags
+//             $images = rentfetch_get_floorplan_images();
             
-            foreach( $images as $image ) {
-                printf( '<img style="width:100px; height: auto;" src="%s" />', $image['url'] );
-            }
+//             foreach( $images as $image ) {
+//                 printf( '<img style="width:100px; height: auto;" src="%s" />', $image['url'] );
+//             }
             
-            edit_post_link();
+//             edit_post_link();
             
-        }
-        wp_reset_postdata();
-    } else {
-        echo 'No floorplans found.';
-    }
+//         }
+//         wp_reset_postdata();
+//     } else {
+//         echo 'No floorplans found.';
+//     }
         
     
-} 
+// } 
 
 function rentfetch_get_floorplan_images() {
     global $post;

@@ -25,11 +25,11 @@ function rentfetch_propertymap( $atts ) {
     
     // properties in archive
     wp_enqueue_style( 'rentfetch-properties-in-archive' );
-    wp_enqueue_script( 'rentfetch-property-images-slider-init' );
+    // wp_enqueue_script( 'rentfetch-property-images-slider-init' );
     
     // favorites
-    wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
-    wp_enqueue_script( 'rentfetch-property-favorites' );
+    // wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
+    // wp_enqueue_script( 'rentfetch-property-favorites' );
     
     // the map itself
     $key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
@@ -107,32 +107,62 @@ function rentfetch_filter_properties(){
     
     $propertyquery = new WP_Query( $property_args );
         
-    if( $propertyquery->have_posts() ) :
+    if( $propertyquery->have_posts() ) {
+        
+        $count = 0;
         
         $numberofposts = $propertyquery->post_count;
+        $total_posts = wp_count_posts('properties')->publish;
         
-        if ( $numberofposts == $properties_maximum_per_page ) {
-            printf( '<div class="count"><h2 class="post-count">More than <span class="number">%s</span> properties found</h2></div>', $numberofposts );
-        } else {
-            printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> results</h2></div>', $numberofposts );
-        }
+        printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> of %s properties selected</h2></div>', $numberofposts, $total_posts );
         
         echo '<div class="properties-loop">';
-            while( $propertyquery->have_posts() ): $propertyquery->the_post();
-                $property_id = get_post_meta( get_the_ID(), 'property_id', true );
-                $floorplan = $floorplans[$property_id ];                
-                do_action( 'rentfetch_do_each_property', $propertyquery->post->ID, $floorplan );
-            endwhile;
+        
+        
+        
+            while( $propertyquery->have_posts() ) {
+                
+                $propertyquery->the_post();
+                
+                $latitude = get_post_meta( get_the_ID(), 'latitude', true );
+                $longitude = get_post_meta( get_the_ID(), 'longitude', true );
+                
+                // skip if there's no latitude or longitude
+                if ( !$latitude || !$longitude )
+                    continue;
+                
+                $class = implode( ' ', get_post_class() );
+                                
+                printf( 
+                    '<div class="%s" data-latitude="%s" data-longitude="%s" data-id="%s" data-marker-id="%s">', 
+                    $class, 
+                    $latitude, 
+                    $longitude,
+                    $count, 
+                    get_the_ID(), 
+                );
+                
+                    echo '<div class="property-in-list">';
+                        do_action( 'rentfetch_do_properties_each_list' );
+                    echo '</div>';
+                    echo '<div class="property-in-map" style="display:none;">';
+                        do_action( 'rentfetch_do_properties_each_map' );
+                    echo '</div>';
+                
+                echo '</div>'; // post_class
+                
+                $count++;
+            
+            } // endwhile
+            
         echo '</div>';
         
 		wp_reset_postdata();
         
-	else :
-        
-		echo 'No properties with availability were found matching the current search parameters.';
-        
-	endif;
- 
+    } else {
+        echo 'No properties with availability were found matching the current search parameters.';
+    }
+         
 	die();
 }
 

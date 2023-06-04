@@ -99,21 +99,21 @@ function rentfetch_get_floorplans_array() {
         }
         
         if ( $max == $min ) {
-            $floorplans[$key]['rentrange'] = '$' . $max;
+            $floorplans[$key]['rentrange'] = number_format($max);
         } else {
-            $floorplans[$key]['rentrange'] = '$' . $min . '-' . $max;
+            $floorplans[$key]['rentrange'] = number_format($min) . '-' . number_format($max);
         }
         
         if ( $min < 100 || $max < 100 )
-            $floorplans[$key]['rentrange'] = apply_filters( 'rentfetch_floorplan_pricing_unavailable_text', 'Pricing unavailable' );
+            $floorplans[$key]['rentrange'] = null;
         
-        $max = max( $floorplan['maximum_sqft'] );
-        $min = min( $floorplan['minimum_sqft'] );
+        $max = intval( max( $floorplan['maximum_sqft'] ) );
+        $min = intval( min( $floorplan['minimum_sqft'] ) );
         
         if ( $max == $min ) {
-            $floorplans[$key]['sqftrange'] = $max;
+            $floorplans[$key]['sqftrange'] = number_format($max);
         } else {
-            $floorplans[$key]['sqftrange'] = $min . '-' . $max;
+            $floorplans[$key]['sqftrange'] = number_format($min) . '-' . number_format($max);
         }
         
         // default value
@@ -142,9 +142,8 @@ function rentfetch_set_floorplans() {
 }
 
 /**
- * Get the floorplans from the global variable, and return those for a particulat property
+ * Get the floorplans from the global variable, and return those for a particular property
  */
-add_action( 'wp_footer', 'rentfetch_get_floorplans' );
 function rentfetch_get_floorplans( $property_id = null ) {
     
     global $rentfetch_floorplans;
@@ -152,7 +151,18 @@ function rentfetch_get_floorplans( $property_id = null ) {
     
     if ( $property_id )
         return $rentfetch_floorplans[$property_id];
-                
+                        
     return $rentfetch_floorplans;
+    
+}
+
+/**
+ * For testing
+ */
+// add_action( 'wp_footer', 'rentfetch_dump_floorplan_array' );
+function rentfetch_dump_floorplan_array() {
+    
+    global $rentfetch_floorplans;
+    var_dump( $rentfetch_floorplans );
     
 }
