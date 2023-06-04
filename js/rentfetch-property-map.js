@@ -110,6 +110,14 @@ jQuery(document).ready(function ($) {
     }
 
     function resetMap() {
+        // Clear markers from the map
+        for (let i = 0; i < markers.length; i++) {
+            markers[i].setMap(null);
+        }
+
+        // Empty the markers array
+        markers = [];
+
         renderMap();
         getLocations();
         addMarkers();
@@ -133,11 +141,13 @@ jQuery(document).ready(function ($) {
     }
 
     $(document).on(
-        'mouseenter touchstart',
+        'click touchstart',
         '.type-properties',
         openMarkerOnGridClick
     );
-    $(document).on('mouseenter touchstart', '.type-properties', activeOnClick);
+    $(document).on('click touchstart', '.type-properties', activeOnClick);
 
-    $(document).on('ajaxComplete load', resetMap);
+    $(document).ajaxComplete(function () {
+        resetMap();
+    });
 });

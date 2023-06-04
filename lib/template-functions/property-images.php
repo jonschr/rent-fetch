@@ -21,7 +21,7 @@ function rentfetch_property_single_image() {
     $images = rentfetch_get_property_images();            
 
     ?>
-    <div style="display: block; height: 200px; width: 100%;">
+    <div style="display: block; height: 150px; width: 100%;">
         <img src="<?php echo $images[0]['url']; ?>" loading="lazy" style="width: 100%; height: 100%;">
     </div>
     <?php
