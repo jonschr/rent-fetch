@@ -148,12 +148,11 @@ add_action( 'wp_footer', 'rentfetch_get_floorplans' );
 function rentfetch_get_floorplans( $property_id = null ) {
     
     global $rentfetch_floorplans;
-            
-    $property_id = (int) $property_id;
+    $property_id = intval( $property_id );
     
     if ( $property_id )
         return $rentfetch_floorplans[$property_id];
-        
+                
     return $rentfetch_floorplans;
     
 }
