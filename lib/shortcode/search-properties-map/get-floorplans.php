@@ -2,6 +2,8 @@
 
 function rentfetch_get_floorplans_array() {
     
+    global $floorplans;
+    
 	$floorplans_args = array(
         'post_type' => 'floorplans',
         'posts_per_page' => -1,
@@ -126,4 +128,32 @@ function rentfetch_get_floorplans_array() {
     }
     
     return $floorplans;
+}
+
+/**
+ * Get the floorplans using the default function and make them available globally
+ */
+add_action( 'init', 'rentfetch_set_floorplans' );
+function rentfetch_set_floorplans() {
+    
+    global $rentfetch_floorplans;
+    $rentfetch_floorplans = rentfetch_get_floorplans_array();
+    
+}
+
+/**
+ * Get the floorplans from the global variable, and return those for a particulat property
+ */
+add_action( 'wp_footer', 'rentfetch_get_floorplans' );
+function rentfetch_get_floorplans( $property_id = null ) {
+    
+    global $rentfetch_floorplans;
+            
+    $property_id = (int) $property_id;
+    
+    if ( $property_id )
+        return $rentfetch_floorplans[$property_id];
+        
+    return $rentfetch_floorplans;
+    
 }
