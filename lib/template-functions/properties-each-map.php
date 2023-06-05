@@ -9,11 +9,13 @@ function rentfetch_properties_each_map() {
     $bathrooms = rentfetch_get_property_bathrooms();
     $square_feet = rentfetch_get_property_square_feet();
     $rent = rentfetch_get_property_rent();
+    $availability = rentfetch_get_property_availability();
+    $specials = rentfetch_get_property_specials();
     
     do_action( 'rentfetch_do_property_images' );
     
     if ( $title )
-        printf( '<h3>%s</h3>', $title );
+        printf( '<h3>%s</h3>', esc_html( $title ) );
     
     if ( $property_location )
         printf( '<p class="property-location">%s</p>', esc_html( $property_location ) );
@@ -29,6 +31,12 @@ function rentfetch_properties_each_map() {
         
     if ( $rent )
         printf( '<p class="rent">%s</p>', esc_html( $rent ) );
+
+    if ( $availability)
+        printf( '<p class="availability">%s</p>', esc_html( $availability ) );
+        
+    if ( $specials )
+        printf( '<p class="specials">%s</p>', esc_html( $specials ) );
         
     edit_post_link();
     

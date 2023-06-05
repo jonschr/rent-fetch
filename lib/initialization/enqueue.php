@@ -40,21 +40,21 @@ function rentfetch_enqueue_scripts_stylesheets() {
     wp_register_script( 'rentfetch-property-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-property-images-slider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Favorite properties
-    wp_register_script( 'rentfetch-property-favorites-cookies', 'https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
-    wp_register_script( 'rentfetch-property-favorites', RENTFETCH_PATH . 'js/rentfetch-property-favorites.js', array( 'rentfetch-property-favorites-cookies' ), RENTFETCH_VERSION, true );
+    // wp_register_script( 'rentfetch-property-favorites-cookies', 'https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    // wp_register_script( 'rentfetch-property-favorites', RENTFETCH_PATH . 'js/rentfetch-property-favorites.js', array( 'rentfetch-property-favorites-cookies' ), RENTFETCH_VERSION, true );
     
     // Floorplans in archive
-    wp_register_style( 'rentfetch-floorplan-in-archive', RENTFETCH_PATH . 'css/floorplan-in-archive.css', array(), RENTFETCH_VERSION, 'screen' );
-    wp_register_script( 'rentfetch-floorplan-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-floorplan-images-slider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+    // wp_register_style( 'rentfetch-floorplan-in-archive', RENTFETCH_PATH . 'css/floorplan-in-archive.css', array(), RENTFETCH_VERSION, 'screen' );
+    // wp_register_script( 'rentfetch-floorplan-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-floorplan-images-slider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Fancybox
     wp_register_style( 'rentfetch-fancybox-style', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), RENTFETCH_VERSION, 'screen' );
     wp_register_script( 'rentfetch-fancybox-script', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );
         
     // Slick
-    wp_register_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), RENTFETCH_VERSION, true );
-    wp_register_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), RENTFETCH_VERSION );
-    wp_register_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), RENTFETCH_VERSION );
+    // wp_register_script( 'rentfetch-slick-main-script', RENTFETCH_PATH . 'vendor/slick/slick.min.js', array('jquery'), RENTFETCH_VERSION, true );
+    // wp_register_style( 'rentfetch-slick-main-styles', RENTFETCH_PATH . 'vendor/slick/slick.css', array(), RENTFETCH_VERSION );
+    // wp_register_style( 'rentfetch-slick-main-theme', RENTFETCH_PATH . 'vendor/slick/slick-theme.css', array(), RENTFETCH_VERSION );
     
     // Google reCAPTCHA
     wp_register_script( 'rentfetch-google-recaptcha', 'https://www.google.com/recaptcha/api.js', array('jquery'), RENTFETCH_VERSION, true );
@@ -64,8 +64,6 @@ function rentfetch_enqueue_scripts_stylesheets() {
 
 add_action( 'admin_enqueue_scripts', 'rentfetch_enqueue_in_admin_metabox_properties' );
 function rentfetch_enqueue_in_admin_metabox_properties() {
-        
-    
     
     wp_register_script( 
         'rentfetch-metabox-properties-images', 

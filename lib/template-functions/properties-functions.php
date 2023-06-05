@@ -79,6 +79,10 @@ function rentfetch_get_property_bedrooms() {
     $property_id = esc_html( get_post_meta( get_the_ID(), 'property_id', true ) );
     
     $floorplan_data = rentfetch_get_floorplans( $property_id );
+    
+    if ( !isset( $floorplan_data['bedsrange'] ) )
+        return;
+        
     $bedrooms = apply_filters( 'rentfetch_filter_property_bedrooms', $floorplan_data['bedsrange'] );
     return esc_html( $bedrooms );
 }
@@ -102,6 +106,10 @@ function rentfetch_get_property_bathrooms() {
     $property_id = esc_html( get_post_meta( get_the_ID(), 'property_id', true ) );
     
     $floorplan_data = rentfetch_get_floorplans( $property_id );
+    
+    if ( !isset( $floorplan_data['bathsrange'] ) )
+        return;
+        
     $bathrooms = apply_filters( 'rentfetch_filter_property_bathrooms', $floorplan_data['bathsrange'] );
     return esc_html( $bathrooms );
     
@@ -125,6 +133,10 @@ function rentfetch_get_property_square_feet() {
     $property_id = esc_html( get_post_meta( get_the_ID(), 'property_id', true ) );
     
     $floorplan_data = rentfetch_get_floorplans( $property_id );
+    
+    if ( !isset( $floorplan_data['sqftrange'] ) )
+        return;
+    
     $square_feet = apply_filters( 'rentfetch_filter_property_square_feet', $floorplan_data['sqftrange'] );
     return esc_html( $square_feet );
 }
@@ -147,6 +159,10 @@ function rentfetch_get_property_rent() {
     $property_id = esc_html( get_post_meta( get_the_ID(), 'property_id', true ) );
     
     $floorplan_data = rentfetch_get_floorplans( $property_id );
+    
+     if ( !isset( $floorplan_data['rentrange'] ) )
+        return;
+        
     $rent = apply_filters( 'rentfetch_filter_property_rent', $floorplan_data['rentrange'] );
     return esc_html( $rent );
     
@@ -166,5 +182,89 @@ function rentfetch_default_property_rent_label( $rent ) {
         return '$' . esc_html( $rent ) . '/mo';
         
     // This could return 'Call for Pricing' or 'Pricing unavailable' if pricing isn't available
+    return null;
+}
+
+//* PROPERTY AVAILABILITY
+
+function rentfetch_get_property_availability() {
+    $property_id = esc_html( get_post_meta( get_the_ID(), 'property_id', true ) );
+    
+    $floorplan_data = rentfetch_get_floorplans( $property_id );
+    
+    if ( isset( $floorplan_data['availability'] ) ) {
+    
+        $units_available = apply_filters( 'rentfetch_filter_property_availabile_units', $floorplan_data['availability'] );
+    
+        if ( $units_available > 0 )
+            return $units_available;
+            
+    }
+    
+    if ( isset( $floorplan_data['available_date'] ) ) {
+        $available_date = apply_filters( 'rentfetch_filter_property_availability_date', $floorplan_data['available_date'] );
+            
+        if ( $available_date )
+            return $available_date;
+    }
+    
+    return null;
+    
+}
+
+function rentfetch_property_availability() {
+    $availability = rentfetch_get_property_availability();
+    
+    if ( $availability )
+        echo $availability;
+}
+
+add_filter( 'rentfetch_filter_property_availabile_units', 'rentfetch_default_property_available_units_label', 10, 1 );
+function rentfetch_default_property_available_units_label( $availability ) {
+    
+    if ( $availability == 1 ) {
+        return esc_html( $availability ) . ' unit available';
+    } elseif ( $availability >= 1 ) {
+        return esc_html( $availability ) . ' units available';
+    }        
+}
+
+add_filter( 'rentfetch_filter_property_availability_date', 'rentfetch_default_property_availability_date', 10, 1 );
+function rentfetch_default_property_availability_date( $availability_date ) {
+    
+    if ( $availability_date )
+        return 'Available ' . esc_html( $availability_date );
+        
+    return null;
+}
+
+//* PROPERTY SPECIALS
+
+function rentfetch_get_property_specials() {
+    $property_id = esc_html( get_post_meta( get_the_ID(), 'property_id', true ) );
+    
+    $floorplan_data = rentfetch_get_floorplans( $property_id );
+    
+    if ( !isset( $floorplan_data['property_has_specials'] ) )
+        return;
+        
+    $specials = apply_filters( 'rentfetch_filter_property_specials', $floorplan_data['property_has_specials'] );
+    return esc_html( $specials );
+    
+}
+
+function rentfetch_property_specials() {
+    $specials = rentfetch_get_property_specials();
+    
+    if ( $specials )
+        echo $specials;
+}
+
+add_filter( 'rentfetch_filter_property_specials', 'rentfetch_default_property_specials_label', 10, 1 );
+function rentfetch_default_property_specials_label( $specials ) {
+    
+    if ( $specials )
+        return 'Specials available';
+        
     return null;
 }

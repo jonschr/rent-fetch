@@ -19,9 +19,9 @@ function rentfetch_propertymap( $atts ) {
     wp_enqueue_script( 'rentfetch-search-properties-script' );
         
     // slick
-    wp_enqueue_script( 'rentfetch-slick-main-script' );
-    wp_enqueue_style( 'rentfetch-slick-main-styles' );
-    wp_enqueue_style( 'rentfetch-slick-main-theme' );
+    // wp_enqueue_script( 'rentfetch-slick-main-script' );
+    // wp_enqueue_style( 'rentfetch-slick-main-styles' );
+    // wp_enqueue_style( 'rentfetch-slick-main-theme' );
     
     // properties in archive
     wp_enqueue_style( 'rentfetch-properties-in-archive' );

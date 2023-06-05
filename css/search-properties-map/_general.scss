@@ -76,46 +76,6 @@
         }
     }
 
-    .toggle {
-        top: 70px;
-        transform: translateY(-50%);
-        left: calc(60% - 15px);
-        width: 50px;
-        height: 50px;
-        background-color: white;
-        position: absolute;
-        display: block;
-        z-index: 20;
-        border: 1px solid #ebebeb;
-        box-shadow: 0 0 10px 0 rgba($dark, 0.15);
-        border-top-right-radius: 100%;
-        border-bottom-right-radius: 100%;
-        transition: 0.3s transform ease;
-        cursor: pointer;
-
-        @include mobile {
-            display: none;
-        }
-
-        &:before {
-            content: '\f345';
-            color: $default;
-            position: absolute;
-            top: 50%;
-            right: 5px;
-            transform: translateY(-50%);
-            font-family: 'dashicons';
-            font-size: 25px;
-            // transition: .3s all ease;
-        }
-
-        &:hover {
-            &:before {
-                color: $dark;
-            }
-        }
-    }
-
     #map {
         // transition: .3s all ease;
         height: 800px;

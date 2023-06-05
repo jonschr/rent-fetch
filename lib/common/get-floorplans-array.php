@@ -32,6 +32,7 @@ function rentfetch_get_floorplans_array() {
             $minimum_sqft = get_post_meta( $id, 'minimum_sqft', true );
             $maximum_sqft = get_post_meta( $id, 'maximum_sqft', true );
             $available_units = get_post_meta( $id, 'available_units', true );
+            $availability_date = get_post_meta( $id, 'availability_date', true );
             $has_specials = get_post_meta( $id, 'has_specials', true );
             
             if ( !isset( $floorplans[$property_id ] ) ) {
@@ -44,6 +45,7 @@ function rentfetch_get_floorplans_array() {
                     'minimum_sqft' => array( $minimum_sqft ),
                     'maximum_sqft' => array( $maximum_sqft ),
                     'available_units' => array( $available_units ),
+                    'availability_date' => array( $availability_date ),
                     'has_specials' => array( $has_specials ),
                 );
             } else {
@@ -55,6 +57,7 @@ function rentfetch_get_floorplans_array() {
                 $floorplans[ $property_id ]['minimum_sqft'][] = $minimum_sqft;
                 $floorplans[ $property_id ]['maximum_sqft'][] = $maximum_sqft;
                 $floorplans[ $property_id ]['available_units'][] = $available_units;
+                $floorplans[ $property_id ]['availability_date'][] = $availability_date;
                 $floorplans[ $property_id ]['has_specials'][] = $has_specials;
             }
             
@@ -65,6 +68,9 @@ function rentfetch_get_floorplans_array() {
 	endif;
         
     foreach ( $floorplans as $key => $floorplan ) {
+        
+        //* BEDS 
+        
         $max = max( $floorplan['beds'] );
         $min = min( $floorplan['beds'] );
         
@@ -73,6 +79,8 @@ function rentfetch_get_floorplans_array() {
         } else {
             $floorplans[$key]['bedsrange'] = $min . '-' . $max;
         }
+        
+        //* BATHS
         
         $max = max( $floorplan['baths'] );
         $min = min( $floorplan['baths'] );
@@ -83,6 +91,8 @@ function rentfetch_get_floorplans_array() {
             $floorplans[$key]['bathsrange'] = $min . '-' . $max;
         }
         
+        //* MAX RENT
+        
         $floorplan['maximum_rent'] = array_filter( $floorplan['maximum_rent'], 'rentfetch_check_if_above_100' );
         $floorplan['minimum_rent'] = array_filter( $floorplan['minimum_rent'], 'rentfetch_check_if_above_100' );
         
@@ -92,11 +102,15 @@ function rentfetch_get_floorplans_array() {
             $max = 0;
         }
         
+        //* MIN RENT
+        
         if ( !empty( $floorplan['minimum_rent'] ) ) {
             $min = min( $floorplan['minimum_rent'] );
         } else {
             $min = 0;
         }
+        
+        //* RENT RANGE
         
         if ( $max == $min ) {
             $floorplans[$key]['rentrange'] = number_format($max);
@@ -106,6 +120,8 @@ function rentfetch_get_floorplans_array() {
         
         if ( $min < 100 || $max < 100 )
             $floorplans[$key]['rentrange'] = null;
+            
+        //* SQFT RANGE
         
         $max = intval( max( $floorplan['maximum_sqft'] ) );
         $min = intval( min( $floorplan['minimum_sqft'] ) );
@@ -115,6 +131,53 @@ function rentfetch_get_floorplans_array() {
         } else {
             $floorplans[$key]['sqftrange'] = number_format($min) . '-' . number_format($max);
         }
+        
+        //* AVAILABLE UNITS
+        
+        $units_array = $floorplan['available_units'];
+        if ( $units_array ) {
+            $units = array_sum( $units_array );
+        } else {
+            $units = 0;
+        }
+        
+        $floorplans[$key]['availability'] = $units;
+        
+        //* AVAILABILITY DATE
+        
+        $availability_date_array = $floorplan['availability_date'];
+        $floorplans[$key]['available_date'] = null;  // Initialize the available_date to null
+
+        if ($availability_date_array) {
+            foreach ($availability_date_array as $date_string) {
+                // Skip if date string is empty
+                if ($date_string == '') {
+                    continue;
+                }
+
+                // Convert date string to DateTime object for comparison
+                $date = DateTime::createFromFormat('Ymd', $date_string);
+
+                // Skip if date string is not a valid date
+                if ($date === false) {
+                    continue;
+                }
+
+                // If available_date is null or the current date is earlier, update available_date
+                if ($floorplans[$key]['available_date'] === null || $date < $floorplans[$key]['available_date']) {
+                    $floorplans[$key]['available_date'] = $date;
+                }
+            }
+        }
+
+        // Convert the earliest date back to string format 'Ymd', if there's a valid date
+        if ($floorplans[$key]['available_date'] !== null) {
+            $floorplans[$key]['available_date'] = $floorplans[$key]['available_date']->format('F j');
+        }
+
+        
+        
+        //* SPECIALS
         
         // default value
         $floorplans[$key]['property_has_specials'] = false;
@@ -159,7 +222,7 @@ function rentfetch_get_floorplans( $property_id = null ) {
 /**
  * For testing
  */
-// add_action( 'wp_footer', 'rentfetch_dump_floorplan_array' );
+add_action( 'wp_footer', 'rentfetch_dump_floorplan_array' );
 function rentfetch_dump_floorplan_array() {
     
     global $rentfetch_floorplans;

@@ -1,7 +1,7 @@
 <?php
 
-add_action( 'init', 'apartmentsync_register_taxonomy_floorplantype' );
-function apartmentsync_register_taxonomy_floorplantype() {
+add_action( 'init', 'rentfetch_register_taxonomy_floorplantype' );
+function rentfetch_register_taxonomy_floorplantype() {
 	register_taxonomy(
 		'floorplantype',
 		'floorplans',
