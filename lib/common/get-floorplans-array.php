@@ -222,7 +222,7 @@ function rentfetch_get_floorplans( $property_id = null ) {
 /**
  * For testing
  */
-add_action( 'wp_footer', 'rentfetch_dump_floorplan_array' );
+// add_action( 'wp_footer', 'rentfetch_dump_floorplan_array' );
 function rentfetch_dump_floorplan_array() {
     
     global $rentfetch_floorplans;

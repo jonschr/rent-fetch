@@ -124,11 +124,7 @@ jQuery(document).ready(function ($) {
     }
 
     function openMarkerOnGridClick() {
-        console.log(markers);
-
         let markerIndex = parseInt($(this).attr('data-id')); // Parse as integer
-
-        console.log(markerIndex);
 
         if (markerIndex >= 0 && markerIndex < markers.length) {
             google.maps.event.trigger(markers[markerIndex], 'click');
