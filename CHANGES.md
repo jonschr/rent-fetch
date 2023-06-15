@@ -1,4 +1,8 @@
-# 3.10.2
+## 3.11.0
+
+-   Add the rentfetch_get_property_images function to allow for easier grabbing of images even on legacy sites
+
+## 3.10.2
 
 -   Fix the fallback image not appearing when there's nothing in Yardi or Manual
 
