@@ -1,15 +1,15 @@
 <?php
 
-function rentfetch_get_property_images() {
+function rentfetch_get_property_images( $args = null ) {
     global $post;
     
     // bail if this isn't a property
     if ($post->post_type != 'properties' )
         return;
     
-    $manual_images = rentfetch_get_property_images_manual();
-    $yardi_images = rentfetch_get_property_images_yardi();
-    $fallback_images = rentfetch_get_property_images_fallback();
+    $manual_images = rentfetch_get_property_images_manual( $args );
+    $yardi_images = rentfetch_get_property_images_yardi( $args );
+    $fallback_images = rentfetch_get_property_images_fallback( $args );
         
     if ( $manual_images ) {
         return $manual_images;
@@ -22,8 +22,14 @@ function rentfetch_get_property_images() {
     } 
 }
 
-function rentfetch_get_property_images_manual() {
+function rentfetch_get_property_images_manual( $args ) {
     global $post;
+    
+    if ( isset( $args['size'] ) ) {
+        $size = $args['size'];
+    } else {
+        $size = 'large';
+    }
     
     $manual_image_ids = get_post_meta( get_the_ID(), 'images', true );
                 
@@ -40,7 +46,7 @@ function rentfetch_get_property_images_manual() {
     foreach ( $manual_image_ids as $manual_image_id ) {
         
         $manual_images[] = [
-            'url' => wp_get_attachment_image_url($manual_image_id, 'large' ),
+            'url' => wp_get_attachment_image_url( $manual_image_id, $size ),
             'title' => get_the_title( $manual_image_id ),
             'alt' => get_post_meta( $manual_image_id, '_wp_attachment_image_alt', true ),
             'caption' => get_the_excerpt( $manual_image_id ),
@@ -51,9 +57,9 @@ function rentfetch_get_property_images_manual() {
     
 }
 
-function rentfetch_get_property_images_yardi() {
+function rentfetch_get_property_images_yardi( $args ) {
     global $post; 
-        
+            
     $yardi_images_string = get_post_meta( get_the_ID(), 'property_images', true );
     
     // bail if there's no yardi images
@@ -76,13 +82,11 @@ function rentfetch_get_property_images_yardi() {
         ];
     }
     
-    
-    
     return $yardi_images;
     
 }
 
-function rentfetch_get_property_images_fallback() {
+function rentfetch_get_property_images_fallback( $args ) {
     
     $fallback_images[] = [
         'url' => apply_filters( 'rentfetch_sample_image', RENTFETCH_PATH . 'images/fallback-property.svg' ),

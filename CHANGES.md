@@ -1,3 +1,7 @@
+## 3.11.1
+
+-   Add optional args to rentfetch_get_property_images to allow for a size to be specified
+
 ## 3.11.0
 
 -   Add the rentfetch_get_property_images function to allow for easier grabbing of images even on legacy sites
