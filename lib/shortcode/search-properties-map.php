@@ -533,32 +533,23 @@ function rentfetch_filter_properties(){
     
         // get the dates into an array
         $dates = explode( ' to ', $datestring  );
-        
-        // typical use, we have two dates, a start and end
-        if ( count( $dates ) == 2 ) {
                     
-            // do a between query against the availability dates
-            $floorplans_args['meta_query'][] = array(
-                array(
-                    'key' => 'availability_date',
-                    'value' => array( $dates[0], $dates[1] ),
-                    'type' => 'numeric',
-                    'compare' => 'BETWEEN',
-                )
-            );
+        // if we have any dates, then use the end date. If we just have a start date, use that as an end date instead.
+        if ( $dates && ($dates !== array('')) ) {
+                        
+            // $date should be either $date[0] or $date[1], whichever is greater
+            $date = max( $dates );
             
-        // or we might just have one date, which we'll treat as an end
-        } elseif ( count( $dates ) == 1 && !empty( $dates[0] ) ) {
             
-            $yesterday = date('Ymd',strtotime("-1 days"));
+            $yesterday = date('Ymd',strtotime("-10 days"));
                         
             // do a between query between yesterday and the date entered
             $floorplans_args['meta_query'][] = array(
                 array(
                     'key' => 'availability_date',
-                    'value' => array( $yesterday, $dates[0] ),
-                    'type' => 'numeric',
-                    'compare' => 'BETWEEN',
+                    'value'   => $date,
+                    'compare' => '<',
+                    'type'    => 'DATE',
                 )
             );
            

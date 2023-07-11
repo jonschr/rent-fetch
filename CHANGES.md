@@ -1,3 +1,7 @@
+## 3.12
+
+-   Updating the search to also show apartments as available when they're available now but the date range selected is after now.
+
 ## 3.11.1
 
 -   Add optional args to rentfetch_get_property_images to allow for a size to be specified
