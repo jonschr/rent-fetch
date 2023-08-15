@@ -53,8 +53,14 @@ function rentfetch_each_property( $id, $floorplan ) {
         $has_specials = null;
     }
         
-    $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url = null );
-    $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target = '_blank' );
+    // because we're using this function in multiple places, we need to check if the loop is available. If it's not, then the filter won't work, and we need to do something simpler
+    if ( $id == get_the_ID() ) {
+        $url = apply_filters( 'rentfetch_property_archives_filter_property_permalink', $url = null );
+        $target = apply_filters( 'rentfetch_property_archives_filter_property_permalink_target', $target = '_blank' );
+    } else {
+        $target = '_self';
+        $url = get_permalink( $id );
+    }
     
     $total_available = 0;
     

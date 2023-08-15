@@ -1,3 +1,7 @@
+## 3.12.1
+
+-   BUGFIX: links in the nearby property section weren't outputting properly because they assumed that the loop was available. That will be true in the new version of the plugin, but is not true here, so links were always outputting to the current post rather than to the correct one.
+
 ## 3.12
 
 -   Updating the search to also show apartments as available when they're available now but the date range selected is after now.
