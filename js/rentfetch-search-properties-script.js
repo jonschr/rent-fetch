@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
     //* Submission events
     $('a.apply').click(function (e) {
         e.preventDefault();
@@ -14,5 +13,4 @@ jQuery(document).ready(function ($) {
 
     // on load, do these functions
     submitTheForm();
-
 });
