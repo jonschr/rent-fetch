@@ -1,16 +1,7 @@
 <?php
 
 function rentfetch_search_properties_map_filters_property_types() {
-    
-    // get query parameters about types
-    if ( isset( $_GET['propertytypes'])) {
-        $propertytypesparam = $_GET['propertytypes'];
-        $propertytypesparam = explode( ',', $propertytypesparam );
-        $propertytypesparam = array_map( 'esc_attr', $propertytypesparam );
-    } else {
-        $propertytypesparam = array();
-    } 
-    
+   
     // check whether beds search is enabled
     $map_search_components = get_option( 'options_map_search_components' );
     
@@ -41,14 +32,30 @@ function rentfetch_search_properties_map_filters_property_types() {
                 echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
                 echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
                     echo '<div class="dropdown-menu-items">';
-                        foreach( $propertytypes as $propertytype ) {
+                    
+                        foreach ($propertytypes as $propertytype) {
                             $name = $propertytype->name;
                             $propertytype_term_id = $propertytype->term_id;
-                            if ( in_array( $propertytype_term_id, $propertytypesparam ) ) {
-                                    printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" checked /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
-                            } else {
-                                printf( '<label><input type="checkbox" data-propertytypes="%s" data-propertytypesname="%s" name="propertytypes-%s" /><span>%s</span></label>', $propertytype_term_id, $name, $propertytype_term_id, $name );
-                            }
+
+                            // Check if the propertytype's term ID is in the GET parameter array
+                            $checked = in_array($propertytype_term_id, $_GET['search-property-types'] ?? array());
+
+                            printf(
+                                '<label>
+                                    <input type="checkbox" 
+                                        name="search-property-types[]" 
+                                        value="%s" 
+                                        data-propertytypes="%s" 
+                                        data-propertytypesname="%s" 
+                                        %s /> <!-- Add checked attribute if necessary -->
+                                    <span>%s</span>
+                                </label>',
+                                $propertytype_term_id,
+                                $propertytype_term_id,
+                                $name,
+                                $checked ? 'checked' : '', // Apply checked attribute
+                                $name
+                            );
                         }
                     echo '</div>';
                     echo '<div class="filter-application">';
@@ -65,41 +72,29 @@ function rentfetch_search_properties_map_filters_property_types() {
 add_filter( 'rentfetch_search_property_map_properties_query_args', 'rentfetch_search_property_map_properties_args_types', 10, 1 );
 function rentfetch_search_property_map_properties_args_types( $property_args ) {
     
-    // bail if there's no propertypes taxonomy
-    if ( !taxonomy_exists( 'propertytypes' ) )
-        return;
+    if ( isset( $_POST['search-property-types'] ) && is_array( $_POST['search-property-types'] ) ) {
         
-    //* Add the tax queries
-    $property_args['tax_query'] = array();
-    
-    //* propertytype taxonomy
-    $propertytypes = get_terms( 
-        array(
-            'taxonomy' => 'propertytypes',
-            'hide_empty' => true,
-        ),
-    );
-    
-    // loop through the checkboxes, and for each one that's checked, let's add that value to our tax query array
-    foreach ( $propertytypes as $propertytype ) {
-        $name = $propertytype->name;
-        $propertytype_term_id = $propertytype->term_id;
+        // Get the values
+        $property_types = $_POST['search-property-types'];
         
-        if ( isset( $_POST['propertytypes-' . $propertytype_term_id ] ) && $_POST['propertytypes-' . $propertytype_term_id ] == 'on' ) {
-            $propertytype_term_id = sanitize_text_field( $propertytype_term_id );
-            $propertytypeids[] = $propertytype_term_id;
+        // Escape the values
+        $property_types = array_map( 'sanitize_text_field', $property_types );
+        
+        // This is an "AND" query, where we want posts to match ALL of the specified amenities
+        $property_types_query = array(
+            'relation' => 'AND',
+        );
+
+        foreach ( $property_types as $property_type ) {
+            $property_types_query[] = array(
+                'taxonomy' => 'propertytypes',
+                'terms' => $property_type,
+            );
         }
+        
+        // Add the amenities query to the property args tax query
+        $property_args['tax_query'][] = $property_types_query;
     }
         
-    // add the meta query array to our $args
-    if ( isset( $propertytypeids ) ) {
-        $property_args['tax_query'][] = array(
-            array(
-                'taxonomy' => 'propertytypes',
-                'terms' => $propertytypeids,
-            )
-        );
-    } 
-    
     return $property_args;
 }
