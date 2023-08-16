@@ -13,6 +13,10 @@ function rentfetch_search_properties_map_filters_neighborhoods() {
     // check whether neighborhoods search is enabled
     $map_search_components = get_option( 'options_map_search_components' );
     
+    // this needs to be set to an array even if the option isn't set
+    if ( !is_array( $map_search_components ) )
+        $map_search_components = array();
+    
     // bail if neighborhoods search is not enabled
     if ( !in_array( 'neighborhoods_search', $map_search_components ) )
         return;

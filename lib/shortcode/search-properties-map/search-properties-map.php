@@ -117,9 +117,7 @@ function rentfetch_filter_properties(){
         printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> of %s properties selected</h2></div>', $numberofposts, $total_posts );
         
         echo '<div class="properties-loop">';
-        
-        
-        
+
             while( $propertyquery->have_posts() ) {
                 
                 $propertyquery->the_post();
