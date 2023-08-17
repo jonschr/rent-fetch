@@ -26,7 +26,6 @@ function rentfetch_enqueue_scripts_stylesheets() {
     // Properties map search
     wp_register_style( 'rentfetch-search-properties-map', RENTFETCH_PATH . 'css/search-properties-map.css', array(), RENTFETCH_VERSION, 'screen' );
     wp_register_script( 'rentfetch-search-properties-ajax', RENTFETCH_PATH . 'js/rentfetch-search-properties-ajax.js', array( 'jquery' ), RENTFETCH_VERSION, true );
-    wp_register_script( 'rentfetch-search-properties-script', RENTFETCH_PATH . 'js/rentfetch-search-properties-script.js', array( 'jquery' ), RENTFETCH_VERSION, true );
     
     // Properties map (the map itself)
     wp_register_script( 'rentfetch-property-map', RENTFETCH_PATH . 'js/rentfetch-property-map.js', array( 'jquery', 'rentfetch-google-maps' ), RENTFETCH_VERSION, true );

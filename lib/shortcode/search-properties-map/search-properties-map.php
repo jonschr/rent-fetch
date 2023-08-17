@@ -1,12 +1,30 @@
 <?php
 
-add_shortcode( 'propertymap', 'rentfetch_propertymap' );
-function rentfetch_propertymap( $atts ) {
+// add a shortcode that's just a default wrapper for the property search, built from three shortcodes
+add_shortcode( 'propertysearch', 'rentfetch_propertysearch' );
+function rentfetch_propertysearch( $atts ) {
     
-    ob_start();
+    ob_start();    
+
+    //* Start the form...
+    echo '<div class="properties-search-wrap">';
+        
+    echo do_shortcode('[propertysearchfilters]');
+        
+        //* Our container markup for the results
+        echo '<div class="map-response-wrap">';
+            echo do_shortcode('[propertysearchresults]');
+            echo do_shortcode('[propertysearchmap]');
+        echo '</div>';
     
-    // search scripts and styles
-    wp_enqueue_style( 'rentfetch-search-properties-map' );
+    echo '</div>'; // .properties-search-wrap
+
+    return ob_get_clean();
+}
+
+// add a shortcode for the property search filters
+add_shortcode( 'propertysearchfilters', 'rentfetch_propertysearchfilters' );
+function rentfetch_propertysearchfilters() {
     
     // Localize the search filters general script, then enqueue that
     $search_options = array(
@@ -14,22 +32,34 @@ function rentfetch_propertymap( $atts ) {
     );
     wp_localize_script( 'rentfetch-search-filters-general', 'searchoptions', $search_options );
     wp_enqueue_script( 'rentfetch-search-filters-general' );
-        
     wp_enqueue_script( 'rentfetch-search-properties-ajax' );
-    wp_enqueue_script( 'rentfetch-search-properties-script' );
+    
+    ob_start();
+    
+    printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter">', site_url() );
         
-    // slick
-    // wp_enqueue_script( 'rentfetch-slick-main-script' );
-    // wp_enqueue_style( 'rentfetch-slick-main-styles' );
-    // wp_enqueue_style( 'rentfetch-slick-main-theme' );
+        // This is the hook where we add all of our actions for the search filters
+        do_action( 'rentfetch_do_search_properties_map_filters' );
+                
+        // Buttons     
+        printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
+        echo '<button type="submit" style="display:none;">Search</button>';
+        echo '<input type="hidden" name="action" value="propertysearch">';
+        
+    echo '</form>';
+   
     
-    // properties in archive
-    wp_enqueue_style( 'rentfetch-properties-in-archive' );
-    // wp_enqueue_script( 'rentfetch-property-images-slider-init' );
+    return ob_get_clean();
+}
+
+// add a shortcode for propertymap
+add_shortcode( 'propertysearchmap', 'rentfetch_propertysearchmap' );
+function rentfetch_propertysearchmap() {
     
-    // favorites
-    // wp_enqueue_script( 'rentfetch-property-favorites-cookies' );
-    // wp_enqueue_script( 'rentfetch-property-favorites' );
+    ob_start();
+    
+    // search scripts and styles
+    wp_enqueue_style( 'rentfetch-search-properties-map' );
     
     // the map itself
     $key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
@@ -42,31 +72,25 @@ function rentfetch_propertymap( $atts ) {
         'google_maps_default_latitude' => get_option( 'options_google_maps_default_latitude' ),
         'google_maps_default_longitude' => get_option( 'options_google_maps_default_longitude' ),
     );
+    
     wp_localize_script( 'rentfetch-property-map', 'options', $maps_options );
     wp_enqueue_script( 'rentfetch-property-map');
     
-    //* Start the form...
-    echo '<div class="properties-search-wrap">';
-        printf( '<form class="property-search-filters" action="%s/wp-admin/admin-ajax.php" method="POST" id="filter" style="opacity:0;">', site_url() );
-        
-            // This is the hook where we add all of our actions for the search filters
-            do_action( 'rentfetch_do_search_properties_map_filters' );
-                    
-            // Buttons     
-            printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
-            echo '<button type="submit" style="display:none;">Search</button>';
-            echo '<input type="hidden" name="action" value="propertysearch">';
-            
-        echo '</form>';
-        
-        //* Our container markup for the results
-        echo '<div class="map-response-wrap">';
-            echo '<div id="response"></div>';
-            echo '<div id="map"></div>';
-        echo '</div>';
+    echo '<div id="map"></div>';
     
-    echo '</div>'; // .properties-search-wrap
+    return ob_get_clean();
+}
 
+// add a shortcode for the property results
+add_shortcode( 'propertysearchresults', 'rentfetch_propertysearchresults' );
+function rentfetch_propertysearchresults() {
+    ob_start();
+    
+    // properties in archive
+    wp_enqueue_style( 'rentfetch-properties-in-archive' );
+    
+    echo '<div id="response"></div>';
+    
     return ob_get_clean();
 }
 
@@ -105,8 +129,8 @@ function rentfetch_filter_properties(){
     
     $property_args = apply_filters( 'rentfetch_search_property_map_properties_query_args', $property_args );
     
-    console_log( 'Property search args:' );
-    console_log( $property_args );
+    // console_log( 'Property search args:' );
+    // console_log( $property_args );
     
     $propertyquery = new WP_Query( $property_args );
         

@@ -12,6 +12,6 @@ function rentfetch_search_properties_map_filter_order() {
     add_action( 'rentfetch_do_search_properties_map_filters', 'rentfetch_search_properties_map_filters_date' );
     add_action( 'rentfetch_do_search_properties_map_filters', 'rentfetch_search_properties_map_filters_price' );
     add_action( 'rentfetch_do_search_properties_map_filters', 'rentfetch_search_properties_map_filters_amenities' );
-    add_action( 'rentfetch_do_search_properties_map_filters', 'rentfetch_search_properties_map_filters_pets' );
+    // add_action( 'rentfetch_do_search_properties_map_filters', 'rentfetch_search_properties_map_filters_pets' );
     
 }

@@ -83,10 +83,7 @@ function rentfetch_search_property_map_floorplans_args_beds( $floorplans_args ) 
                 
         // Add the meta query to the property args
         $floorplans_args['meta_query'][] = $meta_query;
-        
-        console_log( 'In the function');
-        console_log( $floorplans_args );
-        
+                
     }
     
     return $floorplans_args;

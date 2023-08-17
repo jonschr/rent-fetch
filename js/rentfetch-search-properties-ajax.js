@@ -78,4 +78,13 @@ jQuery(function ($) {
     var queryParameters = getQueryParametersFromForm();
     updateURLWithQueryParameters(queryParameters);
     performAJAXSearch(queryParameters); // Perform AJAX search
+
+    $('a.apply').click(function (e) {
+        e.preventDefault();
+        $('#filter').submit();
+        $(this).parents('.dropdown-menu').removeClass('show');
+    });
+
+    // on page load, submit the form
+    $('#filter').submit();
 });
