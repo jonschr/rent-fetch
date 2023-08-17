@@ -2,14 +2,14 @@
 
 function rentfetch_search_properties_map_filters_beds() {
     
-    // beds parameter
-    if (isset($_GET['beds'])) {
-        $bedsparam = $_GET['beds'];
-        $bedsparam = explode( ',', $bedsparam );
-        $bedsparam = array_map( 'esc_attr', $bedsparam );
-    } else {
-        $bedsparam = array();
-    }
+    // // beds parameter
+    // if (isset($_GET['beds'])) {
+    //     $bedsparam = $_GET['beds'];
+    //     $bedsparam = explode( ',', $bedsparam );
+    //     $bedsparam = array_map( 'esc_attr', $bedsparam );
+    // } else {
+    //     $bedsparam = array();
+    // }
     
     // check whether beds search is enabled
     $map_search_components = get_option( 'options_map_search_components' );
@@ -36,17 +36,29 @@ function rentfetch_search_properties_map_filters_beds() {
                 
                     foreach( $beds as $bed ) {
                         
+                        // Check if the amenity's term ID is in the GET parameter array
+                        $checked = in_array($bed, $_GET['search-beds'] ?? array());
+                        
                         // skip if there's a null value for bed
                         if ( $bed === null )
                             continue;
                             
                         $label = apply_filters( 'rentfetch_get_bedroom_number_label', $label = null, $bed );
                             
-                        if ( in_array( $bed, $bedsparam ) ) {
-                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" checked /><span>%s</span></label>', $bed, $bed, $label );
-                        } else {
-                            printf( '<label><input type="checkbox" data-beds="%s" name="beds-%s" /><span>%s</span></label>', $bed, $bed, $label );
-                        }
+                        printf( 
+                            '<label>
+                                <input type="checkbox" 
+                                    name="search-beds[]"
+                                    value="%s" 
+                                    data-beds="%s" 
+                                    %s />
+                                <span>%s</span>
+                            </label>', 
+                            $bed, 
+                            $bed,
+                            $checked ? 'checked' : '', // Apply checked attribute 
+                            $label
+                        );
                     }
                 echo '</div>';
                 echo '<div class="filter-application">';
@@ -59,29 +71,31 @@ function rentfetch_search_properties_map_filters_beds() {
         
 }
 
-add_filter( 'rentfetch_search_property_map_floorplans_query_args', 'rentfetch_search_property_map_floorplans_args_beds', 10, 1 );
-function rentfetch_search_property_map_floorplans_args_beds( $floorplans_args ) {
+add_filter('rentfetch_search_property_map_floorplans_query_args', 'rentfetch_search_property_map_floorplans_args_beds', 10, 1);
+function rentfetch_search_property_map_floorplans_args_beds($floorplans_args) {
     
-    //* bedrooms
-    $beds = rentfetch_get_meta_values( 'beds', 'floorplans' );
-    $beds = array_unique( $beds );
-    asort( $beds );
+    // Get unique bed values
+    $beds = rentfetch_get_meta_values('beds', 'floorplans');
+    $beds = array_unique($beds);
+    asort($beds);
     
-    // loop through the checkboxes, and for each one that's checked, let's add that value to our meta query array
-    foreach ( $beds as $bed ) {
-        if ( isset( $_POST['beds-' . $bed ] ) && $_POST['beds-' . $bed ] == 'on' ) {
-            $bed = sanitize_text_field( $bed );
-            $bedsarray[] = $bed;
+    // Initialize an array to store selected beds
+    $selected_beds = array();
+    
+    // Loop through bed checkboxes
+    foreach ($beds as $bed) {
+        $checkbox_name = 'beds-' . $bed;
+        
+        if (isset($_POST[$checkbox_name]) && $_POST[$checkbox_name] === 'on') {
+            $selected_beds[] = sanitize_text_field($bed);
         }
     }
     
-    // add the meta query array to our $floorplans_args
-    if ( isset( $bedsarray ) ) {
+    // Add the meta query to $floorplans_args
+    if (!empty($selected_beds)) {
         $floorplans_args['meta_query'][] = array(
-            array(
-                'key' => 'beds',
-                'value' => $bedsarray,
-            )
+            'key' => 'beds',
+            'value' => $selected_beds,
         );
     }
     
