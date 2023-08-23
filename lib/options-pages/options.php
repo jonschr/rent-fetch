@@ -746,64 +746,12 @@ function rent_fetch_settings_properties_property_search() {
             </select>
         </div>
     </div>
-    
+        
     <div class="row">
         <div class="column">
-            <label for="options_starter_search_components">Starter search components</label>
-            <p class="description">Several default components can be optionally shown in the starter search box. Select the ones you'd like right here.</p>
-        </div>
-        <div class="column">
-            <?php
-            
-            // Get saved options
-            $options_starter_search_components = get_option('options_starter_search_components');
-            
-            // Define default values
-            $default_options = array(
-                'text_based_search',
-                'beds_search',
-                'type_search',
-            );
-            
-            // Make it an array just in case it isn't (for example, if it's a new install)
-            if (!is_array($options_starter_search_components)) {
-                $options_starter_search_components = $default_options;
-            }
-                        
-            ?>
-            <ul class="checkboxes">
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_starter_search_components[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_starter_search_components ) ); ?>>
-                        Text-based search
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_starter_search_components[]" value="beds_search" <?php checked( in_array( 'beds_search', $options_starter_search_components ) ); ?>>
-                        Beds search
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_starter_search_components[]" value="baths_search" <?php checked( in_array( 'baths_search', $options_starter_search_components ) ); ?>>
-                        Baths search
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_starter_search_components[]" value="type_search" <?php checked( in_array( 'type_search', $options_starter_search_components ) ); ?>>
-                        Type search
-                    </label>
-                </li>
-            </ul>
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="column">
-            <label for="options_map_search_components">Map search components</label>
+            <label for="options_map_search_components">Property search filters</label>
             <p class="description">Several default components can be optionally shown in the starter search box. Select the ones you'd like right here. Please note that if no values are available (e.g. if there's no data for Amenities), then that section of the search still won't show despite being selected.</p>
+            <p class="description">Please note that it's possible to use hooks in php to add custom filters to the search.</p>
         </div>
         <div class="column">
             <?php
@@ -938,13 +886,7 @@ function rent_fetch_save_settings_property_search() {
         $property_display = sanitize_text_field( $_POST['options_property_availability_display'] );
         update_option( 'options_property_availability_display', $property_display );
     }
-        
-    // Checkboxes field
-    if (isset($_POST['options_starter_search_components'])) {
-        $options_starter_search_components = array_map('sanitize_text_field', $_POST['options_starter_search_components']);
-        update_option('options_starter_search_components', $options_starter_search_components);
-    }
-    
+            
     // Checkboxes field
     if (isset($_POST['options_map_search_components'])) {
         $options_map_search_components = array_map('sanitize_text_field', $_POST['options_map_search_components']);
