@@ -79,12 +79,17 @@ jQuery(function ($) {
     updateURLWithQueryParameters(queryParameters);
     performAJAXSearch(queryParameters); // Perform AJAX search
 
-    $('a.apply').click(function (e) {
-        e.preventDefault();
-        $('#filter').submit();
-        $(this).parents('.dropdown-menu').removeClass('show');
-    });
+    // $('a.apply').click(function (e) {
+    //     e.preventDefault();
+    //     $('#filter').submit();
+    //     $(this).parents('.dropdown-menu').removeClass('show');
+    // });
 
     // on page load, submit the form
     $('#filter').submit();
+
+    // Submit the form when any input in it changes
+    $('#filter').on('input', function () {
+        $(this).submit();
+    });
 });

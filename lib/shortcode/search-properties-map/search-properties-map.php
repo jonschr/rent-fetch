@@ -13,24 +13,26 @@ function rentfetch_propertysearch( $atts ) {
     
     ?>
    <script type="text/javascript">
-  jQuery(document).ready(function($) {
-    const dialog = document.getElementById('search-filters');
-    const openButton = document.getElementById('open-search-filters');
-    const submitButton = document.getElementById('submit-filters');
+     document.addEventListener('DOMContentLoaded', function() {
+       const dialog = document.getElementById('search-filters');
+       const openButton = document.getElementById('open-search-filters');
+       const submitButton = document.getElementById('submit-filters');
 
-    openButton.addEventListener('click', () => {
-      dialog.showModal();
-    });
+       openButton.addEventListener('click', function() {
+         dialog.showModal();
+       });
 
-    submitButton.addEventListener('click', () => {
-      dialog.close();
-    });
+       submitButton.addEventListener('click', function() {
+         dialog.close();
+       });
 
-    dialog.addEventListener('close', () => {
-      // Reset form or perform other actions
-    });
-  });
-</script>
+       dialog.addEventListener('click', function(event) {
+         if (event.target === dialog) {
+           dialog.close();
+         }
+       });
+     });
+   </script>
 
 <button id="open-search-filters">Open Filters</button>
 <dialog id="search-filters">
