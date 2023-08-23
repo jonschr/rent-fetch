@@ -7,17 +7,44 @@ function rentfetch_propertysearch( $atts ) {
     ob_start();    
 
     //* Start the form...
-    echo '<div class="properties-search-wrap">';
-        
-    echo do_shortcode('[propertysearchfilters]');
+    
+    
+    // echo '<div class="properties-search-wrap">';
+    
+    ?>
+   <script type="text/javascript">
+  jQuery(document).ready(function($) {
+    const dialog = document.getElementById('search-filters');
+    const openButton = document.getElementById('open-search-filters');
+    const submitButton = document.getElementById('submit-filters');
+
+    openButton.addEventListener('click', () => {
+      dialog.showModal();
+    });
+
+    submitButton.addEventListener('click', () => {
+      dialog.close();
+    });
+
+    dialog.addEventListener('close', () => {
+      // Reset form or perform other actions
+    });
+  });
+</script>
+
+<button id="open-search-filters">Open Filters</button>
+<dialog id="search-filters">
+  <?php echo do_shortcode('[propertysearchfilters]'); ?>
+</dialog>
+<?php
         
         //* Our container markup for the results
-        echo '<div class="map-response-wrap">';
+        // echo '<div class="map-response-wrap">';
             echo do_shortcode('[propertysearchresults]');
             echo do_shortcode('[propertysearchmap]');
-        echo '</div>';
+        // echo '</div>';
     
-    echo '</div>'; // .properties-search-wrap
+    // echo '</div>'; // .properties-search-wrap
 
     return ob_get_clean();
 }
@@ -43,7 +70,7 @@ function rentfetch_propertysearchfilters() {
                 
         // Buttons     
         printf( '<a href="%s" class="reset link-as-button">Reset</a>', get_permalink( get_the_ID() ) );
-        echo '<button type="submit" style="display:none;">Search</button>';
+        echo '<button id="submit-filters" type="submit">Search</button>';
         echo '<input type="hidden" name="action" value="propertysearch">';
         
     echo '</form>';
@@ -139,9 +166,8 @@ function rentfetch_filter_properties(){
         $count = 0;
         
         $numberofposts = $propertyquery->post_count;
-        $total_posts = wp_count_posts('properties')->publish;
         
-        printf( '<div class="count"><h2 class="post-count"><span class="number">%s</span> of %s properties selected</h2></div>', $numberofposts, $total_posts );
+        printf( '<div class="results-count"><span class="number">%s</span> results</div>', $numberofposts );
         
         echo '<div class="properties-loop">';
 

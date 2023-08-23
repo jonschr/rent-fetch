@@ -26,13 +26,16 @@ function rentfetch_search_properties_map_filters_text_search() {
     $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
     
     // build the text-based search
-    echo '<div class="input-wrap input-wrap-text-search">';
-        if ( $searchtext ) {
-            printf( '<input type="text" name="textsearch" placeholder="%s" class="active" value="%s" />', $placeholder, $searchtext );
-        } else {
-            printf( '<input type="text" name="textsearch" placeholder="%s" />', $placeholder );
-        }
-    echo '</div>';
+    echo '<fieldset>';
+		printf( '<legend>%s</legend>', $placeholder );
+		echo '<div class="text filter-wrap-amenities">';
+            if ( $searchtext ) {
+                printf( '<input type="text" name="textsearch" placeholder="%s" class="active" value="%s" />', $placeholder, $searchtext );
+            } else {
+                printf( '<input type="text" name="textsearch" placeholder="%s" />', $placeholder );
+            }
+        echo '</div>'; // .text
+	echo '</fieldset>';
         
 }
 

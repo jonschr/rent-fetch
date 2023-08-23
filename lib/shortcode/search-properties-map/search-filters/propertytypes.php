@@ -27,44 +27,37 @@ function rentfetch_search_properties_map_filters_property_types() {
                     
     // build types search
     if ( !empty( $propertytypes && taxonomy_exists( 'propertytypes' ) ) ) {
-        echo '<div class="input-wrap input-wrap-propertytypes">';
-            echo '<div class="dropdown">';
-                echo '<button type="button" class="dropdown-toggle" data-reset="Type">Type</button>';
-                echo '<div class="dropdown-menu dropdown-menu-propertytypes">';
-                    echo '<div class="dropdown-menu-items">';
+        echo '<fieldset>';
+            echo '<legend>Property Type</legend>';
+            echo '<div class="checkboxes filter-wrap-propertytypes">';
                     
-                        foreach ($propertytypes as $propertytype) {
-                            $name = $propertytype->name;
-                            $propertytype_term_id = $propertytype->term_id;
+                    foreach ($propertytypes as $propertytype) {
+                        $name = $propertytype->name;
+                        $propertytype_term_id = $propertytype->term_id;
 
-                            // Check if the propertytype's term ID is in the GET parameter array
-                            $checked = in_array($propertytype_term_id, $_GET['search-property-types'] ?? array());
+                        // Check if the propertytype's term ID is in the GET parameter array
+                        $checked = in_array($propertytype_term_id, $_GET['search-property-types'] ?? array());
 
-                            printf(
-                                '<label>
-                                    <input type="checkbox" 
-                                        name="search-property-types[]" 
-                                        value="%s" 
-                                        data-propertytypes="%s" 
-                                        data-propertytypesname="%s" 
-                                        %s /> <!-- Add checked attribute if necessary -->
-                                    <span>%s</span>
-                                </label>',
-                                $propertytype_term_id,
-                                $propertytype_term_id,
-                                $name,
-                                $checked ? 'checked' : '', // Apply checked attribute
-                                $name
-                            );
-                        }
-                    echo '</div>';
-                    echo '<div class="filter-application">';
-                        echo '<a class="clear" href="#">Clear</a>';
-                        echo '<a class="apply" href="#">Apply</a>';
-                    echo '</div>';
-                echo '</div>';
-            echo '</div>'; // .dropdown
-        echo '</div>'; // .input-wrap
+                        printf(
+                            '<label>
+                                <input type="checkbox" 
+                                    name="search-property-types[]" 
+                                    value="%s" 
+                                    data-propertytypes="%s" 
+                                    data-propertytypesname="%s" 
+                                    %s /> <!-- Add checked attribute if necessary -->
+                                <span>%s</span>
+                            </label>',
+                            $propertytype_term_id,
+                            $propertytype_term_id,
+                            $name,
+                            $checked ? 'checked' : '', // Apply checked attribute
+                            $name
+                        );
+                    }
+                    
+            echo '</div>'; // .checkboxes
+        echo '</fieldset>';
     }
         
 }
