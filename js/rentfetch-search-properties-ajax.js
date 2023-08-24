@@ -73,22 +73,25 @@ jQuery(function ($) {
     }
 
     // Our ajax query to get stuff and put it into the response div
-    $('#filter').submit(function () {
+    function submitForm() {
         var queryParams = getQueryParametersFromForm(); // Get parameters from form
 
         updateURLWithQueryParameters(queryParams);
         performAJAXSearch(queryParams); // Perform AJAX search
 
         return false;
-    });
+    }
 
-    // Handle query parameters when the page loads
-    var queryParameters = getQueryParametersFromForm();
-    updateURLWithQueryParameters(queryParameters);
-    performAJAXSearch(queryParameters); // Perform AJAX search
+    // submit on page load
+    submitForm();
+
+    // // Handle query parameters when the page loads
+    // var queryParameters = getQueryParametersFromForm();
+    // updateURLWithQueryParameters(queryParameters);
+    // performAJAXSearch(queryParameters); // Perform AJAX search
 
     // on page load, submit the form
-    $('#filter').submit();
+    // $('#filter').submit();
 
     //! WHEN CHANGES ARE MADE, SUBMIT THE FORM
 
@@ -99,12 +102,12 @@ jQuery(function ($) {
         var self = this; // Capture the current context
         clearTimeout(submitTimer); // Clear any previous timer
         submitTimer = setTimeout(function () {
-            $(self).closest('form').submit(); // Submit the form after 1 second of inactivity
+            submitForm(); // Submit the form after 1 second of inactivity
         }, 1000);
     }
 
     // Call the function on input
-    $('#filter').on('change', submitFormAfterInactivity);
+    // $('#filter').on('change', submitFormAfterInactivity);
 
     //! RESET THE FORMS
 
@@ -136,7 +139,7 @@ jQuery(function ($) {
     // Call the function when #reset is clicked
     $('#reset, #featured-reset').click(function () {
         clearFilterValues();
-        $('#filter, #featured-filters').submit();
+        submitForm();
     });
 
     //! SYNC THE FORMS
@@ -145,7 +148,7 @@ jQuery(function ($) {
     var $inputs = $('input, select, textarea');
 
     // Event listener for changes in the input elements
-    $inputs.on('change', function () {
+    $inputs.on('change input', function () {
         var elementName = $(this).attr('name');
         var newValue = $(this).val();
 
@@ -171,6 +174,6 @@ jQuery(function ($) {
                 }
             });
 
-        console.log('updated');
+        submitFormAfterInactivity();
     });
 });
