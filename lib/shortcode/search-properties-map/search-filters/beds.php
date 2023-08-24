@@ -19,9 +19,9 @@ function rentfetch_search_properties_map_filters_beds() {
 	asort( $beds );
 			
 	// build the beds search
-	echo '<fieldset>';
+	echo '<fieldset class="beds">';
 		echo '<legend>Bedrooms</legend>';
-		echo '<div class="checkboxes filter-wrap-beds">';
+		echo '<div class="input-wrap checkboxes">';
 				
 			foreach( $beds as $bed ) {
 				

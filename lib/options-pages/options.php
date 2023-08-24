@@ -746,18 +746,88 @@ function rent_fetch_settings_properties_property_search() {
             </select>
         </div>
     </div>
-        
+    
     <div class="row">
         <div class="column">
-            <label for="options_map_search_components">Property search filters</label>
-            <p class="description">Several default components can be optionally shown in the starter search box. Select the ones you'd like right here. Please note that if no values are available (e.g. if there's no data for Amenities), then that section of the search still won't show despite being selected.</p>
-            <p class="description">Please note that it's possible to use hooks in php to add custom filters to the search.</p>
+            <label for="options_featured_filters">Featured property filters</label>
+            <p class="description">Which components should be shown by default?</p>
         </div>
         <div class="column">
             <?php
             
             // Get saved options
-            $options_map_search_components = get_option('options_map_search_components');
+            $options_featured_filters = get_option('options_featured_filters');
+            
+            // Define default values
+            $default_options = array(
+                'text_based_search',
+                'beds_search',
+                'price_search',
+            );
+            
+            // Make it an array just in case it isn't (for example, if it's a new install)
+            if (!is_array($options_featured_filters)) {
+                $options_featured_filters = $default_options;
+            }
+            
+            ?>
+            <ul class="checkboxes">
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_featured_filters ) ); ?>>
+                        Text-based search (this works best with the Relevanssi plugin enhancing your search)
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="beds_search" <?php checked( in_array( 'beds_search', $options_featured_filters ) ); ?>>
+                        Beds search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="baths_search" <?php checked( in_array( 'baths_search', $options_featured_filters ) ); ?>>
+                        Baths search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="type_search" <?php checked( in_array( 'type_search', $options_featured_filters ) ); ?>>
+                        Type search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="date_search" <?php checked( in_array( 'date_search', $options_featured_filters ) ); ?>>
+                        Date search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="price_search" <?php checked( in_array( 'price_search', $options_featured_filters ) ); ?>>
+                        Price search
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="checkbox" name="options_featured_filters[]" value="amenities_search" <?php checked( in_array( 'amenities_search', $options_featured_filters ) ); ?>>
+                        Amenities search
+                    </label>
+                </li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="column">
+            <label for="options_dialog_filters">All property filters</label>
+            <p class="description">Which components should be shown in the filters lightbox? Typically all filters are shown here, even if they also appear in the featured filters area.</p>
+        </div>
+        <div class="column">
+            <?php
+            
+            // Get saved options
+            $options_dialog_filters = get_option('options_dialog_filters');
             
             // Define default values
             $default_options = array(
@@ -767,64 +837,57 @@ function rent_fetch_settings_properties_property_search() {
                 'date_search',
                 'price_search',
                 'amenities_search',
-                'pets_search',
             );
             
             // Make it an array just in case it isn't (for example, if it's a new install)
-            if (!is_array($options_map_search_components)) {
-                $options_map_search_components = $default_options;
+            if (!is_array($options_dialog_filters)) {
+                $options_dialog_filters = $default_options;
             }
             
             ?>
             <ul class="checkboxes">
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="text_based_search" <?php checked( in_array( 'text_based_search', $options_dialog_filters ) ); ?>>
                         Text-based search (this works best with the Relevanssi plugin enhancing your search)
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="beds_search" <?php checked( in_array( 'beds_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="beds_search" <?php checked( in_array( 'beds_search', $options_dialog_filters ) ); ?>>
                         Beds search
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="baths_search" <?php checked( in_array( 'baths_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="baths_search" <?php checked( in_array( 'baths_search', $options_dialog_filters ) ); ?>>
                         Baths search
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="type_search" <?php checked( in_array( 'type_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="type_search" <?php checked( in_array( 'type_search', $options_dialog_filters ) ); ?>>
                         Type search
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="date_search" <?php checked( in_array( 'date_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="date_search" <?php checked( in_array( 'date_search', $options_dialog_filters ) ); ?>>
                         Date search
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="price_search" <?php checked( in_array( 'price_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="price_search" <?php checked( in_array( 'price_search', $options_dialog_filters ) ); ?>>
                         Price search
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="amenities_search" <?php checked( in_array( 'amenities_search', $options_map_search_components ) ); ?>>
+                        <input type="checkbox" name="options_dialog_filters[]" value="amenities_search" <?php checked( in_array( 'amenities_search', $options_dialog_filters ) ); ?>>
                         Amenities search
                     </label>
                 </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_map_search_components[]" value="pets_search" <?php checked( in_array( 'pets_search', $options_map_search_components ) ); ?>>
-                        Pets search
-                    </label>
-                </li>                
             </ul>
         </div>
     </div>
@@ -888,9 +951,15 @@ function rent_fetch_save_settings_property_search() {
     }
             
     // Checkboxes field
-    if (isset($_POST['options_map_search_components'])) {
-        $options_map_search_components = array_map('sanitize_text_field', $_POST['options_map_search_components']);
-        update_option('options_map_search_components', $options_map_search_components);
+    if (isset($_POST['options_dialog_filters'])) {
+        $options_dialog_filters = array_map('sanitize_text_field', $_POST['options_dialog_filters']);
+        update_option('options_dialog_filters', $options_dialog_filters);
+    }
+    
+    // Checkboxes field
+    if (isset($_POST['options_featured_filters'])) {
+        $options_featured_filters = array_map('sanitize_text_field', $_POST['options_featured_filters']);
+        update_option('options_featured_filters', $options_featured_filters);
     }
     
     // Number field

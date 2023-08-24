@@ -1,18 +1,7 @@
 <?php
 
 function rentfetch_search_properties_map_filters_price() {
-	
-	// check whether beds search is enabled
-	$map_search_components = get_option( 'options_map_search_components' );
-	
-	// this needs to be set to an array even if the option isn't set
-	if ( !is_array( $map_search_components ) )
-		$map_search_components = array();
-		
-	// bail if beds search is not enabled
-	if ( !in_array( 'price_search', $map_search_components ) )
-		return;
-		
+			
 	// figure out our min/max values
 	$price_settings = get_option( 'options_price_filter' );
 	$valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
@@ -32,13 +21,14 @@ function rentfetch_search_properties_map_filters_price() {
 	wp_enqueue_script( 'rentfetch-nouislider-init-script' );
 	
 	//* build the price search
-	echo '<fieldset>';
+	echo '<fieldset class="price">';
 		echo '<legend>Price Range</legend>';
-		echo '<div class="slider filter-wrap-price">';
+		echo '<div class="input-wrap slider">';
 			echo '<div class="price-slider-wrap"><div id="price-slider" style="width:100%;"></div></div>';
 			echo '<div class="inputs-prices">';
-				printf( '<input type="number" name="pricesmall" id="pricesmall" value="%s" />', $valueSmall );
-				printf( '<input type="number" name="pricebig" id="pricebig" value="%s" />', $valueBig );
+				printf( '<input type="number" name="pricesmall" data-default-value="%s" id="pricesmall" value="%s" />', $valueSmall, $valueSmall );
+				echo '<div class="price-dash"></div>';
+				printf( '<input type="number" name="pricebig" data-default-value="%s" id="pricebig" value="%s" />', $valueBig, $valueBig );
 			echo '</div>';
 		echo '</div>'; // .slider
 	echo '</fieldset>';		

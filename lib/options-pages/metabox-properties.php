@@ -333,7 +333,6 @@ function rf_properties_display_information_metabox_callback( $post ) {
                                 printf( '<p>%s <em>An error typically indicates either a failed sync or a problem with API authentication. Be sure to look up your specific error code with the owner of this API.</em></p>', $property_images_json );
                                 continue;
                             }
-                                
                                                         
                             printf( '<div class="property-image"><img src="%s"/><a href="%s" target="_blank" class="download" download>Download</a></div>', $property_image->ImageURL, $property_image->ImageURL );                
                         }

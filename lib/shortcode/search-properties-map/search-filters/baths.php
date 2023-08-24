@@ -1,27 +1,16 @@
 <?php
 
 function rentfetch_search_properties_map_filters_baths() {
-	
-	// check whether baths search is enabled
-	$map_search_components = get_option( 'options_map_search_components' );
-	
-	// this needs to be set to an array even if the option isn't set
-	if ( !is_array( $map_search_components ) )
-		$map_search_components = array();
-	
-	// bail if baths search is not enabled
-	if ( !in_array( 'baths_search', $map_search_components ) )
-		return;
-			
+				
 	// get info about baths from the database
 	$baths = rentfetch_get_meta_values( 'baths', 'floorplans' );
 	$baths = array_unique( $baths );
 	asort( $baths );
 			
 	// build the baths search
-	echo '<fieldset>';
+	echo '<fieldset class="baths">';
 		echo '<legend>Baths</legend>';
-		echo '<div class="checkboxes filter-wrap-baths">';
+		echo '<div class="input-wrap checkboxes">';
 				
 				foreach( $baths as $bath ) {
 					

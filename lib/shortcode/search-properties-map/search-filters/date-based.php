@@ -1,27 +1,16 @@
 <?php
 
 function rentfetch_search_properties_map_filters_date() {
-	
-	// check whether beds search is enabled
-	$map_search_components = get_option( 'options_map_search_components' );
-	
-	// this needs to be set to an array even if the option isn't set
-	if ( !is_array( $map_search_components ) )
-		$map_search_components = array();
-		
-	// bail if beds search is not enabled
-	if ( !in_array( 'date_search', $map_search_components ) )
-		return;
-		
+			
 	// enqueue date picker scripts
 	wp_enqueue_style( 'rentfetch-flatpickr-style' );
 	wp_enqueue_script( 'rentfetch-flatpickr-script' );
 	wp_enqueue_script( 'rentfetch-flatpickr-script-init' );
 	
 	// build the date-based search
-	echo '<fieldset>';
+	echo '<fieldset class="move-in">';
 		echo '<legend>Move-In Date</legend>';
-		echo '<div class="text filter-wrap-amenities">';
+		echo '<div class="input-wrap text">';
 			echo '<input type="text" name="dates" placeholder="Available date" style="width:auto;" data-input>';
 		echo '</div>'; // .checkboxes
 	echo '</fieldset>';

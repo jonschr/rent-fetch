@@ -11,24 +11,13 @@ function rentfetch_search_properties_map_filters_text_search() {
     } else {
         $searchtext = null;
     }
-
-    // check whether text-based search is enabled
-    $map_search_components = get_option( 'options_map_search_components' );
-    
-    // this needs to be set to an array even if the option isn't set
-    if ( !is_array( $map_search_components ) )
-        $map_search_components = array();
-    
-    // bail if text-based search is not enabled
-    if ( !in_array( 'text_based_search', $map_search_components ) )
-        return;
                         
     $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
     
     // build the text-based search
-    echo '<fieldset>';
-		printf( '<legend>%s</legend>', $placeholder );
-		echo '<div class="text filter-wrap-amenities">';
+    echo '<fieldset class="text-based-search">';
+		echo '<legend>Search</legend>';
+		echo '<div class="input-wrap text">';
             if ( $searchtext ) {
                 printf( '<input type="text" name="textsearch" placeholder="%s" class="active" value="%s" />', $placeholder, $searchtext );
             } else {

@@ -57,11 +57,17 @@ jQuery(function ($) {
             data: filter.serialize(), // form data
             type: filter.attr('method'), // POST
             beforeSend: function (xhr) {
-                filter.find('a.reset').text('Searching...'); // changing the button label
+                filter.find('#reset').text('Searching...'); // changing the button label
+                $('#reset').text('Searching...'); // changing the button label
             },
             success: function (data) {
-                filter.find('a.reset').text('Reset'); // changing the button label back
+                $('#reset').text('Clear All'); // changing the button label
                 $('#response').html(data); // insert data
+
+                // look in data for .properties-loop, and count the number of children
+                var count = $('.properties-loop').children().length;
+                // update #properties-found with the count
+                $('#properties-found').text(count);
             },
         });
     }
@@ -69,8 +75,10 @@ jQuery(function ($) {
     // Our ajax query to get stuff and put it into the response div
     $('#filter').submit(function () {
         var queryParams = getQueryParametersFromForm(); // Get parameters from form
+
         updateURLWithQueryParameters(queryParams);
         performAJAXSearch(queryParams); // Perform AJAX search
+
         return false;
     });
 
@@ -88,8 +96,43 @@ jQuery(function ($) {
     // on page load, submit the form
     $('#filter').submit();
 
-    // Submit the form when any input in it changes
-    $('#filter').on('input', function () {
-        $(this).submit();
+    var submitTimer; // Timer identifier
+
+    // Function to submit the form after 1 second of inactivity
+    function submitFormAfterInactivity() {
+        var self = this; // Capture the current context
+        clearTimeout(submitTimer); // Clear any previous timer
+        submitTimer = setTimeout(function () {
+            $(self).closest('form').submit(); // Submit the form after 1 second of inactivity
+        }, 1000);
+    }
+
+    // Call the function on input
+    $('#filter').on('input', submitFormAfterInactivity);
+
+    // Function to clear all values from fields in #filter when #reset is clicked
+    function clearFilterValues() {
+        // Reset all non-hidden inputs to null value
+        $('#filter')
+            .find('input:not([type="hidden"],[type="checkbox"],[type="radio"])')
+            .val('')
+            .trigger('change'); // Trigger the change event
+
+        // Reset checkboxes to unchecked
+        $('#filter').find(':checkbox').prop('checked', false).trigger('change'); // Trigger the change event
+
+        // Get default values for input#pricesmall and input#pricebig
+        var defaultValSmall = $('#pricesmall').data('default-value');
+        var defaultValBig = $('#pricebig').data('default-value');
+
+        // Set default values for input#pricesmall and input#pricebig
+        $('#pricesmall').val(defaultValSmall).trigger('change'); // Trigger the change event
+        $('#pricebig').val(defaultValBig).trigger('change'); // Trigger the change event
+    }
+
+    // Call the function when #reset is clicked
+    $('#reset').click(function () {
+        clearFilterValues();
+        $('#filter').submit();
     });
 });

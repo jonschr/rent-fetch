@@ -1,0 +1,25 @@
+#featured-filters {
+    // keep these on one line if possible, with a gap of 10 px between them. We don't know how many there will be. Set a minimum width of 100px and a max of 100%. If there are more than 6, wrap them to a new line.
+    display: flex;
+    gap: 30px;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+
+    fieldset {
+        border: none;
+        padding: 0;
+
+        legend {
+            display: block;
+        }
+
+        .input-wrap {
+            display: none;
+        }
+    }
+
+    button#open-search-filters {
+        margin-left: auto;
+    }
+}

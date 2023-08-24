@@ -1,18 +1,7 @@
 <?php
 
 function rentfetch_search_properties_map_filters_amenities() {
-	
-	// check whether beds search is enabled
-	$map_search_components = get_option( 'options_map_search_components' );
-	
-	// this needs to be set to an array even if the option isn't set
-	if ( !is_array( $map_search_components ) )
-		$map_search_components = array();
-		
-	// bail if beds search is not enabled
-	if ( !in_array( 'amenities_search', $map_search_components ) )
-		return;
-				
+					
 	//* figure out how many amenities to show
 	$number_of_amenities_to_show = get_option( 'options_number_of_amenities_to_show' );
 	
@@ -30,9 +19,9 @@ function rentfetch_search_properties_map_filters_amenities() {
 	//* Build amenities search
 	if (!empty($amenities) && taxonomy_exists('amenities')) {
 		
-		echo '<fieldset>';
+		echo '<fieldset class="amenities">';
 			echo '<legend>Amenities</legend>';
-			echo '<div class="checkboxes filter-wrap-amenities">';
+			echo '<div class="input-wrap checkboxes">';
 
 				foreach ($amenities as $amenity) {
 					$name = $amenity->name;

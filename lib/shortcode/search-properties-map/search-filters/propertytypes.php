@@ -1,18 +1,7 @@
 <?php
 
 function rentfetch_search_properties_map_filters_property_types() {
-   
-    // check whether beds search is enabled
-    $map_search_components = get_option( 'options_map_search_components' );
-    
-    // this needs to be set to an array even if the option isn't set
-    if ( !is_array( $map_search_components ) )
-        $map_search_components = array();
-        
-    // bail if beds search is not enabled
-    if ( !in_array( 'type_search', $map_search_components ) )
-        return;
-        
+           
     // bail if propertytypes taxonomy does not exist
     if ( !taxonomy_exists('propertytypes') )
         return;
@@ -27,9 +16,9 @@ function rentfetch_search_properties_map_filters_property_types() {
                     
     // build types search
     if ( !empty( $propertytypes && taxonomy_exists( 'propertytypes' ) ) ) {
-        echo '<fieldset>';
+        echo '<fieldset class="property-type">';
             echo '<legend>Property Type</legend>';
-            echo '<div class="checkboxes filter-wrap-propertytypes">';
+            echo '<div class="input-wrap checkboxes">';
                     
                     foreach ($propertytypes as $propertytype) {
                         $name = $propertytype->name;
