@@ -87,14 +87,10 @@ jQuery(function ($) {
     updateURLWithQueryParameters(queryParameters);
     performAJAXSearch(queryParameters); // Perform AJAX search
 
-    // $('a.apply').click(function (e) {
-    //     e.preventDefault();
-    //     $('#filter').submit();
-    //     $(this).parents('.dropdown-menu').removeClass('show');
-    // });
-
     // on page load, submit the form
     $('#filter').submit();
+
+    //! WHEN CHANGES ARE MADE, SUBMIT THE FORM
 
     var submitTimer; // Timer identifier
 
@@ -108,31 +104,73 @@ jQuery(function ($) {
     }
 
     // Call the function on input
-    $('#filter').on('input', submitFormAfterInactivity);
+    $('#filter').on('change', submitFormAfterInactivity);
+
+    //! RESET THE FORMS
 
     // Function to clear all values from fields in #filter when #reset is clicked
     function clearFilterValues() {
         // Reset all non-hidden inputs to null value
-        $('#filter')
+        $('#filter, #featured-filters')
             .find('input:not([type="hidden"],[type="checkbox"],[type="radio"])')
-            .val('')
-            .trigger('change'); // Trigger the change event
+            .val('');
+        // .trigger('change'); // Trigger the change event
 
         // Reset checkboxes to unchecked
-        $('#filter').find(':checkbox').prop('checked', false).trigger('change'); // Trigger the change event
+        $('#filter, #featured-filters')
+            .find('[type="checkbox"]:checked') // Select only checked checkboxes
+            .prop('checked', false);
+        // .trigger('change'); // Trigger the change event
 
         // Get default values for input#pricesmall and input#pricebig
         var defaultValSmall = $('#pricesmall').data('default-value');
         var defaultValBig = $('#pricebig').data('default-value');
 
         // Set default values for input#pricesmall and input#pricebig
-        $('#pricesmall').val(defaultValSmall).trigger('change'); // Trigger the change event
-        $('#pricebig').val(defaultValBig).trigger('change'); // Trigger the change event
+        $('#pricesmall, #featured-pricesmall').val(defaultValSmall);
+        // .trigger('change'); // Trigger the change event
+        $('#pricebig, #featured-pricebig').val(defaultValBig);
+        // .trigger('change'); // Trigger the change event
     }
 
     // Call the function when #reset is clicked
-    $('#reset').click(function () {
+    $('#reset, #featured-reset').click(function () {
         clearFilterValues();
-        $('#filter').submit();
+        $('#filter, #featured-filters').submit();
+    });
+
+    //! SYNC THE FORMS
+
+    // Select all input, select, and textarea elements
+    var $inputs = $('input, select, textarea');
+
+    // Event listener for changes in the input elements
+    $inputs.on('change', function () {
+        var elementName = $(this).attr('name');
+        var newValue = $(this).val();
+
+        // Update identically named elements with the new value
+        $inputs
+            .filter('[name="' + elementName + '"]')
+            .not(this)
+            .each(function () {
+                var elementType = $(this).prop('tagName').toLowerCase();
+
+                if (
+                    elementType === 'input' &&
+                    $(this).attr('type') === 'checkbox'
+                ) {
+                    // For checkboxes, update the checked status
+                    $(this).prop(
+                        'checked',
+                        $(this).is(':checked') || $(this).val() === newValue
+                    );
+                } else {
+                    // For other elements, update the value
+                    $(this).val(newValue);
+                }
+            });
+
+        console.log('updated');
     });
 });

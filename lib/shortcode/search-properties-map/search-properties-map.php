@@ -56,27 +56,7 @@ function rentfetch_propertysearchfilters() {
 		
 		jQuery(document).ready(function( $ ) {
 		
-			// Select all input, select, and textarea elements
-			var $inputs = $('input, select, textarea');
-
-			// Event listener for changes in the input elements
-			$inputs.on('change', function() {
-				var elementName = $(this).attr('name');
-				var newValue = $(this).val();
-
-				// Update identically named elements with the new value
-				$inputs.filter('[name="' + elementName + '"]').not(this).each(function() {
-					var elementType = $(this).prop('tagName').toLowerCase();
-
-					if (elementType === 'input' && $(this).attr('type') === 'checkbox') {
-						// For checkboxes, update the checked status
-						$(this).prop('checked', $(this).is(':checked') || $(this).val() === newValue);
-					} else {
-						// For other elements, update the value
-						$(this).val(newValue);
-					}
-				});
-			});
+			
 		
 		});
 			

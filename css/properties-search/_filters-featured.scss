@@ -15,7 +15,7 @@
             display: none;
         }
 
-        .input-wrap {
+        .input-wrap:not(.text) {
             display: none;
             position: absolute;
             z-index: 50;

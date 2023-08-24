@@ -103,12 +103,20 @@ jQuery(document).ready(function ($) {
 
                 $('.type-properties').removeClass('active');
                 $('.type-properties[data-id=' + i + ']').addClass('active');
+
+                // Scroll to the active div
+                var activeDiv = $('.type-properties[data-id=' + i + ']');
+                $('html, body').animate(
+                    {
+                        scrollTop: activeDiv.offset().top,
+                    },
+                    1000
+                );
             });
 
             markers.push(marker);
         }
     }
-
     function resetMap() {
         // Clear markers from the map
         for (let i = 0; i < markers.length; i++) {
