@@ -30,6 +30,7 @@ function rentfetch_search_properties_map_filters_pets() {
 		if ( !empty( $pets ) ) {
 			echo '<fieldset ckass="pets">';
 				echo '<legend>Pets</legend>';
+				echo '<button class="toggle">Pets</button>';
 				echo '<div class="input-wrap checkboxes">';
 					foreach( $pets as $pet ) {
 						printf( '<label><input type="radio" data-pets="%s" data-pets-name="%s" name="pets" value="%s" /><span>%s</span></label>', $pet, $pets_choices[$pet], $pet, $pets_choices[$pet] );

@@ -23,6 +23,7 @@ function rentfetch_search_properties_map_filters_price() {
 	//* build the price search
 	echo '<fieldset class="price">';
 		echo '<legend>Price Range</legend>';
+		echo '<button class="toggle">Price Range</button>';
 		echo '<div class="input-wrap slider">';
 			echo '<div class="price-slider-wrap"><div id="price-slider" style="width:100%;"></div></div>';
 			echo '<div class="inputs-prices">';

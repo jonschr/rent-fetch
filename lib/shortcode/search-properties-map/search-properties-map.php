@@ -52,38 +52,51 @@ function rentfetch_propertysearchfilters() {
 		});
    </script>
    
-<script>
+	<script>
+		
+		jQuery(document).ready(function( $ ) {
+		
+			// Select all input, select, and textarea elements
+			var $inputs = $('input, select, textarea');
+
+			// Event listener for changes in the input elements
+			$inputs.on('change', function() {
+				var elementName = $(this).attr('name');
+				var newValue = $(this).val();
+
+				// Update identically named elements with the new value
+				$inputs.filter('[name="' + elementName + '"]').not(this).each(function() {
+					var elementType = $(this).prop('tagName').toLowerCase();
+
+					if (elementType === 'input' && $(this).attr('type') === 'checkbox') {
+						// For checkboxes, update the checked status
+						$(this).prop('checked', $(this).is(':checked') || $(this).val() === newValue);
+					} else {
+						// For other elements, update the value
+						$(this).val(newValue);
+					}
+				});
+			});
+		
+		});
+			
+
+	</script>
 	
-	jQuery(document).ready(function( $ ) {
-	
-		// Select all input, select, and textarea elements
-		var $inputs = $('input, select, textarea');
-
-		// Event listener for changes in the input elements
-		$inputs.on('change', function() {
-			var elementName = $(this).attr('name');
-			var newValue = $(this).val();
-
-			console.log(elementName);
-
-			// Update identically named elements with the new value
-			$inputs.filter('[name="' + elementName + '"]').not(this).each(function() {
-				var elementType = $(this).prop('tagName').toLowerCase();
-
-				if (elementType === 'input' && $(this).attr('type') === 'checkbox') {
-					// For checkboxes, update the checked status
-					$(this).prop('checked', $(this).is(':checked') || $(this).val() === newValue);
+   <script>
+       jQuery(document).ready(function($) {
+			$('.toggle').on('click', function() {				
+				var inputWrap = $(this).closest('fieldset').find('.input-wrap');
+				inputWrap.toggleClass('active');
+				if (inputWrap.hasClass('active')) {
+					inputWrap.addClass('inactive');
 				} else {
-					// For other elements, update the value
-					$(this).val(newValue);
+					inputWrap.removeClass('inactive');
 				}
 			});
 		});
+   </script>
 	
-	});
-		
-
-</script>
 
 
 

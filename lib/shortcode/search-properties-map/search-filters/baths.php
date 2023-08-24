@@ -10,6 +10,7 @@ function rentfetch_search_properties_map_filters_baths() {
 	// build the baths search
 	echo '<fieldset class="baths">';
 		echo '<legend>Baths</legend>';
+		echo '<button class="toggle">Baths</button>';
 		echo '<div class="input-wrap checkboxes">';
 				
 				foreach( $baths as $bath ) {

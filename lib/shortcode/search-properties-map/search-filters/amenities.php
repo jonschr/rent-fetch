@@ -21,6 +21,7 @@ function rentfetch_search_properties_map_filters_amenities() {
 		
 		echo '<fieldset class="amenities">';
 			echo '<legend>Amenities</legend>';
+			echo '<button class="toggle">Amenities</button>';
 			echo '<div class="input-wrap checkboxes">';
 
 				foreach ($amenities as $amenity) {

@@ -10,6 +10,7 @@ function rentfetch_search_properties_map_filters_date() {
 	// build the date-based search
 	echo '<fieldset class="move-in">';
 		echo '<legend>Move-In Date</legend>';
+		echo '<button class="toggle">Move-In Date</button>';
 		echo '<div class="input-wrap text">';
 			echo '<input type="text" name="dates" placeholder="Available date" style="width:auto;" data-input>';
 		echo '</div>'; // .checkboxes
