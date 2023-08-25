@@ -3,10 +3,7 @@
 // add_action( 'rentfetch_do_floorplan_in_floorplans_block', 'rentfetch_floorplan_in_archive', 10, 1 );
 add_action( 'rentfetch_do_floorplan_in_archive', 'rentfetch_floorplan_in_archive', 10, 1 );
 function rentfetch_floorplan_in_archive( $post_id ) {
-    
-    // styles for the layout
-    wp_enqueue_style( 'rentfetch-floorplan-in-archive' );
-    
+        
     // slick
     wp_enqueue_script( 'rentfetch-slick-main-script' );
     wp_enqueue_script( 'rentfetch-floorplan-images-slider-init' );

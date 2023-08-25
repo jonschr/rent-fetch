@@ -5,10 +5,9 @@ var sourcemaps = require('gulp-sourcemaps');
 var sassGlob = require('gulp-sass-glob');
 const cleanCSS = require('gulp-clean-css');
 
-//* Tasks for dev
-gulp.task('floorplangrid', function () {
+gulp.task('rent-fetch-style', function () {
     return gulp
-        .src('css/floorplangrid.scss')
+        .src('css/rent-fetch-style.scss')
         .pipe(sassGlob())
         .pipe(sourcemaps.init())
         .pipe(sass().on('error', sass.logError))
@@ -16,86 +15,9 @@ gulp.task('floorplangrid', function () {
         .pipe(gulp.dest('css/'));
 });
 
-gulp.task('single-properties', function () {
+gulp.task('rent-fetch-style-prod', function () {
     return gulp
-        .src('css/single-properties.scss')
-        .pipe(sassGlob())
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('floorplan-in-archive', function () {
-    return gulp
-        .src('css/floorplan-in-archive.scss')
-        .pipe(sassGlob())
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('search-properties-map', function () {
-    return gulp
-        .src('css/search-properties-map.scss')
-        .pipe(sassGlob())
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('properties-in-archive', function () {
-    return gulp
-        .src('css/properties-in-archive.scss')
-        .pipe(sassGlob())
-        .pipe(sourcemaps.init())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(sourcemaps.write())
-        .pipe(gulp.dest('css/'));
-});
-
-//* Tasks for prod
-gulp.task('floorplangrid-prod', function () {
-    return gulp
-        .src('css/floorplangrid.scss')
-        .pipe(sassGlob())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(cleanCSS({ compatibility: 'ie8' }))
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('single-properties-prod', function () {
-    return gulp
-        .src('css/single-properties.scss')
-        .pipe(sassGlob())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(cleanCSS({ compatibility: 'ie8' }))
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('floorplan-in-archive-prod', function () {
-    return gulp
-        .src('css/floorplan-in-archive.scss')
-        .pipe(sassGlob())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(cleanCSS({ compatibility: 'ie8' }))
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('search-properties-map-prod', function () {
-    return gulp
-        .src('css/search-properties-map.scss')
-        .pipe(sassGlob())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(cleanCSS({ compatibility: 'ie8' }))
-        .pipe(gulp.dest('css/'));
-});
-
-gulp.task('properties-in-archive-prod', function () {
-    return gulp
-        .src('css/properties-in-archive.scss')
+        .src('css/rent-fetch-style.scss')
         .pipe(sassGlob())
         .pipe(sass().on('error', sass.logError))
         .pipe(cleanCSS({ compatibility: 'ie8' }))
@@ -113,30 +35,13 @@ gulp.task('admin', function () {
 
 //* Watchers here
 gulp.task('watch', function () {
-    gulp.watch(
-        'css/**/*.scss',
-        gulp.series([
-            'floorplangrid',
-            'single-properties',
-            'floorplan-in-archive',
-            'search-properties-map',
-            'properties-in-archive',
-            'admin',
-        ])
-    );
+    gulp.watch('css/**/*.scss', gulp.series(['rent-fetch-style', 'admin']));
 });
 
 gulp.task('prod', function () {
     gulp.watch(
         'css/**/*.scss',
-        gulp.series([
-            'floorplangrid-prod',
-            'single-properties-prod',
-            'floorplan-in-archive-prod',
-            'search-properties-map-prod',
-            'properties-in-archive-prod',
-            'admin',
-        ])
+        gulp.series(['rent-fetch-style-prod', 'admin'])
     );
 });
 

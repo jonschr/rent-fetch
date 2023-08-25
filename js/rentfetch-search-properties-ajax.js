@@ -48,6 +48,8 @@ jQuery(function ($) {
         return queryParams;
     }
 
+    var isFirstRequest = true; // Flag variable to track the first request
+
     // Function to perform AJAX search
     function performAJAXSearch(queryParams) {
         var filter = $('#filter');
@@ -63,6 +65,21 @@ jQuery(function ($) {
             success: function (data) {
                 $('#reset').text('Clear All'); // changing the button label
                 $('#response').html(data); // insert data
+
+                if ($('#map').length) {
+                    var mapOffset = $('#map').offset().top;
+                    var viewportTop = $(window).scrollTop();
+                    if (mapOffset - viewportTop > 200) {
+                        $('html, body').animate(
+                            {
+                                scrollTop: mapOffset,
+                            },
+                            1000
+                        );
+                    }
+                }
+
+                isFirstRequest = false;
 
                 // look in data for .properties-loop, and count the number of children
                 var count = $('.properties-loop').children().length;

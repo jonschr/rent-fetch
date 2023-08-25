@@ -1,15 +1,46 @@
 <?php
 
 // add a shortcode that's just a default wrapper for the property search, built from three shortcodes
-add_shortcode( 'propertysearch', 'rentfetch_propertysearch' );
-function rentfetch_propertysearch( $atts ) {
+add_shortcode( 'propertysearch', 'rentfetch_propertysearch_default_layout' );
+function rentfetch_propertysearch_default_layout( $atts ) {
 	
 	ob_start();    
 	
 	//* Our container markup for the results
-	echo do_shortcode('[propertysearchfilters]');
-	echo do_shortcode('[propertysearchmap]');
-	echo do_shortcode('[propertysearchresults]');
+	echo '<div class="rent-fetch-property-search-default-layout">';	
+		echo '<div class="filters-and-properties-container">';
+			echo do_shortcode('[propertysearchfilters]');
+			echo do_shortcode('[propertysearchresults]');
+		echo '</div>';
+		echo '<div class="map-container">';
+			echo do_shortcode('[propertysearchmap]');
+		echo '</div>';
+	echo '</div>';
+	
+	
+	
+	?>
+	
+
+	
+	<!-- <script>
+	    jQuery(document).ready(function($) {
+	        function setMapContainerHeight() {
+	            var mapContainer = $('.map-container');
+	            var verticalPosition = mapContainer.offset().top - $('header').offset().top;
+	            var screenHeight = $(window).height();
+	            var newHeight = screenHeight - verticalPosition;
+	            mapContainer.height(newHeight);
+	        }
+
+	        $(window).on('resize scroll', function() {
+	            setMapContainerHeight();
+	        });
+
+	        setMapContainerHeight();
+	    });
+	</script> -->
+	<?php
 
 	return ob_get_clean();
 }
@@ -17,6 +48,11 @@ function rentfetch_propertysearch( $atts ) {
 // add a shortcode for the property search filters
 add_shortcode( 'propertysearchfilters', 'rentfetch_propertysearchfilters' );
 function rentfetch_propertysearchfilters() {
+	
+	ob_start();
+	
+	// we need to do output the dialog, but we don't want to do that inside this container
+	add_action( 'wp_footer', 'rentfetch_propertysearch_filters_dialog' );
 	
 	// // Localize the search filters general script, then enqueue that
 	// $search_options = array(
@@ -26,7 +62,9 @@ function rentfetch_propertysearchfilters() {
 	// wp_enqueue_script( 'rentfetch-search-filters-general' );
 	wp_enqueue_script( 'rentfetch-search-properties-ajax' );
 	
-	ob_start();
+	
+	
+	echo '<div class="filters-wrap">';
 	
 	?>
    <script type="text/javascript">
@@ -51,20 +89,9 @@ function rentfetch_propertysearchfilters() {
 			});
 		});
    </script>
-   
-	<script>
-		
-		jQuery(document).ready(function( $ ) {
-		
-			
-		
-		});
-			
-
-	</script>
 	
    <script>
-       jQuery(document).ready(function($) {
+	   jQuery(document).ready(function($) {
 			$('.toggle').on('click', function() {				
 				var inputWrap = $(this).closest('fieldset').find('.input-wrap');
 				inputWrap.toggleClass('active');
@@ -90,6 +117,18 @@ function rentfetch_propertysearchfilters() {
 		do_action( 'rentfetch_do_search_properties_featured_filters' );
 		echo '<button id="open-search-filters">Filters</button>';
 	echo '</div>';
+	
+	?>
+   
+	
+	<?php
+   echo '</div>'; // .filters-wrap
+	
+	return ob_get_clean();
+}
+
+
+function rentfetch_propertysearch_filters_dialog() {
 	echo '<dialog id="search-filters">';
 
 		echo '<header class="property-search-filters-header">'; 
@@ -108,13 +147,6 @@ function rentfetch_propertysearchfilters() {
 			echo '<button id="show-properties">Show <span id="properties-found"></span> Places</button>';
 		echo '</footer>';
 	echo '</dialog>';
-	?>
-   
-	
-	<?php
-   
-	
-	return ob_get_clean();
 }
 
 // add a shortcode for propertymap
@@ -122,10 +154,7 @@ add_shortcode( 'propertysearchmap', 'rentfetch_propertysearchmap' );
 function rentfetch_propertysearchmap() {
 	
 	ob_start();
-	
-	// search scripts and styles
-	wp_enqueue_style( 'rentfetch-search-properties-map' );
-	
+		
 	// the map itself
 	$key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
 	wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
@@ -141,7 +170,7 @@ function rentfetch_propertysearchmap() {
 	wp_localize_script( 'rentfetch-property-map', 'options', $maps_options );
 	wp_enqueue_script( 'rentfetch-property-map');
 	
-	echo '<div id="map" style="height: 300px; width: 100%;"></div>';
+	echo '<div id="map"></div>';
 	
 	return ob_get_clean();
 }
@@ -150,10 +179,7 @@ function rentfetch_propertysearchmap() {
 add_shortcode( 'propertysearchresults', 'rentfetch_propertysearchresults' );
 function rentfetch_propertysearchresults() {
 	ob_start();
-	
-	// properties in archive
-	wp_enqueue_style( 'rentfetch-properties-in-archive' );
-	
+		
 	echo '<div id="response"></div>';
 	
 	return ob_get_clean();

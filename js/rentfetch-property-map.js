@@ -104,11 +104,16 @@ jQuery(document).ready(function ($) {
                 $('.type-properties').removeClass('active');
                 $('.type-properties[data-id=' + i + ']').addClass('active');
 
-                // Scroll to the active div
+                // Scroll to the active div and center it on the screen
                 var activeDiv = $('.type-properties[data-id=' + i + ']');
+                var windowHeight = $(window).height();
+                var divHeight = activeDiv.outerHeight();
+                var scrollTop =
+                    activeDiv.offset().top - windowHeight / 2 + divHeight / 2;
+
                 $('html, body').animate(
                     {
-                        scrollTop: activeDiv.offset().top,
+                        scrollTop: scrollTop,
                     },
                     1000
                 );

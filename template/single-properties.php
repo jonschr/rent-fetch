@@ -18,8 +18,6 @@ function apartmentsync_add_properties_body_class( $classes ) {
 
 get_header();
 
-wp_enqueue_style( 'rentfetch-single-properties' );
-
 //* Markup
 echo '<div class="single-properties-wrap">';
 
