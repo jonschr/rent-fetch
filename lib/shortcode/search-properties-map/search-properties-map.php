@@ -1,10 +1,16 @@
 <?php
 
-// add a shortcode that's just a default wrapper for the property search, built from three shortcodes
-add_shortcode( 'propertysearch', 'rentfetch_propertysearch_default_layout' );
+/**
+ * Add markup for a default property search layout. 
+ * We're basically just doing three shortcodes here, 
+ * so this can be easily replicated if you want to customize the layout
+ */
 function rentfetch_propertysearch_default_layout( $atts ) {
 	
-	ob_start();    
+	ob_start();
+	
+	// this script is for scrolling specifically in the context of a full-height map
+	wp_enqueue_script( 'rentfetch-property-search-scroll-to-active-property' );
 	
 	//* Our container markup for the results
 	echo '<div class="rent-fetch-property-search-default-layout">';	
@@ -16,42 +22,29 @@ function rentfetch_propertysearch_default_layout( $atts ) {
 			echo do_shortcode('[propertysearchmap]');
 		echo '</div>';
 	echo '</div>';
-	
-	
-	
-	?>
-	
-
-	
-	<!-- <script>
-	    jQuery(document).ready(function($) {
-	        function setMapContainerHeight() {
-	            var mapContainer = $('.map-container');
-	            var verticalPosition = mapContainer.offset().top - $('header').offset().top;
-	            var screenHeight = $(window).height();
-	            var newHeight = screenHeight - verticalPosition;
-	            mapContainer.height(newHeight);
-	        }
-
-	        $(window).on('resize scroll', function() {
-	            setMapContainerHeight();
-	        });
-
-	        setMapContainerHeight();
-	    });
-	</script> -->
-	<?php
 
 	return ob_get_clean();
 }
+add_shortcode( 'propertysearch', 'rentfetch_propertysearch_default_layout' );
 
-// add a shortcode for the property search filters
-add_shortcode( 'propertysearchfilters', 'rentfetch_propertysearchfilters' );
+
+/**
+ * Add the [propertysearchfilters] shortcode
+ */
 function rentfetch_propertysearchfilters() {
 	
 	ob_start();
 	
-	// we need to do output the dialog, but we don't want to do that inside this container
+	// enqueue the search properties ajax script
+	wp_enqueue_script( 'rentfetch-search-properties-ajax' );
+	
+	// needed for toggling the featured filters on and off
+	wp_enqueue_script( 'rentfetch-property-search-featured-filters-toggle' );
+	
+	// script for opening and closing the dialog element
+	wp_enqueue_script( 'rentfetch-property-search-filters-dialog' );
+	
+	// we need to do output the dialog when we're outputting this, but we don't want to do that inside this container
 	add_action( 'wp_footer', 'rentfetch_propertysearch_filters_dialog' );
 	
 	// // Localize the search filters general script, then enqueue that
@@ -60,74 +53,24 @@ function rentfetch_propertysearchfilters() {
 	// );
 	// wp_localize_script( 'rentfetch-search-filters-general', 'searchoptions', $search_options );
 	// wp_enqueue_script( 'rentfetch-search-filters-general' );
-	wp_enqueue_script( 'rentfetch-search-properties-ajax' );
-	
-	
 	
 	echo '<div class="filters-wrap">';
-	
-	?>
-   <script type="text/javascript">
-		document.addEventListener('DOMContentLoaded', function() {
-			const dialog = document.getElementById('search-filters');
-			const openButton = document.getElementById('open-search-filters');
-			const submitButton = document.getElementById('submit-filters');
-
-			openButton.addEventListener('click', function() {
-				dialog.showModal();
-			});
-
-			dialog.addEventListener('click', function(event) {
-				if (event.target === dialog) {
-					dialog.close();
-				}
-			});
-
-			const showPropertiesButton = document.getElementById('show-properties');
-			showPropertiesButton.addEventListener('click', function() {
-				dialog.close();
-			});
-		});
-   </script>
-	
-   <script>
-	   jQuery(document).ready(function($) {
-			$('.toggle').on('click', function() {				
-				var inputWrap = $(this).closest('fieldset').find('.input-wrap');
-				inputWrap.toggleClass('active');
-				if (inputWrap.hasClass('active')) {
-					inputWrap.addClass('inactive');
-				} else {
-					inputWrap.removeClass('inactive');
-				}
-			});
-		});
-   </script>
-	
-
-
-
-   
-   
-   <?php
-
-	
-	
-	echo '<div id="featured-filters">';
-		do_action( 'rentfetch_do_search_properties_featured_filters' );
-		echo '<button id="open-search-filters">Filters</button>';
-	echo '</div>';
-	
-	?>
-   
-	
-	<?php
+		echo '<div id="featured-filters">';
+			do_action( 'rentfetch_do_search_properties_featured_filters' );
+			echo '<button id="open-search-filters">Filters</button>';
+		echo '</div>';
+		echo '<div id="filter-toggles">';
+			do_action( 'rentfetch_do_search_properties_dialog_filters' );
+		echo '</div>';
    echo '</div>'; // .filters-wrap
 	
 	return ob_get_clean();
 }
+add_shortcode( 'propertysearchfilters', 'rentfetch_propertysearchfilters' );
 
-
+/**
+ * Outupt the dialog element for the search filters
+ */
 function rentfetch_propertysearch_filters_dialog() {
 	echo '<dialog id="search-filters">';
 
@@ -149,8 +92,9 @@ function rentfetch_propertysearch_filters_dialog() {
 	echo '</dialog>';
 }
 
-// add a shortcode for propertymap
-add_shortcode( 'propertysearchmap', 'rentfetch_propertysearchmap' );
+/**
+ * Add the [propertysearchmap] shortcode
+ */
 function rentfetch_propertysearchmap() {
 	
 	ob_start();
@@ -174,9 +118,11 @@ function rentfetch_propertysearchmap() {
 	
 	return ob_get_clean();
 }
+add_shortcode( 'propertysearchmap', 'rentfetch_propertysearchmap' );
 
-// add a shortcode for the property results
-add_shortcode( 'propertysearchresults', 'rentfetch_propertysearchresults' );
+/**
+ * Add the [propertysearchresults] shortcode
+ */
 function rentfetch_propertysearchresults() {
 	ob_start();
 		
@@ -184,9 +130,12 @@ function rentfetch_propertysearchresults() {
 	
 	return ob_get_clean();
 }
+add_shortcode( 'propertysearchresults', 'rentfetch_propertysearchresults' );
 
-add_action( 'wp_ajax_propertysearch', 'rentfetch_filter_properties' ); // wp_ajax_{ACTION HERE} 
-add_action( 'wp_ajax_nopriv_propertysearch', 'rentfetch_filter_properties' );
+/**
+ * Do the property query and render outer markup for each property found in the search (if there is a location set)
+ * We do this separately from the inner markup to make it easy to customize the inner markup
+ */
 function rentfetch_filter_properties(){
 			
 	$floorplans = rentfetch_get_floorplans_array();
@@ -280,47 +229,5 @@ function rentfetch_filter_properties(){
 		 
 	die();
 }
-
-function rentfetch_get_connected_properties_from_selected_neighborhoods() {
-	
-	//bail if there's no relationships installed
-	if ( !class_exists( 'MB_Relationships_API' ) )
-		return;
-	
-	$getneighborhoodsargs = array(
-		'post_type' => 'neighborhoods',
-		'posts_per_page' => '-1',
-		'orderby' => 'name',
-		'order' => 'DESC',
-	);
-		
-	$neighborhoods = get_posts( $getneighborhoodsargs );
-	$selected_neighborhoods = array();
-		
-	foreach ( $neighborhoods as $neighborhood ) {
-				
-		$neighborhood_name = $neighborhood->post_title;
-		$neighborhood_id = $neighborhood->ID;
-		
-		if ( isset( $_POST['neighborhoods-' . $neighborhood_id ] ) && $_POST['neighborhoods-' . $neighborhood_id ] == 'on' ) {
-			$neighborhood_id = sanitize_text_field( $neighborhood_id );            
-			$selected_neighborhoods[] = $neighborhood_id;
-		}
-	}
-	
-	$properties = MB_Relationships_API::get_connected( [
-		'id'   => 'properties_to_neighborhoods',
-		'from' => $selected_neighborhoods,
-	] );
-	
-	$properties_connected_to_selected_neighborhoods = array();
-	foreach ( $properties as $property ) {
-		$properties_connected_to_selected_neighborhoods[] = intval( $property->ID );
-	}
-		
-	array_unique( $properties_connected_to_selected_neighborhoods );
-	// $properties_connected_to_selected_neighborhoods = implode( ',', $properties_connected_to_selected_neighborhoods );
-	// var_dump( $properties_connected_to_selected_neighborhoods );
-	
-	return $properties_connected_to_selected_neighborhoods;
-}
+add_action( 'wp_ajax_propertysearch', 'rentfetch_filter_properties' ); // wp_ajax_{ACTION HERE} 
+add_action( 'wp_ajax_nopriv_propertysearch', 'rentfetch_filter_properties' );

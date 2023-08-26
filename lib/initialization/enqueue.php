@@ -23,12 +23,15 @@ function rentfetch_enqueue_scripts_stylesheets() {
 	wp_register_script( 'rentfetch-flatpickr-script', 'https://cdn.jsdelivr.net/npm/flatpickr', array( 'jquery' ), RENTFETCH_VERSION, true );
 	wp_register_script( 'rentfetch-flatpickr-script-init', RENTFETCH_PATH . 'js/rentfetch-search-map-flatpickr-init.js', array( 'rentfetch-flatpickr-script' ), RENTFETCH_VERSION, true );
 	
-	// Properties map search
+	// Properties search
 	wp_register_script( 'rentfetch-search-properties-ajax', RENTFETCH_PATH . 'js/rentfetch-search-properties-ajax.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+	wp_register_script( 'rentfetch-property-search-featured-filters-toggle', RENTFETCH_PATH . 'js/rentfetch-property-search-featured-filters-toggle.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+	wp_register_script( 'rentfetch-property-search-filters-dialog', RENTFETCH_PATH . 'js/rentfetch-property-search-filters-dialog.js', array( 'jquery' ), RENTFETCH_VERSION, true );
 	
 	// Properties map (the map itself)
 	wp_register_script( 'rentfetch-property-map', RENTFETCH_PATH . 'js/rentfetch-property-map.js', array( 'jquery', 'rentfetch-google-maps' ), RENTFETCH_VERSION, true );
 	wp_register_script( 'rentfetch-single-property-map', RENTFETCH_PATH . 'js/rentfetch-single-property-map.js', array( 'jquery', 'rentfetch-google-maps' ), RENTFETCH_VERSION, true );
+	wp_register_script( 'rentfetch-property-search-scroll-to-active-property', RENTFETCH_PATH . 'js/rentfetch-property-search-scroll-to-active-property.js', array( 'jquery' ), RENTFETCH_VERSION, true );
 	
 	// Properties searchbar
 	wp_register_script( 'rentfetch-search-filters-general', RENTFETCH_PATH . 'js/rentfetch-search-filters-general.js', array( 'jquery' ), RENTFETCH_VERSION, true );

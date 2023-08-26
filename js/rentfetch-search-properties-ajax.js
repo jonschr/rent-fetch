@@ -131,13 +131,13 @@ jQuery(function ($) {
     // Function to clear all values from fields in #filter when #reset is clicked
     function clearFilterValues() {
         // Reset all non-hidden inputs to null value
-        $('#filter, #featured-filters')
+        $('#filter, #featured-filters, #filter-toggles')
             .find('input:not([type="hidden"],[type="checkbox"],[type="radio"])')
             .val('');
         // .trigger('change'); // Trigger the change event
 
         // Reset checkboxes to unchecked
-        $('#filter, #featured-filters')
+        $('#filter, #featured-filters, #filter-toggles')
             .find('[type="checkbox"]:checked') // Select only checked checkboxes
             .prop('checked', false);
         // .trigger('change'); // Trigger the change event
@@ -164,6 +164,81 @@ jQuery(function ($) {
     // Select all input, select, and textarea elements
     var $inputs = $('input, select, textarea');
 
+    var programmaticChange = false; // Flag to check if the change was programmatic
+
+    $inputs.on('change input', function () {
+        if (programmaticChange) {
+            // If the change was programmatic, return early
+            return;
+        }
+
+        var elementName = $(this).attr('name');
+        var newValue = $(this).val();
+
+        // Update identically named elements with the new value
+        $inputs
+            .filter('[name="' + elementName + '"]')
+            .not(this)
+            .each(function () {
+                var elementType = $(this).prop('tagName').toLowerCase();
+
+                if (
+                    elementType === 'input' &&
+                    $(this).attr('type') === 'checkbox'
+                ) {
+                    // For checkboxes, update the checked status
+                    $(this).prop(
+                        'checked',
+                        $(this).is(':checked') || $(this).val() === newValue
+                    );
+                } else {
+                    // For other elements, update the value
+                    if ($(this).val() !== newValue) {
+                        programmaticChange = true; // Set the flag to true before making the change
+                        $(this).val(newValue);
+                        $(this).trigger('change');
+                        programmaticChange = false; // Reset the flag after making the change
+                    }
+                }
+            });
+
+        submitFormAfterInactivity();
+    });
+
+    function changeInputHandler() {
+        var elementName = $(this).attr('name');
+        var newValue = $(this).val();
+
+        // Update identically named elements with the new value
+        $inputs
+            .filter('[name="' + elementName + '"]')
+            .not(this)
+            .each(function () {
+                var elementType = $(this).prop('tagName').toLowerCase();
+
+                if (
+                    elementType === 'input' &&
+                    $(this).attr('type') === 'checkbox'
+                ) {
+                    // For checkboxes, update the checked status
+                    $(this).prop(
+                        'checked',
+                        $(this).is(':checked') || $(this).val() === newValue
+                    );
+                } else {
+                    // For other elements, update the value
+                    if ($(this).val() !== newValue) {
+                        $(this).off('change input'); // Temporarily remove the event handler
+                        $(this).val(newValue);
+                        $(this).trigger('change');
+                        $(this).on('change input', changeInputHandler); // Reattach the event handler
+                    }
+                }
+            });
+
+        submitFormAfterInactivity();
+    }
+
     // Event listener for changes in the input elements
     $inputs.on('change input', function () {
         var elementName = $(this).attr('name');
@@ -187,10 +262,50 @@ jQuery(function ($) {
                     );
                 } else {
                     // For other elements, update the value
-                    $(this).val(newValue);
+                    if ($(this).val() !== newValue) {
+                        $(this).off('change input'); // Temporarily remove the event handler
+                        $(this).val(newValue);
+                        $(this).trigger('change');
+                        $(this).on('change input', changeInputHandler); // Reattach the event handler
+                    }
                 }
             });
 
         submitFormAfterInactivity();
+
+        // Dynamically resize text inputs in #filter-toggles
+        $('#filter-toggles input[type="text"]').on(
+            'change input load',
+            function () {
+                this.setAttribute('size', this.value.length);
+                console.log('this.value.length:', this.value.length);
+            }
+        );
+
+        // Dynamically resize number inputs in #filter-toggles
+        $('#filter-toggles input[type="number"]').on(
+            'input change load',
+            function () {
+                var len = $(this).val().length;
+                $(this).css('width', len + 'ch');
+            }
+        );
     });
+
+    //! REMOVE UNWANTED ELEMENTS FROM THE TOGGLES
+
+    // Remove unwanted elements from the toggles
+    $('#filter-toggles')
+        .find('fieldset, legend, button.toggle, div')
+        .each(function () {
+            var $this = $(this);
+            var $children = $this.children();
+
+            // Keep the elements that are being wrapped
+            if ($children.length > 0) {
+                $children.unwrap();
+            } else {
+                $this.remove();
+            }
+        });
 });
