@@ -59,11 +59,9 @@ function rentfetch_propertysearchfilters() {
 			do_action( 'rentfetch_do_search_properties_featured_filters' );
 			echo '<button id="open-search-filters">Filters</button>';
 		echo '</div>';
-		echo '<div id="filter-toggles">';
-			do_action( 'rentfetch_do_search_properties_dialog_filters' );
-		echo '</div>';
+		echo '<div id="filter-toggles"></div>';
    echo '</div>'; // .filters-wrap
-	
+   
 	return ob_get_clean();
 }
 add_shortcode( 'propertysearchfilters', 'rentfetch_propertysearchfilters' );
@@ -171,15 +169,14 @@ function rentfetch_filter_properties(){
 	
 	// console_log( 'Property search args:' );
 	// console_log( $property_args );
-	
+		
 	$propertyquery = new WP_Query( $property_args );
 		
 	if( $propertyquery->have_posts() ) {
 		
 		$count = 0;
-		
-		$numberofposts = $propertyquery->post_count;
-		
+				
+		$numberofposts = $propertyquery->post_count;				
 		printf( '<div class="results-count"><span id="properties-results-count-number">%s</span> results</div>', $numberofposts );
 		
 		echo '<div class="properties-loop">';
@@ -231,3 +228,11 @@ function rentfetch_filter_properties(){
 }
 add_action( 'wp_ajax_propertysearch', 'rentfetch_filter_properties' ); // wp_ajax_{ACTION HERE} 
 add_action( 'wp_ajax_nopriv_propertysearch', 'rentfetch_filter_properties' );
+
+add_filter( 'rentfetch_get_property_search_query_parameter_name', 'rentfetch_property_search_query_parameter_name' ); 
+function rentfetch_property_search_query_parameter_name( $query_param_id, $query_param ) {
+	
+	$name = $query_param_id;
+	
+	return $name;	
+}

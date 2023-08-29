@@ -17,8 +17,8 @@ function rentfetch_search_properties_map_filters_property_types() {
     // build types search
     if ( !empty( $propertytypes && taxonomy_exists( 'propertytypes' ) ) ) {
         echo '<fieldset class="property-type">';
-            echo '<legend>Property Type</legend>';
-            echo '<button class="toggle">Property Type</button>';
+            echo '<legend>Property type</legend>';
+            echo '<button class="toggle">Property type</button>';
             echo '<div class="input-wrap checkboxes">';
                     
                     foreach ($propertytypes as $propertytype) {

@@ -37,8 +37,6 @@ jQuery(function ($) {
         $.each(queryParams, function (key, value) {
             if (
                 value === '' || // Exclude empty values
-                key === 'textsearch' || // Exclude specific parameters
-                key === 'dates' || // Exclude specific parameters
                 key === 'action' // Exclude specific parameters
             ) {
                 delete queryParams[key];
@@ -48,15 +46,92 @@ jQuery(function ($) {
         return queryParams;
     }
 
-    var isFirstRequest = true; // Flag variable to track the first request
+    // Function to clear values from corresponding fields and trigger change event
+    $(document).on('click', '#filter-toggles button', function () {
+        var dataId = $(this).data('id');
+        var correspondingFields = $('[name="' + dataId + '"]');
+        var fieldset = correspondingFields.closest('fieldset'); // Find the fieldset containing the correspondingFields
+
+        fieldset.find(':checkbox').prop('checked', false); // Clear checkbox inputs within the fieldset
+        fieldset.find(':input:not(:checkbox)').val('').trigger('change'); // Clear non-checkbox inputs within the fieldset and trigger change event
+        submitForm();
+    });
+
+    function getToggles(toggleData) {
+        var toggleMarkup = '';
+
+        // Get all the fieldsets within the toggleData
+        var fieldsets = toggleData.find('fieldset');
+
+        // Iterate through each fieldset
+        fieldsets.each(function () {
+            var fieldset = $(this);
+            var legend = fieldset.find('legend').text();
+            var activeFields = fieldset
+                .find('input:checked, input[type="number"], input[type="text"]')
+                .filter(function () {
+                    return $(this).val().trim() !== ''; // Check if input is not empty
+                })
+                .not('[name="action"]');
+
+            // Check if there are any active fields
+            if (activeFields.length > 0) {
+                var dataId = activeFields.first().attr('name');
+                var dataValues = activeFields
+                    .map(function () {
+                        return $(this).val();
+                    })
+                    .get()
+                    .join(',');
+
+                // Create the button element
+                var buttonContent = legend + ': ';
+                switch (true) {
+                    case activeFields.length === 2 &&
+                        !activeFields.is(':checkbox'):
+                        // if it's a range, replace the comma with a dash
+                        buttonContent += dataValues.replace(',', ' - ');
+                        break;
+                    case dataId === 'search-amenities[]':
+                        // if it's the amenities, change the content
+                        buttonContent =
+                            legend + ' (' + activeFields.length + ' selected)';
+                        break;
+                    case dataId === 'search-property-types[]':
+                        // if it's the property types, change the content
+                        buttonContent =
+                            legend + ' (' + activeFields.length + ' selected)';
+                        break;
+                    default:
+                        // otherwise, just add the values (this handles checkboxes)
+                        buttonContent += dataValues.replace(',', ', ');
+                }
+
+                toggleMarkup +=
+                    '<button data-id="' +
+                    dataId +
+                    '" data-values="' +
+                    dataValues.replace(',', ', ') +
+                    '">' +
+                    buttonContent +
+                    '</button>';
+            }
+        });
+
+        return toggleMarkup;
+    }
 
     // Function to perform AJAX search
     function performAJAXSearch(queryParams) {
         var filter = $('#filter');
+        var toggleData = filter;
+
+        console.log(filter);
 
         $.ajax({
             url: filter.attr('action'),
             data: filter.serialize(), // form data
+            toggleData: filter.serialize(),
             type: filter.attr('method'), // POST
             beforeSend: function (xhr) {
                 filter.find('#reset').text('Searching...'); // changing the button label
@@ -65,6 +140,9 @@ jQuery(function ($) {
             success: function (data) {
                 $('#reset').text('Clear All'); // changing the button label
                 $('#response').html(data); // insert data
+
+                var toggles = getToggles(toggleData);
+                $('#filter-toggles').html(toggles);
 
                 if ($('#map').length) {
                     var mapOffset = $('#map').offset().top;
@@ -78,8 +156,6 @@ jQuery(function ($) {
                         );
                     }
                 }
-
-                isFirstRequest = false;
 
                 // look in data for .properties-loop, and count the number of children
                 var count = $('.properties-loop').children().length;
@@ -131,13 +207,13 @@ jQuery(function ($) {
     // Function to clear all values from fields in #filter when #reset is clicked
     function clearFilterValues() {
         // Reset all non-hidden inputs to null value
-        $('#filter, #featured-filters, #filter-toggles')
+        $('#filter, #featured-filters')
             .find('input:not([type="hidden"],[type="checkbox"],[type="radio"])')
             .val('');
         // .trigger('change'); // Trigger the change event
 
         // Reset checkboxes to unchecked
-        $('#filter, #featured-filters, #filter-toggles')
+        $('#filter, #featured-filters')
             .find('[type="checkbox"]:checked') // Select only checked checkboxes
             .prop('checked', false);
         // .trigger('change'); // Trigger the change event
@@ -272,40 +348,5 @@ jQuery(function ($) {
             });
 
         submitFormAfterInactivity();
-
-        // Dynamically resize text inputs in #filter-toggles
-        $('#filter-toggles input[type="text"]').on(
-            'change input load',
-            function () {
-                this.setAttribute('size', this.value.length);
-                console.log('this.value.length:', this.value.length);
-            }
-        );
-
-        // Dynamically resize number inputs in #filter-toggles
-        $('#filter-toggles input[type="number"]').on(
-            'input change load',
-            function () {
-                var len = $(this).val().length;
-                $(this).css('width', len + 'ch');
-            }
-        );
     });
-
-    //! REMOVE UNWANTED ELEMENTS FROM THE TOGGLES
-
-    // Remove unwanted elements from the toggles
-    $('#filter-toggles')
-        .find('fieldset, legend, button.toggle, div')
-        .each(function () {
-            var $this = $(this);
-            var $children = $this.children();
-
-            // Keep the elements that are being wrapped
-            if ($children.length > 0) {
-                $children.unwrap();
-            } else {
-                $this.remove();
-            }
-        });
 });

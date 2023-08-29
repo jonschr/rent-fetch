@@ -3,10 +3,12 @@
 function rentfetch_search_properties_map_filters_price() {
 			
 	// figure out our min/max values
-	$price_settings = get_option( 'options_price_filter' );
-	$valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
-	$valueBig = isset( $price_settings['maximum'] ) ? $price_settings['maximum'] : 5000;
-	$step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
+	$valueSmall = get_option( 'options_price_filter_minimum', 0 );
+	$valueBig = get_option( 'options_price_filter_maximum', 5000 );	
+	$step = 50;
+	// $valueSmall = isset( $price_settings['minimum'] ) ? $price_settings['minimum'] : 0;
+	// $valueBig = isset( $price_settings['maximum'] ) ? $price_settings['maximum'] : 5000;
+	// $step = isset( $price_settings['step'] ) ? $price_settings['step'] : 50;        
 	
 	// enqueue the noui slider
 	wp_enqueue_style( 'rentfetch-nouislider-style' );
@@ -42,24 +44,24 @@ function rentfetch_search_property_map_floorplans_args_price( $floorplans_args )
 	if ( !isset( $_POST['pricesmall'] ) && !isset( $_POST['pricebig'] ) )
 		return $floorplans_args;
 	
-	$defaultpricesmall = 100;
-	$defaultpricebig = 5000;
+	$defaultpricesmall = get_option( 'options_price_filter_minimum', 0 );
+	$defaultpricebig = get_option( 'options_price_filter_maximum', 5000 );
 	
 	// get the small value
 	if ( isset( $_POST['pricesmall'] ) )
 		$pricesmall = intval( sanitize_text_field( $_POST['pricesmall'] ) );
 		
-	// if it's not a good value, then change it to something sensible
-	if ( $pricesmall < 100 )
-		$pricesmall = $defaultpricesmall;
+	// // if it's not a good value, then change it to something sensible
+	// if ( $pricesmall < 100 )
+	// 	$pricesmall = $defaultpricesmall;
 	
 	// get the big value
 	if ( isset( $_POST['pricebig'] ) )
 		$pricebig = intval( sanitize_text_field( $_POST['pricebig'] ) );
 		
-	// if there's isn't one, then use the default instead
-	if ( empty( $pricebig ) )
-		$pricebig = $defaultpricebig;
+	// // if there's isn't one, then use the default instead
+	// if ( empty( $pricebig ) )
+	// 	$pricebig = null;
 			
 	
 	// if we're showing all properties, then by default we need to ignore pricing

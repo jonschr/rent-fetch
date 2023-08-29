@@ -972,6 +972,9 @@ function rent_fetch_save_settings_property_search() {
     if ( isset( $_POST['options_price_filter_minimum'] ) ) {
         $price_filter_minimum = intval( $_POST['options_price_filter_minimum'] );
         update_option( 'options_price_filter_minimum', $price_filter_minimum );
+    } else {
+        $price_filter_minimum = null;
+        update_option( 'options_price_filter_minimum', $price_filter_minimum );
     }
     
     // Number field
