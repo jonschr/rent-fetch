@@ -130,7 +130,7 @@ jQuery(function ($) {
         var filter = $('#filter');
         var toggleData = filter;
 
-        console.log(filter);
+        // console.log(filter);
 
         $.ajax({
             url: filter.attr('action'),
@@ -138,8 +138,10 @@ jQuery(function ($) {
             toggleData: filter.serialize(),
             type: filter.attr('method'), // POST
             beforeSend: function (xhr) {
-                filter.find('#reset').text('Searching...'); // changing the button label
+                // filter.find('#reset').text('Searching...'); // changing the button label
                 $('#reset').text('Searching...'); // changing the button label
+                // clear #response div
+                $('#response').html('');
             },
             success: function (data) {
                 $('#reset').text('Clear All'); // changing the button label
@@ -194,13 +196,13 @@ jQuery(function ($) {
 
     var submitTimer; // Timer identifier
 
-    // Function to submit the form after 1 second of inactivity
+    // Function to submit the form after half a second of inactivity
     function submitFormAfterInactivity() {
         var self = this; // Capture the current context
         clearTimeout(submitTimer); // Clear any previous timer
         submitTimer = setTimeout(function () {
-            submitForm(); // Submit the form after 1 second of inactivity
-        }, 1000);
+            submitForm(); // Submit the form after half a second of inactivity
+        }, 500);
     }
 
     // Call the function on input
@@ -254,8 +256,9 @@ jQuery(function ($) {
 
         var elementName = $(this).attr('name');
         var newValue = $(this).val();
+        var isChecked = $(this).is(':checked');
 
-        // Update identically named elements with the new value
+        // Update identically named elements with the new value and checked status
         $inputs
             .filter('[name="' + elementName + '"]')
             .not(this)
@@ -267,79 +270,10 @@ jQuery(function ($) {
                     $(this).attr('type') === 'checkbox'
                 ) {
                     // For checkboxes, update the checked status
-                    $(this).prop(
-                        'checked',
-                        $(this).is(':checked') || $(this).val() === newValue
-                    );
-                } else {
-                    // For other elements, update the value
-                    if ($(this).val() !== newValue) {
-                        programmaticChange = true; // Set the flag to true before making the change
-                        $(this).val(newValue);
-                        $(this).trigger('change');
-                        programmaticChange = false; // Reset the flag after making the change
+                    var otherValue = $(this).val();
+                    if (otherValue === newValue) {
+                        $(this).prop('checked', isChecked);
                     }
-                }
-            });
-
-        submitFormAfterInactivity();
-    });
-
-    function changeInputHandler() {
-        var elementName = $(this).attr('name');
-        var newValue = $(this).val();
-
-        // Update identically named elements with the new value
-        $inputs
-            .filter('[name="' + elementName + '"]')
-            .not(this)
-            .each(function () {
-                var elementType = $(this).prop('tagName').toLowerCase();
-
-                if (
-                    elementType === 'input' &&
-                    $(this).attr('type') === 'checkbox'
-                ) {
-                    // For checkboxes, update the checked status
-                    $(this).prop(
-                        'checked',
-                        $(this).is(':checked') || $(this).val() === newValue
-                    );
-                } else {
-                    // For other elements, update the value
-                    if ($(this).val() !== newValue) {
-                        $(this).off('change input'); // Temporarily remove the event handler
-                        $(this).val(newValue);
-                        $(this).trigger('change');
-                        $(this).on('change input', changeInputHandler); // Reattach the event handler
-                    }
-                }
-            });
-
-        submitFormAfterInactivity();
-    }
-
-    // Event listener for changes in the input elements
-    $inputs.on('change input', function () {
-        var elementName = $(this).attr('name');
-        var newValue = $(this).val();
-
-        // Update identically named elements with the new value
-        $inputs
-            .filter('[name="' + elementName + '"]')
-            .not(this)
-            .each(function () {
-                var elementType = $(this).prop('tagName').toLowerCase();
-
-                if (
-                    elementType === 'input' &&
-                    $(this).attr('type') === 'checkbox'
-                ) {
-                    // For checkboxes, update the checked status
-                    $(this).prop(
-                        'checked',
-                        $(this).is(':checked') || $(this).val() === newValue
-                    );
                 } else {
                     // For other elements, update the value
                     if ($(this).val() !== newValue) {
