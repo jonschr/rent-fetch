@@ -34,6 +34,7 @@ jQuery(document).ready(function ($) {
             },
             fullscreenControl: false,
         };
+
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
 

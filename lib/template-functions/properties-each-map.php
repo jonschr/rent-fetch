@@ -4,40 +4,18 @@ add_action( 'rentfetch_do_properties_each_map', 'rentfetch_properties_each_map' 
 function rentfetch_properties_each_map() {
     
     $title = rentfetch_get_property_title();
-    $property_location = rentfetch_get_property_location();
-    $bedrooms = rentfetch_get_property_bedrooms();
-    $bathrooms = rentfetch_get_property_bathrooms();
-    $square_feet = rentfetch_get_property_square_feet();
-    $rent = rentfetch_get_property_rent();
-    $availability = rentfetch_get_property_availability();
-    $specials = rentfetch_get_property_specials();
+    $city_state = rentfetch_get_property_city_state();
+    $permalink = apply_filters( 'rentfetch_filter_property_permalink', get_the_permalink() );
+    $permalink_target = apply_filters( 'rentfetch_filter_property_permalink_target', get_the_permalink() );
+    $permalink_label = apply_filters( 'rentfetch_filter_property_permalink_label', get_the_permalink() );
     
-    do_action( 'rentfetch_do_property_images' );
+    if ( $city_state )
+        printf( '<p class="city-state">%s</p>', esc_attr( $city_state ) );
     
     if ( $title )
-        printf( '<h3>%s</h3>', esc_html( $title ) );
-    
-    if ( $property_location )
-        printf( '<p class="property-location">%s</p>', esc_html( $property_location ) );
+        printf( '<h3>%s</h3>', esc_attr( $title ) );
         
-    if ( $bedrooms )
-        printf( '<p class="bedsrange">%s</p>', esc_html( $bedrooms ) );
-        
-    if ( $bathrooms )
-        printf( '<p class="bathsrange">%s</p>', esc_html( $bathrooms ) );
-        
-    if ( $square_feet )
-        printf( '<p class="square-feet">%s</p>', esc_html( $square_feet ) );
-        
-    if ( $rent )
-        printf( '<p class="rent">%s</p>', esc_html( $rent ) );
-
-    if ( $availability)
-        printf( '<p class="availability">%s</p>', esc_html( $availability ) );
-        
-    if ( $specials )
-        printf( '<p class="specials">%s</p>', esc_html( $specials ) );
-        
-    edit_post_link();
-    
+    if ( $permalink )
+        printf( '<a class="permalink" target="%s" href="%s">%s</a>', esc_html( $permalink_target ), esc_url( $permalink ), esc_attr( $permalink_label ) );
+            
 }

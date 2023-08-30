@@ -100,7 +100,7 @@ function rentfetch_propertysearchmap() {
 	// the map itself
 	$key = apply_filters( 'rentfetch_get_google_maps_api_key', null );
 	wp_enqueue_script( 'rentfetch-google-maps', 'https://maps.googleapis.com/maps/api/js?key=' . $key, array(), null, true );
-			
+				
 	// Localize the google maps script, then enqueue that
 	$maps_options = array(
 		'json_style' => json_decode( get_option( 'options_google_maps_styles' ) ),

@@ -20,6 +20,54 @@ function rentfetch_property_title() {
 
 //* PROPERTY LOCATION
 
+function rentfetch_get_property_city() {
+    $city = get_post_meta( get_the_ID(), 'city', true );
+    return esc_html( $city );
+}
+
+function rentfetch_property_city() {
+    $city = get_post_meta( get_the_ID(), 'city', true );
+    
+    if ( $city )
+        echo esc_html( $city );
+}
+
+function rentfetch_get_property_address() {
+    $address = get_post_meta( get_the_ID(), 'address', true );
+    return esc_html( $address );
+}
+
+function rentfetch_property_address() {
+    $address = get_post_meta( get_the_ID(), 'address', true );
+    
+    if ( $address )
+        echo esc_html( $address );
+}
+
+function rentfetch_get_property_state() {
+    $state = get_post_meta( get_the_ID(), 'state', true );
+    return esc_html( $state );
+}
+
+function rentfetch_property_state() {
+    $state = get_post_meta( get_the_ID(), 'state', true );
+    
+    if ( $state )
+        echo esc_html( $state );
+}
+
+function rentfetch_get_property_zipcode() {
+    $zipcode = get_post_meta( get_the_ID(), 'zipcode', true );
+    return esc_html( $zipcode );
+}
+
+function rentfetch_property_zipcode() {
+    $zipcode = get_post_meta( get_the_ID(), 'zipcode', true );
+    
+    if ( $zipcode )
+        echo esc_html( $zipcode );
+}
+
 function rentfetch_get_property_location() {
         
     $address = get_post_meta( get_the_ID(), 'address', true );
@@ -65,6 +113,31 @@ function rentfetch_property_location() {
     
     if ( $location )
         echo $location;
+}
+
+function rentfetch_get_property_city_state() {
+    
+    $city = get_post_meta( get_the_ID(), 'city', true );
+    $state = get_post_meta( get_the_ID(), 'state', true );
+    
+    if ( $city && $state ) {
+        $citystate = sprintf( '%s, %s', $city, $state );
+    } elseif ( $city && !$state ) {
+        $citystate = $city;
+    } elseif ( !$city && $state ) {
+        $citystate = $state;
+    } else {
+        $citystate = null;
+    }
+        
+    return $citystate;
+}
+
+function rentfetch_property_city_state() {
+    $citystate = rentfetch_get_property_city_state();
+    
+    if ( $citystate )
+        echo $citystate;
 }
 
 // add_filter( 'rentfetch_filter_property_location', 'my_custom_location', 10, 1 );
@@ -150,7 +223,7 @@ function rentfetch_property_square_feet() {
 
 add_filter( 'rentfetch_filter_property_square_feet', 'rentfetch_default_property_square_feet_label', 10, 1 );
 function rentfetch_default_property_square_feet_label( $square_feet ) {
-    return $square_feet . ' Square Feet';
+    return $square_feet . ' sqft';
 }
 
 //* PROPERTY RENT
@@ -179,7 +252,7 @@ add_filter( 'rentfetch_filter_property_rent', 'rentfetch_default_property_rent_l
 function rentfetch_default_property_rent_label( $rent ) {
     
     if ( $rent )
-        return '$' . esc_html( $rent ) . '/mo';
+        return '$' . esc_html( $rent );
         
     // This could return 'Call for Pricing' or 'Pricing unavailable' if pricing isn't available
     return null;
@@ -267,4 +340,26 @@ function rentfetch_default_property_specials_label( $specials ) {
         return 'Specials available';
         
     return null;
+}
+
+add_filter( 'rentfetch_filter_property_permalink', 'rentfetch_default_property_permalink', 10, 1 );
+function rentfetch_default_property_permalink( $url ) {
+    
+    $url = get_the_permalink();
+    
+    return $url;
+}
+
+add_filter( 'rentfetch_filter_property_permalink_label', 'rentfetch_default_property_permalink_label', 10, 1 );
+function rentfetch_default_property_permalink_label( $url ) {
+    
+    return 'View Property';
+    
+}
+
+add_filter( 'rentfetch_filter_property_permalink_target', 'rentfetch_default_property_permalink_target', 10, 1 );
+function rentfetch_default_property_permalink_target( $url ) {
+    
+    return '_self';
+    
 }

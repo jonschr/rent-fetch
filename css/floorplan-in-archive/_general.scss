@@ -3,13 +3,11 @@
 }
 
 .floorplan-in-archive {
-    // border: 5px solid $light;
     margin-bottom: 30px;
 
     .floorplans {
         margin: 0;
         padding: 15px 0;
-        // border-top: 5px solid $light;
         margin-bottom: 10px;
 
         &:first-child {
@@ -29,7 +27,7 @@
         @include mobile {
             align-items: flex-start;
 
-            >* {
+            > * {
                 margin-bottom: 15px;
             }
         }
@@ -77,7 +75,6 @@
                 margin: 5px 0;
             }
         }
-
     }
 
     p {
@@ -106,5 +103,4 @@
             display: block;
         }
     }
-
 }

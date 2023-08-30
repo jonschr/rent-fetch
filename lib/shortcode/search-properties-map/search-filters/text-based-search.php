@@ -12,7 +12,7 @@ function rentfetch_search_properties_map_filters_text_search() {
         $searchtext = null;
     }
                         
-    $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search city or zipcode ...' );
+    $placeholder = apply_filters( 'rentfetch_search_placeholder_text', 'Search...' );
     
     // build the text-based search
     echo '<fieldset class="text-based-search">';

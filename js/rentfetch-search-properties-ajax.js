@@ -57,7 +57,7 @@ jQuery(function ($) {
         submitForm();
     });
 
-    function getToggles(toggleData) {
+    function outputToggles(toggleData) {
         var toggleMarkup = '';
 
         // Get all the fieldsets within the toggleData
@@ -90,7 +90,11 @@ jQuery(function ($) {
                     case activeFields.length === 2 &&
                         !activeFields.is(':checkbox'):
                         // if it's a range, replace the comma with a dash
-                        buttonContent += dataValues.replace(',', ' - ');
+                        if (dataId === 'pricesmall' || dataId === 'pricebig') {
+                            buttonContent += '$' + dataValues.replace(',', '-');
+                        } else {
+                            buttonContent += dataValues.replace(/,/g, ', ');
+                        }
                         break;
                     case dataId === 'search-amenities[]':
                         // if it's the amenities, change the content
@@ -104,14 +108,14 @@ jQuery(function ($) {
                         break;
                     default:
                         // otherwise, just add the values (this handles checkboxes)
-                        buttonContent += dataValues.replace(',', ', ');
+                        buttonContent += dataValues.replace(/,/g, ', ');
                 }
 
                 toggleMarkup +=
                     '<button data-id="' +
                     dataId +
                     '" data-values="' +
-                    dataValues.replace(',', ', ') +
+                    dataValues.replace(/,/g, ', ') +
                     '">' +
                     buttonContent +
                     '</button>';
@@ -141,7 +145,7 @@ jQuery(function ($) {
                 $('#reset').text('Clear All'); // changing the button label
                 $('#response').html(data); // insert data
 
-                var toggles = getToggles(toggleData);
+                var toggles = outputToggles(toggleData);
                 $('#filter-toggles').html(toggles);
 
                 if ($('#map').length) {
