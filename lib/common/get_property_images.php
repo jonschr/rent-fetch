@@ -12,11 +12,11 @@ function rentfetch_get_property_images( $args = null ) {
     $fallback_images = rentfetch_get_property_images_fallback( $args );
         
     if ( $manual_images ) {
-        return $manual_images;
+        return apply_filters( 'rentfetch_filter_property_images', $manual_images );
     } elseif ( $yardi_images ) {
-        return $yardi_images;
+        return apply_filters( 'rentfetch_filter_property_images', $yardi_images );
     } elseif ( $fallback_images) {
-        return $fallback_images;
+        return apply_filters( 'rentfetch_filter_property_images', $fallback_images );
     } else {
         return;
     } 
@@ -98,4 +98,38 @@ function rentfetch_get_property_images_fallback( $args ) {
     ];
     
     return $fallback_images;
+}
+
+function rentfetch_property_images_grid( $args = null ) {
+    
+    $images = rentfetch_get_property_images();
+    
+    if ( !$images )
+    return;
+    
+    wp_enqueue_style( 'rentfetch-fancybox-style' );
+    wp_enqueue_script( 'rentfetch-fancybox-script' );
+    
+    // var_dump( $images );
+    
+    $number_of_images = count( $images );
+    
+    if ( $number_of_images < 5 ) {
+        $count_class = 'single-image';
+    } else {
+        $count_class = 'multiple-images';
+    }
+        
+    printf( '<div class="property-images-grid %s">', $count_class );
+    
+    foreach( $images as $image ) {
+        printf( '<div class="image-item"><a data-fancybox="property-images-grid" href="%s"><img src="%s" alt="%s" title="%s" /></a></div>', $image['url'], $image['url'], $image['alt'], $image['title'] );
+    }
+    
+    if ( $number_of_images > 1 ) {
+        printf( '<a href="#" data-fancybox-trigger="property-images-grid" class="view-all-images">View %s images</a>', $number_of_images );
+    }
+    
+    echo '</div>';
+    
 }

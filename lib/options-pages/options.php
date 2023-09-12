@@ -28,6 +28,16 @@ function rent_fetch_options_page() {
         'rent_fetch_options', // Menu slug.
         'rent_fetch_options_page_html' // Callback function to render the page.
     );
+    
+    // Add Rent Fetch options sub-menu page to the admin menu.
+    add_submenu_page(
+        'rent_fetch_options', // Parent menu slug.
+        'Shortcodes', // Page title.
+        'Shortcodes', // Menu title.
+        'manage_options', // Capability required to access the menu.
+        'rent_fetch_shortcodes', // Menu slug.
+        'rent_fetch_shortcodes_page_html' // Callback function to render the page.
+    );
         
     // Add Documentation sub-menu page to the admin menu, linking to a third-party URL.
     add_submenu_page(
@@ -72,6 +82,68 @@ function rentfetch_documentation_submenu_open_new_tab() {
         });
     });
     </script>
+    <?php
+}
+
+function rent_fetch_shortcodes_page_html() {
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+    
+    ?>
+    <script>
+        jQuery(document).ready(function($) {
+            // Get all .shortcode elements
+            const shortcodes = document.querySelectorAll('.shortcode');
+
+            // Add event listener to each .shortcode element
+            shortcodes.forEach(shortcode => {
+                shortcode.addEventListener('click', () => {
+                    // Remove the .copied class from all .shortcode elements
+                    shortcodes.forEach(element => {
+                        element.classList.remove('copied');
+                    });
+
+                    // Copy the contents of the clicked .shortcode element to the clipboard
+                    const range = document.createRange();
+                    range.selectNodeContents(shortcode);
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    document.execCommand('copy');
+                    selection.removeAllRanges();
+
+                    // Add the .copied class to the clicked .shortcode element
+                    shortcode.classList.add('copied');
+
+                    // Remove the .copied class after 5 seconds
+                    setTimeout(() => {
+                        shortcode.classList.remove('copied');
+                    }, 5000);
+                });
+            });
+        });
+    </script>
+    <?php
+    
+    echo '<div class="wrap">';
+        echo '<h1>Rent Fetch Shortcodes</h1>';
+        echo '<p>Rent Fetch includes a number of shortcodes that can be used wherever you\'d like on your site. <strong>Click any of them below to copy them.</strong></p>';
+        do_action( 'rent_fetch_do_documentation_shortcodes' );
+    echo '</div>';
+}
+
+add_action( 'rent_fetch_do_documentation_shortcodes', 'rent_fetch_documentation_shortcodes' );
+function rent_fetch_documentation_shortcodes() {
+    ?>
+    <h2>Main properties search</h2>
+    <p>The main properties search can be rendered using the default shortcode, which will create a side-by-side layout with the properties and search filters next to the map, or you can render each component individually to make the layout work however you'd like it to.</p>
+    <h3>Default search</h3>
+    <p>This one includes everything; just use this and you're done. This will attempt to force itself to be full-width on the page regardless of your theme styles.</p>
+    <p><span class="shortcode">[propertysearch]</span></p>
+    <h3>Individual components</h3>
+    <p>Use these individually to arrange various components. It's quite likely, using these, that you'll need to write some styles to position them the way you'd like on the page.</p>
+    <p><span class="shortcode">[propertysearchmap]</span> <span class="shortcode">[propertysearchfilters]</span> <span class="shortcode">[propertysearchresults]</span></p>
     <?php
 }
 
@@ -1188,61 +1260,43 @@ function rent_fetch_settings_properties_property_single() {
             <ul class="checkboxes">
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_title" <?php checked( in_array( 'enable_property_title', $options_single_property_components ) ); ?>>
-                        Enable property title
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_images" <?php checked( in_array( 'enable_property_images', $options_single_property_components ) ); ?>>
+                        <input type="checkbox" name="options_single_property_components[]" value="property_images" <?php checked( in_array( 'property_images', $options_single_property_components ) ); ?>>
                         Enable property images
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_section_navigation" <?php checked( in_array( 'enable_section_navigation', $options_single_property_components ) ); ?>>
+                        <input type="checkbox" name="options_single_property_components[]" value="section_navigation" <?php checked( in_array( 'section_navigation', $options_single_property_components ) ); ?>>
                         Enable section navigation
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_basic_info_display" <?php checked( in_array( 'enable_basic_info_display', $options_single_property_components ) ); ?>>
-                        Enable basic info display
+                        <input type="checkbox" name="options_single_property_components[]" value="property_details" <?php checked( in_array( 'property_details', $options_single_property_components ) ); ?>>
+                        Enable property details 
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_description" <?php checked( in_array( 'enable_property_description', $options_single_property_components ) ); ?>>
-                        Enable property description
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_floorplans_display" <?php checked( in_array( 'enable_floorplans_display', $options_single_property_components ) ); ?>>
+                        <input type="checkbox" name="options_single_property_components[]" value="floorplans_display" <?php checked( in_array( 'floorplans_display', $options_single_property_components ) ); ?>>
                         Enable floorplan display
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_amenities_display" <?php checked( in_array( 'enable_amenities_display', $options_single_property_components ) ); ?>>
+                        <input type="checkbox" name="options_single_property_components[]" value="amenities_display" <?php checked( in_array( 'amenities_display', $options_single_property_components ) ); ?>>
                         Enable amenities display
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_lease_details_display" <?php checked( in_array( 'enable_lease_details_display', $options_single_property_components ) ); ?>>
-                        Enable lease details display
-                    </label>
-                </li>
-                <li>
-                    <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_property_map" <?php checked( in_array( 'enable_property_map', $options_single_property_components ) ); ?>>
+                        <input type="checkbox" name="options_single_property_components[]" value="property_map" <?php checked( in_array( 'property_map', $options_single_property_components ) ); ?>>
                         Enable property map
                     </label>
                 </li>
                 <li>
                     <label>
-                        <input type="checkbox" name="options_single_property_components[]" value="enable_nearby_properties" <?php checked( in_array( 'enable_nearby_properties', $options_single_property_components ) ); ?>>
+                        <input type="checkbox" name="options_single_property_components[]" value="nearby_properties" <?php checked( in_array( 'nearby_properties', $options_single_property_components ) ); ?>>
                         Enable nearby properties
                     </label>
                 </li>

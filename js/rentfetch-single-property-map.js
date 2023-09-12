@@ -1,5 +1,4 @@
 jQuery(document).ready(function ($) {
-
     //* Vars from localization
     // grab the marker image from localization
     var markerImage = options.marker_url;
@@ -11,35 +10,33 @@ jQuery(document).ready(function ($) {
     var latitude = parseFloat(options.latitude);
     var longitude = parseFloat(options.longitude);
 
-    var location = options.location;
+    var content = options.content;
 
     function initMap() {
         const myLatLng = { lat: latitude, lng: longitude };
-        const map = new google.maps.Map(document.getElementById("map"), {
-            zoom: 12,
-            center: myLatLng,
-            styles: mapStyle,
-            fullscreenControl: false,
-            disableDefaultUI: true,
-            zoomControl: true,
-            zoomControlOptions: {
-                position: google.maps.ControlPosition.RIGHT_TOP,
-            },
-        });
-
-        const contentString =
-            '<div id="map-marker">' +
-            location +
-            '</div>';
+        const map = new google.maps.Map(
+            document.getElementById('single-property-map'),
+            {
+                zoom: 12,
+                center: myLatLng,
+                styles: mapStyle,
+                fullscreenControl: false,
+                disableDefaultUI: true,
+                zoomControl: true,
+                zoomControlOptions: {
+                    position: google.maps.ControlPosition.RIGHT_TOP,
+                },
+            }
+        );
 
         const infowindow = new google.maps.InfoWindow({
-            content: contentString,
+            content: content,
         });
 
         const marker = new google.maps.Marker({
             position: myLatLng,
             map,
-            title: "Hello World!",
+            title: 'Hello World!',
             icon: markerImage,
         });
 
@@ -49,17 +46,14 @@ jQuery(document).ready(function ($) {
             shouldFocus: false,
         });
 
-        marker.addListener("click", () => {
+        marker.addListener('click', () => {
             infowindow.open({
                 anchor: marker,
                 map,
                 shouldFocus: false,
             });
         });
-
     }
 
     initMap();
-
-
 });

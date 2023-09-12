@@ -39,6 +39,10 @@ function rentfetch_enqueue_scripts_stylesheets() {
 	// Properties in archive
 	wp_register_script( 'rentfetch-property-images-slider-init', RENTFETCH_PATH . 'js/rentfetch-property-images-slider-init.js', array( 'jquery' ), RENTFETCH_VERSION, true );
 	
+	
+	// Single properties
+	wp_register_script( 'properties-single-collapse-subnav', RENTFETCH_PATH . 'js/rentfetch-property-single-collapse-subnav.js', array( 'jquery' ), RENTFETCH_VERSION, true );
+	
 	// Fancybox
 	wp_register_style( 'rentfetch-fancybox-style', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.css', array(), RENTFETCH_VERSION, 'screen' );
 	wp_register_script( 'rentfetch-fancybox-script', RENTFETCH_PATH . 'vendor/fancybox/jquery.fancybox.min.js', array( 'jquery' ), RENTFETCH_VERSION, true );

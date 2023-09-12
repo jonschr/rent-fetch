@@ -20,18 +20,6 @@ function rentfetch_property_title() {
 
 //* PROPERTY LOCATION
 
-function rentfetch_get_property_city() {
-    $city = get_post_meta( get_the_ID(), 'city', true );
-    return esc_html( $city );
-}
-
-function rentfetch_property_city() {
-    $city = get_post_meta( get_the_ID(), 'city', true );
-    
-    if ( $city )
-        echo esc_html( $city );
-}
-
 function rentfetch_get_property_address() {
     $address = get_post_meta( get_the_ID(), 'address', true );
     return esc_html( $address );
@@ -42,6 +30,18 @@ function rentfetch_property_address() {
     
     if ( $address )
         echo esc_html( $address );
+}
+
+function rentfetch_get_property_city() {
+    $city = get_post_meta( get_the_ID(), 'city', true );
+    return esc_html( $city );
+}
+
+function rentfetch_property_city() {
+    $city = get_post_meta( get_the_ID(), 'city', true );
+    
+    if ( $city )
+        echo esc_html( $city );
 }
 
 function rentfetch_get_property_state() {
@@ -115,10 +115,15 @@ function rentfetch_property_location() {
         echo $location;
 }
 
+// add_filter( 'rentfetch_filter_property_location', 'my_custom_location' );
+// function my_custom_location( $location ) {
+//     return 'My Custom Location ' . $location;
+// }
+
 function rentfetch_get_property_city_state() {
     
-    $city = get_post_meta( get_the_ID(), 'city', true );
-    $state = get_post_meta( get_the_ID(), 'state', true );
+    $city = esc_attr( get_post_meta( get_the_ID(), 'city', true ) );
+    $state = esc_attr( get_post_meta( get_the_ID(), 'state', true ) );
     
     if ( $city && $state ) {
         $citystate = sprintf( '%s, %s', $city, $state );
@@ -130,7 +135,7 @@ function rentfetch_get_property_city_state() {
         $citystate = null;
     }
         
-    return $citystate;
+    return apply_filters( 'rentfetch_filter_property_city_state', $citystate );
 }
 
 function rentfetch_property_city_state() {
@@ -140,10 +145,22 @@ function rentfetch_property_city_state() {
         echo $citystate;
 }
 
-// add_filter( 'rentfetch_filter_property_location', 'my_custom_location', 10, 1 );
-// function my_custom_location( $location ) {
-//     return 'My Custom Location';
+// add_filter( 'rentfetch_filter_property_city_state', 'my_custom_city_state', 10, 1 );
+// function my_custom_city_state( $location ) {
+//     return 'My Custom City State';
 // }
+
+//* PROPERTY PHONE
+function rentfetch_get_property_phone() {
+    $phone = get_post_meta( get_the_ID(), 'phone', true );
+    return esc_html( $phone );
+    
+    apply_filters( 'rentfetch_filter_property_phone', $phone );
+}
+
+function rentfetch_property_phone() {
+    echo rentfetch_get_property_phone();
+}
 
 //* PROPERTY BEDROOMS
 

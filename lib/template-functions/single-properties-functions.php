@@ -1,6 +1,5 @@
 <?php
 
-add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_title', 10 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_images', 20 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_section_navigation', 25 );
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_basic_info', 30 );
@@ -13,63 +12,15 @@ add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_map', 8
 add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_neighborhood', 90 );
 // add_action( 'rentfetch_do_single_properties', 'rentfetch_single_property_nearby_properties', 100 );
 
-function rentfetch_single_property_title() {
-    
-    global $post;
-    
-    // bail if this section isn't set to display
-    if ( get_option( 'options_single_property_components_enable_property_title' ) === false )
-        return;
-            
-    $id = esc_attr( get_the_ID() );
-    $title = esc_attr( apply_filters( 'rentfetch_property_title', get_the_title( $id ) ) );
-    $city = esc_attr( get_post_meta( $id, 'city', true ) );
-    $state = esc_attr( get_post_meta( $id, 'state', true ) );
-    $voyager_property_code = esc_attr( get_post_meta( $id, 'voyager_property_code', true ) );
-    $property_id = esc_attr( get_post_meta( $id, 'property_id', true ) );
-    $location = null;
-    
-    // prepare the location
-    if ( $city && $state )
-        $location = sprintf( '<span class="city-state">in %s, %s</span>', $city, $state );
-        
-    if ( $city && !$state )
-        $location = sprintf( '<span class="city-state">in %s</span>', $city );
-        
-    if ( !$city && $state )
-        $location = sprintf( '<span class="city-state">in %s</span>', $state );
-    
-    echo '<div class="wrap-single-properties-entry-header single-properties-section"><div class="single-properties-entry-header single-properties-section-wrap">';
-
-        if ( $title && $location )
-            printf( '<h1>%s %s</h1>', $title, $location );
-            
-        if ( $title && !$location )
-            printf( '<h1>%s</h1>', $title );
-            
-        if ( current_user_can( 'edit_posts' ) ) {
-            echo '<p class="admin-data">';
-            
-                if ( $voyager_property_code )
-                    printf( '<span><strong>Voyager Property Code:</strong> %s <a target="_blank" href="/wp-admin/tools.php?page=action-scheduler&status=pending&s=%s&action=-1&paged=1&action2=-1">View scheduled actions...</a></span>', $voyager_property_code, $voyager_property_code );
-                    
-                if ( $property_id )
-                    printf( '<span><strong>Property ID:</strong> %s</span>', $property_id );
-                    
-                if ( !$property_id )
-                    echo '<span><strong>Property ID:</strong> (not found)</span>';
-            
-            echo '</p>';
-        }
-
-    echo '</div></div>';
-}
-
 function rentfetch_single_property_images() {
     
-    // bail if this section isn't set to display
-    if ( get_option( 'options_single_property_components_enable_property_images' ) === false )
+    $property_components = get_option( 'options_single_property_components' );    
+    if ( !in_array( 'enable_property_images', $property_components ) )
         return;
+            
+    // bail if this section isn't set to display
+    // if ( get_option( 'options_single_property_components_enable_property_images' ) === false )
+    //     return;
     
     global $post;
     $id = esc_html( get_the_ID() );
@@ -135,8 +86,8 @@ function rentfetch_single_property_images() {
 
 function rentfetch_single_property_section_navigation() {
         
-    // bail if this section isn't set to display
-    if ( get_option( 'options_single_property_components_enable_section_navigation') === false )
+    $property_components = get_option( 'options_single_property_components' );    
+    if ( !in_array( 'enable_section_navigation', $property_components ) )
         return;
                 
     if ( get_option( 'options_single_property_components_enable_property_description' ) === false ) {
@@ -221,8 +172,8 @@ function rentfetch_single_property_section_navigation() {
 
 function rentfetch_single_property_basic_info() {
     
-    // bail if this section isn't set to display
-    if ( get_option( 'options_single_property_components_enable_basic_info_display' ) === false )
+    $property_components = get_option( 'options_single_property_components' );    
+    if ( !in_array( 'enable_basic_info_display', $property_components ) )
         return;
     
     global $post;
@@ -285,8 +236,8 @@ function rentfetch_single_property_basic_info() {
 
 function rentfetch_single_property_description() {
     
-    // bail if this section isn't set to display
-    if ( get_option( 'options_single_property_components_enable_property_description' ) === false )
+    $property_components = get_option( 'options_single_property_components' );    
+    if ( !in_array( 'enable_property_description', $property_components ) )
         return;
     
     global $post;
@@ -315,7 +266,7 @@ function rentfetch_single_property_description() {
     }
 }
 
-add_action( 'rentfetch_single_property_do_lead_generation', 'rentfetch_single_property_yardi_lead_generation' );
+// add_action( 'rentfetch_single_property_do_lead_generation', 'rentfetch_single_property_yardi_lead_generation' );
 function rentfetch_single_property_yardi_lead_generation() {
     
     //* bail if this property is not pulled automatically from Yardi
