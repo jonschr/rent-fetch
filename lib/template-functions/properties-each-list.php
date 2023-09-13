@@ -1,6 +1,7 @@
 <?php
 
 add_action( 'rentfetch_do_properties_each_list', 'rentfetch_properties_each_list' );
+add_action( 'rentfetch_do_single_properties_each_property', 'rentfetch_properties_each_list' );
 function rentfetch_properties_each_list() {
     
     $title = rentfetch_get_property_title();
@@ -48,10 +49,7 @@ function rentfetch_properties_each_list() {
             if ( $availability)
                 printf( '<p class="availability">%s</p>', esc_html( $availability ) );
                 
-        echo '</div>';
-            
-        
-            
+        echo '</div>';    
     
     echo '</div>';
 }

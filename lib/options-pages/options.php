@@ -136,7 +136,7 @@ function rent_fetch_shortcodes_page_html() {
 add_action( 'rent_fetch_do_documentation_shortcodes', 'rent_fetch_documentation_shortcodes' );
 function rent_fetch_documentation_shortcodes() {
     ?>
-    <h2>Main properties search</h2>
+    <h2>Multiple properties search</h2>
     <p>The main properties search can be rendered using the default shortcode, which will create a side-by-side layout with the properties and search filters next to the map, or you can render each component individually to make the layout work however you'd like it to.</p>
     <h3>Default search</h3>
     <p>This one includes everything; just use this and you're done. This will attempt to force itself to be full-width on the page regardless of your theme styles.</p>
@@ -144,6 +144,10 @@ function rent_fetch_documentation_shortcodes() {
     <h3>Individual components</h3>
     <p>Use these individually to arrange various components. It's quite likely, using these, that you'll need to write some styles to position them the way you'd like on the page.</p>
     <p><span class="shortcode">[propertysearchmap]</span> <span class="shortcode">[propertysearchfilters]</span> <span class="shortcode">[propertysearchresults]</span></p>
+    
+    <h2>Properties grid</h2>
+    <p>This layout ignores availability, and is most suitable for smaller ownership groups with 5-20 properties.</p>
+    <p><span class="shortcode">[properties]</span></p>
     <?php
 }
 

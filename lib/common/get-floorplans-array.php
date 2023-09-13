@@ -215,7 +215,7 @@ function rentfetch_get_floorplans( $property_id = null ) {
     global $rentfetch_floorplans;
     $property_id = intval( $property_id );
     
-    if ( $property_id )
+    if ( $property_id && isset( $rentfetch_floorplans[$property_id] ) )
         return $rentfetch_floorplans[$property_id];
                         
     return $rentfetch_floorplans;

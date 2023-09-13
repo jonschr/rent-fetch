@@ -120,6 +120,13 @@ function rentfetch_property_location() {
 //     return 'My Custom Location ' . $location;
 // }
 
+function rentfetch_get_property_location_link() {
+    $location = rentfetch_get_property_location();
+    $title = rentfetch_get_property_title();
+    $location_link = sprintf( 'https://www.google.com/maps/place/%s', urlencode( $title . ' ' . $location ) );
+    return esc_url( $location_link );
+}
+
 function rentfetch_get_property_city_state() {
     
     $city = esc_attr( get_post_meta( get_the_ID(), 'city', true ) );
@@ -160,6 +167,18 @@ function rentfetch_get_property_phone() {
 
 function rentfetch_property_phone() {
     echo rentfetch_get_property_phone();
+}
+
+//* PROPERTY URL
+function rentfetch_get_property_url() {
+    $url = get_post_meta( get_the_ID(), 'url', true );
+    return esc_html( $url );
+    
+    apply_filters( 'rentfetch_filter_property_url', $url );
+}
+
+function rentfetch_property_url() {
+    echo rentfetch_get_property_url();
 }
 
 //* PROPERTY BEDROOMS
@@ -379,4 +398,19 @@ function rentfetch_default_property_permalink_target( $url ) {
     
     return '_self';
     
+}
+
+//* PROPERTY DESCRIPTION
+
+function rentfetch_get_property_description() {
+    $property_description = get_post_meta( get_the_ID(), 'description', true );
+    $property_description = apply_filters( 'the_content', esc_attr( $property_description ) );
+    $property_description = apply_filters( 'rentfetch_filter_property_description', $property_description );
+    return $property_description;
+}
+
+function rentfetch_property_description() {
+    $property_description = rentfetch_get_property_description();
+    if ( $property_description )
+        echo $property_description;
 }
