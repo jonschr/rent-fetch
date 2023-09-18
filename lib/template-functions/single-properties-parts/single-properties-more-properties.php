@@ -38,7 +38,7 @@ function rentfetch_single_properties_parts_more_properties() {
         // The Loop
         if ( $custom_query->have_posts() ) {
             
-            echo '<div class="properties-loop">'; // .properties-loop
+            echo '<div class="properties-simple-grid">'; // .properties-loop
 
             while ( $custom_query->have_posts() ) {
                 
@@ -47,9 +47,7 @@ function rentfetch_single_properties_parts_more_properties() {
                 $class = implode( ' ', get_post_class() );
                 
                 printf( '<div class="%s">', $class );
-                    echo '<div class="property-in-list">';
-                    do_action( 'rentfetch_do_single_properties_each_property' );
-                    echo '</div>';
+                    do_action( 'rentfetch_do_each_property_in_archive' );
                 echo '</div>';
             
             }

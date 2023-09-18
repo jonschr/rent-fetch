@@ -66,14 +66,15 @@ function rentfetch_get_property_images_yardi( $args ) {
     if ( !$yardi_images_string )
         return;
         
-    // rarely, an error might get saved here. if so, bail.
-    if ( $yardi_images_string == '[{"Error":"1050"}]' )
+    // rarely, an error might get saved here (typically 1050 or 1020). if so, bail.
+    if ( strpos( $yardi_images_string, 'Error' ) !== false ) 
         return;
-        
+            
     $yardi_images_json = json_decode( $yardi_images_string );
     $yardi_images = array();
     
     foreach( $yardi_images_json as $yardi_image_json ) {
+                
         $yardi_images[] = [
             'url' => esc_url( $yardi_image_json->ImageURL ),
             'title' => $yardi_image_json->Title,
@@ -81,8 +82,6 @@ function rentfetch_get_property_images_yardi( $args ) {
             'caption' => $yardi_image_json->Caption
         ];
     }
-    
-    
     
     return $yardi_images;
     

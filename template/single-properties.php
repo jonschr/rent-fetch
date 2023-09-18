@@ -1,24 +1,6 @@
 <?php
 
-//* Add a body class
-add_filter( 'body_class', 'rentfetch_add_properties_body_class' );
-function rentfetch_add_properties_body_class( $classes ) {
-	global $post;
-	
-	if ( isset( $post ) )
-		$classes[] = 'single-properties-template';
-	
-	return $classes;
-	
-}
-
-////////////
-// MARKUP //
-////////////
-
 get_header();
-
-
 
 //* Markup
 echo '<div class="single-properties-wrap">';

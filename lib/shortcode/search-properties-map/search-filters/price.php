@@ -8,11 +8,11 @@ function rentfetch_search_properties_map_filters_price() {
 	$step = 50;
 	
 	// if pricesmall isset, then use that value for $valueSmall
-	if ( isset( $_POST['pricesmall'] ) )
+	if ( isset( $_POST['pricesmall'] ) && $_POST['pricesmall'] > 0 )
 		$valueSmall = intval( sanitize_text_field( $_POST['pricesmall'] ) );
 		
 	// if pricebig isset, then use that value for $valueBig
-	if ( isset( $_POST['pricebig'] ) )
+	if ( isset( $_POST['pricebig'] ) && $_POST['pricebig'] > 0 )
 		$valueBig = intval( sanitize_text_field( $_POST['pricebig'] ) );
 	
 	// enqueue the noui slider
@@ -25,6 +25,7 @@ function rentfetch_search_properties_map_filters_price() {
 			'step' => $step,
 		)
 	);
+	
 	// wp_enqueue_script( 'rentfetch-nouislider-init-script' );
 	
 	//* build the price search
@@ -40,6 +41,7 @@ function rentfetch_search_properties_map_filters_price() {
 			echo '</div>';
 		echo '</div>'; // .slider
 	echo '</fieldset>';		
+
 }
 
 add_filter( 'rentfetch_search_property_map_floorplans_query_args', 'rentfetch_search_property_map_floorplans_args_price', 10, 1 );
@@ -53,14 +55,14 @@ function rentfetch_search_property_map_floorplans_args_price( $floorplans_args )
 	$defaultpricebig = get_option( 'options_price_filter_maximum', 5000 );
 	
 	// get the small value
-	if ( isset( $_POST['pricesmall'] ) && $_POST['pricebig'] > 100 ){
+	if ( isset( $_POST['pricesmall'] ) && $_POST['pricebig'] > 0 ){
 		$pricesmall = intval( sanitize_text_field( $_POST['pricesmall'] ) );
 	} else {
 		$pricesmall = $defaultpricesmall;
 	}
 	
 	// get the big value
-	if ( isset( $_POST['pricebig'] ) && $_POST['pricebig'] > 100 ) {
+	if ( isset( $_POST['pricebig'] ) && $_POST['pricebig'] > 0 ) {
 		$pricebig = intval( sanitize_text_field( $_POST['pricebig'] ) );
 	} else {
 		$pricebig = $defaultpricebig;

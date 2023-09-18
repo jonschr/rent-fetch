@@ -41,6 +41,10 @@ function rentfetch_maybe_property_part_amenities() {
     $property_components = get_option( 'options_single_property_components' );
     if ( !is_array( $property_components ) || !in_array( 'amenities_display', $property_components ) )
         return false;
+		
+	$terms = get_the_terms( get_the_ID(), 'amenities' );
+	if ( !$terms )
+		return false;
         
     return true;
 }
