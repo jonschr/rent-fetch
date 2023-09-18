@@ -137,9 +137,12 @@ if ( ! class_exists( 'ACF_Admin_Updates' ) ) :
 		 * @return  void
 		 */
 		function load() {
+
+			add_action( 'admin_body_class', array( $this, 'admin_body_class' ) );
+
 			// Check activate.
 			if ( acf_verify_nonce( 'activate_pro_license' ) ) {
-				acf_pro_activate_license( $_POST['acf_pro_license'] );
+				acf_pro_activate_license( sanitize_text_field( $_POST['acf_pro_license'] ) );
 
 				// Check deactivate.
 			} elseif ( acf_verify_nonce( 'deactivate_pro_license' ) ) {
@@ -158,6 +161,7 @@ if ( ! class_exists( 'ACF_Admin_Updates' ) ) :
 				'upgrade_notice'     => '',
 				'is_defined_license' => defined( 'ACF_PRO_LICENSE' ) && ! empty( ACF_PRO_LICENSE ) && is_string( ACF_PRO_LICENSE ),
 				'license_error'      => false,
+				'wp_not_compatible'  => false,
 			);
 
 			// get plugin updates
@@ -178,16 +182,28 @@ if ( ! class_exists( 'ACF_Admin_Updates' ) ) :
 			// check if remote version is higher than current version
 			if ( version_compare( $info['version'], $version, '>' ) ) {
 
-				// update view
+				// update view.
 				$this->view['update_available'] = true;
 				$this->view['changelog']        = $this->get_changelog_changes( $info['changelog'], $info['version'] );
 				$this->view['upgrade_notice']   = $this->get_changelog_changes( $info['upgrade_notice'], $info['version'] );
 
-				// perform update checks if license is active
-				$basename = acf_get_setting( 'basename' );
-				$update   = acf_updates()->get_plugin_update( $basename );
-				if ( $license ) {
+				// perform update checks if license is active.
+				$basename  = acf_get_setting( 'basename' );
+				$update    = acf_updates()->get_plugin_update( $basename );
+				$no_update = acf_updates()->get_no_update( $basename );
 
+				if ( $no_update && ! empty( $no_update['reason'] ) && $no_update['reason'] === 'wp_not_compatible' ) {
+					$this->view['wp_not_compatible'] = true;
+					acf_new_admin_notice(
+						array(
+							/* translators: %s the version of WordPress required for this ACF update */
+							'text' => sprintf( __( 'An update to ACF is available, but it is not compatible with your version of WordPress. Please upgrade to WordPress %s or newer to update ACF.', 'acf' ), $no_update['requires'] ),
+							'type' => 'error',
+						)
+					);
+				}
+
+				if ( $license ) {
 					if ( isset( $update['license_valid'] ) && ! $update['license_valid'] ) {
 
 						$this->view['license_error'] = true;
@@ -199,9 +215,7 @@ if ( ! class_exists( 'ACF_Admin_Updates' ) ) :
 						);
 
 					} else {
-
-						// display error if no package url
-						// - possible if license key has been modified
+						// display error if no package url - possible if license key or site URL has been modified.
 						if ( $update && ! $update['package'] ) {
 							$this->view['license_error'] = true;
 							acf_new_admin_notice(
@@ -213,9 +227,7 @@ if ( ! class_exists( 'ACF_Admin_Updates' ) ) :
 						}
 					}
 
-					// refresh transient
-					// - if no update exists in the transient
-					// - or if the transient 'new_version' is stale
+					// refresh transient - if no update exists in the transient or if the transient 'new_version' is stale.
 					if ( ! $update || $update['new_version'] !== $info['version'] ) {
 						acf_updates()->refresh_plugins_transient();
 					}
@@ -223,7 +235,18 @@ if ( ! class_exists( 'ACF_Admin_Updates' ) ) :
 			}
 		}
 
-
+		/**
+		 * Modifies the admin body class.
+		 *
+		 * @since 6.0.0
+		 *
+		 * @param string $classes Space-separated list of CSS classes.
+		 * @return string
+		 */
+		public function admin_body_class( $classes ) {
+			$classes .= ' acf-admin-page';
+			return $classes;
+		}
 
 		/**
 		 * html

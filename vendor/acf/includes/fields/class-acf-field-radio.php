@@ -21,10 +21,13 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 		function initialize() {
 
 			// vars
-			$this->name     = 'radio';
-			$this->label    = __( 'Radio Button', 'acf' );
-			$this->category = 'choice';
-			$this->defaults = array(
+			$this->name          = 'radio';
+			$this->label         = __( 'Radio Button', 'acf' );
+			$this->category      = 'choice';
+			$this->description   = __( 'A group of radio button inputs that allows the user to make a single selection from values that you specify.', 'acf' );
+			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-radio-button.png';
+			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/radio-button/', 'docs', 'field-type-selection' );
+			$this->defaults      = array(
 				'layout'            => 'vertical',
 				'choices'           => array(),
 				'default_value'     => '',
@@ -186,20 +189,20 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Choices', 'acf' ),
-					'hint'  => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
-					'type'  => 'textarea',
-					'name'  => 'choices',
+					'label'        => __( 'Choices', 'acf' ),
+					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
+					'type'         => 'textarea',
+					'name'         => 'choices',
 				)
 			);
 
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Default Value', 'acf' ),
-					'hint'  => __( 'Appears when creating a new post', 'acf' ),
-					'type'  => 'text',
-					'name'  => 'default_value',
+					'label'        => __( 'Default Value', 'acf' ),
+					'instructions' => __( 'Appears when creating a new post', 'acf' ),
+					'type'         => 'text',
+					'name'         => 'default_value',
 				)
 			);
 
@@ -232,7 +235,7 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
+					'label'        => __( 'Allow Null', 'acf' ),
 					'instructions' => '',
 					'name'         => 'allow_null',
 					'type'         => 'true_false',
@@ -469,17 +472,8 @@ if ( ! class_exists( 'acf_field_radio' ) ) :
 				return $schema;
 			}
 
-			/**
-			 * If a user has defined keys for the radio options,
-			 * we should use the keys for the available options to POST to,
-			 * since they are what is displayed in GET requests.
-			 */
-			$radio_keys = array_diff(
-				array_keys( $field['choices'] ),
-				array_values( $field['choices'] )
-			);
+			$schema['enum'] = acf_get_field_type( 'select' )->format_rest_choices( $field['choices'] );
 
-			$schema['enum'] = empty( $radio_keys ) ? $field['choices'] : $radio_keys;
 			if ( ! empty( $field['allow_null'] ) ) {
 				$schema['enum'][] = null;
 			}

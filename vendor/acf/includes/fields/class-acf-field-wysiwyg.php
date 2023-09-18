@@ -21,10 +21,13 @@ if ( ! class_exists( 'acf_field_wysiwyg' ) ) :
 		function initialize() {
 
 			// vars
-			$this->name     = 'wysiwyg';
-			$this->label    = __( 'Wysiwyg Editor', 'acf' );
-			$this->category = 'content';
-			$this->defaults = array(
+			$this->name          = 'wysiwyg';
+			$this->label         = __( 'WYSIWYG Editor', 'acf' );
+			$this->category      = 'content';
+			$this->description   = __( 'Displays the WordPress WYSIWYG editor as seen in Posts and Pages allowing for a rich text-editing experience that also allows for multimedia content.', 'acf' ) . ' ' . __( 'We do not recommend using this field in ACF Blocks.', 'acf' );
+			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-wysiwyg.png';
+			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/wysiwyg-editor/', 'docs', 'field-type-selection' );
+			$this->defaults      = array(
 				'tabs'          => 'all',
 				'toolbar'       => 'full',
 				'media_upload'  => 1,
@@ -102,13 +105,6 @@ if ( ! class_exists( 'acf_field_wysiwyg' ) ) :
 
 			// mce buttons (Basic)
 			$teeny_mce_buttons = array( 'bold', 'italic', 'underline', 'blockquote', 'strikethrough', 'bullist', 'numlist', 'alignleft', 'aligncenter', 'alignright', 'undo', 'redo', 'link', 'fullscreen' );
-
-			// WP < 4.7
-			if ( acf_version_compare( 'wp', '<', '4.7' ) ) {
-
-				$mce_buttons   = array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'hr', 'alignleft', 'aligncenter', 'alignright', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' );
-				$mce_buttons_2 = array( 'formatselect', 'underline', 'alignjustify', 'forecolor', 'pastetext', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help' );
-			}
 
 			// Full
 			$toolbars['Full'] = array(
@@ -379,7 +375,7 @@ if ( ! class_exists( 'acf_field_wysiwyg' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Show Media Upload Buttons?', 'acf' ),
+					'label'        => __( 'Show Media Upload Buttons', 'acf' ),
 					'instructions' => '',
 					'name'         => 'media_upload',
 					'type'         => 'true_false',
@@ -390,7 +386,7 @@ if ( ! class_exists( 'acf_field_wysiwyg' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Delay initialization?', 'acf' ),
+					'label'        => __( 'Delay Initialization', 'acf' ),
 					'instructions' => __( 'TinyMCE will not be initialized until field is clicked', 'acf' ),
 					'name'         => 'delay',
 					'type'         => 'true_false',

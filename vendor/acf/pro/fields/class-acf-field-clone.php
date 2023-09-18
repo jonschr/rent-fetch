@@ -21,18 +21,23 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 		function initialize() {
 
 			// vars
-			$this->name      = 'clone';
-			$this->label     = _x( 'Clone', 'noun', 'acf' );
-			$this->category  = 'layout';
-			$this->defaults  = array(
+			$this->name          = 'clone';
+			$this->label         = _x( 'Clone', 'noun', 'acf' );
+			$this->category      = 'layout';
+			$this->description   = __( 'Allows you to select and display existing fields. It does not duplicate any fields in the database, but loads and displays the selected fields at run-time. The Clone field can either replace itself with the selected fields or display the selected fields as a group of subfields.', 'acf' );
+			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-clone.png';
+			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/clone/', 'docs', 'field-type-selection' );
+			$this->tutorial_url  = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/how-to-use-the-clone-field/', 'docs', 'field-type-selection' );
+			$this->pro           = true;
+			$this->defaults      = array(
 				'clone'        => '',
 				'prefix_label' => 0,
 				'prefix_name'  => 0,
 				'display'      => 'seamless',
 				'layout'       => 'block',
 			);
-			$this->cloning   = array();
-			$this->have_rows = 'single';
+			$this->cloning       = array();
+			$this->have_rows     = 'single';
 
 			// register filter
 			acf_enable_filter( 'clone' );
@@ -866,12 +871,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Prefix Field Labels', 'acf' ),
-					'hint'  => $instructions,
-					'name'  => 'prefix_label',
-					'class' => 'setting-prefix-label',
-					'type'  => 'true_false',
-					'ui'    => 1,
+					'label'        => __( 'Prefix Field Labels', 'acf' ),
+					'instructions' => $instructions,
+					'name'         => 'prefix_label',
+					'class'        => 'setting-prefix-label',
+					'type'         => 'true_false',
+					'ui'           => 1,
 				)
 			);
 
@@ -881,12 +886,12 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Prefix Field Names', 'acf' ),
-					'hint'  => $instructions,
-					'name'  => 'prefix_name',
-					'class' => 'setting-prefix-name',
-					'type'  => 'true_false',
-					'ui'    => 1,
+					'label'        => __( 'Prefix Field Names', 'acf' ),
+					'instructions' => $instructions,
+					'name'         => 'prefix_name',
+					'class'        => 'setting-prefix-name',
+					'type'         => 'true_false',
+					'ui'           => 1,
 				)
 			);
 
@@ -956,7 +961,7 @@ if ( ! class_exists( 'acf_field_clone' ) ) :
 			// ajax_fields
 			if ( isset( $_POST['fields'][ $selector ] ) ) {
 
-				return $this->get_clone_setting_field_choice( $_POST['fields'][ $selector ] );
+				return $this->get_clone_setting_field_choice( acf_sanitize_request_args( $_POST['fields'][ $selector ] ) );
 
 			}
 			// phpcs:enable WordPress.Security.NonceVerification.Missing

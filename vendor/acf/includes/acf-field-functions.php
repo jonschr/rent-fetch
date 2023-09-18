@@ -93,7 +93,7 @@ function acf_get_raw_field( $id = 0 ) {
 	}
 
 	// Unserialize post_content.
-	$field = (array) maybe_unserialize( $post->post_content );
+	$field = (array) acf_maybe_unserialize( $post->post_content );
 
 	// update attributes
 	$field['ID']         = $post->ID;
@@ -695,6 +695,14 @@ function acf_render_field_wrap( $field, $element = 'div', $instruction = 'label'
 		$wrapper['data-required'] = 1;
 	}
 
+	// Support custom attributes.
+	if ( ! empty( $field['data'] ) && is_array( $field['data'] ) ) {
+		foreach ( $field['data'] as $name => $attr ) {
+			$wrapper[ 'data-' . $name ] = $attr;
+		}
+		unset( $field['data'] );
+	}
+
 	// Clean up class attribute.
 	$wrapper['class'] = str_replace( '_', '-', $wrapper['class'] );
 	$wrapper['class'] = str_replace( 'field-field-', 'field-', $wrapper['class'] );
@@ -739,14 +747,14 @@ function acf_render_field_wrap( $field, $element = 'div', $instruction = 'label'
 	}
 
 	// Vars for render.
-	$attributes_html = acf_esc_attr( $wrapper );
+	$attributes_html = acf_esc_attrs( $wrapper );
 
 	// Render HTML
 	echo "<$element $attributes_html>" . "\n";
 	if ( $element !== 'td' ) {
 		echo "<$inner_element class=\"acf-label\">" . "\n";
 			acf_render_field_label( $field );
-		if ( $instruction == 'label' && ! ( $field_setting && 'name' === $field['_name'] ) ) {
+		if ( $instruction == 'label' ) {
 			acf_render_field_instructions( $field, $field_setting );
 		}
 			echo "</$inner_element>" . "\n";
@@ -757,10 +765,6 @@ function acf_render_field_wrap( $field, $element = 'div', $instruction = 'label'
 		acf_render_field_instructions( $field );
 	}
 		echo "</$inner_element>" . "\n";
-
-	if ( 'name' === $field['_name'] && $field_setting ) {
-		acf_render_field_instructions( $field, $field_setting );
-	}
 
 	if ( $field_setting && $instruction == 'field' ) {
 		acf_render_field_instructions( $field );
@@ -838,7 +842,7 @@ function acf_render_field_label( $field ) {
  *
  * @param   array  $field The field array.
  * @param   string $context The output context (admin).
- * @return  void
+ * @return  string The field label in HTML format.
  */
 function acf_get_field_label( $field, $context = '' ) {
 
@@ -950,10 +954,15 @@ function acf_render_field_setting( $field, $setting, $global = false ) {
 	}
 
 	// If we're using a hint, set the label location as field so it appears after.
-	$label_location = ! empty( $setting['instructions'] ) ? 'label' : 'field';
+	$label_location = ! empty( $setting['instructions'] ) ? 'field' : 'label';
+
+	// If we're a true false field, force label location to label.
+	if ( $setting['type'] === 'true_false' ) {
+		$label_location = 'label';
+	}
 
 	// Render setting.
-	acf_render_field_wrap( $setting, 'div', $label_location, true );
+	acf_render_field_wrap( $setting, 'div', $label_location );
 }
 
 /**

@@ -21,10 +21,13 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 		function initialize() {
 
 			// vars
-			$this->name     = 'select';
-			$this->label    = _x( 'Select', 'noun', 'acf' );
-			$this->category = 'choice';
-			$this->defaults = array(
+			$this->name          = 'select';
+			$this->label         = _x( 'Select', 'noun', 'acf' );
+			$this->category      = 'choice';
+			$this->description   = __( 'A dropdown list with a selection of choices that you specify.', 'acf' );
+			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-select.png';
+			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/select/', 'docs', 'field-type-selection' );
+			$this->defaults      = array(
 				'multiple'      => 0,
 				'allow_null'    => 0,
 				'choices'       => array(),
@@ -151,22 +154,15 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 		}
 
 
-		/*
-		*  get_ajax_query
-		*
-		*  This function will return an array of data formatted for use in a select2 AJAX response
-		*
-		*  @type    function
-		*  @date    15/10/2014
-		*  @since   5.0.9
-		*
-		*  @param   $options (array)
-		*  @return  (array)
-		*/
-
-		function get_ajax_query( $options = array() ) {
-
-			// defaults
+		/**
+		 * This function will return an array of data formatted for use in a select2 AJAX response
+		 *
+		 * @since   5.0.9
+		 *
+		 * @param array $options An array of options.
+		 * @return array A select2 compatible array of options.
+		 */
+		public function get_ajax_query( $options = array() ) {
 			$options = acf_parse_args(
 				$options,
 				array(
@@ -177,23 +173,28 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 				)
 			);
 
-			// load field
+			$shortcut = apply_filters( 'acf/fields/select/query', array(), $options );
+			$shortcut = apply_filters( 'acf/fields/select/query/key=' . $options['field_key'], $shortcut, $options );
+			if ( ! empty( $shortcut ) ) {
+				return $shortcut;
+			}
+
+			// load field.
 			$field = acf_get_field( $options['field_key'] );
 			if ( ! $field ) {
 				return false;
 			}
 
-			// get choices
+			// get choices.
 			$choices = acf_get_array( $field['choices'] );
 			if ( empty( $field['choices'] ) ) {
 				return false;
 			}
 
-			// vars
 			$results = array();
 			$s       = null;
 
-			// search
+			// search.
 			if ( $options['s'] !== '' ) {
 
 				// strip slashes (search may be integer)
@@ -202,18 +203,17 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 
 			}
 
-			// loop
 			foreach ( $field['choices'] as $k => $v ) {
 
-				// ensure $v is a string
+				// ensure $v is a string.
 				$v = strval( $v );
 
-				// if searching, but doesn't exist
+				// if searching, but doesn't exist.
 				if ( is_string( $s ) && stripos( $v, $s ) === false ) {
 					continue;
 				}
 
-				// append
+				// append results.
 				$results[] = array(
 					'id'   => $k,
 					'text' => $v,
@@ -221,14 +221,11 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 
 			}
 
-			// vars
 			$response = array(
 				'results' => $results,
 			);
 
-			// return
 			return $response;
-
 		}
 
 
@@ -318,6 +315,10 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 				$select['data-ajax_action'] = $field['ajax_action'];
 			}
 
+			if ( ! empty( $field['hide_search'] ) ) {
+				$select['data-minimum-results-for-search'] = '-1';
+			}
+
 			// hidden input is needed to allow validation to see <select> element with no selected value
 			if ( $field['multiple'] || $field['ui'] ) {
 				acf_hidden_input(
@@ -365,10 +366,10 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Choices', 'acf' ),
-					'hint'  => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
-					'name'  => 'choices',
-					'type'  => 'textarea',
+					'label'        => __( 'Choices', 'acf' ),
+					'instructions' => __( 'Enter each choice on a new line.', 'acf' ) . '<br />' . __( 'For more control, you may specify both a value and label like this:', 'acf' ) . '<br /><span class="acf-field-setting-example">' . __( 'red : Red', 'acf' ) . '</span>',
+					'name'         => 'choices',
+					'type'         => 'textarea',
 				)
 			);
 
@@ -403,8 +404,8 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Select multiple values?', 'acf' ),
-					'instructions' => '',
+					'label'        => __( 'Select Multiple', 'acf' ),
+					'instructions' => 'Allow content editors to select multiple values',
 					'name'         => 'multiple',
 					'type'         => 'true_false',
 					'ui'           => 1,
@@ -425,7 +426,7 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
+					'label'        => __( 'Allow Null', 'acf' ),
 					'instructions' => '',
 					'name'         => 'allow_null',
 					'type'         => 'true_false',
@@ -692,28 +693,52 @@ if ( ! class_exists( 'acf_field_select' ) ) :
 		}
 
 		/**
+		 * Formats the choices available for the REST API.
+		 *
+		 * @since 6.2
+		 *
+		 * @param array $choices The choices for the field.
+		 * @return array
+		 */
+		public function format_rest_choices( $choices ) {
+			$keys        = array_keys( $choices );
+			$values      = array_values( $choices );
+			$int_choices = array();
+
+			if ( array_diff( $keys, $values ) ) {
+				// User has specified custom keys.
+				$choices = $keys;
+			} else {
+				// Default keys, same as value.
+				$choices = $values;
+			}
+
+			// Assume everything is a string by default.
+			$choices = array_map( 'strval', $choices );
+
+			// Also allow integers if is_numeric().
+			foreach ( $choices as $choice ) {
+				if ( is_numeric( $choice ) ) {
+					$int_choices[] = (int) $choice;
+				}
+			}
+
+			return array_merge( $choices, $int_choices );
+		}
+
+		/**
 		 * Return the schema array for the REST API.
 		 *
-		 * @param array $field
+		 * @param array $field The main field array.
 		 * @return array
 		 */
 		public function get_rest_schema( array $field ) {
-			/**
-			 * If a user has defined keys for the select options,
-			 * we should use the keys for the available options to POST to,
-			 * since they are what is displayed in GET requests.
-			 */
-			$option_keys = array_diff(
-				array_keys( $field['choices'] ),
-				array_values( $field['choices'] )
-			);
-
 			$schema = array(
-				'type'     => array( 'string', 'array', 'null' ),
+				'type'     => array( 'string', 'array', 'int', 'null' ),
 				'required' => ! empty( $field['required'] ),
 				'items'    => array(
-					'type' => array( 'string' ),
-					'enum' => empty( $option_keys ) ? $field['choices'] : $option_keys,
+					'type' => array( 'string', 'int' ),
+					'enum' => $this->format_rest_choices( $field['choices'] ),
 				),
 			);
 

@@ -21,10 +21,15 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 		function initialize() {
 
 			// vars
-			$this->name     = 'gallery';
-			$this->label    = __( 'Gallery', 'acf' );
-			$this->category = 'content';
-			$this->defaults = array(
+			$this->name          = 'gallery';
+			$this->label         = __( 'Gallery', 'acf' );
+			$this->category      = 'content';
+			$this->description   = __( 'An interactive interface for managing a collection of attachments, such as images.', 'acf' );
+			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-gallery.png';
+			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/gallery/', 'docs', 'field-type-selection' );
+			$this->tutorial_url  = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/how-to-use-the-gallery-field/', 'docs', 'field-type-selection' );
+			$this->pro           = true;
+			$this->defaults      = array(
 				'return_format' => 'array',
 				'preview_size'  => 'medium',
 				'insert'        => 'append',
@@ -141,7 +146,7 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 		function ajax_update_attachment() {
 
 			// validate nonce
-			if ( ! wp_verify_nonce( $_POST['nonce'], 'acf_nonce' ) ) {
+			if ( ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ) ), 'acf_nonce' ) ) {
 
 				wp_send_json_error();
 
@@ -155,7 +160,7 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 			}
 
 			// loop over attachments
-			foreach ( $_POST['attachments'] as $id => $changes ) {
+			foreach ( $_POST['attachments'] as $id => $changes ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Sanitized by WP core when saved.
 
 				if ( ! current_user_can( 'edit_post', $id ) ) {
 					wp_send_json_error();
@@ -628,12 +633,12 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Minimum', 'acf' ),
-					'instructions' => __( 'Restrict which images can be uploaded', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'min_width',
-					'prepend'      => __( 'Width', 'acf' ),
-					'append'       => 'px',
+					'label'   => __( 'Minimum', 'acf' ),
+					'hint'    => __( 'Restrict which images can be uploaded', 'acf' ),
+					'type'    => 'text',
+					'name'    => 'min_width',
+					'prepend' => __( 'Width', 'acf' ),
+					'append'  => 'px',
 				)
 			);
 
@@ -664,12 +669,12 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Maximum', 'acf' ),
-					'instructions' => __( 'Restrict which images can be uploaded', 'acf' ),
-					'type'         => 'text',
-					'name'         => 'max_width',
-					'prepend'      => __( 'Width', 'acf' ),
-					'append'       => 'px',
+					'label'   => __( 'Maximum', 'acf' ),
+					'hint'    => __( 'Restrict which images can be uploaded', 'acf' ),
+					'type'    => 'text',
+					'name'    => 'max_width',
+					'prepend' => __( 'Width', 'acf' ),
+					'append'  => 'px',
 				)
 			);
 
@@ -700,7 +705,7 @@ if ( ! class_exists( 'acf_field_gallery' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label' => __( 'Allowed file types', 'acf' ),
+					'label' => __( 'Allowed File Types', 'acf' ),
 					'hint'  => __( 'Comma separated list. Leave blank for all types', 'acf' ),
 					'type'  => 'text',
 					'name'  => 'mime_types',

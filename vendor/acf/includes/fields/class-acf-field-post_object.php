@@ -5,32 +5,28 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 	class acf_field_post_object extends acf_field {
 
 
-		/*
-		*  __construct
-		*
-		*  This function will setup the field type data
-		*
-		*  @type    function
-		*  @date    5/03/2014
-		*  @since   5.0.0
-		*
-		*  @param   n/a
-		*  @return  n/a
-		*/
-
-		function initialize() {
-
-			// vars
-			$this->name     = 'post_object';
-			$this->label    = __( 'Post Object', 'acf' );
-			$this->category = 'relational';
-			$this->defaults = array(
-				'post_type'     => array(),
-				'taxonomy'      => array(),
-				'allow_null'    => 0,
-				'multiple'      => 0,
-				'return_format' => 'object',
-				'ui'            => 1,
+		/**
+		 *  This function will setup the field type data
+		 *
+		 *  @type    function
+		 *  @date    5/03/2014
+		 *  @since   5.0.0
+		 */
+		public function initialize() {
+			$this->name          = 'post_object';
+			$this->label         = __( 'Post Object', 'acf' );
+			$this->category      = 'relational';
+			$this->description   = __( 'An interactive and customizable UI for picking one or many posts, pages or post type items with the option to search. ', 'acf' );
+			$this->preview_image = acf_get_url() . '/assets/images/field-type-previews/field-preview-post-object.png';
+			$this->doc_url       = acf_add_url_utm_tags( 'https://www.advancedcustomfields.com/resources/post-object/', 'docs', 'field-type-selection' );
+			$this->defaults      = array(
+				'post_type'            => array(),
+				'taxonomy'             => array(),
+				'allow_null'           => 0,
+				'multiple'             => 0,
+				'return_format'        => 'object',
+				'ui'                   => 1,
+				'bidirectional_target' => array(),
 			);
 
 			// extra
@@ -131,6 +127,17 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 			} else {
 
 				$args['post_type'] = acf_get_post_types();
+
+			}
+
+			// post status
+			if ( ! empty( $options['post_status'] ) ) {
+
+				$args['post_status'] = acf_get_array( $options['post_status'] );
+
+			} elseif ( ! empty( $field['post_status'] ) ) {
+
+				$args['post_status'] = acf_get_array( $field['post_status'] );
 
 			}
 
@@ -371,6 +378,21 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
+					'label'        => __( 'Filter by Post Status', 'acf' ),
+					'instructions' => '',
+					'type'         => 'select',
+					'name'         => 'post_status',
+					'choices'      => acf_get_pretty_post_statuses(),
+					'multiple'     => 1,
+					'ui'           => 1,
+					'allow_null'   => 1,
+					'placeholder'  => __( 'Any post status', 'acf' ),
+				)
+			);
+
+			acf_render_field_setting(
+				$field,
+				array(
 					'label'        => __( 'Filter by Taxonomy', 'acf' ),
 					'instructions' => '',
 					'type'         => 'select',
@@ -401,8 +423,8 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Select multiple values?', 'acf' ),
-					'instructions' => '',
+					'label'        => __( 'Select Multiple', 'acf' ),
+					'instructions' => 'Allow content editors to select multiple values',
 					'name'         => 'multiple',
 					'type'         => 'true_false',
 					'ui'           => 1,
@@ -423,13 +445,25 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 			acf_render_field_setting(
 				$field,
 				array(
-					'label'        => __( 'Allow Null?', 'acf' ),
+					'label'        => __( 'Allow Null', 'acf' ),
 					'instructions' => '',
 					'name'         => 'allow_null',
 					'type'         => 'true_false',
 					'ui'           => 1,
 				)
 			);
+		}
+
+		/**
+		 * Renders the field settings used in the "Advanced" tab.
+		 *
+		 * @since 6.2
+		 *
+		 * @param array $field The field settings array.
+		 * @return void
+		 */
+		public function render_field_advanced_settings( $field ) {
+			acf_render_bidirectional_field_settings( $field );
 		}
 
 		/*
@@ -506,26 +540,22 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 		}
 
 
-		/*
-		*  update_value()
-		*
-		*  This filter is appied to the $value before it is updated in the db
-		*
-		*  @type    filter
-		*  @since   3.6
-		*  @date    23/01/13
-		*
-		*  @param   $value - the value which will be saved in the database
-		*  @param   $post_id - the $post_id of which the value will be saved
-		*  @param   $field - the field array holding all the field options
-		*
-		*  @return  $value - the modified value
-		*/
-
-		function update_value( $value, $post_id, $field ) {
+		/**
+		 * Filters the field value before it is saved into the database.
+		 *
+		 * @since 3.6
+		 *
+		 * @param mixed $value The value which will be saved in the database.
+		 * @param int   $post_id The post_id of which the value will be saved.
+		 * @param array $field The field array holding all the field options.
+		 *
+		 * @return mixed $value The modified value.
+		 */
+		public function update_value( $value, $post_id, $field ) {
 
 			// Bail early if no value.
 			if ( empty( $value ) ) {
+				acf_update_bidirectional_values( array(), $post_id, $field );
 				return $value;
 			}
 
@@ -541,7 +571,8 @@ if ( ! class_exists( 'acf_field_post_object' ) ) :
 				$value = acf_idval( $value );
 			}
 
-			// Return value.
+			acf_update_bidirectional_values( acf_get_array( $value ), $post_id, $field );
+
 			return $value;
 		}
 

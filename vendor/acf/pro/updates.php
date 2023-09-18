@@ -128,7 +128,7 @@ function acf_pro_check_defined_license() {
 	}
 
 	// Check if we've been asked to clear the transient to retry activation.
-	if ( acf_verify_nonce( 'acf_delete_activation_transient' ) || ( isset( $_REQUEST['acf_retry_nonce'] ) && wp_verify_nonce( $_REQUEST['acf_retry_nonce'], 'acf_retry_activation' ) ) ) {
+	if ( acf_verify_nonce( 'acf_delete_activation_transient' ) || ( isset( $_REQUEST['acf_retry_nonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_REQUEST['acf_retry_nonce'] ) ), 'acf_retry_activation' ) ) ) {
 		delete_transient( 'acf_activation_error' );
 	} else {
 		// If we've failed activation recently, check if the key has been changed, otherwise return.
@@ -303,7 +303,7 @@ function acf_pro_get_license() {
 	}
 
 	// decode
-	$license = maybe_unserialize( base64_decode( $license ) );
+	$license = acf_maybe_unserialize( base64_decode( $license ) );
 
 	// bail early if corrupt
 	if ( ! is_array( $license ) ) {
@@ -449,15 +449,16 @@ function acf_pro_activate_license( $license_key, $silent = false ) {
 
 	// Connect to API.
 	$post = array(
-		'acf_license' => trim( $license_key ),
-		'acf_version' => acf_get_setting( 'version' ),
-		'wp_name'     => get_bloginfo( 'name' ),
-		'wp_url'      => acf_get_home_url(),
-		'wp_version'  => get_bloginfo( 'version' ),
-		'wp_language' => get_bloginfo( 'language' ),
-		'wp_timezone' => get_option( 'timezone_string' ),
-		'php_version' => PHP_VERSION,
-		'block_count' => acf_pro_get_registered_block_count(),
+		'acf_license'  => trim( $license_key ),
+		'acf_version'  => acf_get_setting( 'version' ),
+		'wp_name'      => get_bloginfo( 'name' ),
+		'wp_url'       => acf_get_home_url(),
+		'wp_version'   => get_bloginfo( 'version' ),
+		'wp_language'  => get_bloginfo( 'language' ),
+		'wp_timezone'  => get_option( 'timezone_string' ),
+		'wp_multisite' => (int) is_multisite(),
+		'php_version'  => PHP_VERSION,
+		'block_count'  => acf_pro_get_registered_block_count(),
 	);
 
 	$response = acf_updates()->request( 'v2/plugins/activate?p=pro', $post );
