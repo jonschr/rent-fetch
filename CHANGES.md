@@ -1,3 +1,11 @@
+## 3.14
+
+-   Updating plugin name to Rent Fetch Legacy
+
+## 3.13
+
+-   Updating ACF to 6.2.1.1
+
 ## 3.12.1
 
 -   BUGFIX: links in the nearby property section weren't outputting properly because they assumed that the loop was available. That will be true in the new version of the plugin, but is not true here, so links were always outputting to the current post rather than to the correct one.
