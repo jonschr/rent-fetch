@@ -160,8 +160,6 @@ function rentfetch_check_appfolio_floorplans_for_saving_or_syncing() {
 	// get an array of the unit types for each property
 	foreach ( $property_ids as $property_id ) {
 
-		// do_action( 'rentfetch_appfolio_do_process_and_save_floorplans', $property_id );
-
 		// if syncing is paused or data dync is off, then then bail, as we won't be restarting anything
 		if ( $sync_term == 'paused' || $data_sync == 'delete' || $data_sync == 'nosync' ) {
 			continue;
@@ -186,6 +184,7 @@ function rentfetch_appfolio_process_and_save_floorplans( $property_id ) {
 	// var_dump( $floorplans['1BR / 1 BA'] );
 
 	rentfetch_appfolio_update_or_create( $floorplans );
+	
 }
 
 /**
@@ -252,12 +251,19 @@ function rentfetch_appfolio_flatten_floorplan_data( $floorplans ) {
 		$AvailableUnitsCount = 0;
 
 		foreach ( $floorplan as $detail ) {
-			if ( $detail['AdvertisedRent'] > 100 ) {
-				$rent[] = (float) $detail['AdvertisedRent'] + 0;
+			
+			$advertised_rent = sanitize_text_field($detail['AdvertisedRent']);
+			$advertised_rent = (float) str_replace( ',', '', $advertised_rent );
+			
+			if ( $advertised_rent > 100 ) {
+				$rent[] =  $advertised_rent;
 			}
+			
+			$square_foot = sanitize_text_field($detail['SquareFt']);
+			$square_foot = (float) str_replace( ',', '', $square_foot );
 
 			if ( $detail['SquareFt'] > 100 ) {
-				$sqrft[] = (int) $detail['SquareFt'] + 0;
+				$sqrft[] = $square_foot;
 			}
 
 			if ( $detail['ReadyForShowingOn'] ) {
@@ -391,25 +397,25 @@ function rentfetch_appfolio_insert_floorplan( $floorplan ) {
 		'post_type'   => 'floorplans',
 		'meta_input'  => array(
 			// 'availability_url'          => $AvailabilityURL,
-			'available_units'  => $AvailableUnitsCount,
-			'baths'            => $Baths,
-			'beds'             => $Beds,
+			'available_units'  => esc_html( $AvailableUnitsCount ),
+			'baths'            => esc_html( $Baths ),
+			'beds'             => esc_html( $Beds ),
 			// 'has_specials'              => $FloorplanHasSpecials,
-			'floorplan_id'     => $FloorplanId,
+			'floorplan_id'     => esc_html( $FloorplanId ),
 			// 'floorplan_image_alt_text'  => $FloorplanImageAltText,
 			// 'floorplan_image_name'      => $FloorplanImageName,
 			// 'floorplan_image_url'       => $FloorplanImageURL,
 			// 'maximum_deposit'           => $MaximumDeposit,
-			'maximum_rent'     => $MaximumRent,
-			'maximum_sqft'     => $MaximumSQFT,
-			// 'minimum_deposit'           => $MinimumDeposit,
-			'minimum_rent'     => $MinimumRent,
-			'minimum_sqft'     => $MinimumSQFT,
-			'property_id'      => $PropertyId,
-			// 'voyager_property_code'     => $voyagercode,
-			// 'property_show_specials'    => $PropertyShowsSpecials,
-			// 'unit_type_mapping'         => $UnitTypeMapping,
-			'floorplan_source' => $FloorplanSource,
+			'maximum_rent'     => esc_html( $MaximumRent ),
+			'maximum_sqft'     => esc_html( $MaximumSQFT ),
+			// 'minimum_deposit'           => esc_html( $MinimumDeposit ),
+			'minimum_rent'     => esc_html( $MinimumRent ),
+			'minimum_sqft'     => esc_html( $MinimumSQFT ),
+			'property_id'      => esc_html( $PropertyId ),
+			// 'voyager_property_code'     => esc_html( $voyagercode ),
+			// 'property_show_specials'    => esc_html( $PropertyShowsSpecials ),
+			// 'unit_type_mapping'         => esc_html( $UnitTypeMapping ),
+			'floorplan_source' => esc_html( $FloorplanSource ),
 		),
 	);
 
@@ -447,25 +453,25 @@ function rentfetch_appfolio_update_floorplan( $floorplan, $matchingposts ) {
 		'post_type'   => 'floorplans',
 		'meta_input'  => array(
 			// 'availability_url'          => $AvailabilityURL,
-			'available_units'  => $AvailableUnitsCount,
-			'baths'            => $Baths,
-			'beds'             => $Beds,
-			// 'has_specials'              => $FloorplanHasSpecials,
-			'floorplan_id'     => $FloorplanId,
-			// 'floorplan_image_alt_text'  => $FloorplanImageAltText,
-			// 'floorplan_image_name'      => $FloorplanImageName,
-			// 'floorplan_image_url'       => $FloorplanImageURL,
-			// 'maximum_deposit'           => $MaximumDeposit,
-			'maximum_rent'     => $MaximumRent,
-			'maximum_sqft'     => $MaximumSQFT,
-			// 'minimum_deposit'           => $MinimumDeposit,
-			'minimum_rent'     => $MinimumRent,
-			'minimum_sqft'     => $MinimumSQFT,
-			'property_id'      => $PropertyId,
-			// 'voyager_property_code'     => $voyagercode,
-			// 'property_show_specials'    => $PropertyShowsSpecials,
-			// 'unit_type_mapping'         => $UnitTypeMapping,
-			'floorplan_source' => $FloorplanSource,
+			'available_units'  => esc_html( $AvailableUnitsCount ),
+			'baths'            => esc_html( $Baths ),
+			'beds'             => esc_html( $Beds ),
+			// 'has_specials'              => esc_html( $FloorplanHasSpecials ),
+			'floorplan_id'     => esc_html( $FloorplanId ),
+			// 'floorplan_image_alt_text'  => esc_html( $FloorplanImageAltText ),
+			// 'floorplan_image_name'      => esc_html( $FloorplanImageName ),
+			// 'floorplan_image_url'       => esc_html( $FloorplanImageURL ),
+			// 'maximum_deposit'           => esc_html( $MaximumDeposit ),
+			'maximum_rent'     => esc_html( $MaximumRent ),
+			'maximum_sqft'     => esc_html( $MaximumSQFT ),
+			// 'minimum_deposit'           => esc_html( $MinimumDeposit ),
+			'minimum_rent'     => esc_html( $MinimumRent ),
+			'minimum_sqft'     => esc_html( $MinimumSQFT ),
+			'property_id'      => esc_html( $PropertyId ),
+			// 'voyager_property_code'     => esc_html( $voyagercode ),
+			// 'property_show_specials'    => esc_html( $PropertyShowsSpecials ),
+			// 'unit_type_mapping'         => esc_html( $UnitTypeMapping ),
+			'floorplan_source' => esc_html( $FloorplanSource ),
 		),
 	);
 

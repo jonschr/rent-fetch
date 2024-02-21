@@ -1,3 +1,7 @@
+## 3.15
+
+-   Fixing a bug in Appfolio where rent wouldn't update if Appfolio gave us formatted data with commas.
+
 ## 3.14
 
 -   Updating plugin name to Rent Fetch Legacy
