@@ -3,7 +3,7 @@
 	Plugin Name: Rent Fetch Legacy
 	Plugin URI: https://github.com/jonschr/rent-fetch
     Description: Syncs properties, and floorplans with various rental APIs
-	Version: 3.15
+	Version: 3.15.1
     Author: Brindle Digital
     Author URI: https://www.brindledigital.com/
 
@@ -24,7 +24,7 @@ if ( !defined( 'ABSPATH' ) ) {
 }
 
 // Define the version of the plugin
-define ( 'RENTFETCH_VERSION', '3.15' );
+define ( 'RENTFETCH_VERSION', '3.15.1' );
 
 // Plugin directory
 define( 'RENTFETCH_DIR', plugin_dir_path( __FILE__ ) );
@@ -256,6 +256,32 @@ function rentfetch_start_sync() {
     // var_dump( as_next_scheduled_action( 'rentfetch_do_chron_activation' ) );
     
 }
+
+/**
+ * When this plugin is deactivated, stop any remaining processes from running.
+ *
+ * @return void. 
+ */
+function rent_fetch_deactivate() {
+	
+	// remove the normal processes that might still trigger.
+	as_unschedule_all_actions( 'rentfetch_do_sync_logic' );
+	as_unschedule_all_actions( 'rentfetch_do_remove_old_data' );
+	
+	// remove yardi stuff (just in case).
+	as_unschedule_all_actions( 'rentfetch_do_get_yardi_property_from_api' );
+	as_unschedule_all_actions( 'rentfetch_do_get_yardi_floorplans_from_api_for_property' );
+	as_unschedule_all_actions( 'rentfetch_do_fetch_yardi_floorplans' );
+	as_unschedule_all_actions( 'rentfetch_do_remove_floorplans_from_orphan_yardi_properties_specific' );
+	as_unschedule_all_actions( 'rentfetch_do_remove_orphan_yardi_properties' );
+	
+	// remove appfolio stuff (just in case).
+	as_unschedule_all_actions( 'rentfetch_appfolio_do_process_and_save_floorplans' );
+	
+	// remove geocoding stuff (just in case).
+	as_unschedule_all_actions( 'rentfetch_geocoding_get_lat_long' );
+}
+register_deactivation_hook( __FILE__, 'rent_fetch_deactivate' );
 
 ////////////////////
 // PLUGIN UPDATER //
