@@ -1,3 +1,7 @@
+## 3.15.2
+
+-   Fixing a string offset error in certain situations for the floorplans search block
+
 ## 3.15
 
 -   Fixing a bug in Appfolio where rent wouldn't update if Appfolio gave us formatted data with commas.

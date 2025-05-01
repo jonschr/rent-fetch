@@ -519,7 +519,9 @@ function floorplan_get_image_urls() {
     if ( $manual_images !== null && $manual_images !== false ) {
         
         foreach ( $manual_images as $manual_image ) {
-            $floorplan_image_urls[] = $manual_image['sizes']['large'];
+			if ( is_array( $manual_image ) && isset( $manual_image['sizes']['large'] ) ) {
+				$floorplan_image_urls[] = $manual_image['sizes']['large'];
+			}
         }
         
         return $floorplan_image_urls;
